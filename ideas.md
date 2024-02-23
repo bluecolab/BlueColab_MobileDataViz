@@ -5,9 +5,9 @@ Security
  - We do use photos and location so we likely have to make sure that's secure and have some sort of privacy policy.
 
 Sustainability
- - A lot of our steps is "hard coded". We need to make it such that in the future we don't have to update the code to handle future years.
+ - A lot of our dropdowns is "hard coded". We need to make it such that in the future we don't have to update the code to handle future years.
  - Expanding on the point above here are the problems now: WQI has to be manually uploaded every month. Drop downs are not updated yearly.
- - It's costly to maintain the server - perhaps there's something internal the phone get ping instead.
+ - It's costly to maintain the server - perhaps there's something internal on the phone directly.
  - "Optimization" 
 
 Error handling
