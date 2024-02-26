@@ -117,7 +117,7 @@ export default function AiScreen({ navigation }) {
       });
 
       // Use the formData object in your API request
-      const apiKey = '2b10RIKodP0IQc4eGgBJFaABO'; // Replace with your actual PlantNet API key
+      const apiKey = process.env.EXPO_PUBLIC_API_KEY;
       const apiUrl = `https://my-api.plantnet.org/v2/identify/all?api-key=${apiKey}`;
 
       const response = await fetch(apiUrl, {

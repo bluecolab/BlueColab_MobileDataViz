@@ -7,6 +7,10 @@ Prerequisites
  - Install [Android Studio](https://developer.android.com/studio) or Test Flight (Apple). This will take a while and take a good chuck of space. Start a device emulator more info [here](https://developer.android.com/codelabs/basic-android-kotlin-compose-emulator#2)
  - Download Expo Go app on your phone
  - Any code editor really
+ - Get an API key from [Pl@ntNet API](https://my.plantnet.org/) for free. Create a .env file in the ``./aquawatch_mobile_app`` folder. In that .env file put:
+ ```
+ EXPO_PUBLIC_API_KEY=[your-api-key]
+ ```
 
 Setup Instructions
 1. Open a terminal in this directory ``../BlueColab_MobileDataViz/aquawatch_mobile_app/``
