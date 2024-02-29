@@ -34,10 +34,6 @@ export default function HomeScreen({ navigation }) {
   const handleBlogScreenPress = () => {
     navigation.navigate("Blog");
   };
-  const handleAiPress = () => {
-    navigation.navigate("Ai");
-  };
-
   const handleAttributionPress = () => {
     navigation.navigate("Attributions");
   }
@@ -174,25 +170,6 @@ export default function HomeScreen({ navigation }) {
         </View>
         {/*End blog page*/}
 
-        {/*Start AI Widget*/}
-        <View style={styles.aiWidget}>
-          <Image
-            source={require("../../assets/homescreen/Plant2.jpg")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            Use this AI to identify any species of plant that you may see outdoors!
-          </Text>
-          <TouchableHighlight
-            onPress={() => {
-              handleAiPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>Discover more...</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
         <View style={styles.attributionsWidget}>
           <Image
             source={require("../../assets/homescreen/code.jpg")}

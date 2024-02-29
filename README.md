@@ -18,7 +18,7 @@
     - Information about local wildlife and its dependence on water quality.
 </p>
 <p>
-    - AI-powered plant identification to aid in learning about plant life.
+    - AI-powered plant identification to aid in learning about plant life. (Depreciated)
 </p>
 <p>
    -  Access to Blue CoLab blogs.
