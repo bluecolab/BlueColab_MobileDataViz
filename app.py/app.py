@@ -1,212 +1,66 @@
-import pandas as pd  # For data manipulation (similar to dplyr)
-import numpy as np   # For numerical operations
-import matplotlib.pyplot as plt  # For plotting (similar to ggplot2)
-from datetime import datetime  # For date manipulation (similar to lubridate)
-from urllib.request import urlopen  # For URL handling (similar to jsonlite)
-import json  # For JSON manipulation (similar to jsonlite)
-import requests
-from scipy.signal import medfilt
-from shiny import render, ui
-from shiny.express import input
-import plotly.express as px
 from shiny.express import input, render, ui
-from shinywidgets import render_widget
-import plotly.graph_objects as go
-from urllib.parse import parse_qs, urlparse
+from shinywidgets import render_plotly
+from helper_functions import get_years, fetch_data_caller
+import plotly.express as px
+import calendar, datetime
 
-app = from shiny import App, reactive, render, req, ui
+# Get the name of the last month
+@render.text
+def slider_val():
+    parameter = input.parameter()
+    location_1 = input.location_1()
+    location_2 = input.location_2()
+    month_1 = input.month_1()
+    month_2 = input.month_2()
+    year_1 = input.year_1()
+    year_2 = input.year_2()
 
-app_ui = ui.page_fluid(
-    ui.input_slider("n", "N", 0, 100, 20),
-    ui.output_text_verbatim("txt"),
+    if (location_2 != "NA" and month_2!="NA" and year_2!="NA" ):
+        return f"{parameter} data for {location_1} in {month_1} {year_1} and  {location_2} in {month_2} {year_2}"
+    else:
+        return f"{parameter} data for {location_1} in {month_1} {year_1}"
+
+@render_plotly
+def plot1():
+    # getting parameters from dropdowns
+    parameter = input.parameter()
+    location_1 = input.location_1()
+    location_2 = input.location_2()
+    month_1 = input.month_1()
+    month_2 = input.month_2()
+    year_1 = input.year_1()
+    year_2 = input.year_2()
+
+    df = fetch_data_caller(location_1,year_1,month_1).data
+
+    if location_1 == "Choate Pond":
+        full_to_short_names  = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct', 'Salinity': 'Sal','Temperature': 'Temp','Turbidity': 'Turb'}
+        p = px.line(df, x='timestamp', y=full_to_short_names[parameter])
+        p.update_layout(height=200, xaxis_title=None)
+    # TODO: Add support for other water location
+        
+    # TODO: Add support for second location/time to compare
+        
+    return p
+
+# Creation of down drop to get the water parameters
+ui.input_selectize(
+    "parameter", "Select parameter:",
+    choices=["Conductivity", "Dissolved Oxygen","Salinity","Temperature","Turbidity","pH"]
 )
 
+# Creation of dropdowns to get current years
+# Get locations
+with ui.layout_columns():
+    ui.input_select("location_1", "Location 1", choices=["Choate Pond", "Yonkers","West Point","Poughkeepsie"], width="100%")
+    ui.input_select("location_2", "Location 2", choices=["NA","Choate Pond", "Yonkers","West Point","Poughkeepsie"], width="100%")
 
-def server(input, output, session):
-    @render.text
-    def txt():
-        return f"n*2 is {input.n() * 2}"
+# Get month, by default the first drop down is set to the last month
+with ui.layout_columns():
+    ui.input_select("month_1", "Month 1", choices=["January", "February","March","April","May","June","July","August","September","October","November","December"], width="100%",selected=calendar.month_name[datetime.datetime.now().month - 1 if datetime.datetime.now().month > 1 else 12])
+    ui.input_select("month_2", "Month 2", choices=["NA","January", "February","March","April","May","June","July","August","September","October","November","December"], width="100%")
 
-
-app = App(app_ui, server)
-
-app.layout = html.Div(
-    style={"backgroundColor": "white"},
-    children=[
-        html.H1(
-            children="Monthly Water Report",
-            style={"textAlign": "center", "color": "white"},
-        ),
-        dcc.Graph(id="distPlot"),
-        html.Div(
-            className="row",
-            children=[
-                html.Div(
-                    className="six columns",
-                    children=[
-                        dcc.Dropdown(
-                            id="first",
-                            options=[
-                                {"label": "Conductivity", "value": "Conductivity"},
-                                {"label": "Dissolved Oxygen", "value": "Dissolved Oxygen"},
-                                {"label": "Salinity", "value": "Salinity"},
-                                {"label": "Temperature", "value": "Temperature"},
-                                {"label": "Turbidity", "value": "Turbidity"},
-                                {"label": "pH", "value": "pH"},
-                            ],
-                            placeholder="Choose a dataset",
-                            style={"width": "100%"},
-                        ),
-                        dcc.Graph(id="firstGauge", style={"height": "175px"}),
-                    ],
-                ),
-                html.Div(
-                    className="six columns",
-                    children=[
-                        dcc.Dropdown(
-                            id="second",
-                            options=[
-                                {"label": "Conductivity", "value": "Conductivity"},
-                                {"label": "Dissolved Oxygen", "value": "Dissolved Oxygen"},
-                                {"label": "Salinity", "value": "Salinity"},
-                                {"label": "Temperature", "value": "Temperature"},
-                                {"label": "Turbidity", "value": "Turbidity"},
-                                {"label": "pH", "value": "pH"},
-                            ],
-                            placeholder="Choose a dataset",
-                            style={"width": "100%"},
-                        ),
-                        dcc.Graph(id="secondGauge", style={"height": "175px"}),
-                    ],
-                ),
-            ],
-        ),
-        dcc.Dropdown(
-            id="dataset",
-            options=[
-                {"label": "Conductivity", "value": "Conductivity"},
-                {"label": "Dissolved Oxygen", "value": "Dissolved Oxygen"},
-                {"label": "Salinity", "value": "Salinity"},
-                {"label": "Temperature", "value": "Temperature"},
-                {"label": "Turbidity", "value": "Turbidity"},
-                {"label": "pH", "value": "pH"},
-            ],
-            placeholder="Choose a dataset",
-            style={"width": "100%"},
-        ),
-        html.Div(
-            className="row",
-            children=[
-                html.Div(
-                    className="six columns",
-                    children=[
-                        dcc.Dropdown(
-                            id="location",
-                            options=[
-                                {"label": "NA", "value": "NA"},
-                                {"label": "Choate Pond", "value": "Choate Pond"},
-                                {"label": "Yonkers (01376307)", "value": "Yonkers (01376307)"},
-                                {"label": "West Point (01374019)", "value": "West Point (01374019)"},
-                                {"label": "Poughkeepsie (01372043)", "value": "Poughkeepsie (01372043)"},
-                            ],
-                            placeholder="Choose a Location",
-                            style={"width": "100%"},
-                        ),
-                        dcc.Dropdown(
-                            id="firstYear",
-                            options=[
-                                {"label": "NA", "value": "NA"},
-                                {"label": "2023", "value": "2023"},
-                                {"label": "2022", "value": "2022"},
-                                {"label": "2021", "value": "2021"},
-                            ],
-                            placeholder="Choose a Start Year",
-                            style={"width": "100%"},
-                        ),
-                        dcc.Dropdown(
-                            id="firstMonth",
-                            options=[
-                                {"label": "NA", "value": "NA"},
-                                {"label": "January", "value": "January"},
-                                {"label": "February", "value": "February"},
-                                {"label": "March", "value": "March"},
-                                {"label": "April", "value": "April"},
-                                {"label": "May", "value": "May"},
-                                {"label": "June", "value": "June"},
-                                {"label": "July", "value": "July"},
-                                {"label": "August", "value": "August"},
-                                {"label": "September", "value": "September"},
-                                {"label": "October", "value": "October"},
-                                {"label": "November", "value": "November"},
-                                {"label": "December", "value": "December"},
-                            ],
-                            placeholder="Choose a Start Month",
-                            style={"width": "100%"},
-                        ),
-                    ],
-                ),
-                html.Div(
-                    className="six columns",
-                    children=[
-                        dcc.Dropdown(
-                            id="secondLocation",
-                            options=[
-                                {"label": "NA", "value": "NA"},
-                                {"label": "Choate Pond", "value": "Choate Pond"},
-                                {"label": "Yonkers (01376307)", "value": "Yonkers (01376307)"},
-                                {"label": "West Point (01374019)", "value": "West Point (01374019)"},
-                                {"label": "Poughkeepsie (01372043)", "value": "Poughkeepsie (01372043)"},
-                            ],
-                            placeholder="Choose a Location",
-                            style={"width": "100%"},
-                        ),
-                        dcc.Dropdown(
-                            id="secondYear",
-                            options=[
-                                {"label": "NA", "value": "NA"},
-                                {"label": "2023", "value": "2023"},
-                                {"label": "2022", "value": "2022"},
-                                {"label": "2021", "value": "2021"},
-                            ],
-                            placeholder="Choose an End Year",
-                            style={"width": "100%"},
-                        ),
-                        dcc.Dropdown(
-                            id="secondMonth",
-                            options=[
-                                {"label": "NA", "value": "NA"},
-                                {"label": "January", "value": "January"},
-                                {"label": "February", "value": "February"},
-                                {"label": "March", "value": "March"},
-                                {"label": "April", "value": "April"},
-                                {"label": "May", "value": "May"},
-                                {"label": "June", "value": "June"},
-                                {"label": "July", "value": "July"},
-                                {"label": "August", "value": "August"},
-                                {"label": "September", "value": "September"},
-                                {"label": "October", "value": "October"},
-                                {"label": "November", "value": "November"},
-                                {"label": "December", "value": "December"},
-                            ],
-                            placeholder="Choose an End Month",
-                            style={"width": "100%"},
-                        ),
-                    ],
-                ),
-            ],
-        ),
-    ],
-)
-
-@app.callback(Output("distPlot", "figure"), [Input("dataset", "value")])
-def update_distplot(dataset):
-    # code to update the plotly figure based on the selected dataset
-    pass
-
-
-
-if __name__ == "__main__":
-    app.run_server(debug=True)
-
-
-
+# Get year, by default the first drop down is set to the last month's year
+with ui.layout_columns():
+    ui.input_select("year_1", "Year 1", choices=get_years(), width="100%", selected=datetime.datetime.now().year if datetime.datetime.now().month > 1 else datetime.datetime.now().year - 1)
+    ui.input_select("year_2", "Year 2", choices=get_years(show_na=True), width="100%")
