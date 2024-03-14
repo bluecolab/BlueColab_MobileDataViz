@@ -3,6 +3,8 @@ from shinywidgets import render_plotly
 from helper_functions import get_years, fetch_data_caller
 import plotly.express as px
 import calendar, datetime
+import pandas as pd
+import plotly.graph_objects as go
 
 # Noting so we don't forget missing features
 # TODO: (later) Add back WQI
@@ -51,48 +53,83 @@ def plot1():
     df = fetch_data_caller(location_1,year_1,month_1).data
     # ^ This DataFrame looks like the one in health_dashboard GitHub. Where each parameter was in its own columns
 
-    # TODO: (Bonus): Convert the temperures to farienheight 
-
+    # TODO: (Bonus):  
+    
     if location_1 == "Choate Pond":
         full_to_short_names  = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct', 'Salinity': 'Sal','Temperature': 'Temp','Turbidity': 'Turb'}
 
         df_param_only = df[["timestamp",full_to_short_names[parameter]]]
-        # TODO: (before Friday?): We have this DataFrame df_param_only. It has ALL the data of the whole month for the selected parameter. That's like 2976 rows per month?
-        # Tasks: 
-        #   - Create a new df, so it only 31 rows, one row for each day
-        #   - Each row should have the (1) min (2) max (3) average of each day of the month
-        #     so the df would look kinda like this. The names of the cols might be different 
-        # 
-        #     timestamp   min_Cond max_Cond avg_Cond
-        # 0   01-01-2024  22        76       33
-        # 1   01-02-2024  54        76       33
-        # 2   01-03-2024  22        76       54
-        # 3   01-04-2024  22        32       11
-        # 3   01-05-2024  34        76       44
+        
+        # Convert the temperures to farienheight
+        if parameter == 'Temperature':
+            df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
+
+        df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
 
         df_param_only = df_param_only # your code here idk 
-        
-        # TODO: (before Friday?): Now that we have the df with min/max/avg working, please make the graph.
-        # Tasks:
-        #   - Forget, the code we have already. What we want to do is add a ribbon to our graph. Looking up ribbon plotly or something 
-        #     may help. Ribbon can be any color that makes sense. 
-        #   - Essentially, the min_Cond would serve as the bottom of the ribbon. max the top of the ribbon.
-        #   - And avg_Cond just a line graph. 
-        
+
         # TODO: (Bonus): Look at the min_Cond and max_Cond. Draw a tick mark on the graph at that point if it's out of sensor thresholds. 
         # Tasks:
         #   - This I honestly don't know. But you got this 
 
         p = px.line(df_param_only, x='timestamp', y=full_to_short_names[parameter])
         p.update_layout(height=200, xaxis_title=None)
-    
-    
-    
+ 
     # TODO: (soon) Add support for other water location
         
     # TODO: (soon) Add support for second location/time to compare
-        
+    
     return p
+
+@render_plotly
+def plot2():
+    # getting parameters from the dropdowns
+    parameter = input.parameter()
+    
+    if parameter != 'Conductivity':
+        return None
+
+    location_1 = input.location_1()
+    year_1 = input.year_1()
+    month_1 = input.month_1()
+
+    df = fetch_data_caller(location_1, year_1, month_1).data
+
+    if location_1 == "Choate Pond":
+        full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
+                               'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb'}
+
+        df_param_only = df[["timestamp", full_to_short_names[parameter]]]
+
+        # Group by day and calculate min, max, and average
+        df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
+        df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
+            min_Cond=('Cond', 'min'),
+            max_Cond=('Cond', 'max'),
+            avg_Cond=('Cond', 'mean')
+        ).reset_index()
+
+        if df_daily_summary.empty:
+            # If the DataFrame is empty, return None to prevent plotting
+            return None
+
+        # Create the plot
+        fig = go.Figure()
+
+        # Add traces for min, max, and average conductivity
+        fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['max_Cond'],
+                                 mode='lines', name='Max Conductivity'))
+        fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['avg_Cond'],
+                                 mode='lines', name='Average Conductivity'))
+        fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['min_Cond'],
+                                 mode='lines', name='Min Conductivity'))
+        
+        # Customize layout
+        fig.update_layout(title='Conductivity Summary',
+                          xaxis_title='Date', yaxis_title='Conductivity',
+                          height=400)
+
+        return fig
 
 # Creation of down drop to get the water parameters
 ui.input_selectize(
@@ -115,3 +152,28 @@ with ui.layout_columns():
 with ui.layout_columns():
     ui.input_select("year_1", "Year 1", choices=get_years(), width="100%", selected=datetime.datetime.now().year if datetime.datetime.now().month > 1 else datetime.datetime.now().year - 1)
     ui.input_select("year_2", "Year 2", choices=get_years(show_na=True), width="100%")
+
+
+
+        # TODO: (before Friday?): We have this DataFrame df_param_only. It has ALL the data of the whole month for the selected parameter. That's like 2976 rows per month?
+        # Tasks: 
+        #   - Create a new df, so it only 31 rows, one row for each day
+        #   - Each row should have the (1) min (2) max (3) average of each day of the month
+        #     so the df would look kinda like this. The names of the cols might be different 
+        # 
+        #     timestamp   min_Cond max_Cond avg_Cond
+        # 0   01-01-2024  22        76       33
+        # 1   01-02-2024  54        76       33
+        # 2   01-03-2024  22        76       54
+        # 3   01-04-2024  22        32       11
+        # 3   01-05-2024  34        76       44
+        #   Done?
+    
+        # TODO: (before Friday?): Now that we have the df with min/max/avg working, please make the graph.
+        # Tasks:
+        #   - Forget, the code we have already. What we want to do is add a ribbon to our graph. Looking up ribbon plotly or something 
+        #     may help. Ribbon can be any color that makes sense. 
+        #   - Essentially, the min_Cond would serve as the bottom of the ribbon. max the top of the ribbon.
+        #   - And avg_Cond just a line graph. 
+        #   Done?
+        
