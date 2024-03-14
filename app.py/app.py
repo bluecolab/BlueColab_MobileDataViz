@@ -95,41 +95,38 @@ def plot2():
 
     df = fetch_data_caller(location_1, year_1, month_1).data
 
-    if location_1 == "Choate Pond":
-        full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
+    full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
                                'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb'}
 
-        df_param_only = df[["timestamp", full_to_short_names[parameter]]]
+    df_param_only = df[["timestamp", full_to_short_names[parameter]]]
 
-        # Group by day and calculate min, max, and average
-        df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
-        df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
+    # Group by day and calculate min, max, and average
+    df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
+    df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
             min_Cond=('Cond', 'min'),
             max_Cond=('Cond', 'max'),
             avg_Cond=('Cond', 'mean')
         ).reset_index()
 
-        if df_daily_summary.empty:
+    if df_daily_summary.empty:
             # If the DataFrame is empty, return None to prevent plotting
             return None
 
-        # Create the plot
-        fig = go.Figure()
+    # Create the plot
+    fig = go.Figure()
 
-        # Add traces for min, max, and average conductivity
-        fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['max_Cond'],
+    # Add traces for min, max, and average conductivity
+    fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['max_Cond'],
                                  mode='lines', name='Max Conductivity'))
-        fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['avg_Cond'],
+    fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['avg_Cond'],
                                  mode='lines', name='Average Conductivity'))
-        fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['min_Cond'],
+    fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['min_Cond'],
                                  mode='lines', name='Min Conductivity'))
         
-        # Customize layout
-        fig.update_layout(title='Conductivity Summary',
-                          xaxis_title='Date', yaxis_title='Conductivity',
-                          height=400)
+    # Customize layout
+    fig.update_layout(yaxis_title='Cond Summary', height=200, xaxis_title=None)
 
-        return fig
+    return fig
 
 # Creation of down drop to get the water parameters
 ui.input_selectize(
@@ -154,13 +151,12 @@ with ui.layout_columns():
     ui.input_select("year_2", "Year 2", choices=get_years(show_na=True), width="100%")
 
 
-
         # TODO: (before Friday?): We have this DataFrame df_param_only. It has ALL the data of the whole month for the selected parameter. That's like 2976 rows per month?
         # Tasks: 
         #   - Create a new df, so it only 31 rows, one row for each day
         #   - Each row should have the (1) min (2) max (3) average of each day of the month
         #     so the df would look kinda like this. The names of the cols might be different 
-        # 
+        
         #     timestamp   min_Cond max_Cond avg_Cond
         # 0   01-01-2024  22        76       33
         # 1   01-02-2024  54        76       33
@@ -177,3 +173,4 @@ with ui.layout_columns():
         #   - And avg_Cond just a line graph. 
         #   Done?
         
+
