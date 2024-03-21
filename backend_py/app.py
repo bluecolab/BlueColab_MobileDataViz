@@ -50,6 +50,7 @@ def plot1():
         df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
 
     df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
+    print(df_param_only)
     df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
         min_value=(full_to_short_names[parameter], 'min'),
         max_value=(full_to_short_names[parameter], 'max'),

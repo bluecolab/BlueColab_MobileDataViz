@@ -3,6 +3,7 @@ import pandas as pd
 from pandas import DataFrame
 import calendar
 from WaterData import WaterData
+import dataretrieval.nwis as nwis
 
 def get_years(**kwargs):
     """Returns a list containing years from current year to 2021. For the dropdowns.
@@ -37,9 +38,6 @@ def fetch_data(location: str | None = "Choate Pond",
                end_year: int | None = None,
                end_month: int | None = None,
                end_day: int | None = None) -> DataFrame:
-
-
-
     """Fetches data from APIs.
 
     ### Args:
@@ -54,7 +52,7 @@ def fetch_data(location: str | None = "Choate Pond",
         DataFrame: Data fetched from the specified location for the given dates.
 
     ### Raises:
-        ValueError: If any of the date parameters are know, will raise a value error.
+        ValueError: If any of the date parameters are not know, will raise a value error.
     """
     if any(param is None for param in [start_year, start_month, start_day, end_year, end_month, end_day]):
         raise ValueError("All parameters must be provided")
@@ -70,10 +68,27 @@ def fetch_data(location: str | None = "Choate Pond",
         df_normalized = pd.concat([df.drop(['sensors'], axis=1), df['sensors'].apply(pd.Series)], axis=1)
 
         return WaterData(df_normalized,"3")
-
     else:
-        ## TODO: (later) Add support for other locations! Make sure it outputs as a dataframe
-        return "NA"
+        df = nwis.get_record(sites='01374019', service='iv', start=f'{start_year}-{start_month}-{start_day}', end=f'{end_year}-{end_month}-{end_day}')
+        columns_to_keep = [col for col in df.columns if not col.endswith('_cd')]
+        df_filtered = df[columns_to_keep].reset_index()
+        
+        column_mapping = {
+            '00010_hrecos': 'Temp',
+            '00095_hrecos': 'Cond',
+            '00300_hrecos': 'DOpct',
+            '90860_hrecos': 'Sal',
+            '00400_hrecos': 'pH',
+            '63680_hrecos exo': 'Turb',
+            'datetime' : 'timestamp'
+        }
+
+        # Rename columns using the dictionary
+        df_renamed = df_filtered.rename(columns=column_mapping)
+
+        print(df_renamed.columns)
+        return WaterData(df_renamed,"3")
+
 
 def fetch_data_caller(location: str | None = "Choate Pond",
                       year: int | None = None,
