@@ -6,14 +6,6 @@ import calendar, datetime
 import pandas as pd
 import plotly.graph_objects as go
 
-# Noting so we don't forget missing features
-# TODO: (later) Add back WQI
-# TODO: (later) Add back text that summerized the montly data
-# TODO: (later) Add url parameters
-# TODO: (overall) Improve the UI 
-# TODO: (later) Convert everything to the right units
-# TODO: (later) Cleaning data up, removing outliers. Python makes this easier...!
-
 @render.text
 def output_text_verbatim():
     """Creates the title above the graph
