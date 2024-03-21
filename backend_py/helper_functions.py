@@ -29,7 +29,58 @@ def get_years(**kwargs):
         return years_list
     else:
         return years_list
+
+def usgs_data_fetch(location: str | None = None, 
+                    start_year: int | None = None,
+                    start_month: int |  None = None,
+                    start_day: int |  None = None,
+                    end_year: int | None = None,
+                    end_month: int | None = None,
+                    end_day: int | None = None) -> DataFrame:
+    sites_dict = {'West Point' : '01374019', 'Yonkers' : '01376307', 'Poughkeepsie' : '01372043'}
+    site = sites_dict[location]
+
+    df = nwis.get_record(sites=site, service='iv', start=f'{start_year}-{start_month}-{start_day}', end=f'{end_year}-{end_month}-{end_day}')
     
+    # columns_to_keep = [col for col in df.columns if not col.endswith('_cd')]
+    df = df.reset_index()
+
+    print(df.columns)
+
+    location_mapping = {
+        '01374019' : {
+            '00010_hrecos': 'Temp',
+            '00095_hrecos': 'Cond',
+            '00300_hrecos': 'DOpct',
+            '90860_hrecos': 'Sal',
+            '00400_hrecos': 'pH',
+            '63680_surface': 'Turb',
+            'datetime' : 'timestamp'
+        },
+        '01372043' : {
+            '00010_surface' : 'Temp',
+            '00095_surface' : 'Cond',
+            '00300_surface': 'DOpct',
+            '90860_surface, [hrecos (near surface': 'Sal',
+            '00400_surface': 'pH',
+            '63680_hrecos exo': 'Turb',
+            'datetime' : 'timestamp'
+        },
+        '01376307' : {
+            '00010_hrecos': 'Temp',
+            '00095_hrecos': 'Cond',
+            '00300_hrecos': 'DOpct',
+            '90860_hrecos': 'Sal',
+            '00400_hrecos': 'pH',
+            '63680_surface': 'Turb',
+            'datetime' : 'timestamp'
+        }, 
+    }
+    # find anywhere werer dict and used and make it safe help me
+    # Rename columns using the dictionary
+    df_renamed = df.rename(columns=location_mapping[site])
+
+    return df_renamed
 
 def fetch_data(location: str | None = "Choate Pond",
                start_year: int | None = None,
@@ -69,25 +120,7 @@ def fetch_data(location: str | None = "Choate Pond",
 
         return WaterData(df_normalized,"3")
     else:
-        df = nwis.get_record(sites='01374019', service='iv', start=f'{start_year}-{start_month}-{start_day}', end=f'{end_year}-{end_month}-{end_day}')
-        columns_to_keep = [col for col in df.columns if not col.endswith('_cd')]
-        df_filtered = df[columns_to_keep].reset_index()
-        
-        column_mapping = {
-            '00010_hrecos': 'Temp',
-            '00095_hrecos': 'Cond',
-            '00300_hrecos': 'DOpct',
-            '90860_hrecos': 'Sal',
-            '00400_hrecos': 'pH',
-            '63680_hrecos exo': 'Turb',
-            'datetime' : 'timestamp'
-        }
-
-        # Rename columns using the dictionary
-        df_renamed = df_filtered.rename(columns=column_mapping)
-
-        print(df_renamed.columns)
-        return WaterData(df_renamed,"3")
+        return WaterData(usgs_data_fetch(location,start_year,start_month,start_day,end_year,end_month,end_day),"3")
 
 
 def fetch_data_caller(location: str | None = "Choate Pond",

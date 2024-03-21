@@ -43,14 +43,14 @@ def plot1():
 
     full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
                            'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
-
+    print(df.columns)
     df_param_only = df[["timestamp", full_to_short_names[parameter]]]
 
     if parameter == 'Temperature':
         df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
 
     df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
-    print(df_param_only)
+    # print(df_param_only)
     df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
         min_value=(full_to_short_names[parameter], 'min'),
         max_value=(full_to_short_names[parameter], 'max'),
