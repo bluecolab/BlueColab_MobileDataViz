@@ -1,7 +1,8 @@
-from shiny.express import input, render, ui
+from shiny.express import input, render, ui, session
+from urllib.parse import urlparse, parse_qs
 from shinywidgets import render_plotly
-from helper_functions import get_years, fetch_data_caller
-import plotly.express as px
+from data_fetch import fetch_data_caller
+from helper_functions import get_years
 import calendar, datetime
 import pandas as pd
 import plotly.graph_objects as go
@@ -13,6 +14,10 @@ def output_text_verbatim():
     Returns:
         str: Title to be set
     """
+    # print(input[".clientdata_url_search"]())
+    # search = urlparse(session.input[".clientdata_url_search"]())
+    # query_params = parse_qs(search.query)
+    # print( query_params.defaultLocation )
     parameter = input.parameter()
     location_1 = input.location_1()
     location_2 = input.location_2()
@@ -40,6 +45,7 @@ def plot1():
     year_2 = input.year_2()
 
     df = fetch_data_caller(location_1, year_1, month_1).data
+    wqi = fetch_data_caller(location_1, year_1, month_1).wqi
 
     full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
                            'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
@@ -89,145 +95,6 @@ def plot1():
     fig.update_layout(yaxis_title=y_axis_title[parameter], height=250, xaxis_title=None, showlegend=False)
 
     return fig
-
-
-# kenji's plot
-# @render_plotly
-# def plot2():
-#     """Generates the graph
-
-#     Returns:
-#         px: Graph to display
-#     """
-#     # getting parameters from the dropdowns
-#     parameter = input.parameter()
-#     location_1 = input.location_1()
-#     location_2 = input.location_2()
-#     month_1 = input.month_1()
-#     month_2 = input.month_2()
-#     year_1 = input.year_1()
-#     year_2 = input.year_2()
-
-#     df = fetch_data_caller(location_1,year_1,month_1).data
-#     # ^ This DataFrame looks like the one in health_dashboard GitHub. Where each parameter was in its own columns
-
-#     # TODO: (Bonus):  
-    
-#     if location_1 == "Choate Pond":
-#         full_to_short_names  = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct', 'Salinity': 'Sal','Temperature': 'Temp','Turbidity': 'Turb'}
-
-#         df_param_only = df[["timestamp",full_to_short_names[parameter]]]
-        
-#         # Convert the temperures to farienheight
-#         if parameter == 'Temperature':
-#             df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
-
-#         df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
-
-#         df_param_only = df_param_only # your code here idk 
-
-#         # TODO: (Bonus): Look at the min_Cond and max_Cond. Draw a tick mark on the graph at that point if it's out of sensor thresholds. 
-#         # Tasks:
-#         #   - This I honestly don't know. But you got this 
-
-#         p = px.line(df_param_only, x='timestamp', y=full_to_short_names[parameter])
-#         p.update_layout(height=200, xaxis_title=None)
- 
-#     # TODO: (soon) Add support for other water location
-        
-#     # TODO: (soon) Add support for second location/time to compare
-    
-#     return p
-    
-
-
-# lizi's plot before
-# @render_plotly
-# def plot1():
-#     # getting parameters from the dropdowns
-#     parameter = input.parameter()
-#     location_1 = input.location_1()
-#     location_2 = input.location_2()
-#     month_1 = input.month_1()
-#     month_2 = input.month_2()
-#     year_1 = input.year_1()
-#     year_2 = input.year_2()
-
-#     df = fetch_data_caller(location_1, year_1, month_1).data
-
-#     full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
-#                            'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb'}
-
-#     df_param_only = df[["timestamp", full_to_short_names[parameter]]]
-
-#     # If the parameter is Temperature, convert Celsius to Fahrenheit
-#     if parameter == 'Temperature':
-#         df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
-
-#     # Group by day and calculate min, max, and average
-#     df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
-#     df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
-#         min_value=(full_to_short_names[parameter], 'min'),
-#         max_value=(full_to_short_names[parameter], 'max'),
-#         avg_value=(full_to_short_names[parameter], 'mean')
-#     ).reset_index()
-
-#     if df_daily_summary.empty:
-#         # If the DataFrame is empty, return None to prevent plotting
-#         return None
-
-#     # Create the plot
-#     fig = go.Figure()
-
-#     # Add traces for min, max, and average values based on selected parameter
-#     fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['max_value'],
-#                              mode='lines', name='Max'))
-#     fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['avg_value'],
-#                              mode='lines', name='Average'))
-#     fig.add_trace(go.Scatter(x=df_daily_summary['timestamp'], y=df_daily_summary['min_value'],
-#                              mode='lines', name='Min'))
-
-#     # Customize layout
-#     if parameter == 'Temperature':
-#         fig.update_layout(yaxis_title=f'{parameter} (°F)', height=250, xaxis_title=None)
-#     else:
-#         fig.update_layout(yaxis_title=f'{parameter}', height=250, xaxis_title=None)
-
-#     fig.update_layout(legend=dict(
-#         orientation="h",
-#         yanchor="bottom",
-#         y=1.02,
-#         xanchor="right",
-#         x=1
-#     ))
-
-#     return fig
-
-
-
-        # TODO: (before Friday?): We have this DataFrame df_param_only. It has ALL the data of the whole month for the selected parameter. That's like 2976 rows per month?
-        # Tasks: 
-        #   - Create a new df, so it only 31 rows, one row for each day
-        #   - Each row should have the (1) min (2) max (3) average of each day of the month
-        #     so the df would look kinda like this. The names of the cols might be different 
-        
-        #     timestamp   min_Cond max_Cond avg_Cond
-        # 0   01-01-2024  22        76       33
-        # 1   01-02-2024  54        76       33
-        # 2   01-03-2024  22        76       54
-        # 3   01-04-2024  22        32       11
-        # 3   01-05-2024  34        76       44
-        #   Done?
-    
-        # TODO: (before Friday?): Now that we have the df with min/max/avg working, please make the graph.
-        # Tasks:
-        #   - Forget, the code we have already. What we want to do is add a ribbon to our graph. Looking up ribbon plotly or something 
-        #     may help. Ribbon can be any color that makes sense. 
-        #   - Essentially, the min_Cond would serve as the bottom of the ribbon. max the top of the ribbon.
-        #   - And avg_Cond just a line graph. 
-        #   Done?
-        
-
 
 # Creation of down drop to get the water parameters
 ui.input_selectize(
