@@ -35,8 +35,6 @@ def output_text_verbatim():
         return f"{parameter} data for {location_1} in {month_1} {year_1}"
 
 # mix, avg and min for parameters with shades
-# units with parameters
-
 @render_plotly
 def plot1():
     parameter = input.parameter()
@@ -97,6 +95,27 @@ def plot1():
 
     return fig
 
+# Creation of down drop to get the water parameters
+ui.input_selectize(
+    "parameter", "Select parameter:",
+    choices=["Conductivity", "Dissolved Oxygen","Salinity","Temperature","Turbidity","pH"]
+)
+
+# Creation of dropdowns to get current years
+# Get locations
+with ui.layout_columns():
+    ui.input_select("location_1", "Location 1", choices=["Choate Pond", "Yonkers","West Point","Poughkeepsie"], width="100%")
+    ui.input_select("location_2", "Location 2", choices=["NA","Choate Pond", "Yonkers","West Point","Poughkeepsie"], width="100%")
+
+# Get month, by default the first drop down is set to the last month
+with ui.layout_columns():
+    ui.input_select("month_1", "Month 1", choices=["January", "February","March","April","May","June","July","August","September","October","November","December"], width="100%",selected=calendar.month_name[datetime.datetime.now().month - 1 if datetime.datetime.now().month > 1 else 12])
+    ui.input_select("month_2", "Month 2", choices=["NA","January", "February","March","April","May","June","July","August","September","October","November","December"], width="100%")
+
+# Get year, by default the first drop down is set to the last month's year
+with ui.layout_columns():
+    ui.input_select("year_1", "Year 1", choices=get_years(), width="100%", selected=datetime.datetime.now().year if datetime.datetime.now().month > 1 else datetime.datetime.now().year - 1)
+    ui.input_select("year_2", "Year 2", choices=get_years(show_na=True), width="100%")
 
 # kenji's plot
 # @render_plotly
@@ -235,25 +254,3 @@ def plot1():
         #   Done?
         
 
-
-# Creation of down drop to get the water parameters
-ui.input_selectize(
-    "parameter", "Select parameter:",
-    choices=["Conductivity", "Dissolved Oxygen","Salinity","Temperature","Turbidity","pH"]
-)
-
-# Creation of dropdowns to get current years
-# Get locations
-with ui.layout_columns():
-    ui.input_select("location_1", "Location 1", choices=["Choate Pond", "Yonkers","West Point","Poughkeepsie"], width="100%")
-    ui.input_select("location_2", "Location 2", choices=["NA","Choate Pond", "Yonkers","West Point","Poughkeepsie"], width="100%")
-
-# Get month, by default the first drop down is set to the last month
-with ui.layout_columns():
-    ui.input_select("month_1", "Month 1", choices=["January", "February","March","April","May","June","July","August","September","October","November","December"], width="100%",selected=calendar.month_name[datetime.datetime.now().month - 1 if datetime.datetime.now().month > 1 else 12])
-    ui.input_select("month_2", "Month 2", choices=["NA","January", "February","March","April","May","June","July","August","September","October","November","December"], width="100%")
-
-# Get year, by default the first drop down is set to the last month's year
-with ui.layout_columns():
-    ui.input_select("year_1", "Year 1", choices=get_years(), width="100%", selected=datetime.datetime.now().year if datetime.datetime.now().month > 1 else datetime.datetime.now().year - 1)
-    ui.input_select("year_2", "Year 2", choices=get_years(show_na=True), width="100%")
