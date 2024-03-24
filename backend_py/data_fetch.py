@@ -135,12 +135,34 @@ def fetch_data(location: str | None = "Choate Pond",
     if location == "Choate Pond":
         data = blue_colab_data_fetch(start_year,start_month,start_day,end_year,end_month,end_day)
 
-        # please do wqi calculations here
-        wqi = 'something'
+        doptc_values = data['DOpct']
+        ph_values = data['pH']
+        temp_values = data['Temp']
+        cond_values = data['Cond']
+        turb_values = data['Turb']
+        
+        def calculate_wqi(doptc: float, ph: float, temp: float, cond: float, turb: float) -> float:
+                # Constants
+                const_doptc = 0.34
+                const_ph = 0.22
+                const_temp = 0.2
+                const_cond = 0.08
+                const_turb = 0.16
+                # Calculate WQI
+                return (doptc * const_doptc) + (ph * const_ph) + (temp * const_temp) + (cond * const_cond) + (turb * const_turb)
 
-        return WaterData(data,wqi)
+        # Calculate WQI for each set of values
+        wqi_values = [calculate_wqi(doptc_values, ph_values, temp_values, cond_values, turb_values)]
+
+        # Calculate sum of WQI values
+        wqi_sum = sum(wqi_values)
+
+        # Calculate average WQI
+        wqi = wqi_sum / len(wqi_values)
+
+        return WaterData(data, wqi)
     else:
-        return WaterData(usgs_data_fetch(location,start_year,start_month,start_day,end_year,end_month,end_day),"NA")
+        return None
 
 
 def fetch_data_caller(location: str | None = "Choate Pond",

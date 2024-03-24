@@ -45,7 +45,6 @@ def plot1():
     year_2 = input.year_2()
 
     df = fetch_data_caller(location_1, year_1, month_1).data
-    wqi = fetch_data_caller(location_1, year_1, month_1).wqi
 
     full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
                            'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
@@ -94,7 +93,47 @@ def plot1():
 
     fig.update_layout(yaxis_title=y_axis_title[parameter], height=250, xaxis_title=None, showlegend=False)
 
+
     return fig
+
+@render_plotly
+def plot2():
+    parameter = input.parameter()
+    location_1 = input.location_1()
+    location_2 = input.location_2()
+    month_1 = input.month_1()
+    month_2 = input.month_2()
+    year_1 = input.year_1()
+    year_2 = input.year_2()
+    wqi = None
+    if location_1 == "Choate Pond":
+        wqi = fetch_data_caller(location_1, year_1, month_1).wqi
+
+    if wqi is not None:
+        fig = go.Figure()
+        fig.update_layout(yaxis_title = "Water Quality Index", height=300) 
+        fig.add_trace(go.Indicator(
+            mode="gauge+number",
+            value=wqi,
+            domain={'x': [1, 0.9], 'y': [0, 0.9]},
+            gauge={
+                'axis': {'range': [None, 100]},
+                'steps': [
+                    {'range': [0, 25], 'color': "darkred"},
+                    {'range': [25, 50], 'color': "darkorange"},
+                    {'range': [50, 70], 'color': "yellow"},
+                    {'range': [70, 90], 'color': "green"},
+                    {'range': [90, 100], 'color': "darkgreen"}],
+                'threshold': {
+                    'line': {'color': "black", 'width': 4},
+                    'thickness': 0.75,
+                    'value': wqi},
+                'bar': {'color': 'blue'}
+            }
+        ))
+        return fig
+    else:
+        return None
 
 # Creation of down drop to get the water parameters
 ui.input_selectize(
