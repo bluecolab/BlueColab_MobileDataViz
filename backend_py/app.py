@@ -71,7 +71,7 @@ def plot1():
         x=df_daily_summary['timestamp'].tolist() + df_daily_summary['timestamp'].tolist()[::-1],
         y=df_daily_summary['max_value'].tolist() + df_daily_summary['min_value'].tolist()[::-1],
         fill='toself',
-        fillcolor='rgba(0, 0, 255, 0.3)',
+        fillcolor='rgba(0, 100, 255, 0.4)',
         line=dict(color='rgba(0, 0, 255, 0)')
     ))
 
@@ -79,7 +79,7 @@ def plot1():
         x=df_daily_summary['timestamp'],
         y=df_daily_summary['avg_value'],
         mode='lines',
-        line=dict(color='blue')
+        line=dict(color='darkblue', width = 3)
     ))
 
     y_axis_title = {
@@ -111,10 +111,11 @@ def plot2():
 
     if wqi is not None:
         fig = go.Figure()
-        fig.update_layout(yaxis_title = "Water Quality Index", height=300) 
+        fig.update_layout(height=300) 
         fig.add_trace(go.Indicator(
             mode="gauge+number",
             value=wqi,
+            title = "Water Quality Intex",
             domain={'x': [1, 0.9], 'y': [0, 0.9]},
             gauge={
                 'axis': {'range': [None, 100]},
@@ -125,10 +126,10 @@ def plot2():
                     {'range': [70, 90], 'color': "green"},
                     {'range': [90, 100], 'color': "darkgreen"}],
                 'threshold': {
-                    'line': {'color': "black", 'width': 4},
+                    'line': {'color': "white", 'width': 4},
                     'thickness': 0.75,
                     'value': wqi},
-                'bar': {'color': 'blue'}
+                'bar': {'color': 'white', 'thickness': 0.4}
             }
         ))
         return fig

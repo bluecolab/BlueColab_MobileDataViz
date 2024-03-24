@@ -131,15 +131,15 @@ def fetch_data(location: str | None = "Choate Pond",
     """
     if any(param is None for param in [start_year, start_month, start_day, end_year, end_month, end_day]):
         raise ValueError("All parameters must be provided")
-
+    
     if location == "Choate Pond":
         data = blue_colab_data_fetch(start_year,start_month,start_day,end_year,end_month,end_day)
 
-        doptc_values = data['DOpct']
-        ph_values = data['pH']
-        temp_values = data['Temp']
-        cond_values = data['Cond']
-        turb_values = data['Turb']
+        doptc_value = sum(data['DOpct'])/len(data['DOpct'])
+        ph_value = sum(data['pH'])/len(data['pH'])
+        temp_value = sum(data['Temp'])/len(data['Temp'])
+        cond_value = sum(data['Cond'])/len(data['Cond'])
+        turb_value = sum(data['Turb'])/len(data['Turb'])
         
         def calculate_wqi(doptc: float, ph: float, temp: float, cond: float, turb: float) -> float:
                 # Constants
@@ -150,15 +150,9 @@ def fetch_data(location: str | None = "Choate Pond",
                 const_turb = 0.16
                 # Calculate WQI
                 return (doptc * const_doptc) + (ph * const_ph) + (temp * const_temp) + (cond * const_cond) + (turb * const_turb)
-
+                
         # Calculate WQI for each set of values
-        wqi_values = [calculate_wqi(doptc_values, ph_values, temp_values, cond_values, turb_values)]
-
-        # Calculate sum of WQI values
-        wqi_sum = sum(wqi_values)
-
-        # Calculate average WQI
-        wqi = wqi_sum / len(wqi_values)
+        wqi = calculate_wqi(doptc_value, ph_value, temp_value, cond_value, turb_value)
 
         return WaterData(data, wqi)
     else:
