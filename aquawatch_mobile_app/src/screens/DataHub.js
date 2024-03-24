@@ -9,6 +9,8 @@ import {
   ImageBackground,
 } from "react-native";
 import styles from "../../styles";
+import CustomCard from "../components/CustomCard";
+
 
 export default function DataHub({ navigation }) {
   const handleChoatePress = () => {
@@ -27,31 +29,12 @@ export default function DataHub({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-
-        {/*Choate Pond Widget*/}
-        <View style={styles.dataHubWidget}>
-          <Image
-            source={require("../../assets/homescreen/PXL_20221014_204618892.png")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            Choate Pond is in the center of the Pace University campus. This 
-            Pond and many others flow out into the Hudson River, contributing 
-            to its overall water quality which is why we look at its quality and
-            Pace University's contribution to either better or worse Hudson water 
-            quality.
-          </Text>
-          <TouchableHighlight
-            onPress={() => {
-              handleChoatePress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>Choate Data</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-        {/*End Choate Pond Widget*/}
+        <CustomCard imageSource={require("../../assets/homescreen/PXL_20221014_204618892.png")}
+          paragraph="Choate Pond is in the center of the Pace University campus. This Pond and many others flow out into the Hudson River, contributing to its overall water quality which is why we look at its quality and Pace University's contribution to either better or worse Hudson water quality."
+          buttonText="Choate Data"
+          cardContainer={styles.dataHubWidget}
+          buttonAction={handleChoatePress}
+        ></CustomCard>
 
         {/*Start Pough Widget*/}
         <View style={styles.dataHubWidget}>

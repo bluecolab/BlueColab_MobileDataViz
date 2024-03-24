@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Image, TouchableHighlight } from 'react-native';
 import styles from "../../styles";
 
-const HomeScreenButtons = (props) => {
+const CustomCard = (props) => {
   console.log(props)
 
   return (
@@ -24,4 +24,4 @@ const HomeScreenButtons = (props) => {
   );
 };
 
-export default HomeScreenButtons;
+export default CustomCard;
