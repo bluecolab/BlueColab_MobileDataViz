@@ -135,12 +135,6 @@ def fetch_data(location: str | None = "Choate Pond",
     if location == "Choate Pond":
         data = blue_colab_data_fetch(start_year,start_month,start_day,end_year,end_month,end_day)
 
-        # doptc_value = data['DOpct']
-        # ph_value = data['pH']
-        # temp_value = data['Temp']
-        # cond_value = data['Cond']
-        # turb_value = data['Turb']
-
         doptc_value = sum(data['DOpct'])/len(data['DOpct'])
         ph_value = sum(data['pH'])/len(data['pH'])
         temp_value = sum(data['Temp'] * 9/5 + 32)/len(data['Temp'])
@@ -155,8 +149,7 @@ def fetch_data(location: str | None = "Choate Pond",
                 const_cond = 0.08
                 const_turb = 0.16
                 # Calculate WQI
-                return doptc, ph, temp, cond, turb
-                #return (doptc * const_doptc) + (ph * const_ph) + (temp * const_temp) + (cond * const_cond) + (turb * const_turb)
+                return (doptc * const_doptc) + (ph * const_ph) + (temp * const_temp) + (cond * const_cond) + (turb * const_turb)
                 
         # Calculate WQI for each set of values
         wqi = calculate_wqi(doptc_value, ph_value, temp_value, cond_value, turb_value)
