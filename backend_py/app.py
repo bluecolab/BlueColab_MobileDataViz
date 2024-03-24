@@ -179,6 +179,7 @@ def plot2():
     year_1 = input.year_1()
     year_2 = input.year_2()
     wqi = None
+
     if location_1 == "Choate Pond":
         wqi = fetch_data_caller(location_1, year_1, month_1).wqi
 
@@ -188,8 +189,49 @@ def plot2():
         fig.add_trace(go.Indicator(
             mode="gauge+number",
             value=wqi,
-            title = f"Water Quality Index at {location_1} for {month_1} {year_1}",
-            domain={'x': [1, 0.9], 'y': [0, 0.9]},
+            title = f"{location_1} {month_1} {year_1}",
+            domain={'x': [0.0, 0.4], 'y': [0.0, 1]},
+            gauge={
+                'axis': {'range': [None, 100]},
+                'steps': [
+                    {'range': [0, 25], 'color': "darkred"},
+                    {'range': [25, 50], 'color': "darkorange"},
+                    {'range': [50, 70], 'color': "yellow"},
+                    {'range': [70, 90], 'color': "green"},
+                    {'range': [90, 100], 'color': "darkgreen"}],
+                'threshold': {
+                    'line': {'color': "white", 'width': 4},
+                    'thickness': 0.75,
+                    'value': wqi},
+                'bar': {'color': 'white', 'thickness': 0.4}
+            }
+        ))  
+        return fig
+    else:
+        return None   
+
+@render_plotly
+def plot3():
+    parameter = input.parameter()
+    location_1 = input.location_1()
+    location_2 = input.location_2()
+    month_1 = input.month_1()
+    month_2 = input.month_2()
+    year_1 = input.year_1()
+    year_2 = input.year_2()
+    wqi = None
+
+    if location_2 == "Choate Pond":
+        wqi = fetch_data_caller(location_2, year_2, month_2).wqi
+
+    if wqi is not None:
+        fig = go.Figure()
+        fig.update_layout(height=300) 
+        fig.add_trace(go.Indicator(
+            mode="gauge+number",
+            value=wqi,
+            title = f"{location_2} {month_2} {year_2}",
+            domain={'x': [0.6, 1.0], 'y': [0.0, 1.00]},
             gauge={
                 'axis': {'range': [None, 100]},
                 'steps': [
@@ -208,47 +250,6 @@ def plot2():
         return fig
     else:
         return None
-
-# @render_plotly
-# def plot3():  
-#     parameter = input.parameter()
-#     location_1 = input.location_1()
-#     location_2 = input.location_2()
-#     month_1 = input.month_1()
-#     month_2 = input.month_2()
-#     year_1 = input.year_1()
-#     year_2 = input.year_2()
-#     wqi = None
-#     if location_2 == "Choate Pond":
-#         wqi = fetch_data_caller(location_2, year_2, month_2).wqi
-
-#     if wqi is not None:
-#         fig = go.Figure()
-#         fig.update_layout(height=300) 
-#         fig.add_trace(go.Indicator(
-#             mode="gauge+number",
-#             value=wqi,
-#             title = f"Water Quality Index at {location_2} for {month_2} {year_2}",
-#             domain={'x': [1, 0.9], 'y': [0, 0.9]},
-#             gauge={
-#                 'axis': {'range': [None, 100]},
-#                 'steps': [
-#                     {'range': [0, 25], 'color': "darkred"},
-#                     {'range': [25, 50], 'color': "darkorange"},
-#                     {'range': [50, 70], 'color': "yellow"},
-#                     {'range': [70, 90], 'color': "green"},
-#                     {'range': [90, 100], 'color': "darkgreen"}],
-#                 'threshold': {
-#                     'line': {'color': "white", 'width': 4},
-#                     'thickness': 0.75,
-#                     'value': wqi},
-#                 'bar': {'color': 'white', 'thickness': 0.4}
-#             }
-#         ))
-#         return fig
-#     else:
-#         return None
-
 
 # Creation of down drop to get the water parameters
 ui.input_selectize(
