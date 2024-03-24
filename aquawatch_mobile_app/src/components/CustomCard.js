@@ -3,8 +3,6 @@ import { Text, View, Image, TouchableHighlight } from 'react-native';
 import styles from "../../styles";
 
 const CustomCard = (props) => {
-  console.log(props)
-
   return (
     <View style={props.cardContainer}>
       <Image source={props.imageSource} style={styles.imageContainer} />

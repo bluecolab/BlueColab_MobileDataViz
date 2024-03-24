@@ -2,12 +2,7 @@ import React from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableHighlight,
-  ScrollView,
-  Image,
-  ImageBackground,
-  Dimensions,
+  ScrollView
 } from "react-native";
 import styles from "../../styles";
 import CustomCard from "../components/CustomCard";
@@ -59,7 +54,6 @@ export default function HomeScreen({ navigation }) {
           cardContainer={styles.graphButtonContainer}
           buttonAction={handleDataHubPress}
         ></CustomCard>
-
 
         <CustomCard imageSource={require("../../assets/homescreen/turtle.png")}
           paragraph="Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!"
