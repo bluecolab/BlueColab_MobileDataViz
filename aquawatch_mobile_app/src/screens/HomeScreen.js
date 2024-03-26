@@ -2,20 +2,13 @@ import React from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableHighlight,
-  ScrollView,
-  Image,
-  ImageBackground,
-  Dimensions,
+  ScrollView
 } from "react-native";
 import styles from "../../styles";
+import CustomCard from "../components/CustomCard";
 
 //this is the first screen you see after the welcome screen
 //takes you to all the other sections of the app
-
-let deviceHeight = Dimensions.get("window").height;
-let deviceWidth = Dimensions.get("window").width;
 
 export default function HomeScreen({ navigation }) {
   //each of these constants handle navigation from each button
@@ -46,171 +39,57 @@ export default function HomeScreen({ navigation }) {
     <ScrollView>
       <View style={styles.container}>
 
+        <CustomCard imageSource={require("../../assets/homescreen/PXL_20221014_204618892.png")}
+          paragraph="This app is brought to you by Blue CoLab, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean."
+          buttonText="Learn more..."
+          cardContainer={styles.BlueCoLabContainer}
+          buttonAction={handleStoryScreenPress}
+        ></CustomCard>
 
-        {/*Start Our Story Widget*/}
-        <View style={styles.BlueCoLabContainer}>
-          {/*Choate pond image*/}
-          <Image
-            source={require("../../assets/homescreen/PXL_20221014_204618892.png")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            This app is brought to you by Blue CoLab, a program committed to the principle
-            that the human right to clean water requires the right-to-know that water
-            is clean.
-          </Text>
+        <CustomCard imageSource={{
+          uri: "https://img.freepik.com/premium-vector/trading-graph-chart-growth-fall-business-profit-loss-stats-concept-vector-illustration_509058-11.jpg",
+        }}
+          paragraph="It is important to know the quality of water before you swim or fish in it. The purpose of our app is to make this information more accessible."
+          buttonText="See Live Data..."
+          cardContainer={styles.graphButtonContainer}
+          buttonAction={handleDataHubPress}
+        ></CustomCard>
 
-          {/*Start Our story button*/}
-          <TouchableHighlight
-            onPress={() => {
-              handleStoryScreenPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>Learn more...</Text>
-            </View>
-          </TouchableHighlight>
-          {/*End Our Story Button*/}
-        </View>
-        {/*End Our Story Widget*/}
+        <CustomCard imageSource={require("../../assets/homescreen/turtle.png")}
+          paragraph="Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!"
+          buttonText="See Local Wildlife..."
+          cardContainer={styles.animalButtonContainer}
+          buttonAction={handleWildlifeScreenPress}
+        ></CustomCard>
 
-        {/*Start Graph Widget*/}
-        <View style={styles.graphButtonContainer}>
-          {/*Green graph image*/}
-          <Image
-            source={{
-              uri: "https://img.freepik.com/premium-vector/trading-graph-chart-growth-fall-business-profit-loss-stats-concept-vector-illustration_509058-11.jpg",
-            }}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            It is important to know the quality of water before you swim or fish
-            in it. The purpose of our app is to make this information more accessible. 
-          </Text>
-          {/*Start Data Hub button*/}
-          <TouchableHighlight
-            onPress={() => {
-              handleDataHubPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>See Live Data...</Text>
-            </View>
-          </TouchableHighlight>
-          {/*End Data Hub Button*/}
-        </View>
-        {/*End Graph Widget*/}
+        <CustomCard imageSource={require("../../assets/homescreen/lightning-bolts.jpg")}
+          paragraph="Weather has a significant impact on the health of aquatic ecosystems."
+          buttonText="See Local Weather..."
+          cardContainer={styles.weatherButtonContainer}
+          buttonAction={handleWeatherScreenPress}
+        ></CustomCard>
 
-        {/*Start Wildlife Widget*/}
-        <View style={styles.animalButtonContainer}>
-          <Image
-            source={require("../../assets/homescreen/turtle.png")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            Some of the local wildlife in both Choate Pond and the 
-            Hudson River might surprise you!
-          </Text>
-          {/*Start wildlife button*/}
-          <TouchableHighlight
-            onPress={() => {
-              handleWildlifeScreenPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>See Local Wildlife...</Text>
-            </View>
-          </TouchableHighlight>
-          {/*End Wildlife button*/}
-        </View>
-        {/*End Wildlife Widget*/}
+        <CustomCard imageSource={require("../../assets/homescreen/waterSplash2.jpg")}
+          paragraph="Check out some of the Blue CoLab Blogs!"
+          buttonText="Blog more..."
+          cardContainer={styles.BlogContainer}
+          buttonAction={handleBlogScreenPress}
+        ></CustomCard>
 
-        {/*start Weather Widget*/}
-        <View style={styles.weatherButtonContainer}>
-          {/*Lightning image*/}
-          <Image
-            source={require("../../assets/homescreen/lightning-bolts.jpg")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            Weather has a significant impact on the health of aquatic ecosystems.
-          </Text>
+        <CustomCard imageSource={require("../../assets/homescreen/Plant2.jpg")}
+          paragraph="Use this AI to identify any species of plant that you may see outdoors!"
+          buttonText="Discover more..."
+          cardContainer={styles.aiWidget}
+          buttonAction={handleAiPress}
+        ></CustomCard>
 
-          {/*Start Weather Button*/}
-          <TouchableHighlight
-            onPress={() => {
-              handleWeatherScreenPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>See Local Weather...</Text>
-            </View>
-          </TouchableHighlight>
-          {/*End Weather Button*/}
-        </View>
-        {/*End Weather Widget*/}
+        <CustomCard imageSource={require("../../assets/homescreen/code.jpg")}
+          paragraph="Code & Data Attributions"
+          buttonText="Learn more..."
+          cardContainer={styles.attributionsWidget}
+          buttonAction={handleAttributionPress}
+        ></CustomCard>
 
-        {/*Start blog page*/}
-        <View style={styles.BlogContainer}>
-          {/*Water Splash picture*/}
-          <Image
-            source={require("../../assets/homescreen/waterSplash2.jpg")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            Check out some of the Blue CoLab Blogs!
-          </Text>
-          {/*Start blog page button*/}
-          <TouchableHighlight
-            onPress={() => {
-              handleBlogScreenPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>Learn more...</Text>
-            </View>
-          </TouchableHighlight>
-          {/*End blog page button*/}
-        </View>
-        {/*End blog page*/}
-
-        {/*Start AI Widget*/}
-        <View style={styles.aiWidget}>
-          <Image
-            source={require("../../assets/homescreen/Plant2.jpg")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            Use this AI to identify any species of plant that you may see outdoors!
-          </Text>
-          <TouchableHighlight
-            onPress={() => {
-              handleAiPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>Discover more...</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-        <View style={styles.attributionsWidget}>
-          <Image
-            source={require("../../assets/homescreen/code.jpg")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-          Code & Data Attributions
-          </Text>
-          <TouchableHighlight
-            onPress={() => {
-              handleAttributionPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>Learn more...</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
         {<Text >
           {" "}
           Hidden text to make the bottom on this screen come out a little more{" "}

@@ -1,4 +1,5 @@
 from shiny.express import input, render, ui, session
+from shiny import reactive
 from urllib.parse import urlparse, parse_qs
 from shinywidgets import render_plotly
 from data_fetch import fetch_data_caller
@@ -6,6 +7,8 @@ from helper_functions import get_years
 import calendar, datetime
 import pandas as pd
 import plotly.graph_objects as go
+from flask import request
+
 
 @render.text
 def output_text_verbatim():
@@ -14,10 +17,6 @@ def output_text_verbatim():
     Returns:
         str: Title to be set
     """
-    # print(input[".clientdata_url_search"]())
-    # search = urlparse(session.input[".clientdata_url_search"]())
-    # query_params = parse_qs(search.query)
-    # print( query_params.defaultLocation )
     parameter = input.parameter()
     location_1 = input.location_1()
     location_2 = input.location_2()
@@ -31,9 +30,7 @@ def output_text_verbatim():
     else:
         return f"{parameter} data for {location_1} in {month_1} {year_1}"
 
-# mix, avg and min for parameters with shades
-# units with parameters
-
+hidden = 'hidden'
 @render_plotly
 def plot1():
     parameter = input.parameter()
@@ -48,8 +45,8 @@ def plot1():
     wqi = fetch_data_caller(location_1, year_1, month_1).wqi
 
     full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
-                           'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
-    print(df.columns)
+                        'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
+
     df_param_only = df[["timestamp", full_to_short_names[parameter]]]
 
     if parameter == 'Temperature':
@@ -117,3 +114,11 @@ with ui.layout_columns():
 with ui.layout_columns():
     ui.input_select("year_1", "Year 1", choices=get_years(), width="100%", selected=datetime.datetime.now().year if datetime.datetime.now().month > 1 else datetime.datetime.now().year - 1)
     ui.input_select("year_2", "Year 2", choices=get_years(show_na=True), width="100%")
+
+# @render.ui
+# def result():
+#     search = urlparse(session.input[".clientdata_url_search"]())
+#     query_params = parse_qs(search.query)
+#     # print( query_params['defaultLocation'][0] )
+#     hidden = "shown"
+#     return "lol"
