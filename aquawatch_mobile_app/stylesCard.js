@@ -27,14 +27,15 @@ export const middleButtonStyles = StyleSheet.create({
   MiddleButtonContainer: {
     position: 'absolute',
     top: -30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
+    left: '50%', 
+    marginLeft: -30, 
+    width: 60,
+    height: 60,
   },
   customButton: {
     width: 60,
     height: 60,
-    borderRadius: 30,
+    borderRadius: 30, 
     backgroundColor: '#00D6FC',
     justifyContent: 'center',
     alignItems: 'center',
@@ -45,6 +46,7 @@ export const middleButtonStyles = StyleSheet.create({
     shadowRadius: 4,
   },
 });
+
 
 export const iconStyles = StyleSheet.create({
   iconStyle: {

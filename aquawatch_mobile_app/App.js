@@ -110,7 +110,7 @@ function HomeStackNavigator() {
 function MiddleStackNavigator() {
   return (
     <MiddleStack.Navigator screenOptions={{ headerShown: false }}>
-      <MiddleStack.Screen name="Middle" component={MiddleScreen} />
+      <MiddleStack.Screen name="Hub" component={DataHub} />
       
     </MiddleStack.Navigator>
   );
@@ -120,7 +120,7 @@ function MiddleStackNavigator() {
 function SettingsStackNavigator() {
   return (
     <SettingsStack.Navigator screenOptions={{ headerShown: false }}>
-      <SettingsStack.Screen name="Settings" component={SettingsScreen} />
+      <SettingsStack.Screen name="Ai" component={AiScreenTemp} />
       
     </SettingsStack.Navigator>
   );
