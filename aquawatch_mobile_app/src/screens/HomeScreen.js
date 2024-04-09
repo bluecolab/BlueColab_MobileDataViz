@@ -51,7 +51,7 @@ export default function HomeScreen({ navigation }) {
         title="Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!"
         buttonText="See Local Wildlife..."
         onButtonPress={handleWildlifeScreenPress}
-        gradientColors={['#6DD5FA', '#FFFFFF']}
+        gradientColors={['#FFFFFF', '#6DD5FA']}
       />
       <GradientCard
         imageSource={require("../../assets/homescreen/lightning-bolts.jpg")}
@@ -68,8 +68,13 @@ export default function HomeScreen({ navigation }) {
         onButtonPress={handleBlogScreenPress}
         gradientColors={['#ffdde1', '#ee9ca7']} // Example gradient colors
       />
-
-
+      <GradientCard
+          imageSource={require("../../assets/homescreen/code.jpg")}
+          title="Code & Data Attributions"
+          buttonText="Learn more..."
+          onButtonPress={handleAttributionPress}
+          gradientColors={['#FFFFFF', '#6DD5FA']}
+      ></GradientCard>
     </ScrollView>
   );
 }

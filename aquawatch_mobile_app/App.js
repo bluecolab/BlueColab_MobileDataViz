@@ -101,6 +101,7 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="Wildlife" component={WildlifeScreen} />
       <HomeStack.Screen name="Weather" component={WeatherScreen} />
       <HomeStack.Screen name="Blog" component={BlogScreen} />
+      <HomeStack.Screen name="Attributions" component={Attributions} />
     </HomeStack.Navigator>
   );
 }
