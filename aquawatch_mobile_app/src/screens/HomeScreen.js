@@ -41,7 +41,7 @@ export default function HomeScreen({ navigation }) {
       {/* The paddingBottom should be at least as tall as the bottom tab navigator's height */}
       <GradientCard
         imageSource={require("../../assets/homescreen/PXL_20221014_204618892.png")}
-        title="This app is brought to you by The girly Girl Comitte, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean."
+        title="This app is brought to you by Blue CoLab, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean."
         buttonText="Learn more..."
         onButtonPress={handleStoryScreenPress}
         gradientColors={['#ffdde1', '#ee9ca7']}
