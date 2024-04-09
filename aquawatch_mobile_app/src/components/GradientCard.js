@@ -1,15 +1,17 @@
-// GradientCard.js
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { cardStyles } from '../../stylesCard'; // Ensure this import points to where your styles are defined
+import { cardStyles } from '../../stylesCard'; // Ensure this path is correct
 
 const { width } = Dimensions.get('window'); // Get the width of the device to set the image width
 
-const GradientCard = ({ imageUrl, title, buttonText, onButtonPress, gradientColors }) => {
+const GradientCard = ({ imageSource, title, buttonText, onButtonPress, gradientColors }) => {
+  // Determine if imageSource is a URI or a local require
+  const image = typeof imageSource === 'string' ? { uri: imageSource } : imageSource;
+
   return (
     <View style={cardStyles.cardContainer}>
-      <Image source={{ uri: imageUrl }} style={[cardStyles.cardImage, { width: width - 20, height: 200 }]} />
+      <Image source={image} style={[cardStyles.cardImage, { width: width - 20, height: 200 }]} />
       {/* Gradient now accepts colors as a prop and flips direction */}
       <LinearGradient
         colors={gradientColors}

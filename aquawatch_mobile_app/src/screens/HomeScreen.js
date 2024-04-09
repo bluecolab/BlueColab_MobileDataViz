@@ -40,42 +40,36 @@ export default function HomeScreen({ navigation }) {
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-start', paddingBottom: 60 }}>
       {/* The paddingBottom should be at least as tall as the bottom tab navigator's height */}
       <GradientCard
-        imageUrl="https://via.placeholder.com/150"
+        imageSource={require("../../assets/homescreen/PXL_20221014_204618892.png")}
         title="This app is brought to you by The girly Girl Comitte, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean."
         buttonText="Learn more..."
         onButtonPress={handleStoryScreenPress}
         gradientColors={['#ffdde1', '#ee9ca7']}
       />
       <GradientCard
-        imageUrl="https://via.placeholder.com/150"
+        imageSource={require("../../assets/homescreen/turtle.png")}
         title="Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!"
         buttonText="See Local Wildlife..."
-        onButtonPress={handleDataHubPress}
+        onButtonPress={handleWildlifeScreenPress}
         gradientColors={['#6DD5FA', '#FFFFFF']}
       />
       <GradientCard
-        imageUrl="https://via.placeholder.com/150"
+        imageSource={require("../../assets/homescreen/lightning-bolts.jpg")}
         title="Weather has a significant impact on the health of aquatic ecosystems."
         buttonText="See Local Weather..."
-        onButtonPress={handleWildlifeScreenPress}
+        onButtonPress={handleWeatherScreenPress}
         gradientColors={['#9D50BB', '#6E48AA']}
       />
 
       <GradientCard
-        imageUrl="https://via.placeholder.com/150"
+        imageSource={require("../../assets/homescreen/waterSplash2.jpg")}
         title="Check out some of the Blue CoLab Blogs!"
         buttonText="Blog more..."
         onButtonPress={handleBlogScreenPress}
         gradientColors={['#ffdde1', '#ee9ca7']} // Example gradient colors
       />
 
-      <GradientCard
-        imageUrl="https://via.placeholder.com/150"
-        title="Use this AI to identify any species of plant that you may see outdoors!"
-        buttonText="Discover more..."
-        onButtonPress={handleAiPress}
-        gradientColors={['#6DD5FA', '#FFFFFF']} // Example gradient colors
-      />
+
     </ScrollView>
   );
 }
@@ -131,6 +125,14 @@ export default function HomeScreen({ navigation }) {
           buttonAction={handleAttributionPress}
         ></CustomCard>
 
+        \ Removed due security
+        <GradientCard
+        imageUrl="https://via.placeholder.com/150"
+        title="Use this AI to identify any species of plant that you may see outdoors!"
+        buttonText="Discover more..."
+        onButtonPress={handleAiPress}
+        gradientColors={['#6DD5FA', '#FFFFFF']} // Example gradient colors
+      />
 
 
 
