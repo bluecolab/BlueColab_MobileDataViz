@@ -12,19 +12,20 @@ import DataWP from "./src/screens/Data screens/DataWP";
 import DataYonk from "./src/screens/Data screens/DataYonk";
 import WeatherScreen from "./src/screens/WeatherScreen";
 import StoryScreen from "./src/screens/StoryScreen";
-import DataHub from "./src/screens/DataHub"; // Repeated, kept only one instance
+import DataHub from "./src/screens/DataHub"; 
 import WildlifeScreen from "./src/screens/WildlifeScreen";
 import AiScreen from "./src/screens/AiScreen";
 import AiScreenTemp from "./src/screens/AiScreenNoServer";
 import Attributions from "./src/screens/Attributions";
-import MiddleScreen from './MiddleScreen'; // Path adjusted to match project structure
-import SettingsScreen from './SettingsScreen'; // Path adjusted to match project structure
+import MiddleScreen from './MiddleScreen'; 
+import SettingsScreen from './SettingsScreen'; 
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard'; // Path corrected as per the new list
-import waterDropIcon from './free-water-drop-2-462137.png'; // Path corrected as per the new list
-
+import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard'; 
+import waterDropIcon from './free-water-drop-2-462137.png'; 
+import homeIcon from './HomeIcon.png'; 
+import settingsIcon from './SettingsIcon.png';
 
 
 /*
@@ -143,7 +144,15 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={{ tabBarShowLabel: false, tabBarStyle: tabBarStyles.tabBar }}>
-        <Tab.Screen name="HomeTab" component={HomeStackNavigator} />
+        <Tab.Screen 
+          name="HomeTab"
+          component={HomeStackNavigator}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Image source={homeIcon} style={[iconStyles.iconStyle, { opacity: focused ? 1 : 0.5 }]} />
+            ),
+          }}
+        />
         <Tab.Screen
           name="MiddleTab"
           component={MiddleStackNavigator}
@@ -155,7 +164,15 @@ export default function App() {
             ),
           }}
         />
-        <Tab.Screen name="SettingsTab" component={SettingsStackNavigator} />
+        <Tab.Screen
+          name="SettingsTab"
+          component={SettingsStackNavigator}
+          options={{
+              tabBarIcon: ({ focused }) => (
+                <Image source={settingsIcon} style={[iconStyles.iconStyle, { opacity: focused ? 1 : 0.5 }]} />
+              ),
+            }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
