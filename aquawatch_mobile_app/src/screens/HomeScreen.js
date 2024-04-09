@@ -6,6 +6,7 @@ import {
 } from "react-native";
 import styles from "../../styles";
 import CustomCard from "../components/CustomCard";
+import GradientCard from "../components/GradientCard"; 
 
 //this is the first screen you see after the welcome screen
 //takes you to all the other sections of the app
@@ -36,10 +37,50 @@ export default function HomeScreen({ navigation }) {
   }
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-start', paddingBottom: 60 }}>
+      {/* The paddingBottom should be at least as tall as the bottom tab navigator's height */}
+      <GradientCard
+        imageUrl="https://via.placeholder.com/150"
+        title="This app is brought to you by The girly Girl Comitte, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean."
+        buttonText="Learn more..."
+        onButtonPress={handleStoryScreenPress}
+        gradientColors={['#ffdde1', '#ee9ca7']}
+      />
+      <GradientCard
+        imageUrl="https://via.placeholder.com/150"
+        title="Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!"
+        buttonText="See Local Wildlife..."
+        onButtonPress={handleDataHubPress}
+        gradientColors={['#6DD5FA', '#FFFFFF']}
+      />
+      <GradientCard
+        imageUrl="https://via.placeholder.com/150"
+        title="Weather has a significant impact on the health of aquatic ecosystems."
+        buttonText="See Local Weather..."
+        onButtonPress={handleWildlifeScreenPress}
+        gradientColors={['#9D50BB', '#6E48AA']}
+      />
 
-        <CustomCard imageSource={require("../../assets/homescreen/PXL_20221014_204618892.png")}
+      <GradientCard
+        imageUrl="https://via.placeholder.com/150"
+        title="Check out some of the Blue CoLab Blogs!"
+        buttonText="Blog more..."
+        onButtonPress={handleBlogScreenPress}
+        gradientColors={['#ffdde1', '#ee9ca7']} // Example gradient colors
+      />
+
+      <GradientCard
+        imageUrl="https://via.placeholder.com/150"
+        title="Use this AI to identify any species of plant that you may see outdoors!"
+        buttonText="Discover more..."
+        onButtonPress={handleAiPress}
+        gradientColors={['#6DD5FA', '#FFFFFF']} // Example gradient colors
+      />
+    </ScrollView>
+  );
+}
+/*
+ <CustomCard imageSource={require("../../assets/homescreen/PXL_20221014_204618892.png")}
           paragraph="This app is brought to you by Blue CoLab, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean."
           buttonText="Learn more..."
           cardContainer={styles.BlueCoLabContainer}
@@ -90,11 +131,7 @@ export default function HomeScreen({ navigation }) {
           buttonAction={handleAttributionPress}
         ></CustomCard>
 
-        {<Text >
-          {" "}
-          Hidden text to make the bottom on this screen come out a little more{" "}
-        </Text>}
-      </View>
-    </ScrollView>
-  );
-}
+
+
+
+*/
