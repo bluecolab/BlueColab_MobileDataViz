@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "AquaWatch Mobile",
-    "slug": "AquaWatch Mobile",
+    "slug": "AquaWatch_Mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.okaykenji.AquaWatch_Mobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d753c40f-c89b-4c3a-bdff-2d8f982604e5"
+      }
+    },
+    "owner": "okaykenji"
   }
 }
