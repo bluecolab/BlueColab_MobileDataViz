@@ -1,4 +1,5 @@
-// styles.js
+// stylesCard.js
+// This file is the keeper of styles for the bottom NavBar and for the Gradient Cards
 import { StyleSheet } from 'react-native';
 
 export const containerStyles = StyleSheet.create({

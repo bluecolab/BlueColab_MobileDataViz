@@ -169,7 +169,7 @@ export default function App() {
           component={SettingsStackNavigator}
           options={{
               tabBarIcon: ({ focused }) => (
-                <Image source={settingsIcon} style={[iconStyles.iconStyle, { opacity: focused ? 1 : 0.5 }]} />
+                <Image source={settingsIcon} style={[iconStyles.iconStyle, { opacity: focused ? 1 : 0.5 }]} /> //{ opacity: focused ? 1 : 0.5 } change opacity when selected
               ),
             }}
         />

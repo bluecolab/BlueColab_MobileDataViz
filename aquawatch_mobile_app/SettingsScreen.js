@@ -9,3 +9,4 @@ export default function MiddleScreen() {
     </View>
   );
 }
+// FILE NOT BEING USED 
