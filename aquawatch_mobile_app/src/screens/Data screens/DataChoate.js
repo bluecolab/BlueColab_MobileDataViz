@@ -12,7 +12,7 @@ export default function HistoricalDataScreenChoate({ navigation }) {
 
   return (
         <WebView
-          source={{ uri: `https://aquawatchmobile.shinyapps.io/aquaWatchMobileR/?defaultLocation=Choate&month=${moment().clone().subtract(1, 'months').format('MMMM')}&year=${moment().format('YYYY')}` }}
+          source={{ uri: `https://aquawatchmobile.shinyapps.io/aquawatchmobilepy/` }}
           style={{ flex: 1 }}
         />
 
