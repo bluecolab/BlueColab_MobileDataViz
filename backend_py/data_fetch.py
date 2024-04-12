@@ -156,7 +156,7 @@ def fetch_data(location: str | None = "Choate Pond",
 
         return WaterData(data, wqi)
     else:
-        return None
+        return WaterData(usgs_data_fetch(location,start_year,start_month,start_day,end_year,end_month,end_day),"NA")
 
 
 def fetch_data_caller(location: str | None = "Choate Pond",
