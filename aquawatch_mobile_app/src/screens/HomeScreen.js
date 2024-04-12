@@ -27,10 +27,6 @@ export default function HomeScreen({ navigation }) {
   const handleBlogScreenPress = () => {
     navigation.navigate("Blog");
   };
-  const handleAiPress = () => {
-    navigation.navigate("Ai");
-  };
-
   const handleAttributionPress = () => {
     navigation.navigate("Attributions");
   }

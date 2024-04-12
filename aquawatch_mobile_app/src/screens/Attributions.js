@@ -11,38 +11,6 @@ export default function Attributions({ navigation }) {
     <ScrollView>
       <View style={styles.attributions}>
         <Text>We would like to give the following attributions:</Text>
-        
-        <Text>
-          • The image-based plant species identification service used is based on
-          the Pl@ntNet recognition API, regularly updated and accessible through
-          the site{" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://my.plantnet.org/")}>
-            <Text style={styles.links} >
-              my.plantnet.org
-            </Text>
-          </TouchableOpacity>.
-        </Text>
-
-        <Text>
-          • The species data service for sample image used is based on the GBIF
-          API, accessible through the site{" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://www.gbif.org/developer/summary")}>
-            <Text style={styles.links} >
-              gbif.org
-            </Text>
-          </TouchableOpacity>.
-        </Text>
-
-        <Text>
-          • The list of invasive species of the United States is adapted from the
-          United States Register of Introduced and Invasive Species by the U.S.
-          Geological Survey (USGS), accessible through the site{" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://www.sciencebase.gov/catalog/item/62d59ae5d34e87fffb2dda99")}>
-            <Text style={styles.links} >
-              US-RIIS
-            </Text>
-          </TouchableOpacity>.
-        </Text>
 
         <Text>
           • The calculations to convert dissolved oxygen units are adapted from the
