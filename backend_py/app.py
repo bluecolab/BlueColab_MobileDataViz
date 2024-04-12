@@ -1,5 +1,4 @@
 from shiny.express import input, render, ui, session
-from urllib.parse import urlparse, parse_qs
 from shinywidgets import render_plotly
 from data_fetch import fetch_data_caller
 from helper_functions import get_years
