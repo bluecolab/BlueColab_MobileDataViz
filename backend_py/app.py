@@ -7,7 +7,13 @@ from helper_functions import get_years
 import calendar, datetime
 import pandas as pd
 import plotly.graph_objects as go
-from flask import request
+from pathlib import Path
+
+ui.include_css(
+    Path(__file__).parent / "loader.css"
+)
+ui.HTML('<div id="yo" class="load1"><div class="loader">Loading...</div></div>')
+
 
 
 @render.text
