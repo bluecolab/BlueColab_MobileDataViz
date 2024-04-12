@@ -111,8 +111,7 @@ function HomeStackNavigator() {
 function MiddleStackNavigator() {
   return (
     <MiddleStack.Navigator screenOptions={{ headerShown: false }}>
-      <MiddleStack.Screen name="Hub" component={DataHub} />
-      
+      <MiddleStack.Screen name="Choate" component={DataChoate} />
     </MiddleStack.Navigator>
   );
 }
