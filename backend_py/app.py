@@ -7,8 +7,12 @@ from helper_functions import get_years
 import calendar, datetime
 import pandas as pd
 import plotly.graph_objects as go
-from flask import request
+import plotly.graph_objects as go
 
+def create_empty_plot():
+    # Create an empty Plotly figure
+    fig = go.Figure()
+    return fig
 
 @render.text
 def output_text_verbatim():
@@ -46,8 +50,11 @@ def plot1():
 
     full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
                         'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
-
-    df_param_only = df[["timestamp", full_to_short_names[parameter]]]
+    try:
+        df_param_only = df[["timestamp", full_to_short_names[parameter]]]
+    except KeyError as e:
+        print(f"KeyError: {e} was raised. This column does not exist.")
+        return create_empty_plot()
 
     if parameter == 'Temperature':
         df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
