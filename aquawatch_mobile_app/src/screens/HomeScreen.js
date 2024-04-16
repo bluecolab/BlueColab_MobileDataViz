@@ -72,13 +72,6 @@ export default function HomeScreen({ navigation }) {
           buttonAction={handleBlogScreenPress}
         ></CustomCard>
 
-        <CustomCard imageSource={require("../../assets/homescreen/Plant2.jpg")}
-          paragraph="Use this AI to identify any species of plant that you may see outdoors!"
-          buttonText="Discover more..."
-          cardContainer={styles.aiWidget}
-          buttonAction={handleAiPress}
-        ></CustomCard>
-
         <CustomCard imageSource={require("../../assets/homescreen/code.jpg")}
           paragraph="Code & Data Attributions"
           buttonText="Learn more..."
