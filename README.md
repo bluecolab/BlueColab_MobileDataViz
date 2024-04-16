@@ -1,8 +1,8 @@
-# AquaWatch Mobile App
+# AquaWatch Mobile App and Backend
 ### Overview
 The AquaWatch Mobile App is designed to educate users about the quality of outdoor water sources. It provides comprehensive information on water quality metrics such as salinity, pH, and turbidity, offering insights for users making decisions about recreational activities involving local bodies of water.
 
-Developed for CS389 Software Engineering at Pace University.
+Developed for CS389 Software Engineering at Pace University and improved on by Blue CoLab.
 
 ### Features
 - Informative data visualization of water quality metrics.
@@ -23,7 +23,14 @@ For detailed process models, you can view them on Figma [here](https://www.figma
 For a detailed software specification document, [click here](https://docs.google.com/document/d/1jLOfLNpO9n5WtAkfG0nEC0G0osjd11xt/edit?usp=sharing&ouid=111444997732881039746&rtpof=true&sd=true).
 
 ### Team
-The members of the team include Ardin Kraja, Erin Sorbella, Kenji Okura, Lulu Moquette, and Meryl Mizell.
+The members of the team include:
+ - Lizi Imedashvilli ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/lizi-imedashvili-2b3a6b249](https://www.linkedin.com/in/lizi-imedashvili-2b3a6b249/))
+ - Ardin Kraja ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/ardin-kraja-19ab61230](https://www.linkedin.com/in/ardin-kraja-19ab61230/))
+ - Victor Lima ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/victor--lima](https://www.linkedin.com/in/victor--lima/))
+ - Meryl Mizell ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/meryl-mizell](https://www.linkedin.com/in/meryl-mizell/))
+ - Lulu Moquette ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/louisamoquete](https://www.linkedin.com/in/louisamoquete/))
+ - Kenji Okura ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/kenji-okura](https://www.linkedin.com/in/kenji-okura/))
+ - Erin Sorbella ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/erin-sorbella-40936b241](https://www.linkedin.com/in/erin-sorbella-40936b241/))
 
 ### Getting the Repository
 - Install [Git](https://git-scm.com/).
