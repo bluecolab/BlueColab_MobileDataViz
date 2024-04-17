@@ -33,15 +33,6 @@ export default function Attributions({ navigation }) {
         </Text>
         
         <Text>
-          • Code to calculate distances between to latitudes has been adapted from {" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://stackoverflow.com/questions/72867971/distance-calculation-gives-strange-output-javascript")}>
-            <Text style={styles.links}>
-              stackoverflow
-            </Text>
-          </TouchableOpacity>.
-        </Text>
-
-        <Text>
           • Pace University water data is courtesy of Blue CoLab. Join the team:{" "}
           <TouchableOpacity onPress={() => handleLinkPress("https://bluecolab.pace.edu/")}>
             <Text style={styles.links}>

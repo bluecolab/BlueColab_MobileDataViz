@@ -30,6 +30,9 @@ export default function HomeScreen({ navigation }) {
   const handleAttributionPress = () => {
     navigation.navigate("Attributions");
   }
+  const handleChoatePress = () => {
+    navigation.navigate("Choate");
+  };
 
   return (
     <ScrollView>
@@ -48,7 +51,7 @@ export default function HomeScreen({ navigation }) {
           paragraph="It is important to know the quality of water before you swim or fish in it. The purpose of our app is to make this information more accessible."
           buttonText="See Live Data..."
           cardContainer={styles.graphButtonContainer}
-          buttonAction={handleDataHubPress}
+          buttonAction={handleChoatePress}
         ></CustomCard>
 
         <CustomCard imageSource={require("../../assets/homescreen/turtle.png")}
@@ -56,13 +59,6 @@ export default function HomeScreen({ navigation }) {
           buttonText="See Local Wildlife..."
           cardContainer={styles.animalButtonContainer}
           buttonAction={handleWildlifeScreenPress}
-        ></CustomCard>
-
-        <CustomCard imageSource={require("../../assets/homescreen/lightning-bolts.jpg")}
-          paragraph="Weather has a significant impact on the health of aquatic ecosystems."
-          buttonText="See Local Weather..."
-          cardContainer={styles.weatherButtonContainer}
-          buttonAction={handleWeatherScreenPress}
         ></CustomCard>
 
         <CustomCard imageSource={require("../../assets/homescreen/waterSplash2.jpg")}
