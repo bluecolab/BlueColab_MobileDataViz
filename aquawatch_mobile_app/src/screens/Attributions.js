@@ -7,9 +7,30 @@ export default function Attributions({ navigation }) {
     Linking.openURL(url);
   };
 
+  const LinkComp = (props) => {
+    return (<TouchableOpacity onPress={() => handleLinkPress(props.url)}>
+    <Text style={styles.links} >
+      {props.label}
+    </Text>
+  </TouchableOpacity>)
+  };
+
+
+
   return (
     <ScrollView>
       <View style={styles.attributions}>
+        <Text>The members of the team include:</Text>
+
+        
+        <Text>• Lizi Imedashvilli (<LinkComp url="https://www.linkedin.com/in/lizi-imedashvili-2b3a6b249" label="in/lizi-imedashvili-2b3a6b249"/>)</Text> 
+        <Text>• Ardin Kraja (<LinkComp url="https://www.linkedin.com/in/ardin-kraja-19ab61230" label="in/ardin-kraja-19ab61230"/>)</Text>
+        <Text>• Victor Lima (<LinkComp url="https://www.linkedin.com/in/victor--lima" label="in/victor--lima"/>)</Text>
+        <Text>• Meryl Mizell (<LinkComp url="https://www.linkedin.com/in/meryl-mizell" label="in/meryl-mizell"/>)</Text>
+        <Text>• Lulu Moquette (<LinkComp url="https://www.linkedin.com/in/louisamoquete" label="in/louisamoquete"/>)</Text>
+        <Text>• Kenji Okura (<LinkComp url="https://www.linkedin.com/in/kenji-okura" label="in/kenji-okura"/>)</Text>
+        <Text>• Erin Sorbella (<LinkComp url="https://www.linkedin.com/in/erin-sorbella-40936b241" label="in/erin-sorbella-40936b241"/>)</Text>
+
         <Text>We would like to give the following attributions:</Text>
 
         <Text>
@@ -17,7 +38,7 @@ export default function Attributions({ navigation }) {
           U of MN Natural Resources Research Institute, see{" "}
           <TouchableOpacity onPress={() => handleLinkPress("https://www.waterontheweb.org/under/waterquality/dosatcalc.html")}>
             <Text style={styles.links} >
-             waterontheweb
+              waterontheweb
             </Text>
           </TouchableOpacity>.
         </Text>
@@ -31,7 +52,7 @@ export default function Attributions({ navigation }) {
             </Text>
           </TouchableOpacity>.
         </Text>
-        
+
         <Text>
           • Pace University water data is courtesy of Blue CoLab. Join the team:{" "}
           <TouchableOpacity onPress={() => handleLinkPress("https://bluecolab.pace.edu/")}>
@@ -53,9 +74,6 @@ export default function Attributions({ navigation }) {
 
         <Text>
           • Lastly we would like to thank our friends and fellow classmates in our Software Engineering Class for their support and feedback. A shotout to Prolog 2.0, TLX, PowerPuff, and SCRUMptious. We also appreciate feedback by various persons not listed here in improving our UI/UX design.
-        </Text>
-
-        <Text>
         </Text>
       </View>
     </ScrollView>
