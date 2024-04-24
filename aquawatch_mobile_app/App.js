@@ -13,6 +13,7 @@ import DataYonk from "./src/screens/Data screens/DataYonk";
 import WeatherScreen from "./src/screens/WeatherScreen";
 import StoryScreen from "./src/screens/StoryScreen";
 import DataHub from "./src/screens/DataHub"; 
+
 import WildlifeScreen from "./src/screens/WildlifeScreen";
 import AiScreen from "./src/screens/AiScreen";
 import AiScreenTemp from "./src/screens/AiScreenNoServer";
@@ -96,23 +97,22 @@ const SettingsStack = createStackNavigator();
 // Stack navigator for the Home tab
 function HomeStackNavigator() {
   return (
-    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+    <HomeStack.Navigator screenOptions={{ headerShown: true }}>
       <HomeStack.Screen name="Home" component={HomeScreen} />
       <HomeStack.Screen name="Story" component={StoryScreen} />
       <HomeStack.Screen name="Wildlife" component={WildlifeScreen} />
       <HomeStack.Screen name="Weather" component={WeatherScreen} />
       <HomeStack.Screen name="Blog" component={BlogScreen} />
-      <HomeStack.Screen name="Attributions" component={Attributions} />
     </HomeStack.Navigator>
   );
 }
 
-// Stack navigator for the Middle tab (if you have multiple screens here)
+// Stack navigator for the Middle tab (Data Hub)
 function MiddleStackNavigator() {
   return (
-    <MiddleStack.Navigator screenOptions={{ headerShown: false }}>
-      <MiddleStack.Screen name="Hub" component={DataHub} />
-      
+    <MiddleStack.Navigator screenOptions={{ headerShown: true }}>
+      <MiddleStack.Screen name="Mid" component={MiddleScreen} />
+
     </MiddleStack.Navigator>
   );
 }
@@ -120,9 +120,8 @@ function MiddleStackNavigator() {
 // Stack navigator for the Settings tab
 function SettingsStackNavigator() {
   return (
-    <SettingsStack.Navigator screenOptions={{ headerShown: false }}>
+    <SettingsStack.Navigator screenOptions={{ headerShown: true }}>
       <SettingsStack.Screen name="Ai" component={AiScreenTemp} />
-      
     </SettingsStack.Navigator>
   );
 }
@@ -143,7 +142,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{ tabBarShowLabel: false, tabBarStyle: tabBarStyles.tabBar }}>
+      <Tab.Navigator screenOptions={{ tabBarShowLabel: false, tabBarStyle: tabBarStyles.tabBar, headerShown: false  }}>
         <Tab.Screen 
           name="HomeTab"
           component={HomeStackNavigator}
@@ -154,7 +153,7 @@ export default function App() {
           }}
         />
         <Tab.Screen
-          name="MiddleTab"
+          name="MiddleTab or not"
           component={MiddleStackNavigator}
           options={{
             tabBarButton: (props) => (
@@ -168,13 +167,12 @@ export default function App() {
           name="SettingsTab"
           component={SettingsStackNavigator}
           options={{
-              tabBarIcon: ({ focused }) => (
-                <Image source={settingsIcon} style={[iconStyles.iconStyle, { opacity: focused ? 1 : 0.5 }]} /> //{ opacity: focused ? 1 : 0.5 } change opacity when selected
-              ),
-            }}
+            tabBarIcon: ({ focused }) => (
+              <Image source={settingsIcon} style={[iconStyles.iconStyle, { opacity: focused ? 1 : 0.5 }]} />
+            ),
+          }}
         />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
-
