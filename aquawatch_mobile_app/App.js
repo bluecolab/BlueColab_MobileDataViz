@@ -121,7 +121,7 @@ function MiddleStackNavigator() {
 function SettingsStackNavigator() {
   return (
     <SettingsStack.Navigator screenOptions={{ headerShown: true }}>
-      <SettingsStack.Screen name="Ai" component={AiScreenTemp} />
+      <SettingsStack.Screen name="Choate" component={DataChoate} />
     </SettingsStack.Navigator>
   );
 }
