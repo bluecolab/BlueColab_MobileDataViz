@@ -72,14 +72,21 @@ def plot1():
         y=df_daily_summary['max_value'].tolist() + df_daily_summary['min_value'].tolist()[::-1],
         fill='toself',
         fillcolor='rgba(0, 100, 255, 0.4)',
-        line=dict(color='rgba(0, 0, 255, 0)')
+        line=dict(color='rgba(0, 0, 255, 0)'),
+        hoverinfo='skip'
     ))
 
     fig.add_trace(go.Scatter(
         x=df_daily_summary['timestamp'],
         y=df_daily_summary['avg_value'],
         mode='lines',
-        line=dict(color='darkblue', width = 3)
+        line=dict(color='darkblue', width = 3),
+        hovertemplate='<b>Date:</b> %{x}<br>' +
+                      '<b>Average:</b> %{y}<br>' +
+                      '<b>Max:</b> %{customdata[0]}<br>' +
+                      '<b>Min:</b> %{customdata[1]}',
+        customdata=df_daily_summary[['max_value', 'min_value']],
+        name = parameter
     ))
 
     y_axis_title = {
@@ -95,8 +102,9 @@ def plot1():
 
     return fig
 
+
 @render.text
-def parameter_summary():
+def parameter_summary1():
     parameter = input.parameter()
     location_1 = input.location_1()
     location_2 = input.location_2()
