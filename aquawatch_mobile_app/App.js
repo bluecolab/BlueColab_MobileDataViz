@@ -7,18 +7,16 @@ import HomeScreen from "./src/screens/HomeScreen";
 import WelcomeScreen from "./src/screens/WelcomeScreen";
 import BlogScreen from "./src/screens/BlogScreen";
 import MonthlyData from "./src/screens/Data screens/MonthlyData";
-import WeatherScreen from "./src/screens/WeatherScreen";
 import StoryScreen from "./src/screens/StoryScreen";
 import WildlifeScreen from "./src/screens/WildlifeScreen";
 import Attributions from "./src/screens/Attributions";
 import MiddleScreen from './src/screens/MiddleScreen'; 
-import SettingsScreen from './SettingsScreen'; 
 import { AppLoading } from 'expo';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard'; 
 import waterDropIcon from './assets/free-water-drop-2-462137.png'; 
 import homeIcon from './assets/HomeIcon.png'; 
-import settingsIcon from './assets/SettingsIcon.png';
+import settingsIcon from './assets/NavGraphIcon.png';
 
 // Create the stack navigators
 const HomeStack = createStackNavigator();
@@ -32,7 +30,6 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="Home" component={HomeScreen} />
       <HomeStack.Screen name="Story" component={StoryScreen} />
       <HomeStack.Screen name="Wildlife" component={WildlifeScreen} />
-      <HomeStack.Screen name="Weather" component={WeatherScreen} />
       <HomeStack.Screen name="Blog" component={BlogScreen} />
       <HomeStack.Screen name="Attributions" component={Attributions} />
     </HomeStack.Navigator>
