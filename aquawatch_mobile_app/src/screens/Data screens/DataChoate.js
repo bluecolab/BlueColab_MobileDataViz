@@ -1,9 +1,7 @@
 import React from "react";
 import moment from "moment";
-import { View, ScrollView } from "react-native";
-import { WebView } from 'react-native-webview';
-import styles from "../../../styles";
-
+import { View } from "react-native";
+import CustomWebView from "../../components/CustomWebView";
 export default function HistoricalDataScreenChoate({ navigation }) {
 
   console.log();
@@ -11,10 +9,9 @@ export default function HistoricalDataScreenChoate({ navigation }) {
   );
 
   return (
-        <WebView
-          source={{ uri: `https://aquawatchmobile.shinyapps.io/aquawatchmobilepy/` }}
-          style={{ flex: 1 }}
-        />
+    <View style={{ flex: 1 }}>
+      <CustomWebView uri="https://aquawatchmobile.shinyapps.io/aquawatchmobilepy/" />
+    </View>
 
   );
 }

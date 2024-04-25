@@ -28,13 +28,12 @@ export default function HomeScreen({ navigation }) {
   const handleBlogScreenPress = () => {
     navigation.navigate("Blog");
   };
-  const handleAiPress = () => {
-    navigation.navigate("Ai");
-  };
-
   const handleAttributionPress = () => {
     navigation.navigate("Attributions");
   }
+  const handleChoatePress = () => {
+    navigation.navigate("Choate");
+  };
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-start', paddingBottom: 60 }}>
@@ -94,7 +93,7 @@ export default function HomeScreen({ navigation }) {
           paragraph="It is important to know the quality of water before you swim or fish in it. The purpose of our app is to make this information more accessible."
           buttonText="See Live Data..."
           cardContainer={styles.graphButtonContainer}
-          buttonAction={handleDataHubPress}
+          buttonAction={handleChoatePress}
         ></CustomCard>
 
         <CustomCard imageSource={require("../../assets/homescreen/turtle.png")}
@@ -104,25 +103,11 @@ export default function HomeScreen({ navigation }) {
           buttonAction={handleWildlifeScreenPress}
         ></CustomCard>
 
-        <CustomCard imageSource={require("../../assets/homescreen/lightning-bolts.jpg")}
-          paragraph="Weather has a significant impact on the health of aquatic ecosystems."
-          buttonText="See Local Weather..."
-          cardContainer={styles.weatherButtonContainer}
-          buttonAction={handleWeatherScreenPress}
-        ></CustomCard>
-
         <CustomCard imageSource={require("../../assets/homescreen/waterSplash2.jpg")}
           paragraph="Check out some of the Blue CoLab Blogs!"
           buttonText="Blog more..."
           cardContainer={styles.BlogContainer}
           buttonAction={handleBlogScreenPress}
-        ></CustomCard>
-
-        <CustomCard imageSource={require("../../assets/homescreen/Plant2.jpg")}
-          paragraph="Use this AI to identify any species of plant that you may see outdoors!"
-          buttonText="Discover more..."
-          cardContainer={styles.aiWidget}
-          buttonAction={handleAiPress}
         ></CustomCard>
 
         <CustomCard imageSource={require("../../assets/homescreen/code.jpg")}

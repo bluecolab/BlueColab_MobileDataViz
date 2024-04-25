@@ -7,49 +7,38 @@ export default function Attributions({ navigation }) {
     Linking.openURL(url);
   };
 
+  const LinkComp = (props) => {
+    return (<TouchableOpacity onPress={() => handleLinkPress(props.url)}>
+    <Text style={styles.links} >
+      {props.label}
+    </Text>
+  </TouchableOpacity>)
+  };
+
+
+
   return (
     <ScrollView>
       <View style={styles.attributions}>
-        <Text>We would like to give the following attributions:</Text>
+        <Text>The members of the team include:</Text>
+
         
-        <Text>
-          • The image-based plant species identification service used is based on
-          the Pl@ntNet recognition API, regularly updated and accessible through
-          the site{" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://my.plantnet.org/")}>
-            <Text style={styles.links} >
-              my.plantnet.org
-            </Text>
-          </TouchableOpacity>.
-        </Text>
+        <Text>• Lizi Imedashvilli (<LinkComp url="https://www.linkedin.com/in/lizi-imedashvili-2b3a6b249" label="in/lizi-imedashvili-2b3a6b249"/>)</Text> 
+        <Text>• Ardin Kraja (<LinkComp url="https://www.linkedin.com/in/ardin-kraja-19ab61230" label="in/ardin-kraja-19ab61230"/>)</Text>
+        <Text>• Victor Lima (<LinkComp url="https://www.linkedin.com/in/victor--lima" label="in/victor--lima"/>)</Text>
+        <Text>• Meryl Mizell (<LinkComp url="https://www.linkedin.com/in/meryl-mizell" label="in/meryl-mizell"/>)</Text>
+        <Text>• Lulu Moquette (<LinkComp url="https://www.linkedin.com/in/louisamoquete" label="in/louisamoquete"/>)</Text>
+        <Text>• Kenji Okura (<LinkComp url="https://www.linkedin.com/in/kenji-okura" label="in/kenji-okura"/>)</Text>
+        <Text>• Erin Sorbella (<LinkComp url="https://www.linkedin.com/in/erin-sorbella-40936b241" label="in/erin-sorbella-40936b241"/>)</Text>
 
-        <Text>
-          • The species data service for sample image used is based on the GBIF
-          API, accessible through the site{" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://www.gbif.org/developer/summary")}>
-            <Text style={styles.links} >
-              gbif.org
-            </Text>
-          </TouchableOpacity>.
-        </Text>
-
-        <Text>
-          • The list of invasive species of the United States is adapted from the
-          United States Register of Introduced and Invasive Species by the U.S.
-          Geological Survey (USGS), accessible through the site{" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://www.sciencebase.gov/catalog/item/62d59ae5d34e87fffb2dda99")}>
-            <Text style={styles.links} >
-              US-RIIS
-            </Text>
-          </TouchableOpacity>.
-        </Text>
+        <Text>We would like to give the following attributions:</Text>
 
         <Text>
           • The calculations to convert dissolved oxygen units are adapted from the
           U of MN Natural Resources Research Institute, see{" "}
           <TouchableOpacity onPress={() => handleLinkPress("https://www.waterontheweb.org/under/waterquality/dosatcalc.html")}>
             <Text style={styles.links} >
-             waterontheweb
+              waterontheweb
             </Text>
           </TouchableOpacity>.
         </Text>
@@ -60,15 +49,6 @@ export default function Attributions({ navigation }) {
           <TouchableOpacity onPress={() => handleLinkPress("https://colab.research.google.com/drive/17uZffhhG-OtwZyPsU5QVXbhWqQcfp7jv#scrollTo=QJ7FQ4m8BnA8")}>
             <Text style={styles.links} >
               Python
-            </Text>
-          </TouchableOpacity>.
-        </Text>
-        
-        <Text>
-          • Code to calculate distances between to latitudes has been adapted from {" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://stackoverflow.com/questions/72867971/distance-calculation-gives-strange-output-javascript")}>
-            <Text style={styles.links}>
-              stackoverflow
             </Text>
           </TouchableOpacity>.
         </Text>
@@ -94,9 +74,6 @@ export default function Attributions({ navigation }) {
 
         <Text>
           • Lastly we would like to thank our friends and fellow classmates in our Software Engineering Class for their support and feedback. A shotout to Prolog 2.0, TLX, PowerPuff, and SCRUMptious. We also appreciate feedback by various persons not listed here in improving our UI/UX design.
-        </Text>
-
-        <Text>
         </Text>
       </View>
     </ScrollView>
