@@ -1,58 +1,109 @@
 import React, { useState } from 'react';
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createAppContainer } from "react-navigation"; // Only needed if using React Navigation 4.x
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "./src/screens/HomeScreen";
 import WelcomeScreen from "./src/screens/WelcomeScreen";
 import BlogScreen from "./src/screens/BlogScreen";
-import DataChoate from "./src/screens/Data screens/DataChoate";
-import DataPough from "./src/screens/Data screens/DataPough";
-import DataWP from "./src/screens/Data screens/DataWP";
-import DataYonk from "./src/screens/Data screens/DataYonk";
+import MonthlyData from "./src/screens/Data screens/MonthlyData";
 import WeatherScreen from "./src/screens/WeatherScreen";
 import StoryScreen from "./src/screens/StoryScreen";
-import DataHub from "./src/screens/DataHub";
 import WildlifeScreen from "./src/screens/WildlifeScreen";
 import Attributions from "./src/screens/Attributions";
+import MiddleScreen from './src/screens/MiddleScreen'; 
+import SettingsScreen from './SettingsScreen'; 
 import { AppLoading } from 'expo';
-import * as Font from 'expo-font';
-//THIS IS THE APP ENTRY POINT
+import { Image, TouchableOpacity, View } from 'react-native';
+import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard'; 
+import waterDropIcon from './assets/free-water-drop-2-462137.png'; 
+import homeIcon from './assets/HomeIcon.png'; 
+import settingsIcon from './assets/SettingsIcon.png';
 
-// //fonts literally just dont work
-// const fetchFonts = () => {
-//   return Font.loadAsync({
-//     'Nunito': require('./assets/fonts/Nunito/static/Nunito-Black.ttf'),
-//     // Add more fonts if needed
-//   });
-// };
+// Create the stack navigators
+const HomeStack = createStackNavigator();
+const MiddleStack = createStackNavigator();
+const SettingsStack = createStackNavigator();
 
-//the navigator declares names for each page and we use these names 
-//throughout the app as the navigation names
-const navigator = createStackNavigator(
-  {
-    Wel: WelcomeScreen,
-    Home: HomeScreen,
-    Choate: DataChoate,
-    Weather: WeatherScreen,
-    Story: StoryScreen,
-    Hub: DataHub,
-    Wildlife: WildlifeScreen,
-    Pough: DataPough,
-    WP: DataWP,
-    Yonk: DataYonk,
-    Blog: BlogScreen,
-    Attributions: Attributions
-  },
-  {
-    initialRouteName: 'Wel',
-    defaultNavigationOptions: {
-      title: 'AquaWatch Mobile',
-    },
-  }
+// Stack navigator for the Home tab
+function HomeStackNavigator() {
+  return (
+    <HomeStack.Navigator screenOptions={{ headerShown: true }}>
+      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="Story" component={StoryScreen} />
+      <HomeStack.Screen name="Wildlife" component={WildlifeScreen} />
+      <HomeStack.Screen name="Weather" component={WeatherScreen} />
+      <HomeStack.Screen name="Blog" component={BlogScreen} />
+      <HomeStack.Screen name="Attributions" component={Attributions} />
+    </HomeStack.Navigator>
+  );
+}
+
+// Stack navigator for the Middle tab (Data Hub)
+function MiddleStackNavigator() {
+  return (
+    <MiddleStack.Navigator screenOptions={{ headerShown: true }}>
+      <MiddleStack.Screen name="Current Data" component={MiddleScreen} />
+    </MiddleStack.Navigator>
+  );
+}
+
+// Stack navigator for the Settings tab
+function SettingsStackNavigator() {
+  return (
+    <SettingsStack.Navigator screenOptions={{ headerShown: true }}>
+      <SettingsStack.Screen name="Monthly Data" component={MonthlyData} />
+    </SettingsStack.Navigator>
+  );
+}
+
+// Custom button for the middle tab in the bottom tab navigator
+const CustomTabBarButton = ({ children, onPress }) => (
+  <TouchableOpacity onPress={onPress} style={middleButtonStyles.MiddleButtonContainer}>
+    <View style={middleButtonStyles.customButton}>
+      {children}
+    </View>
+  </TouchableOpacity>
 );
 
-export default createAppContainer(navigator);
+// Create the bottom tab navigator
+const Tab = createBottomTabNavigator();
 
-
-
-
-
+// App component with bottom tab navigator containing stack navigators for each tab
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator screenOptions={{ tabBarShowLabel: false, tabBarStyle: tabBarStyles.tabBar, headerShown: false  }}>
+        <Tab.Screen 
+          name="HomeTab"
+          component={HomeStackNavigator}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Image source={homeIcon} style={[iconStyles.iconStyle, { opacity: focused ? 1 : 0.5 }]} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="MiddleTab or not"
+          component={MiddleStackNavigator}
+          options={{
+            tabBarButton: (props) => (
+              <CustomTabBarButton {...props}>
+                <Image source={waterDropIcon} style={iconStyles.iconStyle} />
+              </CustomTabBarButton>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="SettingsTab"
+          component={SettingsStackNavigator}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Image source={settingsIcon} style={[iconStyles.iconStyle, { opacity: focused ? 1 : 0.5 }]} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
