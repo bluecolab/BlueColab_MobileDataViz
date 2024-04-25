@@ -15,8 +15,6 @@ import StoryScreen from "./src/screens/StoryScreen";
 import DataHub from "./src/screens/DataHub"; 
 
 import WildlifeScreen from "./src/screens/WildlifeScreen";
-import AiScreen from "./src/screens/AiScreen";
-import AiScreenTemp from "./src/screens/AiScreenNoServer";
 import Attributions from "./src/screens/Attributions";
 import MiddleScreen from './MiddleScreen'; 
 import SettingsScreen from './SettingsScreen'; 
