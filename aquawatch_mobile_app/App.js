@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "./src/screens/HomeScreen";
 import WelcomeScreen from "./src/screens/WelcomeScreen";
 import BlogScreen from "./src/screens/BlogScreen";
-import DataChoate from "./src/screens/Data screens/DataChoate";
+import MonthlyData from "./src/screens/Data screens/MonthlyData";
 import DataPough from "./src/screens/Data screens/DataPough";
 import DataWP from "./src/screens/Data screens/DataWP";
 import DataYonk from "./src/screens/Data screens/DataYonk";
@@ -16,7 +16,7 @@ import DataHub from "./src/screens/DataHub";
 
 import WildlifeScreen from "./src/screens/WildlifeScreen";
 import Attributions from "./src/screens/Attributions";
-import MiddleScreen from './MiddleScreen'; 
+import MiddleScreen from './src/screens/MiddleScreen'; 
 import SettingsScreen from './SettingsScreen'; 
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
@@ -98,6 +98,7 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="Wildlife" component={WildlifeScreen} />
       <HomeStack.Screen name="Weather" component={WeatherScreen} />
       <HomeStack.Screen name="Blog" component={BlogScreen} />
+      <HomeStack.Screen name="Attributions" component={Attributions} />
     </HomeStack.Navigator>
   );
 }
@@ -106,8 +107,7 @@ function HomeStackNavigator() {
 function MiddleStackNavigator() {
   return (
     <MiddleStack.Navigator screenOptions={{ headerShown: true }}>
-      <MiddleStack.Screen name="Mid" component={MiddleScreen} />
-
+      <MiddleStack.Screen name="Current Data" component={MiddleScreen} />
     </MiddleStack.Navigator>
   );
 }
@@ -116,7 +116,7 @@ function MiddleStackNavigator() {
 function SettingsStackNavigator() {
   return (
     <SettingsStack.Navigator screenOptions={{ headerShown: true }}>
-      <SettingsStack.Screen name="Choate" component={DataChoate} />
+      <SettingsStack.Screen name="Monthly Data" component={MonthlyData} />
     </SettingsStack.Navigator>
   );
 }
