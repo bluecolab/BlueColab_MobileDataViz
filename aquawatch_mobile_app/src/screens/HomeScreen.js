@@ -19,9 +19,6 @@ export default function HomeScreen({ navigation }) {
   const handleDataHubPress = () => {
     navigation.navigate("Hub");
   };
-  const handleWeatherScreenPress = () => {
-    navigation.navigate("Weather");
-  };
   const handleWildlifeScreenPress = () => {
     navigation.navigate("Wildlife");
   };
@@ -53,14 +50,6 @@ export default function HomeScreen({ navigation }) {
         onButtonPress={handleWildlifeScreenPress}
         gradientColors={['#FFFFFF', '#6DD5FA']}
       />
-      <GradientCard
-        imageSource={require("../../assets/homescreen/lightning-bolts.jpg")}
-        title="Weather has a significant impact on the health of aquatic ecosystems."
-        buttonText="See Local Weather..."
-        onButtonPress={handleWeatherScreenPress}
-        gradientColors={['#9D50BB', '#6E48AA']}
-      />
-
       <GradientCard
         imageSource={require("../../assets/homescreen/waterSplash2.jpg")}
         title="Check out some of the Blue CoLab Blogs!"
