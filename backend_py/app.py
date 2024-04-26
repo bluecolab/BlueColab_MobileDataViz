@@ -33,114 +33,185 @@ def output_text_verbatim():
 
 # mix, avg and min for parameters with shades
 # units with parameters
+with ui.layout_columns():
 
-@render_plotly
-def plot1():
-    parameter = input.parameter()
-    location_1 = input.location_1()
-    location_2 = input.location_2()
-    month_1 = input.month_1()
-    month_2 = input.month_2()
-    year_1 = input.year_1()
-    year_2 = input.year_2()
+    @render_plotly
+    def plot1():
+        parameter = input.parameter()
+        location_1 = input.location_1()
+        location_2 = input.location_2()
+        month_1 = input.month_1()
+        month_2 = input.month_2()
+        year_1 = input.year_1()
+        year_2 = input.year_2()
 
-    df = fetch_data_caller(location_1, year_1, month_1).data
+        df = fetch_data_caller(location_1, year_1, month_1).data
 
-    full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
-                           'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
-    print(df.columns)
-    df_param_only = df[["timestamp", full_to_short_names[parameter]]]
+        full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
+                            'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
+        print(df.columns)
+        df_param_only = df[["timestamp", full_to_short_names[parameter]]]
 
-    if parameter == 'Temperature':
-        df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
+        if parameter == 'Temperature':
+            df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
 
-    df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
-    # print(df_param_only)
-    df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
-        min_value=(full_to_short_names[parameter], 'min'),
-        max_value=(full_to_short_names[parameter], 'max'),
-        avg_value=(full_to_short_names[parameter], 'mean')
-    ).reset_index()
+        df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
+        # print(df_param_only)
+        df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
+            min_value=(full_to_short_names[parameter], 'min'),
+            max_value=(full_to_short_names[parameter], 'max'),
+            avg_value=(full_to_short_names[parameter], 'mean')
+        ).reset_index()
 
-    if df_daily_summary.empty:
-        return None
+        if df_daily_summary.empty:
+            return None
 
-    fig = go.Figure()
+        fig = go.Figure()
 
-    fig.add_trace(go.Scatter(
-        x=df_daily_summary['timestamp'].tolist() + df_daily_summary['timestamp'].tolist()[::-1],
-        y=df_daily_summary['max_value'].tolist() + df_daily_summary['min_value'].tolist()[::-1],
-        fill='toself',
-        fillcolor='rgba(0, 100, 255, 0.4)',
-        line=dict(color='rgba(0, 0, 255, 0)'),
-        hoverinfo='skip'
-    ))
+        fig.add_trace(go.Scatter(
+            x=df_daily_summary['timestamp'].tolist() + df_daily_summary['timestamp'].tolist()[::-1],
+            y=df_daily_summary['max_value'].tolist() + df_daily_summary['min_value'].tolist()[::-1],
+            fill='toself',
+            fillcolor='rgba(0, 100, 255, 0.4)',
+            line=dict(color='rgba(0, 0, 255, 0)'),
+            hoverinfo='skip'
+        ))
 
-    fig.add_trace(go.Scatter(
-        x=df_daily_summary['timestamp'],
-        y=df_daily_summary['avg_value'],
-        mode='lines',
-        line=dict(color='darkblue', width = 3),
-        hovertemplate='<b>Date:</b> %{x}<br>' +
-                      '<b>Average:</b> %{y}<br>' +
-                      '<b>Max:</b> %{customdata[0]}<br>' +
-                      '<b>Min:</b> %{customdata[1]}',
-        customdata=df_daily_summary[['max_value', 'min_value']],
-        name = parameter
-    ))
+        fig.add_trace(go.Scatter(
+            x=df_daily_summary['timestamp'],
+            y=df_daily_summary['avg_value'],
+            mode='lines',
+            line=dict(color='darkblue', width = 3),
+            hovertemplate='<b>Date:</b> %{x}<br>' +
+                        '<b>Average:</b> %{y}<br>' +
+                        '<b>Max:</b> %{customdata[0]}<br>' +
+                        '<b>Min:</b> %{customdata[1]}',
+            customdata=df_daily_summary[['max_value', 'min_value']],
+            name = parameter
+        ))
 
-    y_axis_title = {
-        'Conductivity': 'Conductivity  (mS/cm)',
-        'Dissolved Oxygen': 'Dissolved Oxygen  (%)',
-        'Salinity': 'Salinity  (ppt)',
-        'Temperature': 'Temperature  (°F)',
-        'Turbidity': 'Turbidity  (NTU)',
-        'pH': 'pH'
-    }
+        y_axis_title = {
+            'Conductivity': 'Conductivity  (mS/cm)',
+            'Dissolved Oxygen': 'Dissolved Oxygen  (%)',
+            'Salinity': 'Salinity  (ppt)',
+            'Temperature': 'Temperature  (°F)',
+            'Turbidity': 'Turbidity  (NTU)',
+            'pH': 'pH'
+        }
 
-    fig.update_layout(yaxis_title=y_axis_title[parameter], height=250, showlegend=False)
+        fig.update_layout(yaxis_title=y_axis_title[parameter], height=250, showlegend=False)
 
-    return fig
+        return fig 
 
+    @render_plotly
+    def plot2():
+        parameter = input.parameter()
+        location_1 = input.location_1()
+        location_2 = input.location_2()
+        month_1 = input.month_1()
+        month_2 = input.month_2()
+        year_1 = input.year_1()
+        year_2 = input.year_2()
 
-@render.text
-def parameter_summary1():
-    parameter = input.parameter()
-    location_1 = input.location_1()
-    location_2 = input.location_2()
-    month_1 = input.month_1()
-    month_2 = input.month_2()
-    year_1 = input.year_1()
-    year_2 = input.year_2()
+        if (location_2 != "NA" and month_2!="NA" and year_2!="NA" ):
+            df = fetch_data_caller(location_2, year_2, month_2).data
+            full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
+                            'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
+            print(df.columns)
+            df_param_only = df[["timestamp", full_to_short_names[parameter]]]
 
-    df = fetch_data_caller(location_1, year_1, month_1).data
+            if parameter == 'Temperature':
+                df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
 
-    full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
-                           'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
-    df_param_only = df[["timestamp", full_to_short_names[parameter]]]
+            df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
+            # print(df_param_only)
+            df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
+                min_value=(full_to_short_names[parameter], 'min'),
+                max_value=(full_to_short_names[parameter], 'max'),
+                avg_value=(full_to_short_names[parameter], 'mean')
+            ).reset_index()
 
-    if parameter == 'Temperature':
-        df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
+            if df_daily_summary.empty:
+                return None
 
-    df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
-    df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
-        min_value=(full_to_short_names[parameter], 'min'),
-        max_value=(full_to_short_names[parameter], 'max'),
-        avg_value=(full_to_short_names[parameter], 'mean')
-    ).reset_index()
+            fig = go.Figure()
 
-    if df_daily_summary.empty:
-        return f"No data available for {parameter} at {location_1} for the selected period."
+            fig.add_trace(go.Scatter(
+                x=df_daily_summary['timestamp'].tolist() + df_daily_summary['timestamp'].tolist()[::-1],
+                y=df_daily_summary['max_value'].tolist() + df_daily_summary['min_value'].tolist()[::-1],
+                fill='toself',
+                fillcolor='rgba(0, 100, 255, 0.4)',
+                line=dict(color='rgba(0, 0, 255, 0)'),
+                hoverinfo='skip'
+            ))
 
-    min_val = df_daily_summary['min_value'].min()
-    max_val = df_daily_summary['max_value'].max()
-    avg_val = df_daily_summary['avg_value'].mean()
+            fig.add_trace(go.Scatter(
+                x=df_daily_summary['timestamp'],
+                y=df_daily_summary['avg_value'],
+                mode='lines',
+                line=dict(color='darkblue', width = 3),
+                hovertemplate='<b>Date:</b> %{x}<br>' +
+                            '<b>Average:</b> %{y}<br>' +
+                            '<b>Max:</b> %{customdata[0]}<br>' +
+                            '<b>Min:</b> %{customdata[1]}',
+                customdata=df_daily_summary[['max_value', 'min_value']],
+                name = parameter
+            ))
 
-    return f"{parameter} at {location_1} for {month_1} {year_1}: Min: {int(min_val)} Avg: {int(avg_val)} Max: {int(max_val)}"
+            y_axis_title = {
+                'Conductivity': 'Conductivity  (mS/cm)',
+                'Dissolved Oxygen': 'Dissolved Oxygen  (%)',
+                'Salinity': 'Salinity  (ppt)',
+                'Temperature': 'Temperature  (°F)',
+                'Turbidity': 'Turbidity  (NTU)',
+                'pH': 'pH'
+            }
+
+            fig.update_layout(yaxis_title=y_axis_title[parameter], height=250, showlegend=False)
+
+            return fig
+        else:
+            return None
+
+        
+# @render.text
+# def parameter_summary1():
+#     parameter = input.parameter()
+#     location_1 = input.location_1()
+#     location_2 = input.location_2()
+#     month_1 = input.month_1()
+#     month_2 = input.month_2()
+#     year_1 = input.year_1()
+#     year_2 = input.year_2()
+
+#     df = fetch_data_caller(location_1, year_1, month_1).data
+
+#     full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
+#                            'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
+#     df_param_only = df[["timestamp", full_to_short_names[parameter]]]
+
+#     if parameter == 'Temperature':
+#         df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
+
+#     df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
+#     df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
+#         min_value=(full_to_short_names[parameter], 'min'),
+#         max_value=(full_to_short_names[parameter], 'max'),
+#         avg_value=(full_to_short_names[parameter], 'mean')
+#     ).reset_index()
+
+#     if df_daily_summary.empty:
+#         return f"No data available for {parameter} at {location_1} for the selected period."
+
+#     min_val = df_daily_summary['min_value'].min()
+#     max_val = df_daily_summary['max_value'].max()
+#     avg_val = df_daily_summary['avg_value'].mean()
+
+#     return f"{parameter} at {location_1} for {month_1} {year_1}: Min: {int(min_val)} Avg: {int(avg_val)} Max: {int(max_val)}"
 
 with ui.layout_columns():
     @render_plotly
-    def plot2():
+    def plot3():
         parameter = input.parameter()
         location_1 = input.location_1()
         location_2 = input.location_2()
@@ -155,11 +226,11 @@ with ui.layout_columns():
 
         if wqi is not None:
             fig = go.Figure()
-            fig.update_layout(height=300) 
+            fig.update_layout(height=300,margin=dict(l=40, r=40)) 
             fig.add_trace(go.Indicator(
                 mode="gauge+number",
                 value=wqi,
-                title = f"{location_1} {month_1} {year_1}",
+                title = f"WQI {location_1} {month_1} {year_1}",
                 domain={'x': [0, 1], 'y': [0.0, 1]},
                 gauge={
                     'axis': {'range': [None, 100]},
@@ -181,7 +252,7 @@ with ui.layout_columns():
             return None   
 
     @render_plotly
-    def plot3():
+    def plot4():
         parameter = input.parameter()
         location_1 = input.location_1()
         location_2 = input.location_2()
@@ -196,11 +267,11 @@ with ui.layout_columns():
 
         if wqi is not None:
             fig = go.Figure()
-            fig.update_layout(height=300) 
+            fig.update_layout(height=300, margin=dict(l=40, r=40)) 
             fig.add_trace(go.Indicator(
                 mode="gauge+number",
                 value=wqi,
-                title = f"{location_2} {month_2} {year_2}",
+                title = f"WQI {location_2} {month_2} {year_2}",
                 domain={'x': [0, 1.0], 'y': [0.0, 1.00]},
                 gauge={
                     'axis': {'range': [None, 100]},
