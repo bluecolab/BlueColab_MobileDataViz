@@ -131,14 +131,30 @@ def fetch_data(location: str | None = "Choate Pond",
     """
     if any(param is None for param in [start_year, start_month, start_day, end_year, end_month, end_day]):
         raise ValueError("All parameters must be provided")
-
+    
     if location == "Choate Pond":
         data = blue_colab_data_fetch(start_year,start_month,start_day,end_year,end_month,end_day)
 
-        # please do wqi calculations here
-        wqi = 'something'
+        doptc_value = sum(data['DOpct'])/len(data['DOpct'])
+        ph_value = sum(data['pH'])/len(data['pH'])
+        temp_value = sum(data['Temp'] * 9/5 + 32)/len(data['Temp'])
+        cond_value = sum(data['Cond'])/len(data['Cond'])
+        turb_value = sum(data['Turb'])/len(data['Turb'])
+        
+        def calculate_wqi(doptc: float, ph: float, temp: float, cond: float, turb: float) -> float:
+                # Constants
+                const_doptc = 0.34
+                const_ph = 0.22
+                const_temp = 0.2
+                const_cond = 0.08
+                const_turb = 0.16
+                # Calculate WQI
+                return (doptc * const_doptc) + (ph * const_ph) + (temp * const_temp) + (cond * const_cond) + (turb * const_turb)
+                
+        # Calculate WQI for each set of values
+        wqi = calculate_wqi(doptc_value, ph_value, temp_value, cond_value, turb_value)
 
-        return WaterData(data,wqi)
+        return WaterData(data, wqi)
     else:
         return WaterData(usgs_data_fetch(location,start_year,start_month,start_day,end_year,end_month,end_day),"NA")
 

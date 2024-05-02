@@ -42,7 +42,6 @@ def plot1():
     year_2 = input.year_2()
 
     df = fetch_data_caller(location_1, year_1, month_1).data
-    wqi = fetch_data_caller(location_1, year_1, month_1).wqi
 
     full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
                         'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
@@ -69,7 +68,7 @@ def plot1():
         x=df_daily_summary['timestamp'].tolist() + df_daily_summary['timestamp'].tolist()[::-1],
         y=df_daily_summary['max_value'].tolist() + df_daily_summary['min_value'].tolist()[::-1],
         fill='toself',
-        fillcolor='rgba(0, 0, 255, 0.3)',
+        fillcolor='rgba(0, 100, 255, 0.4)',
         line=dict(color='rgba(0, 0, 255, 0)')
     ))
 
@@ -77,7 +76,7 @@ def plot1():
         x=df_daily_summary['timestamp'],
         y=df_daily_summary['avg_value'],
         mode='lines',
-        line=dict(color='blue')
+        line=dict(color='darkblue', width = 3)
     ))
 
     y_axis_title = {
@@ -89,9 +88,127 @@ def plot1():
         'pH': 'pH'
     }
 
-    fig.update_layout(yaxis_title=y_axis_title[parameter], height=250, xaxis_title=None, showlegend=False)
+    fig.update_layout(yaxis_title=y_axis_title[parameter], height=250, showlegend=False)
 
     return fig
+
+@render.text
+def parameter_summary():
+    parameter = input.parameter()
+    location_1 = input.location_1()
+    location_2 = input.location_2()
+    month_1 = input.month_1()
+    month_2 = input.month_2()
+    year_1 = input.year_1()
+    year_2 = input.year_2()
+
+    df = fetch_data_caller(location_1, year_1, month_1).data
+
+    full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
+                           'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
+    df_param_only = df[["timestamp", full_to_short_names[parameter]]]
+
+    if parameter == 'Temperature':
+        df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
+
+    df_param_only['timestamp'] = pd.to_datetime(df_param_only['timestamp'])
+    df_daily_summary = df_param_only.resample('D', on='timestamp').agg(
+        min_value=(full_to_short_names[parameter], 'min'),
+        max_value=(full_to_short_names[parameter], 'max'),
+        avg_value=(full_to_short_names[parameter], 'mean')
+    ).reset_index()
+
+    if df_daily_summary.empty:
+        return f"No data available for {parameter} at {location_1} for the selected period."
+
+    min_val = df_daily_summary['min_value'].min()
+    max_val = df_daily_summary['max_value'].max()
+    avg_val = df_daily_summary['avg_value'].mean()
+
+    return f"{parameter} at {location_1} for {month_1} {year_1}: Min: {int(min_val)} Avg: {int(avg_val)} Max: {int(max_val)}"
+
+with ui.layout_columns():
+    @render_plotly
+    def plot2():
+        parameter = input.parameter()
+        location_1 = input.location_1()
+        location_2 = input.location_2()
+        month_1 = input.month_1()
+        month_2 = input.month_2()
+        year_1 = input.year_1()
+        year_2 = input.year_2()
+        wqi = None
+
+        if location_1 == "Choate Pond":
+            wqi = fetch_data_caller(location_1, year_1, month_1).wqi
+
+        if wqi is not None:
+            fig = go.Figure()
+            fig.update_layout(height=300) 
+            fig.add_trace(go.Indicator(
+                mode="gauge+number",
+                value=wqi,
+                title = f"{location_1} {month_1} {year_1}",
+                domain={'x': [0, 1], 'y': [0.0, 1]},
+                gauge={
+                    'axis': {'range': [None, 100]},
+                    'steps': [
+                        {'range': [0, 25], 'color': "darkred"},
+                        {'range': [25, 50], 'color': "darkorange"},
+                        {'range': [50, 70], 'color': "yellow"},
+                        {'range': [70, 90], 'color': "green"},
+                        {'range': [90, 100], 'color': "darkgreen"}],
+                    'threshold': {
+                        'line': {'color': "white", 'width': 4},
+                        'thickness': 0.75,
+                        'value': wqi},
+                    'bar': {'color': 'white', 'thickness': 0.4}
+                }
+            ))  
+            return fig
+        else:
+            return None   
+
+    @render_plotly
+    def plot3():
+        parameter = input.parameter()
+        location_1 = input.location_1()
+        location_2 = input.location_2()
+        month_1 = input.month_1()
+        month_2 = input.month_2()
+        year_1 = input.year_1()
+        year_2 = input.year_2()
+        wqi = None
+
+        if location_2 == "Choate Pond":
+            wqi = fetch_data_caller(location_2, year_2, month_2).wqi
+
+        if wqi is not None:
+            fig = go.Figure()
+            fig.update_layout(height=300) 
+            fig.add_trace(go.Indicator(
+                mode="gauge+number",
+                value=wqi,
+                title = f"{location_2} {month_2} {year_2}",
+                domain={'x': [0, 1.0], 'y': [0.0, 1.00]},
+                gauge={
+                    'axis': {'range': [None, 100]},
+                    'steps': [
+                        {'range': [0, 25], 'color': "darkred"},
+                        {'range': [25, 50], 'color': "darkorange"},
+                        {'range': [50, 70], 'color': "yellow"},
+                        {'range': [70, 90], 'color': "green"},
+                        {'range': [90, 100], 'color': "darkgreen"}],
+                    'threshold': {
+                        'line': {'color': "white", 'width': 4},
+                        'thickness': 0.75,
+                        'value': wqi},
+                    'bar': {'color': 'white', 'thickness': 0.4}
+                }
+            ))
+            return fig
+        else:
+            return None
 
 # Creation of down drop to get the water parameters
 ui.input_selectize(
