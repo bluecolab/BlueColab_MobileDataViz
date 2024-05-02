@@ -93,6 +93,15 @@ export default function Attributions({ navigation }) {
         </Text>
 
         <Text>
+          • Shiny CSS Spinner was adapted from Dean Attali. Code taken from here: {" "}
+          <TouchableOpacity onPress={() => handleLinkPress("https://github.com/daattali/shinycssloaders/blob/master/inst/assets/spinner.css")}>
+            <Text style={styles.links}>
+              GitHub
+            </Text>
+          </TouchableOpacity>.
+        </Text>
+
+        <Text>
           • Lastly we would like to thank our friends and fellow classmates in our Software Engineering Class for their support and feedback. A shotout to Prolog 2.0, TLX, PowerPuff, and SCRUMptious. We also appreciate feedback by various persons not listed here in improving our UI/UX design.
         </Text>
 
