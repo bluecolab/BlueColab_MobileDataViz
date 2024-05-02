@@ -58,7 +58,7 @@ http://stackoverflow.com/questions/38251204/horizontal-animation-causes-vertical
     margin: 3em auto;
     position: absolute;
     top: 50px;
-    left: 0;
+    left: -75px;
     right: 0;
     text-align: center;
     font-size: 11px;

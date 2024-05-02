@@ -60,7 +60,6 @@ with ui.layout_columns():
                             'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
         
         try:
-            print("HHHH",parameter)
             df_param_only = df[["timestamp", full_to_short_names[parameter]]]
         except KeyError as e:
             print(f"KeyError: {e} was raised. This column does not exist.!?")
