@@ -3,7 +3,7 @@ from shiny import reactive
 from urllib.parse import urlparse, parse_qs
 from shinywidgets import render_plotly
 from data_fetch import fetch_data_caller
-from helper_functions import get_years
+from helper_functions import get_years, generate_line_graph
 import calendar, datetime
 import pandas as pd
 import plotly.graph_objects as go
@@ -53,6 +53,10 @@ with ui.layout_columns():
         month_2 = input.month_2()
         year_1 = input.year_1()
         year_2 = input.year_2()
+
+        # Hi Lizi! Could you adjust plot1() and plot2(), so instead of having the code below this
+        # it instead calls generate_line_graph(parameter, location_1, month_1, year_1)
+        # you would have to adjust parameter names etc. 
 
         df = fetch_data_caller(location_1, year_1, month_1).data
 
@@ -114,6 +118,10 @@ with ui.layout_columns():
 
         fig.update_layout(yaxis_title=y_axis_title[parameter], height=250, showlegend=False)
 
+        # So like in the end, you could do something lik3
+        # return generate_line_graph(parameter, location_1, month_1, year_1); 
+        # we want to do this, so we repeat less of the same code
+        # and easier to fix bugs 
         return fig 
 
     @render_plotly
@@ -125,6 +133,10 @@ with ui.layout_columns():
         month_2 = input.month_2()
         year_1 = input.year_1()
         year_2 = input.year_2()
+
+        # Hi Lizi! Could you adjust plot1() and plot2(), so instead of having the code below this
+        # it instead calls generate_line_graph(parameter, location_1, month_1, year_1)
+        # you would have to adjust parameter names etc. 
 
         if (location_2 != "NA" and month_2!="NA" and year_2!="NA" ):
             df = fetch_data_caller(location_2, year_2, month_2).data
@@ -236,6 +248,10 @@ with ui.layout_columns():
         year_1 = input.year_1()
         year_2 = input.year_2()
         wqi = None
+
+        # So like the same with plot1,2 could move the code
+        # below into helper_functions.py please for plot3 and plot4?
+        # remember to do the imports like on line 6
 
         if location_1 == "Choate Pond":
             wqi = fetch_data_caller(location_1, year_1, month_1).wqi
