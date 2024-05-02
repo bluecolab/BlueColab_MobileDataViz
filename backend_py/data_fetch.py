@@ -143,11 +143,19 @@ def fetch_data(location: str | None = "Choate Pond",
     if location == "Choate Pond":
         data = blue_colab_data_fetch(start_year,start_month,start_day,end_year,end_month,end_day)
 
-        doptc_value = sum(data['DOpct'])/len(data['DOpct'])
-        ph_value = sum(data['pH'])/len(data['pH'])
-        temp_value = sum(data['Temp'] * 9/5 + 32)/len(data['Temp'])
-        cond_value = sum(data['Cond'])/len(data['Cond'])
-        turb_value = sum(data['Turb'])/len(data['Turb'])
+        try:
+            doptc_value = sum(data['DOpct'])/len(data['DOpct'])
+            ph_value = sum(data['pH'])/len(data['pH'])
+            temp_value = sum(data['Temp'] * 9/5 + 32)/len(data['Temp'])
+            cond_value = sum(data['Cond'])/len(data['Cond'])
+            turb_value = sum(data['Turb'])/len(data['Turb'])
+        except KeyError as e:
+            print(f"KeyError: {e} was raised. This column does not exist.")
+            doptc_value = 0
+            ph_value = 0
+            temp_value = 0
+            cond_value = 0
+            turb_value = 0
         
         def calculate_wqi(doptc: float, ph: float, temp: float, cond: float, turb: float) -> float:
                 # Constants

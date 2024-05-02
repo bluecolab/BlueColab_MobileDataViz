@@ -14,8 +14,6 @@ ui.include_css(
 )
 ui.HTML('<div id="yo" class="load1"><div class="loader">Loading...</div></div>')
 
-
-
 @render.text
 def output_text_verbatim():
     """Creates the title above the graph
@@ -62,9 +60,10 @@ with ui.layout_columns():
                             'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
         
         try:
+            print("HHHH",parameter)
             df_param_only = df[["timestamp", full_to_short_names[parameter]]]
         except KeyError as e:
-            print(f"KeyError: {e} was raised. This column does not exist.")
+            print(f"KeyError: {e} was raised. This column does not exist.!?")
             return create_empty_plot()
         
         if parameter == 'Temperature':
@@ -132,9 +131,12 @@ with ui.layout_columns():
             df = fetch_data_caller(location_2, year_2, month_2).data
             full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
                             'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
-            print(df.columns)
-            df_param_only = df[["timestamp", full_to_short_names[parameter]]]
 
+            try:
+                df_param_only = df[["timestamp", full_to_short_names[parameter]]]
+            except KeyError as e:
+                print(f"KeyError: {e} was raised. This column does not exist.")
+                return create_empty_plot()            
             if parameter == 'Temperature':
                 df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
 
