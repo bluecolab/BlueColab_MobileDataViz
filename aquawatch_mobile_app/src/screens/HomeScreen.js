@@ -2,20 +2,14 @@ import React from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableHighlight,
-  ScrollView,
-  Image,
-  ImageBackground,
-  Dimensions,
+  ScrollView
 } from "react-native";
-import styles from "../../styles";
+// import styles from "../../styles"; NOT IN USE
+// import CustomCard from "../components/CustomCard"; NOT IN USE
+import GradientCard from "../components/GradientCard"; 
 
 //this is the first screen you see after the welcome screen
 //takes you to all the other sections of the app
-
-let deviceHeight = Dimensions.get("window").height;
-let deviceWidth = Dimensions.get("window").width;
 
 export default function HomeScreen({ navigation }) {
   //each of these constants handle navigation from each button
@@ -25,197 +19,102 @@ export default function HomeScreen({ navigation }) {
   const handleDataHubPress = () => {
     navigation.navigate("Hub");
   };
-  const handleWeatherScreenPress = () => {
-    navigation.navigate("Weather");
-  };
   const handleWildlifeScreenPress = () => {
     navigation.navigate("Wildlife");
   };
   const handleBlogScreenPress = () => {
     navigation.navigate("Blog");
   };
-  const handleAiPress = () => {
-    navigation.navigate("Ai");
-  };
-
   const handleAttributionPress = () => {
     navigation.navigate("Attributions");
   }
+  const handleChoatePress = () => {
+    navigation.navigate("Choate");
+  };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-
-
-        {/*Start Our Story Widget*/}
-        <View style={styles.BlueCoLabContainer}>
-          {/*Choate pond image*/}
-          <Image
-            source={require("../../assets/homescreen/PXL_20221014_204618892.png")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            This app is brought to you by Blue CoLab, a program committed to the principle
-            that the human right to clean water requires the right-to-know that water
-            is clean.
-          </Text>
-
-          {/*Start Our story button*/}
-          <TouchableHighlight
-            onPress={() => {
-              handleStoryScreenPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>Learn more...</Text>
-            </View>
-          </TouchableHighlight>
-          {/*End Our Story Button*/}
-        </View>
-        {/*End Our Story Widget*/}
-
-        {/*Start Graph Widget*/}
-        <View style={styles.graphButtonContainer}>
-          {/*Green graph image*/}
-          <Image
-            source={{
-              uri: "https://img.freepik.com/premium-vector/trading-graph-chart-growth-fall-business-profit-loss-stats-concept-vector-illustration_509058-11.jpg",
-            }}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            It is important to know the quality of water before you swim or fish
-            in it. The purpose of our app is to make this information more accessible. 
-          </Text>
-          {/*Start Data Hub button*/}
-          <TouchableHighlight
-            onPress={() => {
-              handleDataHubPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>See Live Data...</Text>
-            </View>
-          </TouchableHighlight>
-          {/*End Data Hub Button*/}
-        </View>
-        {/*End Graph Widget*/}
-
-        {/*Start Wildlife Widget*/}
-        <View style={styles.animalButtonContainer}>
-          <Image
-            source={require("../../assets/homescreen/turtle.png")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            Some of the local wildlife in both Choate Pond and the 
-            Hudson River might surprise you!
-          </Text>
-          {/*Start wildlife button*/}
-          <TouchableHighlight
-            onPress={() => {
-              handleWildlifeScreenPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>See Local Wildlife...</Text>
-            </View>
-          </TouchableHighlight>
-          {/*End Wildlife button*/}
-        </View>
-        {/*End Wildlife Widget*/}
-
-        {/*start Weather Widget*/}
-        <View style={styles.weatherButtonContainer}>
-          {/*Lightning image*/}
-          <Image
-            source={require("../../assets/homescreen/lightning-bolts.jpg")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            Weather has a significant impact on the health of aquatic ecosystems.
-          </Text>
-
-          {/*Start Weather Button*/}
-          <TouchableHighlight
-            onPress={() => {
-              handleWeatherScreenPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>See Local Weather...</Text>
-            </View>
-          </TouchableHighlight>
-          {/*End Weather Button*/}
-        </View>
-        {/*End Weather Widget*/}
-
-        {/*Start blog page*/}
-        <View style={styles.BlogContainer}>
-          {/*Water Splash picture*/}
-          <Image
-            source={require("../../assets/homescreen/waterSplash2.jpg")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            Check out some of the Blue CoLab Blogs!
-          </Text>
-          {/*Start blog page button*/}
-          <TouchableHighlight
-            onPress={() => {
-              handleBlogScreenPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>Learn more...</Text>
-            </View>
-          </TouchableHighlight>
-          {/*End blog page button*/}
-        </View>
-        {/*End blog page*/}
-
-        {/*Start AI Widget*/}
-        <View style={styles.aiWidget}>
-          <Image
-            source={require("../../assets/homescreen/Plant2.jpg")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-            Use this AI to identify any species of plant that you may see outdoors!
-          </Text>
-          <TouchableHighlight
-            onPress={() => {
-              handleAiPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>Discover more...</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-        <View style={styles.attributionsWidget}>
-          <Image
-            source={require("../../assets/homescreen/code.jpg")}
-            style={styles.imageContainer}
-          />
-          <Text style={styles.homeParagraphText}>
-          Code & Data Attributions
-          </Text>
-          <TouchableHighlight
-            onPress={() => {
-              handleAttributionPress();
-            }}
-          >
-            <View style={styles.generalButton}>
-              <Text style={styles.mainButtonText}>Learn more...</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-        {<Text >
-          {" "}
-          Hidden text to make the bottom on this screen come out a little more{" "}
-        </Text>}
-      </View>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-start', paddingBottom: 60 }}>
+      {/* The paddingBottom should be at least as tall as the bottom tab navigator's height */}
+      {/* More info about the gradientCard Check GradientCard.js and StylesCard.js */}
+      <GradientCard
+        imageSource={require("../../assets/homescreen/PXL_20221014_204618892.png")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+        title="This app is brought to you by Blue CoLab, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean." // Pretty much the text
+        buttonText="Learn more..."
+        onButtonPress={handleStoryScreenPress}
+        gradientColors={['#ffdde1', '#ee9ca7']} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
+      />
+      <GradientCard
+        imageSource={require("../../assets/homescreen/turtle.png")}
+        title="Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!"
+        buttonText="See Local Wildlife..."
+        onButtonPress={handleWildlifeScreenPress}
+        gradientColors={['#FFFFFF', '#6DD5FA']}
+      />
+      <GradientCard
+        imageSource={require("../../assets/homescreen/waterSplash2.jpg")}
+        title="Check out some of the Blue CoLab Blogs!"
+        buttonText="Blog more..."
+        onButtonPress={handleBlogScreenPress}
+        gradientColors={['#ffdde1', '#ee9ca7']} // Example gradient colors
+      />
+      <GradientCard
+          imageSource={require("../../assets/homescreen/code.jpg")}
+          title="Code & Data Attributions"
+          buttonText="Learn more..."
+          onButtonPress={handleAttributionPress}
+          gradientColors={['#FFFFFF', '#6DD5FA']}
+      ></GradientCard>
     </ScrollView>
   );
 }
+
+/* This can be deleted and CustomCard may or may not be removed
+ <CustomCard imageSource={require("../../assets/homescreen/PXL_20221014_204618892.png")}
+          paragraph="This app is brought to you by Blue CoLab, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean."
+          buttonText="Learn more..."
+          cardContainer={styles.BlueCoLabContainer}
+          buttonAction={handleStoryScreenPress}
+        ></CustomCard>
+
+        <CustomCard imageSource={{
+          uri: "https://img.freepik.com/premium-vector/trading-graph-chart-growth-fall-business-profit-loss-stats-concept-vector-illustration_509058-11.jpg",
+        }}
+          paragraph="It is important to know the quality of water before you swim or fish in it. The purpose of our app is to make this information more accessible."
+          buttonText="See Live Data..."
+          cardContainer={styles.graphButtonContainer}
+          buttonAction={handleChoatePress}
+        ></CustomCard>
+
+        <CustomCard imageSource={require("../../assets/homescreen/turtle.png")}
+          paragraph="Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!"
+          buttonText="See Local Wildlife..."
+          cardContainer={styles.animalButtonContainer}
+          buttonAction={handleWildlifeScreenPress}
+        ></CustomCard>
+
+        <CustomCard imageSource={require("../../assets/homescreen/waterSplash2.jpg")}
+          paragraph="Check out some of the Blue CoLab Blogs!"
+          buttonText="Blog more..."
+          cardContainer={styles.BlogContainer}
+          buttonAction={handleBlogScreenPress}
+        ></CustomCard>
+
+        <CustomCard imageSource={require("../../assets/homescreen/code.jpg")}
+          paragraph="Code & Data Attributions"
+          buttonText="Learn more..."
+          cardContainer={styles.attributionsWidget}
+          buttonAction={handleAttributionPress}
+        ></CustomCard>
+
+        \ Removed due security
+        <GradientCard
+        imageUrl="https://via.placeholder.com/150"
+        title="Use this AI to identify any species of plant that you may see outdoors!"
+        buttonText="Discover more..."
+        onButtonPress={handleAiPress}
+        gradientColors={['#6DD5FA', '#FFFFFF']} // Example gradient colors
+      />
+
+
+
+*/
