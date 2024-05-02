@@ -1,0 +1,113 @@
+.shiny-spinner-output-container {
+    position: relative;
+}
+.load-container {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    /* to avoid showing a vertical scrollbar
+http://stackoverflow.com/questions/38251204/horizontal-animation-causes-vertical-scrollbar-in-css */
+    overflow: hidden;
+    width: 100%;
+}
+
+.shiny-spinner-hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.shiny-spinner-hidden.load-container {
+    display: none;
+}
+
+.shiny-spinner-output-container .load-container {
+    text-align: center;
+}
+
+#shinycssloaders-global-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100000000;
+}
+
+#shinycssloaders-global-spinner .shiny-spinner-output-container {
+    height: 100%;
+}
+
+/* The following is a modified concatenation of all the CSS files in the css-loaders project */
+
+.load1 .loader,
+.load1 .loader:before,
+.load1 .loader:after {
+    background: black;
+    -webkit-animation: load1 1s infinite ease-in-out;
+    animation: load1 1s infinite ease-in-out;
+    width: 1em;
+    height: 4em;
+}
+
+.load1 .loader {
+    color: black;
+    text-indent: -9999em;
+    margin: 3em auto;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 11px;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+
+.load1 .loader:before,
+.load1 .loader:after {
+    position: absolute;
+    top: 0;
+    content: '';
+}
+
+.load1 .loader:before {
+    left: -1.5em;
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+
+.load1 .loader:after {
+    left: 1.5em;
+}
+
+@-webkit-keyframes load1 {
+
+    0%,
+    80%,
+    100% {
+        box-shadow: 0 0, 0 0;
+    }
+
+    40% {
+        box-shadow: 0 -2em, 0 2em;
+    }
+}
+
+@keyframes load1 {
+
+    0%,
+    80%,
+    100% {
+        box-shadow: 0 0, 0 0;
+    }
+
+    40% {
+        box-shadow: 0 -2em, 0 2em;
+    }
+}

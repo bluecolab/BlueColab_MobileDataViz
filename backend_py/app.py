@@ -1,4 +1,5 @@
 from shiny.express import input, render, ui, session
+from shiny import reactive
 from urllib.parse import urlparse, parse_qs
 from shinywidgets import render_plotly
 from data_fetch import fetch_data_caller
@@ -6,6 +7,14 @@ from helper_functions import get_years
 import calendar, datetime
 import pandas as pd
 import plotly.graph_objects as go
+from pathlib import Path
+
+ui.include_css(
+    Path(__file__).parent / "loader.css"
+)
+ui.HTML('<div id="yo" class="load1"><div class="loader">Loading...</div></div>')
+
+
 
 @render.text
 def output_text_verbatim():
@@ -14,10 +23,6 @@ def output_text_verbatim():
     Returns:
         str: Title to be set
     """
-    # print(input[".clientdata_url_search"]())
-    # search = urlparse(session.input[".clientdata_url_search"]())
-    # query_params = parse_qs(search.query)
-    # print( query_params.defaultLocation )
     parameter = input.parameter()
     location_1 = input.location_1()
     location_2 = input.location_2()
@@ -30,7 +35,13 @@ def output_text_verbatim():
         return f"{parameter} data for {location_1} in {month_1} {year_1} and  {location_2} in {month_2} {year_2}"
     else:
         return f"{parameter} data for {location_1} in {month_1} {year_1}"
+    
+def create_empty_plot():
+    # Create an empty Plotly figure
+    fig = go.Figure()
+    return fig
 
+hidden = 'hidden'
 # mix, avg and min for parameters with shades
 # units with parameters
 with ui.layout_columns():
@@ -49,9 +60,13 @@ with ui.layout_columns():
 
         full_to_short_names = {'Conductivity': 'Cond', 'Dissolved Oxygen': 'DOpct',
                             'Salinity': 'Sal', 'Temperature': 'Temp', 'Turbidity': 'Turb', 'pH': 'pH'}
-        print(df.columns)
-        df_param_only = df[["timestamp", full_to_short_names[parameter]]]
-
+        
+        try:
+            df_param_only = df[["timestamp", full_to_short_names[parameter]]]
+        except KeyError as e:
+            print(f"KeyError: {e} was raised. This column does not exist.")
+            return create_empty_plot()
+        
         if parameter == 'Temperature':
             df_param_only[full_to_short_names[parameter]] = (df_param_only[full_to_short_names[parameter]] * 9/5) + 32
 
@@ -313,3 +328,11 @@ with ui.layout_columns():
 with ui.layout_columns():
     ui.input_select("year_1", "Year 1", choices=get_years(), width="100%", selected=datetime.datetime.now().year if datetime.datetime.now().month > 1 else datetime.datetime.now().year - 1)
     ui.input_select("year_2", "Year 2", choices=get_years(show_na=True), width="100%")
+
+# @render.ui
+# def result():
+#     search = urlparse(session.input[".clientdata_url_search"]())
+#     query_params = parse_qs(search.query)
+#     # print( query_params['defaultLocation'][0] )
+#     hidden = "shown"
+#     return "lol"
