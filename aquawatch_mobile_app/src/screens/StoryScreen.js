@@ -1,17 +1,11 @@
 import React from "react";
-import {WebView} from "react-native-webview";
-import { View, ScrollView, Text } from "react-native";
-import styles from "../../styles";
+import { View } from "react-native";
+import CustomWebView from "../components/CustomWebView";
 
-//The webview component below links to the about us page after 
-//clicking the our story button in the home screen
-
-export default function StoryScreen({navigation}) {
-
-    return (
-        <WebView
-          source={{ uri: 'https://bluecolab.pace.edu/about-us-2/' }}
-          style={{ flex: 1 }}
-        />
-    )
+export default function StoryScreen() {
+  return (
+    <View style={{ flex: 1 }}>
+      <CustomWebView uri="https://bluecolab.pace.edu/about-us-2/" />
+    </View>
+  )
 }

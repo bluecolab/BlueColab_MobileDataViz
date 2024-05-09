@@ -1,14 +1,11 @@
 import React from "react";
-import {WebView} from "react-native-webview";
-import { View, ScrollView, Text } from "react-native";
-import styles from "../../styles";
+import { View } from "react-native";
+import CustomWebView from "../components/CustomWebView";
 
-export default function BlogScreen({navigation}) {
-
-    return (
-        <WebView
-          source={{ uri: 'https://bluecolab.blogs.pace.edu/blog-app/' }}
-          style={{ flex: 1 }}
-        />
-    )
+export default function BlogScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1 }}>
+      <CustomWebView uri="https://bluecolab.blogs.pace.edu/blog-app/" />
+    </View>
+  )
 }
