@@ -4,6 +4,7 @@ from pandas import DataFrame
 import calendar, datetime
 from WaterData import WaterData
 import dataretrieval.nwis as nwis
+import urllib.error
 
 def usgs_data_fetch(location: str | None = None, 
                     start_year: int | None = None,
@@ -97,10 +98,17 @@ def blue_colab_data_fetch(start_year: int | None = None,
 
     # we create the link for the Blue CoLab API
     url = f"https://colabprod01.pace.edu/api/influx/sensordata/Alan/idk/range?stream=false&start_date={start_year}-{start_month}-{start_day}T00%3A00%3A00%2B00%3A00&stop_date={end_year}-{end_month}-{end_day}T23%3A59%3A59%2B00%3A00"
-    print(url)
+    try: 
+        # Get the data
+        df = pd.read_json(url)
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            print("The requested resource was not found (404 Error)")
+        else:
+            print("An HTTP error occurred:", e)
+        return pd.DataFrame()
     # Get the data
-    df = pd.read_json(url)
-
+    
     # Normalize, that is move the data in sensor dict such that they are in a column of the DataFrame
     df_normalized = pd.concat([df.drop(['sensors'], axis=1), df['sensors'].apply(pd.Series)], axis=1)
 
@@ -135,11 +143,19 @@ def fetch_data(location: str | None = "Choate Pond",
     if location == "Choate Pond":
         data = blue_colab_data_fetch(start_year,start_month,start_day,end_year,end_month,end_day)
 
-        doptc_value = sum(data['DOpct'])/len(data['DOpct'])
-        ph_value = sum(data['pH'])/len(data['pH'])
-        temp_value = sum(data['Temp'] * 9/5 + 32)/len(data['Temp'])
-        cond_value = sum(data['Cond'])/len(data['Cond'])
-        turb_value = sum(data['Turb'])/len(data['Turb'])
+        try:
+            doptc_value = sum(data['DOpct'])/len(data['DOpct'])
+            ph_value = sum(data['pH'])/len(data['pH'])
+            temp_value = sum(data['Temp'] * 9/5 + 32)/len(data['Temp'])
+            cond_value = sum(data['Cond'])/len(data['Cond'])
+            turb_value = sum(data['Turb'])/len(data['Turb'])
+        except KeyError as e:
+            print(f"KeyError: {e} was raised. This column does not exist.")
+            doptc_value = 0
+            ph_value = 0
+            temp_value = 0
+            cond_value = 0
+            turb_value = 0
         
         def calculate_wqi(doptc: float, ph: float, temp: float, cond: float, turb: float) -> float:
                 # Constants

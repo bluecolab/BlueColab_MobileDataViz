@@ -1,4 +1,6 @@
 import datetime
+from data_fetch import fetch_data_caller
+import plotly.graph_objects as go
 
 def get_years(**kwargs):
     """Returns a list containing years from current year to 2021. For the dropdowns.
@@ -24,3 +26,15 @@ def get_years(**kwargs):
         return years_list
     else:
         return years_list
+    
+def create_empty_plot():
+    # Create an empty Plotly figure
+    fig = go.Figure()
+    return fig
+
+
+# oh yeah, it would be nice to have comments too
+# chatgpt is a good friend 
+def generate_line_graph(parameter, location, month, year):
+
+    return "the graph"
