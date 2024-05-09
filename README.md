@@ -7,9 +7,7 @@ Developed for CS389 Software Engineering at Pace University and improved on by B
 ### Features
 - Informative data visualization of water quality metrics.
 - Monthly water quality reports with graphical representations.
-- Exploration of the relationship between weather conditions and water quality.
 - Information about local wildlife and its dependence on water quality.
-- AI-powered plant identification to aid in learning about plant life.
 - Access to Blue CoLab blogs.
 
 ### Users
