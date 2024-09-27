@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
-import { createAppContainer } from "react-navigation"; // Only needed if using React Navigation 4.x
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "./src/screens/HomeScreen";
