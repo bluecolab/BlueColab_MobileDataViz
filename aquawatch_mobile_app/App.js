@@ -10,6 +10,7 @@ import StoryScreen from "./src/screens/StoryScreen";
 import WildlifeScreen from "./src/screens/WildlifeScreen";
 import Attributions from "./src/screens/Attributions";
 import MiddleScreen from './src/screens/MiddleScreen'; 
+import AirQuality from './src/screens/AirQuality';
 import { AppLoading } from 'expo';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard'; 
@@ -31,6 +32,7 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="Wildlife" component={WildlifeScreen} />
       <HomeStack.Screen name="Blog" component={BlogScreen} />
       <HomeStack.Screen name="Attributions" component={Attributions} />
+      <HomeStack.Screen name="AQI" component={AirQuality} />
     </HomeStack.Navigator>
   );
 }

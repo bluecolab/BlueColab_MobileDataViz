@@ -73,9 +73,10 @@ export default StyleSheet.create({
         height: deviceHeight / 30, 
         width: deviceWidth / 2.4,
         alignItems: 'center',
-        backgroundColor: 'limegreen',
+        backgroundColor: '#2B2D35',
         borderWidth: 2,
         borderColor: 'white',
+        color: 'black',
         justifyContent: 'center',
         position: 'absolute',
         bottom: 0,
@@ -84,16 +85,53 @@ export default StyleSheet.create({
     },
 
     //wildlife screen background
-    wildContainer: {
+    wildLifeContainer: {
         flex: 1,
-        backgroundColor: 'darkolivegreen',
+        backgroundColor: '#2B2D35',
         alignItems: 'center',
         width: deviceWidth,
         marginTop: deviceHeight / 200,
         marginBottom: deviceHeight / 200,
-
+        color: 'white',
 
     },
+    //header for the wildlife page
+    paragraphTextWildlife: {
+        color: 'white',
+        fontSize: deviceHeight / 25,
+        marginTop: deviceHeight / 100,
+        marginBottom: deviceHeight / 100,
+        marginLeft: deviceWidth / 15,
+        marginRight: deviceWidth / 15,
+        textAlign: 'center',
+    },
+    //image on wildlife page
+    smallImage: {
+        width: 350,
+        height: 250,
+        borderRadius: 10,
+        margin: 10,
+    },
+    //animal name on wildlife page
+    animalName: {   
+        color: 'white',
+        textAlign: 'center',
+        fontStyle: 'strong',
+    },
+    //scientific name on wildlife page
+    scientificName: {
+        marginTop: 2,
+        color: 'white',
+        textAlign: 'center',
+    },
+    //fun fact for wildlife page
+    funFact: {
+        marginTop: 2,
+        color: 'white',
+        textAlign: 'center',
+        width: 350,
+    },
+
     //welcome screen background
     welcome: {
         flex: 1,
@@ -101,8 +139,6 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: deviceWidth,
-
-
     },
     //code for the welcome button 
     welcomeButton: {
@@ -332,15 +368,7 @@ export default StyleSheet.create({
         marginRight: deviceWidth / 15,
         textAlign: 'center',
     },
-    paragraphTextWildlife: {
-        color: 'white',
-        fontSize: deviceHeight / 25,
-        marginTop: deviceHeight / 100,
-        marginBottom: deviceHeight / 100,
-        marginLeft: deviceWidth / 15,
-        marginRight: deviceWidth / 15,
-        textAlign: 'center',
-    },
+   
     //used in wildlife page
     pictureSub: {
         color: 'white',
@@ -458,5 +486,77 @@ export default StyleSheet.create({
         //borderWidth: 1,
         marginTop: deviceHeight / 200,
         marginBottom: deviceHeight / 200,
+    },
+
+    //AIR QUALITY PAGE
+    airQualityContainer: {
+        flexGrow: 1,
+        backgroundColor: '#2B2D35',
+        alignItems: 'center',
+        width: deviceWidth,
+        padding: 10,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight / 200,
+    },
+     loadingIndicator: {
+        marginTop: 20,
+    },
+    //Header text for air quality
+    airQualityHeader: {
+        color: 'white',
+        fontSize: deviceHeight / 20,
+        textAlign: 'center',
+        marginBottom: deviceHeight / 40,
+        fontWeight: 'bold',
+    },
+    //Text for air quality readings
+    airQualityText: {
+        color: '#FFFFFF',
+        fontSize: deviceHeight / 30,
+        textAlign: 'center',
+        marginTop: deviceHeight / 100,
+        marginBottom: deviceHeight / 100,
+        backgroundColor: '#4A6D7C',
+        padding: 10,
+        borderRadius: 10,
+        width: deviceWidth / 1.2,
+    },
+    //Button for refreshing air quality data
+    refreshButton: {
+        backgroundColor: '#FF6347',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: deviceWidth / 2,
+        height: deviceHeight / 15,
+        borderRadius: 20,
+        marginTop: deviceHeight / 30,
+    },
+    //Text inside the refresh button
+    refreshButtonText: {
+        color: 'white',
+        fontSize: deviceHeight / 35,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    //Widget for displaying air quality information
+    airQualityWidget: {
+        width: deviceWidth / 1.01,
+        backgroundColor: '#2B2D35',
+        borderColor: '#787878',
+        borderRadius: 20,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight / 200,
+        padding: 15,
+    },
+    //Chart container for visualizing air quality data
+    airQualityChartContainer: {
+        width: deviceWidth / 1.1,
+        height: deviceHeight / 3,
+        backgroundColor: '#2B2D35',
+        borderRadius: 15,
+        marginTop: deviceHeight / 50,
+        marginBottom: deviceHeight / 50,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });

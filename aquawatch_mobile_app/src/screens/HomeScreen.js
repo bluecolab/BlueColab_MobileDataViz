@@ -31,6 +31,9 @@ export default function HomeScreen({ navigation }) {
   const handleChoatePress = () => {
     navigation.navigate("Choate");
   };
+  const handleAqiPress = () => {
+    navigation.navigate("AQI");
+  };
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-start', paddingBottom: 60 }}>
@@ -49,6 +52,13 @@ export default function HomeScreen({ navigation }) {
         buttonText="See Local Wildlife..."
         onButtonPress={handleWildlifeScreenPress}
         gradientColors={['#FFFFFF', '#6DD5FA']}
+      />
+      <GradientCard
+      imageSource={require("../../assets/homescreen/sky.jpg")}
+        title="Check out the air quality index!"
+        buttonText="Air Quality Index..."
+        onButtonPress={handleAqiPress}
+        gradientColors={['#ffdde1', '#ee9ca7']} // Example gradient colors
       />
       <GradientCard
         imageSource={require("../../assets/homescreen/waterSplash2.jpg")}
