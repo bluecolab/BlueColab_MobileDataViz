@@ -13,6 +13,7 @@ import styles from "../../styles";
 let deviceHeight = Dimensions.get("window").height;
 let deviceWidth = Dimensions.get("window").width;
 
+// Function to get the air quality data
 const getAirQuality = async (latitude, longitude) => {
     const apiKey = '4fd184c24fcacbb3bdf4ffcfb79ed8b9';  
     const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
@@ -26,6 +27,21 @@ const getAirQuality = async (latitude, longitude) => {
     }
 };
 
+// Function to get the weather data
+const getWeather = async (latitude, longitude) => {
+    const apiKey = 'ceaa628a3f955199966c25a2ce5264ab';
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+    try {
+        const response = await fetch(url);
+        const weatherData = await response.json();
+
+        return weatherData;
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+    }
+};
+
+
 const AirQuality = () => {
     const [airQualityData, setAirQualityData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -37,8 +53,8 @@ const AirQuality = () => {
 
     const fetchAirQualityData = async () => {
         setRefreshing(true);  // Show loading indicator when fetching starts
-        const latitude = 40.7128;  // Example latitude
-        const longitude = -74.0060;  // Example longitude
+        const latitude = 40.7128;  // Pace latitude
+        const longitude = -74.0060;  // Pace longitude
 
         const data = await getAirQuality(latitude, longitude);
         if (data) {
@@ -58,7 +74,7 @@ const AirQuality = () => {
             case 1:
                 return '#00e400';  // Green for 'Good'
             case 2:
-                return '#ffff00';  // Yellow for 'Fair'
+                return '#CCCC00';  // Yellow for 'Fair'
             case 3:
                 return '#ff7e00';  // Orange for 'Moderate'
             case 4:
@@ -66,7 +82,7 @@ const AirQuality = () => {
             case 5:
                 return '#8f3f97';  // Purple for 'Very Poor'
             default:
-                return '#ffffff';  // White as a fallback
+                return '##4A6D7C';  // Uses this color as a fallback
         }
     };
 

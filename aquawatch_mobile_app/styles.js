@@ -504,7 +504,7 @@ export default StyleSheet.create({
     //Header text for air quality
     airQualityHeader: {
         color: 'white',
-        fontSize: deviceHeight / 20,
+        fontSize: deviceHeight / 25,
         textAlign: 'center',
         marginBottom: deviceHeight / 40,
         fontWeight: 'bold',
@@ -512,51 +512,17 @@ export default StyleSheet.create({
     //Text for air quality readings
     airQualityText: {
         color: '#FFFFFF',
+        textShadowColor: '#000000',  // Black shadow color
+        textShadowOffset: { width: 1, height: 1 },  // Adjust shadow offset
+        textShadowRadius: 2,  // Adjust shadow blur radius
         fontSize: deviceHeight / 30,
         textAlign: 'center',
         marginTop: deviceHeight / 100,
         marginBottom: deviceHeight / 100,
         backgroundColor: '#4A6D7C',
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 15,
         width: deviceWidth / 1.2,
     },
-    //Button for refreshing air quality data
-    refreshButton: {
-        backgroundColor: '#FF6347',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: deviceWidth / 2,
-        height: deviceHeight / 15,
-        borderRadius: 20,
-        marginTop: deviceHeight / 30,
-    },
-    //Text inside the refresh button
-    refreshButtonText: {
-        color: 'white',
-        fontSize: deviceHeight / 35,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    //Widget for displaying air quality information
-    airQualityWidget: {
-        width: deviceWidth / 1.01,
-        backgroundColor: '#2B2D35',
-        borderColor: '#787878',
-        borderRadius: 20,
-        marginTop: deviceHeight / 200,
-        marginBottom: deviceHeight / 200,
-        padding: 15,
-    },
-    //Chart container for visualizing air quality data
-    airQualityChartContainer: {
-        width: deviceWidth / 1.1,
-        height: deviceHeight / 3,
-        backgroundColor: '#2B2D35',
-        borderRadius: 15,
-        marginTop: deviceHeight / 50,
-        marginBottom: deviceHeight / 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+    
 });
