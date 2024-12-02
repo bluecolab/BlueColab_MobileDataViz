@@ -497,7 +497,9 @@ export default StyleSheet.create({
         padding: 10,
         marginTop: deviceHeight / 200,
         marginBottom: deviceHeight / 200,
+        paddingBottom: 100,
     },
+    
      loadingIndicator: {
         marginTop: 20,
     },
@@ -524,5 +526,21 @@ export default StyleSheet.create({
         borderRadius: 15,
         width: deviceWidth / 1.2,
     },
+
+    currentLocationButton: {
+        backgroundColor: '#2B2D35',
+        color: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        fontSize: deviceHeight / 35,
+        width: deviceWidth / 1.4,
+        height: deviceHeight / 15,
+        borderRadius: 10,
+        marginTop: 10,
+        padding: 10,
+    },
+
     
+   
 });
