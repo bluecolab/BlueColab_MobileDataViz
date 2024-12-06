@@ -210,7 +210,7 @@ const AirQuality = () => {
                 <View style={styles.airQualityInfo}>
                     <Text 
                         style={[
-                            styles.airQualityText, 
+                            styles.airQualityText,
                             { backgroundColor: getAQIColor(airQualityData.list[0].main.aqi) }  
                         ]}
                     >
