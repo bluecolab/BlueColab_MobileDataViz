@@ -29,6 +29,7 @@ The members of the team include:
  - Lulu Moquette ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/louisamoquete](https://www.linkedin.com/in/louisamoquete/))
  - Kenji Okura ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/kenji-okura](https://www.linkedin.com/in/kenji-okura/))
  - Erin Sorbella ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/erin-sorbella-40936b241](https://www.linkedin.com/in/erin-sorbella-40936b241/))
+ - Nicholas Davila ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/nicholas--davila](https://www.linkedin.com/in/nicholas--davila/))
 
 ### Getting the Repository
 - Install [Git](https://git-scm.com/).
