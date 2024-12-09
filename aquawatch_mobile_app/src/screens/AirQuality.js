@@ -4,37 +4,119 @@ import {
     Text,
     StyleSheet,
     ScrollView,
-    Dimensions,
     ActivityIndicator,
     RefreshControl,
     TextInput,
     Alert,
 } from "react-native";
-import styles from "../../styles";
+import styles from "../../styles";  
 import * as Location from "expo-location";
-import RNPickerSelect from 'react-native-picker-select';
+import RNPickerSelect from "react-native-picker-select";
 
-let deviceHeight = Dimensions.get("window").height;
-let deviceWidth = Dimensions.get("window").width;
+// AQIBar Component
+const AQIBar = ({ aqiGrade }) => {
+    const getBarStyle = (grade) => { 
+        let widthPercentage = "0%";
+        let backgroundColor = "green";
 
-// Function to get the air quality data
+        if (grade === 1) {
+            widthPercentage = "20%";
+            backgroundColor = "#00E400";
+        } else if (grade === 2) {
+            widthPercentage = "35%";
+            backgroundColor = "#FFFF00";
+        } else if (grade === 3) {
+            widthPercentage = "50%";
+            backgroundColor = "#FF7E00";
+        } else if (grade === 4) {
+            widthPercentage = "70%";
+            backgroundColor = "#FF0000";
+        } else if (grade === 5) {
+            widthPercentage = "100%";
+            backgroundColor = "#99004C";
+        }
+
+        return { width: widthPercentage, backgroundColor };
+    };
+
+    const getAQILabel = (aqi) => {
+        switch (aqi) {
+            case 1: return "Good";
+            case 2: return "Moderate";
+            case 3: return "Unhealthy for Sensitive Groups";
+            case 4: return "Unhealthy";
+            case 5: return "Very Unhealthy";
+            default: return "Hazardous";
+        }
+    };
+
+    return (
+        <View style={aqiBarStyles.container}>
+            <View style={aqiBarStyles.textContainer}>
+                <Text style={aqiBarStyles.aqiText}>AQI: {aqiGrade}</Text>
+                <Text style={aqiBarStyles.aqiLabel}>{getAQILabel(aqiGrade)}</Text>
+            </View>
+            <View style={aqiBarStyles.barBackground}>
+                <View style={[aqiBarStyles.barFill, getBarStyle(aqiGrade)]} />
+            </View>
+        </View>
+    );
+};
+
+const aqiBarStyles = StyleSheet.create({
+    container: {
+        marginVertical: 20,
+        alignItems: "center",
+        width: "80%",
+        marginTop: -15,
+    },
+    textContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "100%",
+        marginBottom: 5,
+    },
+    aqiText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "white",
+    },
+    barBackground: {
+        width: "100%",
+        height: 20,
+        backgroundColor: "#e0e0e0",
+        borderRadius: 10,
+        overflow: "hidden",
+    },
+    barFill: {
+        height: "100%",
+        borderRadius: 10,
+    },
+    aqiLabel: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "white",
+    },
+});
+
+// Function to get air quality data
 const getAirQuality = async (latitude, longitude) => {
-    const apiKey = '4fd184c24fcacbb3bdf4ffcfb79ed8b9';  
+    const apiKey = "4fd184c24fcacbb3bdf4ffcfb79ed8b9";
     const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
-    
+
     try {
         const response = await fetch(url);
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Error fetching air quality data:', error);
+        console.error("Error fetching air quality data:", error);
     }
 };
 
-// Function to get coordinates of a city from PositionStack API
+// Function to get coordinates of a city
 const getCoordinatesFromCity = async (city) => {
-    const apiKey = '4925f2810962e0647c896b2cffd6edf3'; // Your PositionStack API key
-    const url = `https://api.positionstack.com/v1/forward?access_key=${apiKey}&query=${city}`;
+    const apiKey2 = '4925f2810962e0647c896b2cffd6edf3'; // Your PositionStack API key
+    const url = `https://api.positionstack.com/v1/forward?access_key=${apiKey2}&query=${city}`;
 
     try {
         const response = await fetch(url);
@@ -56,32 +138,40 @@ const getCoordinatesFromCity = async (city) => {
 const AirQuality = () => {
     const [airQualityData, setAirQualityData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(false);  // State for refreshing
-    const [location, setLocation] = useState({ latitude: 41.128380, longitude: -73.808189 }); // Default to Pace University Pleasantville Campus
-    const [selectedOption, setSelectedOption] = useState('currentLocation'); // Default selected option
-    const [title, setTitle] = useState("Air Quality Data"); // Dynamic title
-    const [searchQuery, setSearchQuery] = useState(""); // State for the search query
+    const [refreshing, setRefreshing] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('currentLocation');
+    const [location, setLocation] = useState({
+        latitude: 41.12838,
+        longitude: -73.808189,
+    });
+    const [title, setTitle] = useState("Air Quality Data");
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
-        fetchAirQualityData();  // Fetch data on initial load
+        fetchAirQualityData();
     }, [location]);
 
     const fetchAirQualityData = async () => {
-        setRefreshing(true);  // Show loading indicator when fetching starts
-
-        const data = await getAirQuality(location.latitude, location.longitude);
-        if (data) {
-            setAirQualityData(data);
+        setLoading(true); // Show loading indicator
+        setRefreshing(true);
+        try {
+            const data = await getAirQuality(location.latitude, location.longitude);
+            if (data) {
+                setAirQualityData(data);
+            }
+        } catch (error) {
+            console.error("Error fetching air quality data:", error);
+        } finally {
+            setRefreshing(false);
+            setLoading(false); // Hide loading indicator
         }
-        setRefreshing(false);  // Hide loading when data is fetched
     };
 
     const useCurrentLocation = async () => {
-        setLoading(true);  // Show loading indicator when fetching location
+        setLoading(true);
     
-        // Request permission to access location
         let { status } = await Location.requestForegroundPermissionsAsync();
-        
+    
         if (status !== 'granted') {
             setLoading(false);
             Alert.alert("Permission denied", "Location permission is required to fetch your current location.");
@@ -90,10 +180,11 @@ const AirQuality = () => {
         }
     
         try {
-            // Get the current location
             let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
             const { latitude, longitude } = location.coords;
             setLocation({ latitude, longitude });
+            setTitle("Current Location AQI Data");  // Change title when location is fetched
+            fetchAirQualityData();  // Trigger fetching air quality data
         } catch (error) {
             Alert.alert("Error", "Could not fetch location. Please try again.");
             console.error("Error getting location:", error);
@@ -101,49 +192,20 @@ const AirQuality = () => {
             setLoading(false);
         }
     };
+    
 
     const handleDropdownChange = (value) => {
         setSelectedOption(value);
-
+    
         if (value === 'currentLocation') {
-            setTitle("Current Location AQI Data");  // Change title to 'Current Location AQI Data'
+            setTitle("Current Location AQI Data");
             useCurrentLocation();  // Use current location
         } else if (value === 'paceUniversity') {
-            setTitle("Pace University AQI Data");  // Change title to 'Pace University AQI Data'
+            setTitle("Pace University AQI Data");
             setLocation({ latitude: 41.128380, longitude: -73.808189 });
-        }
-        else if (value === 'paceUniversityNYC') {
-            setTitle("Pace University NYC Campus AQI Data");  // Change title to 'Pace University NYC Campus AQI Data'
+        } else if (value === 'paceUniversityNYC') {
+            setTitle("Pace University NYC Campus AQI Data");
             setLocation({ latitude: 40.711220, longitude: -74.006477 });
-        }
-    };
-
-    // Function to determine AQI color based on AQI value
-    const getAQIColor = (aqi) => {
-        switch (aqi) {
-            case 1: return "#00E400"; // Good
-            case 2: return "#FFFF00"; // Moderate
-            case 3: return "#FF7E00"; // Unhealthy for Sensitive Groups
-            case 4: return "#FF0000"; // Unhealthy
-            case 5: return "#99004C"; // Very Unhealthy
-            default: return "#7E0023"; // Hazardous
-        }
-    };
-
-    // Function to classify AQI and return a label
-    const getAQILabel = (aqi) => {
-        if (aqi <= 1) {
-            return "Great"; 
-        } else if (aqi <= 2) {
-            return "Moderate"; 
-        } else if (aqi <= 3) {
-            return "Bad"; 
-        } else if (aqi <= 4) {
-            return "Very Bad"; 
-        } else if (aqi <= 5) {
-            return "Hazardous"; 
-        } else {
-            return "Hazardous"; 
         }
     };
 
@@ -156,17 +218,18 @@ const AirQuality = () => {
     };
 
     return (
-        <ScrollView 
+        <ScrollView
             contentContainerStyle={styles.airQualityContainer}
             refreshControl={
                 <RefreshControl
-                    refreshing={refreshing}  // Show the indicator when refreshing
-                    onRefresh={fetchAirQualityData}  // Pull-to-refresh action
+                    refreshing={refreshing}
+                    onRefresh={fetchAirQualityData}
                 />
             }
-        >
-            {/* Display dynamic title */}
-            <Text style={styles.currentLocationButton}>{title}</Text>
+        >   
+
+             {/* Display dynamic title */}
+             <Text style={styles.currentLocationTitle}>{title}</Text>
 
             {/* Search Bar */}
             <TextInput
@@ -190,46 +253,54 @@ const AirQuality = () => {
                     inputAndroid: {
                         color: 'white', // Text color for Android
                         backgroundColor: '#46484f', 
-                        margin: 10,                       
+                        margin: 10,    
+                        marginBottom: 50,                   
                     },
                     inputIOS: {
                         color: 'white', // Text color for iOS
                         backgroundColor: '#46484f', 
-                        margin: 10, 
+                        margin: 10,
+                        marginBottom: 50, 
                     },
                     placeholder: {
                         color: 'white', // Placeholder color
                         backgroundColor: '#46484f', 
                         margin: 10,
+                        marginBottom: 50,
                     },
                 }}
                 placeholder={{ label: 'Select an option...', value: null }}
             />
 
+
+            {/* AQI Bar below dropdown */}
+            {airQualityData && (
+                <AQIBar aqiGrade={airQualityData.list[0].main.aqi} />
+            )}
+
+            {/* Display AQI data */}
             {airQualityData ? (
                 <View style={styles.airQualityInfo}>
-                    <Text 
-                        style={[
-                            styles.airQualityText,
-                            { backgroundColor: getAQIColor(airQualityData.list[0].main.aqi) }  
-                        ]}
-                    >
-                        AQI: {airQualityData.list[0].main.aqi + "  " + getAQILabel(airQualityData.list[0].main.aqi)}
+                    <Text style={styles.airQualityText}>
+                        CO: {airQualityData.list[0].components.co} µg/m³
                     </Text>
-                    <Text style={styles.airQualityText}>CO: {airQualityData.list[0].components.co} µg/m³</Text>
-                    <Text style={styles.airQualityText}>NO: {airQualityData.list[0].components.no} µg/m³</Text>
-                    <Text style={styles.airQualityText}>NO2: {airQualityData.list[0].components.no2} µg/m³</Text>
-                    <Text style={styles.airQualityText}>O3: {airQualityData.list[0].components.o3} µg/m³</Text>
-                    <Text style={styles.airQualityText}>PM2.5: {airQualityData.list[0].components.pm2_5} µg/m³</Text>
-                    <Text style={styles.airQualityText}>PM10: {airQualityData.list[0].components.pm10} µg/m³</Text>
-                    <Text style={styles.airQualityText}>SO2: {airQualityData.list[0].components.so2} µg/m³</Text>
+                    <Text style={styles.airQualityText}>
+                        NO2: {airQualityData.list[0].components.no2} µg/m³
+                    </Text>
+                    <Text style={styles.airQualityText}>
+                        PM2.5: {airQualityData.list[0].components.pm2_5} µg/m³
+                    </Text>
                 </View>
             ) : (
                 <Text style={styles.loadingText}>Loading air quality data...</Text>
             )}
-            
+
             {loading && (
-                <ActivityIndicator size="large" color="#007BFF" style={styles.loadingIndicator} />
+                <ActivityIndicator
+                    size="large"
+                    color="#007BFF"
+                    style={styles.loadingIndicator}
+                />
             )}
         </ScrollView>
     );
@@ -245,7 +316,13 @@ const searchBarStyles = StyleSheet.create({
         paddingLeft: 10,
         marginBottom: 10,
         color: 'white',
-    }
+        alignSelf: 'center',
+        marginTop: 15,
+        marginBottom: 15,
+    },
 });
 
 export default AirQuality;
+
+
+
