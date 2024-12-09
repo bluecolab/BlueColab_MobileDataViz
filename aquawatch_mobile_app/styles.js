@@ -525,22 +525,26 @@ export default StyleSheet.create({
         padding: 10,
         borderRadius: 15,
         width: deviceWidth / 1.2,
-    },
+    }, 
 
-    currentLocationButton: {
-        backgroundColor: '#2B2D35',
+    currentLocationTitle: {
         color: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
         textAlign: 'center',
         fontSize: deviceHeight / 35,
         width: deviceWidth / 1.4,
         height: deviceHeight / 15,
-        borderRadius: 10,
-        marginTop: 10,
-        padding: 10,
+        marginTop: 15,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
     },
 
-    
+    pickerContainer: {
+        marginBottom: 20,  
+        paddingHorizontal: 10,  
+        width: "100%", 
+        alignItems: "center", 
+        justifyContent: "center", 
+        height: 100,  
+    }
    
-});
+}); 
