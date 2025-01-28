@@ -1,18 +1,35 @@
-# AquaWatch Mobile
+# AquaWatch Mobile Frontend
 
 This folder contains the various files related to the application.
 
-Prerequisites
- - Install [node.js](https://nodejs.org/en) (also installs npm)
- - Install [Android Studio](https://developer.android.com/studio) or Test Flight (Apple). This will take a while and take a good chuck of space. Start a device emulator more info [here](https://developer.android.com/codelabs/basic-android-kotlin-compose-emulator#2)
- - Download Expo Go app on your phone
- - Any code editor really
+## Tech Stack
+-   Languages + Bundler
+    -   [JavaScript 🔗](https://www.typescriptlang.org/)
+    -   [Metro 🔗](https://metrobundler.dev/) (Bundler. under the hood)
+-   Framework
+    -   [React Native 🔗](https://reactnative.dev/)
+-   UI Components
+    -   [Expo 🔗](https://expo.dev/)
+-   Deploy
+    -   Expo CLI
 
-Setup Instructions
+## Prerequisites
+ - [git 🔗](https://git-scm.com/) - version control. For installing git, please see the [git website 🔗](https://git-scm.com/).
+ - [npm 🔗](https://www.npmjs.com/) - package manager. For installing npm, please see [npm docs 🔗](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+ - [Android Studio 🔗](https://developer.android.com/studio) or Test Flight (Apple). This will take a while and take a good chuck of space. Start a device emulator. For more info see [here 🔗](https://developer.android.com/codelabs/basic-android-kotlin-compose-emulator#2)
+ - Expo Go on iOS and Android. 
+ - All other prerequisites are node_packages 
+
+## Getting Started
 1. Open a terminal in this directory ``../BlueColab_MobileDataViz/aquawatch_mobile_app/``
 2. Run ``npm i``, it installs all needed node_packages and expo. It may take a few minutes to install everything.
-3. Run ``npx expo start`` (should be installed with node). Expo should be installed when you do ``npm i``
-4. Make sure your computer and phone are on the same WiFi network. Scan the QR Code that pops up with your phone.
-5. The Expo Go app should open - with our app loaded! The first time running the app takes loading time. 
 
-Next time you run just follow steps 3-5.
+## Running locally on mobile device
+1. Run ``npx expo start`` (should be installed with node) in terminal window. Expo should be installed when you do ``npm i``.
+2. After running the above, a QR code should pop up. Make sure your computer and phone are on the same WiFi network. Scan the QR Code that pops up with your phone.
+3. The Expo Go app should open - with our app loaded! The first time running the app takes loading time. 
+
+## Running locally on computer
+1. Start a device emulator on your computer.
+2. Run ``npx expo start`` (should be installed with node) in terminal window. Expo should be installed when you do ``npm i``.
+3. On the terminal, there will be instructions to start the app in emulator. (For example, pressing A key should start the app in an Android emulator)
