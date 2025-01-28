@@ -17,7 +17,6 @@ One day you'll know what's in the water that's coming out of your tap.
 - Information about local wildlife and its dependence on water quality.
 - Access to Blue CoLab blogs.
 
-
 <hr>
 
 ### General Prerequisites
@@ -30,7 +29,7 @@ One day you'll know what's in the water that's coming out of your tap.
 ### Getting Started
 - To get started on the frontend, see [here](./aquawatch_mobile_app/README.md)
 - To get started on the backend, see [here](./backend_py/README.md)
-
+- For details on the app internals, please see the Important Notes and Documentation For AquaWatch Mobile-1.pdf. 
 <hr>
 
 ### Development Team
