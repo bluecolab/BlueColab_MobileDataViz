@@ -476,6 +476,7 @@ export default StyleSheet.create({
     },
     attributions: {
         margin: 16,
+        paddingBottom: 90,
     },
     links: { color: 'blue', textDecorationLine: 'underline' },
     attributionsWidget: {
