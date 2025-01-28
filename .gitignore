@@ -2,6 +2,7 @@
 # dependencies
 node_modules/
 
+
 # Expo
 .expo/
 dist/
@@ -34,3 +35,6 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 .Rproj.user
+
+.idea/
+./aquawatch_mobile_app/.idea/
