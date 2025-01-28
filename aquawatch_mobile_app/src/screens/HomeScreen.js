@@ -36,7 +36,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-start', paddingBottom: 60 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-start', paddingBottom: 90 }}>
       {/* The paddingBottom should be at least as tall as the bottom tab navigator's height */}
       {/* More info about the gradientCard Check GradientCard.js and StylesCard.js */}
       <GradientCard
@@ -77,54 +77,3 @@ export default function HomeScreen({ navigation }) {
     </ScrollView>
   );
 }
-
-/* This can be deleted and CustomCard may or may not be removed
- <CustomCard imageSource={require("../../assets/homescreen/PXL_20221014_204618892.png")}
-          paragraph="This app is brought to you by Blue CoLab, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean."
-          buttonText="Learn more..."
-          cardContainer={styles.BlueCoLabContainer}
-          buttonAction={handleStoryScreenPress}
-        ></CustomCard>
-
-        <CustomCard imageSource={{
-          uri: "https://img.freepik.com/premium-vector/trading-graph-chart-growth-fall-business-profit-loss-stats-concept-vector-illustration_509058-11.jpg",
-        }}
-          paragraph="It is important to know the quality of water before you swim or fish in it. The purpose of our app is to make this information more accessible."
-          buttonText="See Live Data..."
-          cardContainer={styles.graphButtonContainer}
-          buttonAction={handleChoatePress}
-        ></CustomCard>
-
-        <CustomCard imageSource={require("../../assets/homescreen/turtle.png")}
-          paragraph="Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!"
-          buttonText="See Local Wildlife..."
-          cardContainer={styles.animalButtonContainer}
-          buttonAction={handleWildlifeScreenPress}
-        ></CustomCard>
-
-        <CustomCard imageSource={require("../../assets/homescreen/waterSplash2.jpg")}
-          paragraph="Check out some of the Blue CoLab Blogs!"
-          buttonText="Blog more..."
-          cardContainer={styles.BlogContainer}
-          buttonAction={handleBlogScreenPress}
-        ></CustomCard>
-
-        <CustomCard imageSource={require("../../assets/homescreen/code.jpg")}
-          paragraph="Code & Data Attributions"
-          buttonText="Learn more..."
-          cardContainer={styles.attributionsWidget}
-          buttonAction={handleAttributionPress}
-        ></CustomCard>
-
-        \ Removed due security
-        <GradientCard
-        imageUrl="https://via.placeholder.com/150"
-        title="Use this AI to identify any species of plant that you may see outdoors!"
-        buttonText="Discover more..."
-        onButtonPress={handleAiPress}
-        gradientColors={['#6DD5FA', '#FFFFFF']} // Example gradient colors
-      />
-
-
-
-*/

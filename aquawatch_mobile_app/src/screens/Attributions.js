@@ -20,16 +20,16 @@ export default function Attributions({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.attributions}>
-        <Text>The members of the team include:</Text>
+        <Text>The members of the development team include:</Text>
 
-        
-        <Text>• Lizi Imedashvilli (<LinkComp url="https://www.linkedin.com/in/lizi-imedashvili-2b3a6b249" label="in/lizi-imedashvili-2b3a6b249"/>)</Text> 
-        <Text>• Ardin Kraja (<LinkComp url="https://www.linkedin.com/in/ardin-kraja-19ab61230" label="in/ardin-kraja-19ab61230"/>)</Text>
-        <Text>• Victor Lima (<LinkComp url="https://www.linkedin.com/in/victor--lima" label="in/victor--lima"/>)</Text>
-        <Text>• Meryl Mizell (<LinkComp url="https://www.linkedin.com/in/meryl-mizell" label="in/meryl-mizell"/>)</Text>
-        <Text>• Lulu Moquette (<LinkComp url="https://www.linkedin.com/in/louisamoquete" label="in/louisamoquete"/>)</Text>
-        <Text>• Kenji Okura (<LinkComp url="https://www.linkedin.com/in/kenji-okura" label="in/kenji-okura"/>)</Text>
-        <Text>• Erin Sorbella (<LinkComp url="https://www.linkedin.com/in/erin-sorbella-40936b241" label="in/erin-sorbella-40936b241"/>)</Text>
+        <Text>• Nicholas Davila (<LinkComp url="https://www.linkedin.com/in/nicholas--davila/" label="in/nicholas--davila"/>) of the Blue Shield</Text>
+        <Text>• Lizi Imedashvilli (<LinkComp url="https://www.linkedin.com/in/lizi-imedashvili-2b3a6b249" label="in/lizi-imedashvili-2b3a6b249"/>) of the Data Divas</Text> 
+        <Text>• Ardin Kraja (<LinkComp url="https://www.linkedin.com/in/ardin-kraja-19ab61230" label="in/ardin-kraja-19ab61230"/>) of Blue Jelly</Text>
+        <Text>• Victor Lima (<LinkComp url="https://www.linkedin.com/in/victor--lima" label="in/victor--lima"/>) of the Data Divas</Text>
+        <Text>• Meryl Mizell (<LinkComp url="https://www.linkedin.com/in/meryl-mizell" label="in/meryl-mizell"/>) of Blue Jelly</Text>
+        <Text>• Lulu Moquette (<LinkComp url="https://www.linkedin.com/in/louisamoquete" label="in/louisamoquete"/>) of Blue Jelly</Text>
+        <Text>• Kenji Okura (<LinkComp url="https://www.linkedin.com/in/kenji-okura" label="in/kenji-okura"/>) of Blue Jelly</Text>
+        <Text>• Erin Sorbella (<LinkComp url="https://www.linkedin.com/in/erin-sorbella-40936b241" label="in/erin-sorbella-40936b241"/>) of Blue Jelly</Text>
 
         <Text>We would like to give the following attributions:</Text>
 
