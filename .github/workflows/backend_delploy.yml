@@ -37,16 +37,9 @@ jobs:
               --name $RSCONNECT_NAME \
               --token $RSCONNECT_TOKEN \
               --secret $RSCONNECT_SECRET
-    
-      - name: Debug App ID and Other Variables
-        run: |
-          echo "App ID: $RSCONNECT_APP_ID"
-          echo "Account: $RSCONNECT_ACCOUNT"
-          echo "Name: $RSCONNECT_NAME"
   
       - name: Deploy Shiny app
         run: |
-          echo "App ID: 11739222"
           echo "Deploying from $GITHUB_WORKSPACE/backend_py"
           rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
             --name "$RSCONNECT_NAME" \
