@@ -46,4 +46,4 @@ jobs:
             --name "$RSCONNECT_NAME" \
             --title "aquawatchmobilepy" \
             --app-id "$RSCONNECT_APP_ID"
-
+            --mode python-shiny
