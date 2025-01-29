@@ -48,6 +48,5 @@ jobs:
           echo "Deploying from $GITHUB_WORKSPACE/backend_py"
           rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
             --name "$RSCONNECT_NAME" \
-            --title "aquawatchmobiledev"
-            --app-id $RSCONNECT_APP_ID
-            --app-id 13850420
+            --title "aquawatchmobilepy" \
+            --app-id 11739222
