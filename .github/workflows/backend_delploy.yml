@@ -37,6 +37,10 @@ jobs:
               --name $RSCONNECT_NAME \
               --token $RSCONNECT_TOKEN \
               --secret $RSCONNECT_SECRET
+    
+      - name: Debug App ID
+        run: |
+          echo "App ID: $RSCONNECT_APP_ID"
         
       - name: Deploy Shiny app
         run: |
