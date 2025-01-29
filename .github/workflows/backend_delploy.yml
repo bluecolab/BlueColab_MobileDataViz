@@ -37,7 +37,7 @@ jobs:
               --name $RSCONNECT_NAME \
               --token $RSCONNECT_TOKEN \
               --secret $RSCONNECT_SECRET
-      
+        
       - name: Deploy Shiny app
         run: |
           echo "App ID: $RSCONNECT_APP_ID"
@@ -45,5 +45,5 @@ jobs:
           rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
             --name "$RSCONNECT_NAME" \
             --title "aquawatchmobilepy" \
-            --app-id "$RSCONNECT_APP_ID"
+            --app-id "$RSCONNECT_APP_ID" \
             --mode python-shiny
