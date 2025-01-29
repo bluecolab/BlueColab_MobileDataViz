@@ -42,4 +42,4 @@ jobs:
           echo "Deploying from $GITHUB_WORKSPACE/backend_py"
           rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
             --name "$RSCONNECT_NAME" \
-            --title "aquawatchmobile"
+            --title "aquawatchmobilepy"
