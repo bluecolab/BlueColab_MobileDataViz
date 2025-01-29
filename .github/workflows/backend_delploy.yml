@@ -24,17 +24,11 @@ jobs:
       - name: Install rsconnect for Python
         run: pip install rsconnect-python
 
-      - name: Install project dependencies
-        run: |
-          if [ -f "backend_py/requirements.txt" ]; then 
-            pip install -r backend_py/requirements.txt
-          fi
+      - name: List files in backend_py directory
+        run: ls -R "$GITHUB_WORKSPACE/backend_py"
 
-      - name: List files in current directory
-        run: ls -R .
-
-      - name: Ensure backend_py exists
-        run: test -d backend_py || (echo "backend_py directory missing" && exit 1)
+      - name: Display current directory
+        run: pwd
 
       - name: Add rsconnect account
         env:
@@ -51,6 +45,7 @@ jobs:
 
       - name: Deploy Shiny app
         run: |
-            rsconnect deploy shiny $GITHUB_WORKSPACE/backend_py \
-              --name $RSCONNECT_NAME \
-              --title "aquawatchmobile"
+          echo "Deploying from $GITHUB_WORKSPACE/backend_py"
+          rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
+            --name "$RSCONNECT_NAME" \
+            --title "aquawatchmobile"
