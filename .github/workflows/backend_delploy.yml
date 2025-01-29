@@ -24,12 +24,6 @@ jobs:
       - name: Install rsconnect for Python
         run: pip install rsconnect-python
 
-      - name: Install project dependencies
-        run: |
-          if [ -f "backend_py/requirements.txt" ]; then 
-            pip install -r backend_py/requirements.txt
-          fi
-
       - name: Add rsconnect account
         env:
             RSCONNECT_ACCOUNT: ${{ secrets.RSCONNECT_ACCOUNT }}
@@ -43,9 +37,9 @@ jobs:
               --token $RSCONNECT_TOKEN \
               --secret $RSCONNECT_SECRET
 
-        # Deploy the Shiny app
       - name: Deploy Shiny app
         run: |
-            rsconnect deploy shiny backend_py \
-              --name $RSCONNECT_NAME \
-              --title "aquawatchmobile"
+          echo "Deploying from $GITHUB_WORKSPACE/backend_py"
+          rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
+            --name "$RSCONNECT_NAME" \
+            --title "aquawatchmobile"
