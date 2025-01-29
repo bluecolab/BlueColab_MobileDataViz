@@ -49,4 +49,4 @@ jobs:
           rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
             --name "$RSCONNECT_NAME" \
             --title "aquawatchmobilepy" \
-            --app-id 11739222
+            --app-id 13850420
