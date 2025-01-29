@@ -1,10 +1,9 @@
 name: Shinyapps IO Dev Deployment
 run-name: ${{ github.actor }} Deployment of Dev Backend
-
 on:
   pull_request:
     branches:
-      - 'backend-dev'         
+      - 'main'
     paths:
       - 'backend_py/**'
   workflow_dispatch: # Manual trigger
@@ -12,7 +11,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
+      - name: Check if the PR is from backend-dev
+        if: github.head_ref == 'backend-dev'
+        run: |
+          echo "This PR is from the backend-dev branch!"
+          
       - name: Check out the repository
         uses: actions/checkout@v4
 
