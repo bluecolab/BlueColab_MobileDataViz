@@ -50,3 +50,4 @@ jobs:
             --name "$RSCONNECT_NAME" \
             --title "aquawatchmobiledev"
             --app-id $RSCONNECT_APP_ID
+            --app-id 13850420
