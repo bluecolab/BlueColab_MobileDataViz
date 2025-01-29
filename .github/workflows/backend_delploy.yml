@@ -30,6 +30,12 @@ jobs:
             pip install -r backend_py/requirements.txt
           fi
 
+      - name: List files in current directory
+        run: ls -R .
+
+      - name: Ensure backend_py exists
+        run: test -d backend_py || (echo "backend_py directory missing" && exit 1)
+
       - name: Add rsconnect account
         env:
             RSCONNECT_ACCOUNT: ${{ secrets.RSCONNECT_ACCOUNT }}
