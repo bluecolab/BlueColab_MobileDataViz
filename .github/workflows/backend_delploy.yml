@@ -24,12 +24,6 @@ jobs:
       - name: Install rsconnect for Python
         run: pip install rsconnect-python
 
-      - name: List files in backend_py directory
-        run: ls -R "$GITHUB_WORKSPACE/backend_py"
-
-      - name: Display current directory
-        run: pwd
-
       - name: Add rsconnect account
         env:
             RSCONNECT_ACCOUNT: ${{ secrets.RSCONNECT_ACCOUNT }}
