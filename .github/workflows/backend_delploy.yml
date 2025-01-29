@@ -7,8 +7,6 @@ on:
       - 'main'
     paths:
       - 'backend_py/**'
-    paths-ignore:
-      - 'README.md'
   workflow_dispatch: # Manual trigger
 
 jobs:
