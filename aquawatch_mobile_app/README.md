@@ -37,3 +37,5 @@ This folder contains the various files related to the application.
 1. Run ``npx expo start`` (should be installed with node) in terminal window. Expo should be installed when you do ``npm i``.
 2. After running the above, a QR code should pop up. Make sure your computer and phone are on the same WiFi network. Scan the QR Code that pops up with your phone.
 3. The Expo Go app should open - with our app loaded! The first time running the app takes loading time. 
+
+For instructions on deploying, please see our [GitHub Wiki](https://github.com/bluecolab/BlueColab_MobileDataViz/wiki/Frontend-Deployment).

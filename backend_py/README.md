@@ -39,4 +39,4 @@ This folder contains the various files related to the backend.
 4. Note that as this is unofficial not all devices may support this. Generally your computer and phone must be on same network. Firewalls may present issues as well. 
 5. As an alternative, most browsers support [device mode testing](https://developer.chrome.com/docs/devtools/device-mode). 
 
-For instructions on deploying, please see our GitHub Wiki.
+For instructions on deploying, please see our [GitHub Wiki](https://github.com/bluecolab/BlueColab_MobileDataViz/wiki/Backend-Deployment).
