@@ -24,6 +24,7 @@ This folder contains the various files related to the backend.
    4. ``pip install rsconnect_python``
    5. ``pip install shiny``
    6. ``pip install shinywidgets``
+Use caution: manually installing packages can cause version-conflict issues. 
 
 ## Running locally on computer
 1. Using VS Code with Shiny is the easiest way to run. 
