@@ -1,3 +1,7 @@
+name: Expo Deployment
+run-name: ${{ github.actor }} Deployment of Expo
+
+
 on:
     push:
         branches:
@@ -30,6 +34,6 @@ jobs:
               working-directory: ./aquawatch_mobile_app
               run: npm install
 
-            - name: 🚀 Build app
+            - name: 🚀 Build app for android
               working-directory: ./aquawatch_mobile_app
-              run: eas build -p android -profile production
+              run: eas build --platform android
