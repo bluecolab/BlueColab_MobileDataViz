@@ -1,7 +1,3 @@
-name: Expo Deployment
-run-name: ${{ github.actor }} Deployment of Expo
-
-
 on:
     push:
         branches:
@@ -24,7 +20,7 @@ jobs:
 
             - name: 🏗 Setup EAS
               run: npm install -g eas-cli
-            
+
             - name: Login to EAS
               run: eas whoami
               env:
@@ -34,6 +30,8 @@ jobs:
               working-directory: ./aquawatch_mobile_app
               run: npm install
 
-            - name: 🚀 Build app for android
+            - name: 🚀 Build app
               working-directory: ./aquawatch_mobile_app
-              run: eas build --platform android
+              env:
+                EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}  # Ensure EXPO_TOKEN is passed here
+              run: eas build -p android -profile production
