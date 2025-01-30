@@ -1,6 +1,5 @@
 name: Shinyapps IO Dev Deployment
 run-name: ${{ github.actor }} Deployment of Dev Backend
-
 on:
   pull_request:
     branches:
@@ -17,39 +16,18 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
 
-      - name: Skip if PR is not from backend-dev
-        id: skip-check
-        run: |
-          if [ "${{ github.head_ref }}" != "backend-dev" ]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Check backend_py directory changes
-        id: backend-changes
-        run: |
-          if ! git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^backend_py/' || true; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Skip deployment if conditions are met
-        if: ${{ steps.skip-check.outputs.skip == 'true' || steps.backend-changes.outputs.skip == 'true' }}
-        run: echo "Skipping deployment due to PR source or lack of changes."
-
       - name: Set up Python
-        if: ${{ steps.skip-check.outputs.skip != 'true' && steps.backend-changes.outputs.skip != 'true' }}
         uses: actions/setup-python@v5
         with:
           python-version: '3.11.x'
 
       - name: Install rsconnect for Python
-        if: ${{ steps.skip-check.outputs.skip != 'true' && steps.backend-changes.outputs.skip != 'true' }}
         run: pip install rsconnect-python
 
       - name: Add rsconnect account
-        if: ${{ steps.skip-check.outputs.skip != 'true' && steps.backend-changes.outputs.skip != 'true' }}
         env:
-          RSCONNECT_TOKEN: ${{ secrets.RSCONNECT_TOKEN }}
-          RSCONNECT_SECRET: ${{ secrets.RSCONNECT_SECRET }}
+            RSCONNECT_TOKEN: ${{ secrets.RSCONNECT_TOKEN }}
+            RSCONNECT_SECRET: ${{ secrets.RSCONNECT_SECRET }}
         run: |
             rsconnect add \
               --account aquawatchmobile \
@@ -58,7 +36,6 @@ jobs:
               --secret $RSCONNECT_SECRET
 
       - name: Deploy Shiny app
-        if: ${{ steps.skip-check.outputs.skip != 'true' && steps.backend-changes.outputs.skip != 'true' }}
         run: |
           echo "Deploying from $GITHUB_WORKSPACE/backend_py"
           rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
