@@ -19,7 +19,7 @@ jobs:
                 node-version: 18.x
 
             - name: 🏗 Setup EAS
-              run: npm install eas-cli
+              run: npm install -g eas-cli
             
             - name: Login to EAS
               env:
