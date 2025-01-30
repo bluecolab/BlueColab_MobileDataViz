@@ -26,12 +26,10 @@ jobs:
               env:
                 EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-            - name: Move into correct directory
-              run: cd aquawatch_mobile_app
-
             - name: 📦 Install dependencies
+              working-directory: ./aquawatch_mobile_app
               run: npm install
 
-
             - name: 🚀 Build app
+              working-directory: ./aquawatch_mobile_app
               run: eas build -p android -profile production
