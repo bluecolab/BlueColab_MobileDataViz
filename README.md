@@ -19,17 +19,13 @@ One day you'll know what's in the water that's coming out of your tap.
 
 <hr>
 
-### General Prerequisites
-- [git 🔗](https://git-scm.com/) - version control. See. For installing git, please see the [git website 🔗](https://git-scm.com/).
-- Go to where you would like to have this repository.
-- Run `git clone https://github.com/bluecolab/BlueColab_MobileDataViz.git` in a terminal.
-
-<hr>
-
 ### Getting Started
-- To get started on the frontend, see [here](./aquawatch_mobile_app/README.md)
-- To get started on the backend, see [here](./backend_py/README.md)
-- For details on the app internals, please see the Important Notes and Documentation For AquaWatch Mobile-1.pdf. 
+1. Clone the repository `git clone https://github.com/bluecolab/BlueColab_MobileDataViz.git`. 
+    1. We use [git 🔗](https://git-scm.com/) for version control. For installing git, please see the [git website 🔗](https://git-scm.com/).
+2. To get started on the frontend, see [here](./aquawatch_mobile_app/README.md)
+3. To get started on the backend, see [here](./backend_py/README.md)
+4. For details on the app internals, please see the Important Notes and Documentation For AquaWatch Mobile-1.pdf. 
+
 <hr>
 
 ### Development Team
