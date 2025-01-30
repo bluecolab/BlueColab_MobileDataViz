@@ -26,20 +26,19 @@ jobs:
 
       - name: Add rsconnect account
         env:
-            RSCONNECT_ACCOUNT: ${{ secrets.RSCONNECT_ACCOUNT }}
-            RSCONNECT_NAME: ${{ secrets.RSCONNECT_NAME }}
             RSCONNECT_TOKEN: ${{ secrets.RSCONNECT_TOKEN }}
             RSCONNECT_SECRET: ${{ secrets.RSCONNECT_SECRET }}
         run: |
             rsconnect add \
-              --account $RSCONNECT_ACCOUNT \
-              --name $RSCONNECT_NAME \
+              --account aquawatchmobile \
+              --name aquawatchmobile \
               --token $RSCONNECT_TOKEN \
               --secret $RSCONNECT_SECRET
-
+  
       - name: Deploy Shiny app
         run: |
           echo "Deploying from $GITHUB_WORKSPACE/backend_py"
           rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
-            --name "$RSCONNECT_NAME" \
-            --title "aquawatchmobile"
+            --name aquawatchmobile \
+            --title "aquawatchmobilepy" \
+            --app-id 11739222

@@ -38,3 +38,5 @@ yarn-error.*
 
 .idea/
 ./aquawatch_mobile_app/.idea/
+
+/backend_py.json
