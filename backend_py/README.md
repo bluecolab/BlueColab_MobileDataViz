@@ -38,19 +38,4 @@ Use caution: manually installing packages can cause version-conflict issues.
 4. Note that as this is unofficial not all devices may support this. Generally your computer and phone must be on same network. Firewalls may present issues as well. 
 5. As an alternative, most browsers support [device mode testing](https://developer.chrome.com/docs/devtools/device-mode). 
 
-## Deploying to Dev (https://aquawatchmobile.shinyapps.io/aquawatchmobiledev/)
-1. Deployment is handled by [GitHub Actions](https://docs.github.com/en/actions).
-2. To deploy to dev, first make your chances on a branch called `backend-dev`.
-3. Test locally.
-4. Open a PR.
-5. If all checks are successful, you will see the updated backend here: https://aquawatchmobile.shinyapps.io/aquawatchmobiledev/
-
-To edit the workflow and it's triggers edit: [.github/workflows/dev_backend_delploy.yml](../.github/workflows/dev_backend_delploy.yml)
-
-## Deploying to Production (https://aquawatchmobile.shinyapps.io/aquawatchmobilepy/)
-1. Deployment is handled by [GitHub Actions](https://docs.github.com/en/actions).
-2. To deploy to dev follow the above dev deploy checks.
-3. Verify dev website works as intended.
-4. Approve and merge PR containing the updates.
-
-To edit the workflow and it's triggers edit: [.github/workflows/backend_delploy.yml](../.github/workflows/backend_delploy.yml)
+For instructions on deploying, please see our GitHub Wiki.
