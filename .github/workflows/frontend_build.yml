@@ -29,6 +29,10 @@ jobs:
               env:
                 EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
+            - name: Install dependencies
+              working-directory: ./aquawatch_mobile_app
+              run: npm install
+
             - name: 🚀 Build app
               working-directory: ./aquawatch_mobile_app
               env:
