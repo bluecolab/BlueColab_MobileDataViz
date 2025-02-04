@@ -1,44 +1,39 @@
-# name: Shinyapps IO Dev Deployment
-# run-name: ${{ github.actor }} Deployment of Dev Backend
-# on:
-#   pull_request:
-#     branches:
-#       - 'main'
-#     paths:
-#       - 'backend_py/**'
-#   workflow_dispatch: # Manual trigger
+name: Shinyapps IO Dev Deployment
+run-name: ${{ github.actor }} Deployment of Dev Backend
+on:
+  workflow_dispatch: # Manual trigger
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
     
-#     steps:
-#       - name: Check out the repository
-#         uses: actions/checkout@v4
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
 
-#       - name: Set up Python
-#         uses: actions/setup-python@v5
-#         with:
-#           python-version: '3.11.x'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.x'
 
-#       - name: Install rsconnect for Python
-#         run: pip install rsconnect-python
+      - name: Install rsconnect for Python
+        run: pip install rsconnect-python
 
-#       - name: Add rsconnect account
-#         env:
-#             RSCONNECT_TOKEN: ${{ secrets.RSCONNECT_TOKEN }}
-#             RSCONNECT_SECRET: ${{ secrets.RSCONNECT_SECRET }}
-#         run: |
-#             rsconnect add \
-#               --account aquawatchmobile \
-#               --name aquawatchmobile \
-#               --token $RSCONNECT_TOKEN \
-#               --secret $RSCONNECT_SECRET
+      - name: Add rsconnect account
+        env:
+            RSCONNECT_TOKEN: ${{ secrets.RSCONNECT_TOKEN }}
+            RSCONNECT_SECRET: ${{ secrets.RSCONNECT_SECRET }}
+        run: |
+            rsconnect add \
+              --account aquawatchmobile \
+              --name aquawatchmobile \
+              --token $RSCONNECT_TOKEN \
+              --secret $RSCONNECT_SECRET
 
-#       - name: Deploy Shiny app
-#         run: |
-#           echo "Deploying from $GITHUB_WORKSPACE/backend_py"
-#           rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
-#             --name "aquawatchmobile" \
-#             --title "aquawatchmobiledev" \
-#             --app-id 13850420
+      - name: Deploy Shiny app
+        run: |
+          echo "Deploying from $GITHUB_WORKSPACE/backend_py"
+          rsconnect deploy shiny "$GITHUB_WORKSPACE/backend_py" \
+            --name "aquawatchmobile" \
+            --title "aquawatchmobiledev" \
+            --app-id 13850420
