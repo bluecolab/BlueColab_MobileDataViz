@@ -1,12 +1,8 @@
 import React from "react";
 import {
-  View,
-  Text,
   ScrollView
 } from "react-native";
-// import styles from "../../styles"; NOT IN USE
-// import CustomCard from "../components/CustomCard"; NOT IN USE
-import GradientCard from "../components/GradientCard"; 
+import { GradientCard } from "@components"; 
 
 //this is the first screen you see after the welcome screen
 //takes you to all the other sections of the app
@@ -15,9 +11,6 @@ export default function HomeScreen({ navigation }) {
   //each of these constants handle navigation from each button
   const handleStoryScreenPress = () => {
     navigation.navigate("Story");
-  };
-  const handleDataHubPress = () => {
-    navigation.navigate("Hub");
   };
   const handleWildlifeScreenPress = () => {
     navigation.navigate("Wildlife");
@@ -28,9 +21,6 @@ export default function HomeScreen({ navigation }) {
   const handleAttributionPress = () => {
     navigation.navigate("Attributions");
   }
-  const handleChoatePress = () => {
-    navigation.navigate("Choate");
-  };
   const handleAqiPress = () => {
     navigation.navigate("AQI");
   };

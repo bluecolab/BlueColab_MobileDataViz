@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import CustomWebView from "../components/CustomWebView";
+import { CustomWebView } from "@components";
 
 export default function StoryScreen() {
   return (

@@ -1,8 +1,6 @@
 import React from "react";
-import { View, Text, ScrollView, FlatList, Image, Dimensions } from "react-native";
-import styles from "../../styles"; // Import your existing styles
-
-const windowWidth = Dimensions.get("window").width;
+import { View, Text, FlatList, Image } from "react-native";
+import styles from "../../styles"; 
 
 const WildlifeScreen = () => {
   const choateWildlifeData = [
