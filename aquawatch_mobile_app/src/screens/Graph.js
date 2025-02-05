@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  LineChart,
-} from "react-native-chart-kit";
-import {
-  View,
-  Text,
-  Dimensions
-} from "react-native";
+import { LineChart } from "react-native-chart-kit";
+import { View, Text, Dimensions } from "react-native";
 import axios from 'axios';
 
 export default function Graph() {
@@ -14,84 +8,69 @@ export default function Graph() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Example of making a GET request with Axios
     axios
       .get('https://colabprod01.pace.edu/api/influx/sensordata/Alan/delta?days=30')
       .then((response) => {
-        setData(response.data); // Set data from the response
-        setLoading(false); // Turn off the loading state
+        setData(response.data); 
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
-        setLoading(false);
-      });
+        setData({ error: 'Failed to load data' });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
     return <Text>Loading...</Text>;
-  } else {
-    console.log(data.length)
   }
 
-  const timestamps = data.map((data) => {
-    return data.timestamp
-  })
+  if (data?.error) {
+    return <Text>{data.error}</Text>;
+  }
 
-  const sensors = data.map((data) => {
-    return data.sensors['Temp']
-  })
+  if (!Array.isArray(data)) {
+    return <Text>Invalid data format</Text>;
+  }
 
-  // Step 1: Convert timestamps to Date objects and extract just the date part (without the time).
+  const timestamps = data.map(({ timestamp }) => timestamp);
+  const sensors = data.map(({ sensors }) => sensors['Temp']);
+
+  // Create a mapping from timestamp to sensor value
+  const sensorMap = timestamps.reduce((acc, timestamp, index) => {
+    acc[timestamp] = sensors[index];
+    return acc;
+  }, {});
+
+  // Group data by day and calculate daily average
   const groupedByDay = timestamps.reduce((acc, timestamp) => {
-    const date = new Date(timestamp);
-    const day = date.toISOString().split('T')[0];  // Get the date in YYYY-MM-DD format
-    console.log(day)
-    // Step 2: Group them by date
+    const day = new Date(timestamp).toISOString().split('T')[0];
     if (!acc[day]) {
       acc[day] = [];
     }
     acc[day].push(timestamp);
-
     return acc;
   }, {});
 
   const days = [];
-  const sonds = [];
-  Object.keys(groupedByDay).forEach(date => {
-    console.log(`Date: ${date}`);
-    days.push(date)
-    const arr = groupedByDay[date];
-    let total = 0;
-    let index = 0;
-    arr.forEach( (cutaways) => {
-      total += sensors[timestamps.findIndex((time) => time== cutaways)];
-      index++;
-    })   
-    sonds.push(total/index);
-  });
+  const averages = [];
 
-  console.log(
-    days,
-    sonds
-  )
+  Object.keys(groupedByDay).forEach((date) => {
+    days.push(date);
+    const timestampsForDay = groupedByDay[date];
+    const total = timestampsForDay.reduce((sum, timestamp) => sum + sensorMap[timestamp], 0);
+    averages.push(total / timestampsForDay.length);
+  });
 
   return (
     <View>
-      <Text>Bezier Line Chart</Text>
+      <Text>Temperature Over Time</Text>
       <LineChart
         data={{
           labels: days,
-          datasets: [
-            {
-              data: sonds
-            }
-          ]
+          datasets: [{ data: averages }]
         }}
         width={Dimensions.get("window").width} // from react-native
         height={400}
-        // yAxisLabel="$"
-        // yAxisSuffix="k"
-        yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
           backgroundColor: "#e26a00",
           backgroundGradientFrom: "#fb8c00",
