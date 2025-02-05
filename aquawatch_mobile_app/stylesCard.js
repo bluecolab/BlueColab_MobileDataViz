@@ -28,15 +28,15 @@ export const middleButtonStyles = StyleSheet.create({
   MiddleButtonContainer: {
     position: 'absolute',
     top: -30,
-    left: '50%', 
-    marginLeft: -30, 
+    left: '50%',
+    marginLeft: -30,
     width: 60,
     height: 60,
   },
   customButton: {
     width: 60,
     height: 60,
-    borderRadius: 30, 
+    borderRadius: 30,
     backgroundColor: '#00D6FC',
     justifyContent: 'center',
     alignItems: 'center',
@@ -63,6 +63,14 @@ export const cardStyles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     margin: 10,
+    // Shadow for iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+
+    // For android
+    elevation: 10,
   },
   gradientBackground: {
     padding: 5,

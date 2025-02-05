@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from "react-native";
-import { CartesianChart, Line } from "victory-native";
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import { VictoryChart, VictoryArea, VictoryLine } from "victory-native";
+import axios from "axios";
 
-export default function Graph() {
+function Graph() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -14,67 +14,117 @@ export default function Graph() {
         setData(response.data); 
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
-        setData({ error: 'Failed to load data' });
+        console.error("Error fetching data:", error);
+        setData({ error: "Failed to load data" });
       })
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return <Text>Loading...</Text>;
+  // Extract data if available and valid
+  let chartData = [];
+  if (Array.isArray(data)) {
+    const timestamps = data.map(({ timestamp }) => timestamp);
+    const sensors = data.map(({ sensors }) => (sensors["Temp"]*(9/5))+32);
+
+    const sensorMap = timestamps.reduce((acc, timestamp, index) => {
+      acc[timestamp] = sensors[index];
+      return acc;
+    }, {});
+
+    const groupedByDay = timestamps.reduce((acc, timestamp) => {
+      const day = new Date(timestamp).toISOString().split("T")[0];
+      if (!acc[day]) acc[day] = [];
+      acc[day].push(timestamp);
+      return acc;
+    }, {});
+
+    const days = [];
+    const averages = [];
+    const min = [];
+    const max = [];
+
+    Object.keys(groupedByDay).forEach((date) => {
+      days.push(date);
+      const timestampsForDay = groupedByDay[date];
+      const sensorValuesForDay = timestampsForDay.map((timestamp) => sensorMap[timestamp]);
+
+      const total = sensorValuesForDay.reduce((sum, value) => sum + value, 0);
+      averages.push(total / sensorValuesForDay.length);
+      min.push(Math.min(...sensorValuesForDay));
+      max.push(Math.max(...sensorValuesForDay));
+    });
+
+    chartData = days.map((day, index) => ({
+      day: new Date(day),
+      avgTmp: averages[index],
+      y0: min[index],
+      y: max[index],
+    }));
   }
-
-  if (data?.error) {
-    return <Text>{data.error}</Text>;
-  }
-
-  if (!Array.isArray(data)) {
-    return <Text>Invalid data format</Text>;
-  }
-
-  // Extract timestamps and sensor data
-  const timestamps = data.map(({ timestamp }) => timestamp);
-  const sensors = data.map(({ sensors }) => sensors['Temp']);
-
-  // Create a mapping from timestamp to sensor value
-  const sensorMap = timestamps.reduce((acc, timestamp, index) => {
-    acc[timestamp] = sensors[index];
-    return acc;
-  }, {});
-
-  // Group data by day and calculate daily average
-  const groupedByDay = timestamps.reduce((acc, timestamp) => {
-    const day = new Date(timestamp).toISOString().split('T')[0];
-    if (!acc[day]) {
-      acc[day] = [];
-    }
-    acc[day].push(timestamp);
-    return acc;
-  }, {});
-
-  const days = [];
-  const averages = [];
-
-  Object.keys(groupedByDay).forEach((date) => {
-    days.push(date);
-    const timestampsForDay = groupedByDay[date];
-    const total = timestampsForDay.reduce((sum, timestamp) => sum + sensorMap[timestamp], 0);
-    averages.push(total / timestampsForDay.length);
-  });
-
-  // Prepare the data for the chart in the format required by Victory
-  const chartData = days.map((day, index) => ({
-    day,         // The x-axis (dates)
-    highTmp: averages[index], // The y-axis (averages)
-  }));
 
   return (
-    <View style={{ height: 400 }}>
-      <CartesianChart data={chartData} xKey="day" yKeys={["highTmp"]}>
-        {({ points }) => (
-          <Line points={points.highTmp} color="blue" strokeWidth={3} />
-        )}
-      </CartesianChart>
+    <View
+      style={styles.background}
+    >
+
+      {loading ? (
+        <Text style={styles.loadingText}>Loading...</Text>
+      ) : data?.error ? (
+        <Text style={styles.errorText}>{data.error}</Text>
+      ) : !Array.isArray(data) ? (
+        <Text style={styles.errorText}>Invalid data format</Text>
+      ) : (
+        <View style={styles.chartContainer}>
+          <VictoryChart>
+            <VictoryArea
+              data={chartData}
+              x="day"
+              y0="y0"
+              y="y"
+              style={{ data: { fill: "rgba(0, 100, 255, 0.4)" } }}
+            />
+            <VictoryLine
+              data={chartData}
+              x="day"
+              y="avgTmp"
+              style={{ data: { stroke: "rgba(0, 0, 255, 1)" } }}
+            />
+          </VictoryChart>
+        </View>
+      )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: "rgb(230, 230, 230)",
+  },
+  loadingText: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 18,
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    fontSize: 18,
+  },
+  chartContainer: {
+    margin: 10,
+    borderRadius: 20,
+    backgroundColor: "rgb(255, 255, 255)",
+    
+    // Shadow for iOS
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1, 
+    shadowRadius: 10, 
+    
+    // For android
+    elevation: 5,
+  },
+});
+
+export default Graph;

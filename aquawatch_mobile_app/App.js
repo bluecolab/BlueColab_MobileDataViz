@@ -3,10 +3,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph} from '@screens';
-import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard'; 
-import waterDropIcon from './assets/free-water-drop-2-462137.png'; 
-import homeIcon from './assets/HomeIcon.png'; 
+import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph } from '@screens';
+import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard';
+import waterDropIcon from './assets/free-water-drop-2-462137.png';
+import homeIcon from './assets/HomeIcon.png';
 import monthlyDataIcon from './assets/NavGraphIcon.png';
 
 // Create the stack navigators
@@ -17,7 +17,15 @@ const MonthlyDataStack = createStackNavigator();
 // Stack navigator for the Home tab
 function HomeStackNavigator() {
   return (
-    <HomeStack.Navigator screenOptions={{ headerShown: true }}>
+    <HomeStack.Navigator screenOptions={{
+      headerShown: true, headerStyle: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
+        elevation: 20,
+      }
+    }}>
       <HomeStack.Screen name="Home" component={HomeScreen} />
       <HomeStack.Screen name="Story" component={StoryScreen} />
       <HomeStack.Screen name="Wildlife" component={WildlifeScreen} />
@@ -32,7 +40,15 @@ function HomeStackNavigator() {
 // Stack navigator for the Middle tab (Data Hub)
 function MiddleStackNavigator() {
   return (
-    <MiddleStack.Navigator screenOptions={{ headerShown: true }}>
+    <MiddleStack.Navigator screenOptions={{ headerShown: true,
+      headerStyle: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
+        elevation: 20,
+      }
+     }}>
       <MiddleStack.Screen name="Current Data" component={MiddleScreen} />
     </MiddleStack.Navigator>
   );
@@ -41,7 +57,15 @@ function MiddleStackNavigator() {
 // Stack navigator for the Monthly tab
 function MonthlyDataStackNavigator() {
   return (
-    <MonthlyDataStack.Navigator screenOptions={{ headerShown: true }}>
+    <MonthlyDataStack.Navigator screenOptions={{ headerShown: true,
+      headerStyle: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
+        elevation: 20,
+      }
+    }}>
       <MonthlyDataStack.Screen name="Monthly Data" component={MonthlyData} />
     </MonthlyDataStack.Navigator>
   );
@@ -63,8 +87,8 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{ tabBarShowLabel: false, tabBarStyle: tabBarStyles.tabBar, headerShown: false  }}>
-        <Tab.Screen 
+      <Tab.Navigator screenOptions={{ tabBarShowLabel: false, tabBarStyle: tabBarStyles.tabBar, headerShown: false }}>
+        <Tab.Screen
           name="HomeTab"
           component={HomeStackNavigator}
           options={{
