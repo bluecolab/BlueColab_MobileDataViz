@@ -60,7 +60,7 @@ export const iconStyles = StyleSheet.create({
 //_+_+_+_+_+_+_+_+_+_+_+_+_Card Settings_+_+_+_+_+_+_+_+_+_+_+_+
 export const cardStyles = StyleSheet.create({
   cardContainer: {
-    borderRadius: 8,
+    borderRadius: 20,
     overflow: 'hidden',
     margin: 10,
     // Shadow for iOS
