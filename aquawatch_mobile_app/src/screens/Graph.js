@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { LineChart } from "react-native-chart-kit";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text } from "react-native";
+import { CartesianChart, Line } from "victory-native";
 import axios from 'axios';
 
 export default function Graph() {
@@ -32,6 +32,7 @@ export default function Graph() {
     return <Text>Invalid data format</Text>;
   }
 
+  // Extract timestamps and sensor data
   const timestamps = data.map(({ timestamp }) => timestamp);
   const sensors = data.map(({ sensors }) => sensors['Temp']);
 
@@ -61,38 +62,19 @@ export default function Graph() {
     averages.push(total / timestampsForDay.length);
   });
 
+  // Prepare the data for the chart in the format required by Victory
+  const chartData = days.map((day, index) => ({
+    day,         // The x-axis (dates)
+    highTmp: averages[index], // The y-axis (averages)
+  }));
+
   return (
-    <View>
-      <Text>Temperature Over Time</Text>
-      <LineChart
-        data={{
-          labels: days,
-          datasets: [{ data: averages }]
-        }}
-        width={Dimensions.get("window").width} // from react-native
-        height={400}
-        chartConfig={{
-          backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#fb8c00",
-          backgroundGradientTo: "#ffa726",
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 16
-          },
-          propsForDots: {
-            r: "6",
-            strokeWidth: "2",
-            stroke: "#ffa726"
-          }
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16
-        }}
-      />
+    <View style={{ height: 400 }}>
+      <CartesianChart data={chartData} xKey="day" yKeys={["highTmp"]}>
+        {({ points }) => (
+          <Line points={points.highTmp} color="blue" strokeWidth={3} />
+        )}
+      </CartesianChart>
     </View>
   );
 }
