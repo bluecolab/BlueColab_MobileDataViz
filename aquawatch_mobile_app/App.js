@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen } from '@screens';
+import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph} from '@screens';
 import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard'; 
 import waterDropIcon from './assets/free-water-drop-2-462137.png'; 
 import homeIcon from './assets/HomeIcon.png'; 
@@ -24,6 +24,7 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="Blog" component={BlogScreen} />
       <HomeStack.Screen name="Attributions" component={Attributions} />
       <HomeStack.Screen name="AQI" component={AirQuality} />
+      <HomeStack.Screen name="Graph" component={Graph} />
     </HomeStack.Navigator>
   );
 }

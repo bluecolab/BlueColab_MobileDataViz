@@ -6,3 +6,4 @@ export { default as MiddleScreen } from './MiddleScreen';
 export { default as MonthlyData } from './MonthlyData';
 export { default as StoryScreen } from './StoryScreen';
 export { default as WildlifeScreen } from './WildlifeScreen';
+export { default as Graph } from './Graph';

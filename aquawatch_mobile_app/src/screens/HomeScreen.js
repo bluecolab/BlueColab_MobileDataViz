@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { GradientCard } from "@components"; 
 
@@ -23,6 +23,9 @@ export default function HomeScreen({ navigation }) {
   }
   const handleAqiPress = () => {
     navigation.navigate("AQI");
+  };
+  const handleGraphPress = () => {
+    navigation.navigate("Graph");
   };
 
   return (
@@ -63,6 +66,14 @@ export default function HomeScreen({ navigation }) {
           buttonText="Learn more..."
           onButtonPress={handleAttributionPress}
           gradientColors={['#FFFFFF', '#6DD5FA']}
+      ></GradientCard>
+
+<GradientCard
+          imageSource={require("../../assets/homescreen/code.jpg")}
+          title="Test Graph"
+          buttonText="View more..."
+          onButtonPress={handleGraphPress}
+          gradientColors={['#6DD5FA', '#6DD5FA']}
       ></GradientCard>
     </ScrollView>
   );
