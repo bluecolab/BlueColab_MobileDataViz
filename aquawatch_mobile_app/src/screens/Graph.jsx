@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, ScrollView } from "react-native";
 import { VictoryChart, VictoryArea, VictoryLine } from "victory-native";
 import axios from "axios";
 
 function Graph() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedValue, setSelectedValue] = useState('java');
 
   useEffect(() => {
     axios
       .get('https://colabprod01.pace.edu/api/influx/sensordata/Alan/delta?days=30')
       .then((response) => {
-        setData(response.data); 
+        setData(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -24,7 +25,7 @@ function Graph() {
   let chartData = [];
   if (Array.isArray(data)) {
     const timestamps = data.map(({ timestamp }) => timestamp);
-    const sensors = data.map(({ sensors }) => (sensors["Temp"]*(9/5))+32);
+    const sensors = data.map(({ sensors }) => (sensors["Temp"] * (9 / 5)) + 32);
 
     const sensorMap = timestamps.reduce((acc, timestamp, index) => {
       acc[timestamp] = sensors[index];
@@ -63,36 +64,46 @@ function Graph() {
   }
 
   return (
-    <View
+    <ScrollView
       style={styles.background}
+
     >
 
-      {loading ? (
-        <Text style={styles.loadingText}>Loading...</Text>
-      ) : data?.error ? (
-        <Text style={styles.errorText}>{data.error}</Text>
-      ) : !Array.isArray(data) ? (
-        <Text style={styles.errorText}>Invalid data format</Text>
-      ) : (
-        <View style={styles.chartContainer}>
-          <VictoryChart>
-            <VictoryArea
-              data={chartData}
-              x="day"
-              y0="y0"
-              y="y"
-              style={{ data: { fill: "rgba(0, 100, 255, 0.4)" } }}
-            />
-            <VictoryLine
-              data={chartData}
-              x="day"
-              y="avgTmp"
-              style={{ data: { stroke: "rgba(0, 0, 255, 1)" } }}
-            />
-          </VictoryChart>
+      <View
+      >
+
+        {loading ? (
+          <Text style={styles.loadingText}>Loading...</Text>
+        ) : data?.error ? (
+          <Text style={styles.errorText}>{data.error}</Text>
+        ) : !Array.isArray(data) ? (
+          <Text style={styles.errorText}>Invalid data format</Text>
+        ) : (
+          <View style={styles.chartContainer}>
+            <VictoryChart>
+              <VictoryArea
+                data={chartData}
+                x="day"
+                y0="y0"
+                y="y"
+                style={{ data: { fill: "rgba(0, 100, 255, 0.4)" } }}
+              />
+              <VictoryLine
+                data={chartData}
+                x="day"
+                y="avgTmp"
+                style={{ data: { stroke: "rgba(0, 0, 255, 1)" } }}
+              />
+            </VictoryChart>
+          </View>
+        )}
+        <View className="m-[10] bg-white rounded-3xl">
+          <Text className='text-xl m-1 font-bold'>Options</Text>
+          <Text className='m-1 pb-[32px]'>Test</Text>
         </View>
-      )}
-    </View>
+      </View>
+    </ScrollView>
+
   );
 }
 
@@ -115,13 +126,13 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 20,
     backgroundColor: "rgb(255, 255, 255)",
-    
+
     // Shadow for iOS
-    shadowColor: '#000', 
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1, 
-    shadowRadius: 10, 
-    
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+
     // For android
     elevation: 5,
   },

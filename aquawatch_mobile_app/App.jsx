@@ -8,6 +8,7 @@ import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard';
 import waterDropIcon from './assets/free-water-drop-2-462137.png';
 import homeIcon from './assets/HomeIcon.png';
 import monthlyDataIcon from './assets/NavGraphIcon.png';
+import "./global.css"
 
 // Create the stack navigators
 const HomeStack = createStackNavigator();

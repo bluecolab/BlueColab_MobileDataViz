@@ -27,6 +27,7 @@
       "versionCode": 5
     },
     "web": {
+      "bundler": "metro",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
