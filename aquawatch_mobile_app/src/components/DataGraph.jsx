@@ -1,21 +1,17 @@
-import React, { useState } from "react";
-import { View, Text,  } from "react-native";
+import React from "react";
+import { View, Text, } from "react-native";
 import { VictoryChart, VictoryArea, VictoryLine, VictoryLabel, VictoryAxis } from "victory-native";
-import {  EmptyGraph } from '@components';
-import { useIsDark } from '@contexts';
+import EmptyGraph from './EmptyGraph';
+import { useIsDark } from "@contexts"
 
-function DataGraph() {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+function DataGraph({ loading, yAxisLabel, data, unit, description="Temp" }) {
     const isDark = useIsDark();
-
     let chartData = [];
     let tickValues = [];
-    let yAxisLabel = "Temperature";
 
     if (Array.isArray(data)) {
         const timestamps = data.map(({ timestamp }) => timestamp);
-        const sensors = data.map(({ sensors }) => (sensors["Temp"] * (9 / 5)) + 32);
+        const sensors = data.map(({ sensors }) => (unit == "Temp" ? (sensors[unit] * (9 / 5)) + 32 : sensors[unit]));
 
         const sensorMap = timestamps.reduce((acc, timestamp, index) => {
             acc[timestamp] = sensors[index];
@@ -56,9 +52,9 @@ function DataGraph() {
     }
 
     return (
-        <>
-            <View className="rounded-3xl bg-white dark:bg-gray-700  elevation-[5]">
-                <Text className="text-2xl font-bold text-center dark:text-white">
+        <View className="flex-1 items-center justify-center mt-default">
+            <View className="rounded-3xl w-[95%] bg-white dark:bg-gray-700 elevation-[5] ">
+                <Text className="text-2xl font-bold mt-2 text-center dark:text-white">
                     {yAxisLabel}
                 </Text>
                 {loading ? (
@@ -109,8 +105,16 @@ function DataGraph() {
                     </VictoryChart>
                 )}
             </View>
-        </>
+
+            <View className="rounded-3xl w-[95%] bg-white dark:bg-gray-700 elevation-[5] mt-default p-default ">
+                <View className="flex-row items-center">
+                    <Text className="font-bold dark:text-white">{yAxisLabel}: </Text>
+                    <Text className="dark:text-white">{description}</Text>
+                </View>
+            </View>
+
+        </View>
     );
 }
 
-export default Graph;
+export default DataGraph;

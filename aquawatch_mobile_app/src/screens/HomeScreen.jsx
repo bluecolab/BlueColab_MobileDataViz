@@ -35,14 +35,14 @@ export default function HomeScreen({ navigation }) {
         {/* The paddingBottom should be at least as tall as the bottom tab navigator's height */}
         {/* More info about the gradientCard Check GradientCard.js and StylesCard.js */}
         <GradientCard
-          imageSource={require("../../assets/homescreen/PXL_20221014_204618892.png")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+          imageSource={require("../../assets/homescreen/PXL_20221014_204618892.jpg")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
           title="This app is brought to you by Blue CoLab, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean." // Pretty much the text
           buttonText="Learn more..."
           onButtonPress={handleStoryScreenPress}
           gradientColors={['#ffdde1', '#ee9ca7']} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
         />
         <GradientCard
-          imageSource={require("../../assets/homescreen/turtle.png")}
+          imageSource={require("../../assets/homescreen/turtle.jpg")}
           title="Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!"
           buttonText="See Local Wildlife..."
           onButtonPress={handleWildlifeScreenPress}
