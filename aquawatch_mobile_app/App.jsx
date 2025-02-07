@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph } from '@screens';
 import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard';
+import { ColorSchemeProvider } from '@contexts';
 import waterDropIcon from './assets/free-water-drop-2-462137.png';
 import homeIcon from './assets/HomeIcon.png';
 import monthlyDataIcon from './assets/NavGraphIcon.png';
@@ -20,11 +21,12 @@ function HomeStackNavigator() {
   return (
     <HomeStack.Navigator screenOptions={{
       headerShown: true, headerStyle: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 20,
+        // shadowColor: '#000',
+        // shadowOffset: { width: 0, height: 4 },
+        // shadowOpacity: 0.1,
+        // shadowRadius: 20,
         elevation: 20,
+        // z: 1
       }
     }}>
       <HomeStack.Screen name="Home" component={HomeScreen} />
@@ -87,6 +89,8 @@ const Tab = createBottomTabNavigator();
 // App component with bottom tab navigator containing stack navigators for each tab
 export default function App() {
   return (
+    <ColorSchemeProvider>
+
     <NavigationContainer>
       <Tab.Navigator screenOptions={{ tabBarShowLabel: false, tabBarStyle: tabBarStyles.tabBar, headerShown: false }}>
         <Tab.Screen
@@ -120,5 +124,6 @@ export default function App() {
         />
       </Tab.Navigator>
     </NavigationContainer>
+    </ColorSchemeProvider>
   );
 }

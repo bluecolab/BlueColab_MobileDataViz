@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ImageBackground, StyleSheet, ScrollView } from "react-native";
-import { VictoryChart, VictoryArea, VictoryLine } from "victory-native";
+import { View, Text, ScrollView } from "react-native";
+import { VictoryChart, VictoryArea, VictoryLine, VictoryLabel, VictoryAxis } from "victory-native";
+import { WQIGauge, EmptyGraph } from '@components';
+import { useIsDark } from '@contexts';
 import axios from "axios";
 
 function Graph() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState('java');
-
+  const isDark = useIsDark();
   useEffect(() => {
     axios
       .get('https://colabprod01.pace.edu/api/influx/sensordata/Alan/delta?days=30')
@@ -18,11 +19,15 @@ function Graph() {
         console.error("Error fetching data:", error);
         setData({ error: "Failed to load data" });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
-  // Extract data if available and valid
   let chartData = [];
+  let tickValues = [];
+  let yAxisLabel = "Temperature";
+
   if (Array.isArray(data)) {
     const timestamps = data.map(({ timestamp }) => timestamp);
     const sensors = data.map(({ sensors }) => (sensors["Temp"] * (9 / 5)) + 32);
@@ -45,7 +50,7 @@ function Graph() {
     const max = [];
 
     Object.keys(groupedByDay).forEach((date) => {
-      days.push(date);
+      days.push(new Date(date));
       const timestampsForDay = groupedByDay[date];
       const sensorValuesForDay = timestampsForDay.map((timestamp) => sensorMap[timestamp]);
 
@@ -56,86 +61,86 @@ function Graph() {
     });
 
     chartData = days.map((day, index) => ({
-      day: new Date(day),
+      day,
       avgTmp: averages[index],
       y0: min[index],
       y: max[index],
     }));
+
+    tickValues = days.filter((_, index) => index % 5 === 0);
   }
 
   return (
-    <ScrollView
-      style={styles.background}
-
-    >
-
-      <View
+    <View className="bg-defaultbackground dark:bg-defaultdarkbackground">
+      <View className="w-full bg-white elevation-[20] z-10 p-default dark:bg-gray-700">
+        <Text className='text-xl text-center  dark:text-white'>Option to select location V </Text>
+        <Text className='text-xl text-center  dark:text-white'>Option to select time V </Text>
+      </View>
+      {/* colorScheme */}
+      <ScrollView className="p-default h-full"
+        contentContainerStyle={{ paddingBottom: 175 }}
       >
 
-        {loading ? (
-          <Text style={styles.loadingText}>Loading...</Text>
-        ) : data?.error ? (
-          <Text style={styles.errorText}>{data.error}</Text>
-        ) : !Array.isArray(data) ? (
-          <Text style={styles.errorText}>Invalid data format</Text>
-        ) : (
-          <View style={styles.chartContainer}>
-            <VictoryChart>
+        <View className="rounded-3xl bg-white dark:bg-gray-700  elevation-[5]">
+          <Text className="text-2xl font-bold text-center dark:text-white">
+            {yAxisLabel}
+          </Text>
+          {loading ? (
+            <EmptyGraph />
+          ) : data?.error ? (
+            <EmptyGraph text={"No Wifi, please connect to Wifi!"} />
+          ) : !Array.isArray(data) ? (
+            <EmptyGraph text={"No data for location, try another."} />
+          ) : (
+            <VictoryChart padding={{ left: 70, top: 20, right: 50, bottom: 50 }} >
+              <VictoryAxis
+                label="Time"
+                tickValues={tickValues}
+                tickFormat={(t) => `${t.getMonth() + 1}/${t.getDate()}`}
+                style={{
+                  axis: { stroke: isDark ? '#fff' : "#000" },
+                  axisLabel: { fill: isDark ? '#fff' : "#000" },
+                  tickLabels: {
+                    fontSize: 12, padding: 5, fill: isDark ? '#fff' : "#000",
+                  }
+                }}
+
+              />
+              <VictoryAxis dependentAxis label={yAxisLabel}
+                style={{
+                  axis: { stroke: isDark ? '#fff' : "#000" },
+                  axisLabel: { fill: isDark ? '#fff' : "#000" },
+                  tickLabels: {
+                    fill: isDark ? '#fff' : "#000",
+                  }
+                }}
+                axisLabelComponent={
+                  <VictoryLabel dy={-20} angle={270} />
+                } />
               <VictoryArea
                 data={chartData}
                 x="day"
                 y0="y0"
                 y="y"
-                style={{ data: { fill: "rgba(0, 100, 255, 0.4)" } }}
+                style={{ data: { fill: isDark ? "rgba(73, 146, 255, 0.95)" : "rgba(0, 100, 255, 0.4);" } }}
               />
               <VictoryLine
                 data={chartData}
                 x="day"
                 y="avgTmp"
-                style={{ data: { stroke: "rgba(0, 0, 255, 1)" } }}
+                style={{ data: { stroke: isDark ? "rgb(0, 0, 138)" : "rgb(0, 0, 255)" } }}
               />
             </VictoryChart>
-          </View>
-        )}
-        <View className="m-[10] bg-white rounded-3xl">
-          <Text className='text-xl m-1 font-bold'>Options</Text>
-          <Text className='m-1 pb-[32px]'>Test</Text>
+          )}
         </View>
-      </View>
-    </ScrollView>
 
+        <View className="rounded-3xl bg-white elevation-[5] p-default mt-default flex-1 justify-center items-center dark:bg-gray-700">
+          <Text className='text-2xl font-bold dark:text-white'>WQI</Text>
+          <WQIGauge score={100} />
+        </View>
+      </ScrollView>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    backgroundColor: "rgb(230, 230, 230)",
-  },
-  loadingText: {
-    color: "black",
-    textAlign: "center",
-    fontSize: 18,
-  },
-  errorText: {
-    color: "red",
-    textAlign: "center",
-    fontSize: 18,
-  },
-  chartContainer: {
-    margin: 10,
-    borderRadius: 20,
-    backgroundColor: "rgb(255, 255, 255)",
-
-    // Shadow for iOS
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-
-    // For android
-    elevation: 5,
-  },
-});
 
 export default Graph;
