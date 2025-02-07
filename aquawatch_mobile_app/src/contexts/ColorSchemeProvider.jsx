@@ -1,15 +1,15 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Appearance } from 'react-native';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { Appearance } from "react-native";
 
 const ColorSchemeContext = createContext(false);
 
 const ColorSchemeProvider = ({ children }) => {
-  // Initialize isDark as true if the device's color scheme is 'dark'
-  const [isDark, setIsDark] = useState(Appearance.getColorScheme() === 'dark');
+  // Initialize isDark as true if the device"s color scheme is "dark"
+  const [isDark, setIsDark] = useState(Appearance.getColorScheme() === "dark");
 
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      setIsDark(colorScheme === 'dark');
+      setIsDark(colorScheme === "dark");
     });
 
     return () => {

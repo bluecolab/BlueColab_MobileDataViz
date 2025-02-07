@@ -1,6 +1,6 @@
 import React from "react";
 import { VictoryChart, VictoryLabel, VictoryAxis } from "victory-native";
-import { useIsDark } from '@contexts';
+import { useIsDark } from "@contexts";
 
 function EmptyGraph( {text="Loading data..."}) {
     const isDark = useIsDark();
@@ -12,27 +12,27 @@ function EmptyGraph( {text="Loading data..."}) {
             <VictoryAxis
                 label="Time"
                 style={{
-                    axis: { stroke: isDark ? '#fff' : "#000" },
-                    axisLabel: { fill: isDark ? '#fff' : "#000" },
+                    axis: { stroke: isDark ? "#fff" : "#000" },
+                    axisLabel: { fill: isDark ? "#fff" : "#000" },
                     tickLabels: {
-                        fontSize: 12, padding: 5, fill: isDark ? '#fff' : "#000",
+                        fontSize: 12, padding: 5, fill: isDark ? "#fff" : "#000",
                     }
                 }}
 
             />
             <VictoryAxis dependentAxis
                 style={{
-                    axis: { stroke: isDark ? '#fff' : "#000" },
-                    axisLabel: { fill: isDark ? '#fff' : "#000" },
+                    axis: { stroke: isDark ? "#fff" : "#000" },
+                    axisLabel: { fill: isDark ? "#fff" : "#000" },
                     tickLabels: {
-                        fill: isDark ? '#fff' : "#000",
+                        fill: isDark ? "#fff" : "#000",
                     }
                 }}
             />
 
             <VictoryLabel
                 style={{
-                    fill: isDark ? '#fff' : '#000', // Correctly setting the text color
+                    fill: isDark ? "#fff" : "#000", // Correctly setting the text color
                 }}
                 text={text}
                 x={175}

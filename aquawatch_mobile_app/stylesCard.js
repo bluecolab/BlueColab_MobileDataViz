@@ -12,13 +12,23 @@ export const containerStyles = StyleSheet.create({
 });
 
 export const tabBarStyles = StyleSheet.create({
-  tabBar: {
+  tabBarLight: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     elevation: 0,
     backgroundColor: 'white',
+    height: 60,
+    alignItems: 'center',
+  },
+  tabBarDark: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    elevation: 0,
+    backgroundColor: '#2e2e3b',
     height: 60,
     alignItems: 'center',
   },

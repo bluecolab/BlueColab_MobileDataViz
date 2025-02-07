@@ -1,6 +1,6 @@
 import React from "react";
 import { VictoryPie, VictoryLabel, VictoryChart, VictoryAxis } from "victory-native";
-import { useIsDark } from '@contexts';
+import { useIsDark } from "@contexts";
 
 // Average sensors function
 const averageSensors = (data) => {
@@ -46,17 +46,17 @@ const WQIGauge = ({ loading, data , size = 200 }) => {
   }
 
   const percentage = score > 100 ? 100 : score;
-  let color = '#E0E0E0';
+  let color = "#E0E0E0";
   if (percentage >= 0 && percentage < 25)
-    color = 'darkred';
+    color = "darkred";
   else if (percentage >= 25 && percentage < 50)
-    color = 'darkorange';
+    color = "darkorange";
   else if (percentage >= 50 && percentage < 70)
-    color = 'yellow';
+    color = "yellow";
   else if (percentage >= 70 && percentage < 90)
-    color = 'green';
+    color = "green";
   else if (percentage >= 90 && percentage <= 100)
-    color = 'darkgreen';
+    color = "darkgreen";
 
   return (
     
@@ -81,7 +81,7 @@ const WQIGauge = ({ loading, data , size = 200 }) => {
     
     {/* Label in the center */}
     <VictoryLabel
-      text={loading ? 'NA' : `${percentage}%`}
+      text={loading ? "NA" : `${percentage}%`}
       x={size / 2}  // Center X position
       y={size / 2}  // Center Y position
       textAnchor="middle"
@@ -95,11 +95,11 @@ export default WQIGauge;
 
 
 // try:
-// doptc_value = sum(data['DOpct'])/len(data['DOpct'])
-// ph_value = sum(data['pH'])/len(data['pH'])
-// temp_value = sum(data['Temp'] * 9/5 + 32)/len(data['Temp'])
-// cond_value = sum(data['Cond'])/len(data['Cond'])
-// turb_value = sum(data['Turb'])/len(data['Turb'])
+// doptc_value = sum(data["DOpct"])/len(data["DOpct"])
+// ph_value = sum(data["pH"])/len(data["pH"])
+// temp_value = sum(data["Temp"] * 9/5 + 32)/len(data["Temp"])
+// cond_value = sum(data["Cond"])/len(data["Cond"])
+// turb_value = sum(data["Turb"])/len(data["Turb"])
 // except KeyError as e:
 // print(f"KeyError: {e} was raised. This column does not exist.")
 // doptc_value = 0

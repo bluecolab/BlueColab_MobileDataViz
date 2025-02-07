@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { VictoryChart, VictoryArea, VictoryLine, VictoryLabel, VictoryAxis } from "victory-native";
-import EmptyGraph from './EmptyGraph';
+import EmptyGraph from "./EmptyGraph";
 import { useIsDark } from "@contexts"
+import { FontAwesome } from '@expo/vector-icons';
 
-function DataGraph({ loading, yAxisLabel, data, unit, description="Temp" }) {
+function DataGraph({ loading, yAxisLabel, data, unit }) {
     const isDark = useIsDark();
     let chartData = [];
     let tickValues = [];
@@ -54,9 +55,18 @@ function DataGraph({ loading, yAxisLabel, data, unit, description="Temp" }) {
     return (
         <View className="flex-1 items-center justify-center mt-default">
             <View className="rounded-3xl w-[95%] bg-white dark:bg-gray-700 elevation-[5] ">
-                <Text className="text-2xl font-bold mt-2 text-center dark:text-white">
-                    {yAxisLabel}
-                </Text>
+                <View className="relative mt-2">
+                    <Text className="text-2xl font-bold text-center dark:text-white">
+                        {yAxisLabel}
+                    </Text>
+                    <TouchableOpacity
+                        onPress={() => console.log("Info icon clicked!", unit)}
+                        className="absolute top-1 right-2"
+                    >
+                        <FontAwesome name="info-circle" size={24} color="grey" />
+                    </TouchableOpacity>
+                </View>
+
                 {loading ? (
                     <EmptyGraph />
                 ) : data?.error ? (
@@ -70,20 +80,20 @@ function DataGraph({ loading, yAxisLabel, data, unit, description="Temp" }) {
                             tickValues={tickValues}
                             tickFormat={(t) => `${t.getMonth() + 1}/${t.getDate()}`}
                             style={{
-                                axis: { stroke: isDark ? '#fff' : "#000" },
-                                axisLabel: { fill: isDark ? '#fff' : "#000" },
+                                axis: { stroke: isDark ? "#fff" : "#000" },
+                                axisLabel: { fill: isDark ? "#fff" : "#000" },
                                 tickLabels: {
-                                    fontSize: 12, padding: 5, fill: isDark ? '#fff' : "#000",
+                                    fontSize: 12, padding: 5, fill: isDark ? "#fff" : "#000",
                                 }
                             }}
 
                         />
                         <VictoryAxis dependentAxis label={yAxisLabel}
                             style={{
-                                axis: { stroke: isDark ? '#fff' : "#000" },
-                                axisLabel: { fill: isDark ? '#fff' : "#000" },
+                                axis: { stroke: isDark ? "#fff" : "#000" },
+                                axisLabel: { fill: isDark ? "#fff" : "#000" },
                                 tickLabels: {
-                                    fill: isDark ? '#fff' : "#000",
+                                    fill: isDark ? "#fff" : "#000",
                                 }
                             }}
                             axisLabelComponent={
@@ -105,14 +115,6 @@ function DataGraph({ loading, yAxisLabel, data, unit, description="Temp" }) {
                     </VictoryChart>
                 )}
             </View>
-
-            <View className="rounded-3xl w-[95%] bg-white dark:bg-gray-700 elevation-[5] mt-default p-default ">
-                <View className="flex-row items-center">
-                    <Text className="font-bold dark:text-white">{yAxisLabel}: </Text>
-                    <Text className="dark:text-white">{description}</Text>
-                </View>
-            </View>
-
         </View>
     );
 }

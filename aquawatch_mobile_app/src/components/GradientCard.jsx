@@ -1,14 +1,14 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { cardStyles } from '../../stylesCard';
+import React from "react";
+import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { cardStyles } from "../../stylesCard";
 
-const { width } = Dimensions.get('window'); // Get the width of the device to set the image width
+const { width } = Dimensions.get("window"); // Get the width of the device to set the image width
 
 // Define the GradientCard component with props for customization
 const GradientCard = ({ imageSource, title, buttonText, onButtonPress, gradientColors }) => {
   // Determine if imageSource is a URI or a local image
-  const image = typeof imageSource === 'string' ? { uri: imageSource } : imageSource;
+  const image = typeof imageSource === "string" ? { uri: imageSource } : imageSource;
 
   return (
     <View style={cardStyles.cardContainer}>

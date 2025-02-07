@@ -115,7 +115,7 @@ const getAirQuality = async (latitude, longitude) => {
 
 // Function to get coordinates of a city
 const getCoordinatesFromCity = async (city) => {
-    const apiKey2 = '4925f2810962e0647c896b2cffd6edf3'; // Your PositionStack API key
+    const apiKey2 = "4925f2810962e0647c896b2cffd6edf3"; // Your PositionStack API key
     const url = `https://api.positionstack.com/v1/forward?access_key=${apiKey2}&query=${city}`;
 
     try {
@@ -139,7 +139,7 @@ const AirQuality = () => {
     const [airQualityData, setAirQualityData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('currentLocation');
+    const [selectedOption, setSelectedOption] = useState("currentLocation");
     const [location, setLocation] = useState({
         latitude: 41.12838,
         longitude: -73.808189,
@@ -172,10 +172,10 @@ const AirQuality = () => {
     
         let { status } = await Location.requestForegroundPermissionsAsync();
     
-        if (status !== 'granted') {
+        if (status !== "granted") {
             setLoading(false);
             Alert.alert("Permission denied", "Location permission is required to fetch your current location.");
-            console.log('Permission to access location was denied');
+            console.log("Permission to access location was denied");
             return;
         }
     
@@ -197,13 +197,13 @@ const AirQuality = () => {
     const handleDropdownChange = (value) => {
         setSelectedOption(value);
     
-        if (value === 'currentLocation') {
+        if (value === "currentLocation") {
             setTitle("Current Location AQI Data");
             useCurrentLocation();  // Use current location
-        } else if (value === 'paceUniversity') {
+        } else if (value === "paceUniversity") {
             setTitle("Pace University AQI Data");
             setLocation({ latitude: 41.128380, longitude: -73.808189 });
-        } else if (value === 'paceUniversityNYC') {
+        } else if (value === "paceUniversityNYC") {
             setTitle("Pace University NYC Campus AQI Data");
             setLocation({ latitude: 40.711220, longitude: -74.006477 });
         }
@@ -245,31 +245,31 @@ const AirQuality = () => {
             <RNPickerSelect
                 onValueChange={handleDropdownChange}
                 items={[
-                    { label: 'Use Your Current Location', value: 'currentLocation' },
-                    { label: 'Get Air Quality at Pace University', value: 'paceUniversity' },
-                    { label: 'Get Air Quality at Pace University NYC Campus', value: 'paceUniversityNYC' },
+                    { label: "Use Your Current Location", value: "currentLocation" },
+                    { label: "Get Air Quality at Pace University", value: "paceUniversity" },
+                    { label: "Get Air Quality at Pace University NYC Campus", value: "paceUniversityNYC" },
                 ]}
                 style={{
                     inputAndroid: {
-                        color: 'white', // Text color for Android
-                        backgroundColor: '#46484f', 
+                        color: "white", // Text color for Android
+                        backgroundColor: "#46484f", 
                         margin: 10,    
                         marginBottom: 50,                   
                     },
                     inputIOS: {
-                        color: 'white', // Text color for iOS
-                        backgroundColor: '#46484f', 
+                        color: "white", // Text color for iOS
+                        backgroundColor: "#46484f", 
                         margin: 10,
                         marginBottom: 50, 
                     },
                     placeholder: {
-                        color: 'white', // Placeholder color
-                        backgroundColor: '#46484f', 
+                        color: "white", // Placeholder color
+                        backgroundColor: "#46484f", 
                         margin: 10,
                         marginBottom: 50,
                     },
                 }}
-                placeholder={{ label: 'Select an option...', value: null }}
+                placeholder={{ label: "Select an option...", value: null }}
             />
 
 
@@ -310,13 +310,13 @@ const searchBarStyles = StyleSheet.create({
     input: {
         height: 40,
         width: 300,
-        borderColor: '#ccc',
+        borderColor: "#ccc",
         borderWidth: 1,
         borderRadius: 5,
         paddingLeft: 10,
         marginBottom: 10,
-        color: 'white',
-        alignSelf: 'center',
+        color: "white",
+        alignSelf: "center",
         marginTop: 15,
         marginBottom: 15,
     },
