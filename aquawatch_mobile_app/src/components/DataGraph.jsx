@@ -12,8 +12,8 @@ function DataGraph({ loading, yAxisLabel, data, unit }) {
 
     if (Array.isArray(data) && !loading) {
         const timestamps = data.map(({ timestamp }) => timestamp);
-        const sensors = data.map(({ sensors }) => (unit == "Temp" ? (sensors[unit] * (9 / 5)) + 32 : sensors[unit]));
-
+        const sensors = data.map(item => 
+            unit == "Temp" ? (item[unit]  * (9 / 5)) + 32 : item[unit] ) 
         const sensorMap = timestamps.reduce((acc, timestamp, index) => {
             acc[timestamp] = sensors[index];
             return acc;

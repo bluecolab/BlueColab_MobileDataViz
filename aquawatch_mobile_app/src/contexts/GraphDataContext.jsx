@@ -10,7 +10,15 @@ const GraphDataProvider = ({ children }) => {
     axios
       .get("https://colabprod01.pace.edu/api/influx/sensordata/Alan/delta?days=30")
       .then((response) => {
-        setData(response.data);
+
+        const apiData = response.data;
+
+        const cleanedData = apiData.map(item => {
+          const { sensors, ...rest } = item;
+          
+          return { ...rest, ...sensors };
+        });
+        setData(cleanedData);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
