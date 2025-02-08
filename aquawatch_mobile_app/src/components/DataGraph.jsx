@@ -10,7 +10,7 @@ function DataGraph({ loading, yAxisLabel, data, unit }) {
     let chartData = [];
     let tickValues = [];
 
-    if (Array.isArray(data)) {
+    if (Array.isArray(data) && !loading) {
         const timestamps = data.map(({ timestamp }) => timestamp);
         const sensors = data.map(({ sensors }) => (unit == "Temp" ? (sensors[unit] * (9 / 5)) + 32 : sensors[unit]));
 
