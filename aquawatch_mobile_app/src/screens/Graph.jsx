@@ -6,31 +6,6 @@ import { FontAwesome } from '@expo/vector-icons';
 
 function Graph() {
   const { data, loading } = useContext(GraphDataContext);
-  const [flipped, setFlipped] = useState(false);
-  const flipAnim = useRef(new Animated.Value(0)).current;
-
-  const flipToFront = () => {
-    Animated.timing(flipAnim, {
-      toValue: 0,
-      duration: 800,
-      useNativeDriver: true,
-    }).start();
-    setFlipped(false);
-  };
-
-  const flipToBack = () => {
-    Animated.timing(flipAnim, {
-      toValue: 1,
-      duration: 800,
-      useNativeDriver: true,
-    }).start();
-    setFlipped(true);
-  };
-
-  const flipInterpolation = flipAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "180deg"],
-  });
 
   const waterParameters = [
     { yAxisLabel: "Temperature", unit: "Temp" },
@@ -79,51 +54,15 @@ function Graph() {
           ))}
         </View>
 
-        <View className="relative flex-1 justify-center items-center">
-          {/* Flippable Content */}
-          <Animated.View
-            style={{ transform: [{ rotateY: flipInterpolation }] }}
-            className="bg-white w-[95%] mt-5 h-[300] dark:bg-gray-700 rounded-3xl justify-center items-center"
-          >
-            {/* Front Side: WQI Text and WQIGauge */}
-            <View
-              style={{ backfaceVisibility: 'hidden' }}
-              className={`absolute w-full h-full justify-center items-center ${flipped ? 'hidden' : ''}`}
-            >
-              <Text className="text-2xl font-bold text-black dark:text-white y-flipped">
-                WQI
-              </Text>
-              <WQIGauge data={data} loading={loading} />
-            </View>
-
-            {/* Back Side: Text only */}
-            <View
-              style={{
-                backfaceVisibility: 'hidden',
-              }}
-
-              className={`absolute w-full h-full justify-center items-center ${flipped ? '' : 'hidden'}`}
-            >
-              <Text 
-               style={{
-                transform: [{ rotateY: '180deg' }],
-                backfaceVisibility: 'hidden',
-              }}
-
-              className="text-2xl font-bold text-black dark:text-white">
-                Back Side
-              </Text>
-            </View>
-          </Animated.View>
-
-          {/* Icon Button to Trigger Flip */}
-          <TouchableOpacity
-            onPress={flipped ? flipToFront : flipToBack}
-            className="absolute top-5 right-5"
-          >
-            <FontAwesome name="info-circle" size={24} color="grey" />
-          </TouchableOpacity>
+        <View className="rounded-3xl bg-white elevation-[5] p-default mt-default  flex-1 justify-center items-center dark:bg-gray-700 m-default">
+          <Text className="text-2xl font-bold dark:text-white">WQI</Text>
+          <WQIGauge data={data} loading={loading} />
         </View>
+        <TouchableOpacity
+          className="absolute top-5 right-5"
+        >
+          <FontAwesome name="info-circle" size={24} color="grey" />
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
