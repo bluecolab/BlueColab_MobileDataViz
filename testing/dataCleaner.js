@@ -5,6 +5,8 @@ const fs = require('fs');
 // cd into this folder:
 // cd testing
 // then do:
+// npm i
+// then do:
 // node dataCleaner.js
 // make sure to put link first
 
@@ -12,6 +14,8 @@ axios.get('<put link here>')
   .then((response) => {
     const processedData = response.data;
 
+    const newData = processedData; // change this 
+    
     // do something with processedData here
     // for loops are good
     // if you wanna be fancy take a look at 
@@ -30,7 +34,7 @@ axios.get('<put link here>')
 
 
     // output
-    fs.writeFile('processedData.json', JSON.stringify(processedData, null, 2), (err) => {
+    fs.writeFile('processedData.json', JSON.stringify(newData, null, 2), (err) => {
       if (err) {
         console.error('Error writing file', err);
       } else {
