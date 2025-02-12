@@ -12,7 +12,7 @@ export const containerStyles = StyleSheet.create({
 });
 
 export const tabBarStyles = StyleSheet.create({
-  tabBar: {
+  tabBarLight: {
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -22,21 +22,31 @@ export const tabBarStyles = StyleSheet.create({
     height: 60,
     alignItems: 'center',
   },
+  tabBarDark: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    elevation: 0,
+    backgroundColor: '#2e2e3b',
+    height: 60,
+    alignItems: 'center',
+  },
 });
 
 export const middleButtonStyles = StyleSheet.create({
   MiddleButtonContainer: {
     position: 'absolute',
     top: -30,
-    left: '50%', 
-    marginLeft: -30, 
+    left: '50%',
+    marginLeft: -30,
     width: 60,
     height: 60,
   },
   customButton: {
     width: 60,
     height: 60,
-    borderRadius: 30, 
+    borderRadius: 30,
     backgroundColor: '#00D6FC',
     justifyContent: 'center',
     alignItems: 'center',
@@ -60,9 +70,17 @@ export const iconStyles = StyleSheet.create({
 //_+_+_+_+_+_+_+_+_+_+_+_+_Card Settings_+_+_+_+_+_+_+_+_+_+_+_+
 export const cardStyles = StyleSheet.create({
   cardContainer: {
-    borderRadius: 8,
+    borderRadius: 20,
     overflow: 'hidden',
     margin: 10,
+    // Shadow for iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+
+    // For android
+    elevation: 10,
   },
   gradientBackground: {
     padding: 5,
