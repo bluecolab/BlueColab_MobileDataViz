@@ -1,8 +1,9 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useCallback, useRef } from "react";
 import { View, Text, ScrollView, FlatList, Dimensions, TouchableOpacity, Animated } from "react-native";
 import { WQIGauge, DataGraph } from "@components";
 import { GraphDataContext } from "@contexts";
 import { FontAwesome } from '@expo/vector-icons';
+
 
 function Graph() {
   const { data, loading } = useContext(GraphDataContext);
@@ -21,9 +22,14 @@ function Graph() {
 
   const handleScroll = event => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const index = Math.floor(contentOffsetX / width);
+    const index = Math.round(contentOffsetX / width);
     setCurrentIndex(index);
+    console.log(index);
   };
+
+  const renderItem = useCallback(({ item }) => (
+    <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} />
+  ), [loading, data]);
 
   return (
     <View className="bg-defaultbackground dark:bg-defaultdarkbackground">
@@ -39,15 +45,13 @@ function Graph() {
           pagingEnabled
           showsHorizontalScrollIndicator={true}
           keyExtractor={(item, index) => index.toString()}
-          onScroll={handleScroll}
-          renderItem={({ item }) => (
-            <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} />
-          )}
+          onMomentumScrollEnd={handleScroll}
+          renderItem={renderItem}
         />
 
         <View className="flex-row justify-center mt-2">
           {waterParameters.map((_, index) => (
-            <View
+            <Text
               key={index}
               className={`w-2.5 h-2.5 rounded-full mx-1 ${currentIndex === index ? "bg-blue-500" : "bg-gray-400"}`}
             />
