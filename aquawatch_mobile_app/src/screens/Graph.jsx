@@ -27,10 +27,10 @@ function Graph() {
 
   return (
     <View className="bg-defaultbackground dark:bg-defaultdarkbackground">
-      <View className="w-full bg-white elevation-[20] z-10 p-default dark:bg-gray-700">
+      {/* <View className="w-full bg-white elevation-[20] z-10 p-default dark:bg-gray-700">
         <Text className="text-xl text-center dark:text-white">Option to select location V</Text>
         <Text className="text-xl text-center dark:text-white">Option to select time V</Text>
-      </View>
+      </View> */}
 
       <ScrollView className="h-full" contentContainerStyle={{ paddingBottom: 175 }}>
         <FlatList
@@ -58,11 +58,6 @@ function Graph() {
           <Text className="text-2xl font-bold dark:text-white">WQI</Text>
           <WQIGauge data={data} loading={loading} />
         </View>
-        <TouchableOpacity
-          className="absolute top-5 right-5"
-        >
-          <FontAwesome name="info-circle" size={24} color="grey" />
-        </TouchableOpacity>
       </ScrollView>
     </View>
   );

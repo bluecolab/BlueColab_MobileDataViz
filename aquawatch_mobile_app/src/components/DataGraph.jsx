@@ -59,12 +59,11 @@ function DataGraph({ loading, yAxisLabel, data, unit }) {
                     <Text className="text-2xl font-bold text-center dark:text-white">
                         {yAxisLabel}
                     </Text>
-                    <TouchableOpacity
-                        onPress={() => console.log("Info icon clicked!", unit)}
+                    {/* <TouchableOpacity
                         className="absolute top-1 right-2"
                     >
                         <FontAwesome name="info-circle" size={24} color="grey" />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
 
                 {loading ? (

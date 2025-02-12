@@ -71,9 +71,9 @@ export default function HomeScreen({ navigation }) {
         ></GradientCard>
 
         <GradientCard
-          imageSource={require("../../assets/homescreen/code.jpg")}
-          title="Test Graph"
-          buttonText="View more..."
+          imageSource={require("../../assets/homescreen/graph.png")}
+          title="Updated Graph Views"
+          buttonText="Test out..."
           onButtonPress={handleGraphPress}
           gradientColors={["#6DD5FA", "#6DD5FA"]}
         ></GradientCard>
