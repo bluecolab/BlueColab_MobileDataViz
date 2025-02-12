@@ -20,7 +20,7 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
 
   let score = 0;
 
-  if (!loading) {
+  if (!loading && data && data.length >= 1) {
     const const_doptc = 0.34;
     const const_ph = 0.22;
     const const_temp = 0.2;
