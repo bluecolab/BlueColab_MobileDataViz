@@ -24,7 +24,6 @@ function Graph() {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(contentOffsetX / width);
     setCurrentIndex(index);
-    console.log(index);
   };
 
   const renderItem = useCallback(({ item }) => (
