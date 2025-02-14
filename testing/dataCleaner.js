@@ -10,11 +10,12 @@ const fs = require('fs');
 // node dataCleaner.js
 // make sure to put link first
 
+// axios is the way we do API requests in JS
 axios.get('<put link here>')
   .then((response) => {
-    const processedData = response.data;
+    const processedData = response.data; // if the request succeeds, the response saved to this variable 
 
-    const newData = processedData; // change this 
+    const newData = processedData; // change processedData some how to get it in format 
     
     // do something with processedData here
     // for loops are good
@@ -33,7 +34,7 @@ axios.get('<put link here>')
 
 
 
-    // output
+    // output to a local file
     fs.writeFile('processedData.json', JSON.stringify(newData, null, 2), (err) => {
       if (err) {
         console.error('Error writing file', err);
