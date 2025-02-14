@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import axios from 'axios';
 
+// you can see this page by going to the home page of the app
+// scroll all the way down
+// then click on the very last card 
+
 function CurrentData() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // useState, a way to keep track of states (the values of variables)
+  const [data, setData] = useState([]); // (1) data is the variable (2) setData is how to set the variable (3) useState([]), set's the data to [] initially 
+                                        // data stores the response from the API
+  const [loading, setLoading] = useState(true); // loading is a way to track if API has loaded or not 
   const [error, setError] = useState(null);
 
+  // you can ignore this for now but, this is how we get data
   const fetchData = async () => {
     setLoading(true);
     setError(null);
@@ -34,10 +41,12 @@ function CurrentData() {
     }
   };
 
+  // helps handle api requests
   useEffect(() => {
     fetchData();
   }, []);
 
+  // temprary screen to show while data is loading
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>{error}</Text>;
 
@@ -45,6 +54,9 @@ function CurrentData() {
   if (data.length === 0) {
     return <Text>No data available</Text>;
   }
+
+  // fyi - this page may not work right now
+  // looks like API is down
 
   // Alan Data
   const alanData = data[0];
