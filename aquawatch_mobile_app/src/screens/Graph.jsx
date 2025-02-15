@@ -4,6 +4,7 @@ import { WQIGauge, DataGraph, DropdownComponent } from "@components";
 import { GraphDataContext } from "@contexts";
 import { FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
+
 const getDaysInMonth = (month, year) => {
   // Create a moment object for the first day of the given month and year
   const date = moment({ year, month: month - 1 }); // month is 1-indexed, so we subtract 1
@@ -79,28 +80,29 @@ function Graph() {
     setEndDay(getDaysInMonth(selectedMonth,value));
   };
 
+
   return (
     <View className="bg-defaultbackground dark:bg-defaultdarkbackground">
       <View className="w-full bg-white elevation-[20] z-10 p-default dark:bg-gray-700">
-        <View className="flex-row w-full space-x-4">
-          <View className="flex-[2]">
-            <DropdownComponent
-              label="Month"
-              options={monthOptions}
-              value={selectedMonth}
-              onSelect={onMonthSelect}  // Use the updated onSelect handler
-            />
-          </View>
-          <View className="flex-[2]">
-            <DropdownComponent
-              label="Year"
-              options={yearOptions}
-              value={selectedYear}
-              onSelect={onYearSelect}  // Use the updated onSelect handler
-            />
-          </View>
+      <View className="flex-row w-full space-x-4">
+        <View className="flex-[2]">
+          <DropdownComponent
+            label="Month"
+            options={monthOptions}
+            value={selectedMonth}
+            onSelect={onMonthSelect}  // Use the updated onSelect handler
+          />
+        </View>
+        <View className="flex-[2]">
+          <DropdownComponent
+            label="Year"
+            options={yearOptions}
+            value={selectedYear}
+            onSelect={onYearSelect}  // Use the updated onSelect handler
+          />
         </View>
       </View>
+    </View>
 
       <ScrollView className="h-full" contentContainerStyle={{ paddingBottom: 175 }}>
         <FlatList
@@ -113,7 +115,7 @@ function Graph() {
           renderItem={renderItem}
         />
 
-        <View className="flex-row justify-center mt-2">
+        <View className="flex-row justify-center">
           {waterParameters.map((_, index) => (
             <Text
               key={index}

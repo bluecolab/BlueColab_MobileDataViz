@@ -68,6 +68,7 @@ const GraphDataProvider = ({ children }) => {
     value={{
       data,
       loading,
+      setLoading,
       setYear,
       setMonth,
       setEndDay 

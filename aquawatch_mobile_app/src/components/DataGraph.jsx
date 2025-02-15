@@ -1,19 +1,21 @@
-import React from "react";
+import React, {useContext} from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { VictoryChart, VictoryArea, VictoryLine, VictoryLabel, VictoryAxis } from "victory-native";
 import EmptyGraph from "./EmptyGraph";
-import { useIsDark } from "@contexts"
+import { useIsDark, GraphDataContext } from "@contexts"
 import { FontAwesome } from '@expo/vector-icons';
+import FlipCard from 'react-native-flip-card'
 
 function DataGraph({ loading, yAxisLabel, data, unit }) {
+      const { setLoading } = useContext(GraphDataContext);
     const isDark = useIsDark();
     let chartData = [];
     let tickValues = [];
 
     if (Array.isArray(data) && !loading) {
         const timestamps = data.map(({ timestamp }) => timestamp);
-        const sensors = data.map(item => 
-            unit == "Temp" ? (item[unit]  * (9 / 5)) + 32 : item[unit] ) 
+        const sensors = data.map(item =>
+            unit == "Temp" ? (item[unit] * (9 / 5)) + 32 : item[unit])
         const sensorMap = timestamps.reduce((acc, timestamp, index) => {
             acc[timestamp] = sensors[index];
             return acc;
@@ -53,68 +55,95 @@ function DataGraph({ loading, yAxisLabel, data, unit }) {
     }
 
     return (
-        <View className="flex-1 items-center justify-center mt-default">
-            <View className="rounded-3xl w-[95%] bg-white dark:bg-gray-700 elevation-[5] ">
-                <View className="relative mt-2">
-                    <Text className="text-2xl font-bold text-center dark:text-white">
-                        {yAxisLabel}
-                    </Text>
-                    {/* <TouchableOpacity
-                        className="absolute top-1 right-2"
-                    >
-                        <FontAwesome name="info-circle" size={24} color="grey" />
-                    </TouchableOpacity> */}
+        <FlipCard
+        // onFlipStart={()=>setLoading(!loading)}
+        friction={20}
+>
+            <View className="flex-1 items-center justify-center my-default" style={{ backfaceVisibility: 'hidden'}}>
+                <View className="rounded-3xl w-[95%] dark:bg-gray-700 elevation-[5] " style={{ backgroundColor: 'white', backfaceVisibility: 'hidden'}}>
+                    <View className="relative mt-2">
+                        <Text className="text-2xl font-bold text-center dark:text-white">
+                            {yAxisLabel}
+                        </Text>
+                        <TouchableOpacity
+                            className="absolute top-1 right-2"
+                            onPress={() => console.log('Eat')}
+                        >
+                            <FontAwesome name="info-circle" size={24} color={isDark ? "white" : "grey"} />
+                        </TouchableOpacity>
+                    </View>
+
+                    {loading ? (
+                        <EmptyGraph />
+                    ) : data?.error ? (
+                        <EmptyGraph text={"No Wifi, please connect to Wifi!"} />
+                    ) : !Array.isArray(data) ? (
+                        <EmptyGraph text={"No data for location, try another."} />
+                    ) : (
+                        <VictoryChart padding={{ left: 70, top: 20, right: 50, bottom: 50 }} >
+                            <VictoryAxis
+                                label="Time"
+                                tickValues={tickValues}
+                                tickFormat={(t) => `${t.getMonth() + 1}/${t.getDate()}`}
+                                style={{
+                                    axis: { stroke: isDark ? "#fff" : "#000" },
+                                    axisLabel: { fill: isDark ? "#fff" : "#000" },
+                                    tickLabels: {
+                                        fontSize: 12, padding: 5, fill: isDark ? "#fff" : "#000",
+                                    }
+                                }}
+
+                            />
+                            <VictoryAxis dependentAxis label={yAxisLabel}
+                                style={{
+                                    axis: { stroke: isDark ? "#fff" : "#000" },
+                                    axisLabel: { fill: isDark ? "#fff" : "#000" },
+                                    tickLabels: {
+                                        fill: isDark ? "#fff" : "#000",
+                                    }
+                                }}
+                                axisLabelComponent={
+                                    <VictoryLabel dy={-20} angle={270} />
+                                } />
+                            <VictoryArea
+                                data={chartData}
+                                x="day"
+                                y0="y0"
+                                y="y"
+                                style={{ data: { fill: isDark ? "rgba(73, 146, 255, 0.95)" : "rgba(0, 100, 255, 0.4);" } }}
+                            />
+                            <VictoryLine
+                                data={chartData}
+                                x="day"
+                                y="avgTmp"
+                                style={{ data: { stroke: isDark ? "rgb(0, 0, 138)" : "rgb(0, 0, 255)" } }}
+                            />
+                        </VictoryChart>
+                    )}
                 </View>
 
-                {loading ? (
-                    <EmptyGraph />
-                ) : data?.error ? (
-                    <EmptyGraph text={"No Wifi, please connect to Wifi!"} />
-                ) : !Array.isArray(data) ? (
-                    <EmptyGraph text={"No data for location, try another."} />
-                ) : (
-                    <VictoryChart padding={{ left: 70, top: 20, right: 50, bottom: 50 }} >
-                        <VictoryAxis
-                            label="Time"
-                            tickValues={tickValues}
-                            tickFormat={(t) => `${t.getMonth() + 1}/${t.getDate()}`}
-                            style={{
-                                axis: { stroke: isDark ? "#fff" : "#000" },
-                                axisLabel: { fill: isDark ? "#fff" : "#000" },
-                                tickLabels: {
-                                    fontSize: 12, padding: 5, fill: isDark ? "#fff" : "#000",
-                                }
-                            }}
 
-                        />
-                        <VictoryAxis dependentAxis label={yAxisLabel}
-                            style={{
-                                axis: { stroke: isDark ? "#fff" : "#000" },
-                                axisLabel: { fill: isDark ? "#fff" : "#000" },
-                                tickLabels: {
-                                    fill: isDark ? "#fff" : "#000",
-                                }
-                            }}
-                            axisLabelComponent={
-                                <VictoryLabel dy={-20} angle={270} />
-                            } />
-                        <VictoryArea
-                            data={chartData}
-                            x="day"
-                            y0="y0"
-                            y="y"
-                            style={{ data: { fill: isDark ? "rgba(73, 146, 255, 0.95)" : "rgba(0, 100, 255, 0.4);" } }}
-                        />
-                        <VictoryLine
-                            data={chartData}
-                            x="day"
-                            y="avgTmp"
-                            style={{ data: { stroke: isDark ? "rgb(0, 0, 138)" : "rgb(0, 0, 255)" } }}
-                        />
-                    </VictoryChart>
-                )}
             </View>
-        </View>
+            <View className="flex-1 items-center w-full justify-center my-default" style={{ backfaceVisibility: 'hidden'}}>
+                <View className="rounded-3xl w-[95%] dark:bg-gray-700 elevation-[5] " style={{ backgroundColor: 'white',backfaceVisibility: 'hidden'}}>
+                    <View className="relative mt-2">
+                        <Text className="text-2xl font-bold text-center dark:text-white">
+                            {yAxisLabel}
+                        </Text>
+                        <TouchableOpacity
+                            className="absolute top-1 right-2"
+                            onPress={() => console.log('Eat')}
+                        >
+                            <FontAwesome name="info-circle" size={24} color={isDark ? "white" : "grey"} />
+                        </TouchableOpacity>
+                    </View>
+
+
+                    <EmptyGraph />
+
+                </View>
+            </View>
+        </FlipCard>
     );
 }
 
