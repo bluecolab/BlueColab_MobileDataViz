@@ -1,7 +1,8 @@
 import React from "react";
 import { VictoryPie, VictoryLabel, VictoryChart, VictoryAxis } from "victory-native";
 import { useIsDark } from "@contexts";
-
+import { View } from 'react-native';
+import FlipCard from "./FlipCard";
 // Average sensors function - updated for flattened structure
 const averageSensors = (data) => {
   return data.reduce((acc, { Cond, DOpct, Sal, Temp, Turb, pH }) => {
@@ -29,12 +30,12 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
 
     // Use the updated averageSensors function to calculate averages
     const sensorAverages = averageSensors(data);
-    
+
     // Divide each total by the number of data points to get the average
     for (let sensor in sensorAverages) {
       sensorAverages[sensor] = sensorAverages[sensor] / data.length;
     }
-    
+
     // Multiply the averages by respective constants
     const result = {
       DOpct: sensorAverages.DOpct * const_doptc,
@@ -43,10 +44,10 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
       Cond: sensorAverages.Cond * const_cond,
       Turb: sensorAverages.Turb * const_turb,
     };
-    
+
     // Sum all values in the result
     const total = Object.values(result).reduce((acc, value) => acc + value, 0);
-    
+
     score = Math.round(total);
   }
 
@@ -59,33 +60,36 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
   else if (percentage >= 90 && percentage <= 100) color = "darkgreen";
 
   return (
-    <VictoryChart width={size} height={size}>
-      <VictoryAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
-      <VictoryAxis dependentAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
-      {/* Pie Chart */}
-      <VictoryPie
-        standalone={true}
-        width={size}
-        height={size}
-        innerRadius={size / 2.5}
-        cornerRadius={5}
-        padAngle={1}
-        data={[
-          { x: "Completed", y: percentage },
-          { x: "Remaining", y: 100 - percentage },
-        ]}
-        colorScale={[color, "#E0E0E0"]}
-        labels={() => null}
-      />
-      {/* Label in the center */}
-      <VictoryLabel
-        text={loading ? "NA" : `${percentage}%`}
-        x={size / 2}  // Center X position
-        y={size / 2}  // Center Y position
-        textAnchor="middle"
-        style={{ fontSize: 32, fontWeight: "bold", fill: isDark ? "#fff" : "#000" }} // Customize the label style
-      />
-    </VictoryChart>
+    <View>
+      <FlipCard/>
+      <VictoryChart width={size} height={size}>
+        <VictoryAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
+        <VictoryAxis dependentAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
+        {/* Pie Chart */}
+        <VictoryPie
+          standalone={true}
+          width={size}
+          height={size}
+          innerRadius={size / 2.5}
+          cornerRadius={5}
+          padAngle={1}
+          data={[
+            { x: "Completed", y: percentage },
+            { x: "Remaining", y: 100 - percentage },
+          ]}
+          colorScale={[color, "#E0E0E0"]}
+          labels={() => null}
+        />
+        {/* Label in the center */}
+        <VictoryLabel
+          text={loading ? "NA" : `${percentage}%`}
+          x={size / 2}  // Center X position
+          y={size / 2}  // Center Y position
+          textAnchor="middle"
+          style={{ fontSize: 32, fontWeight: "bold", fill: isDark ? "#fff" : "#000" }} // Customize the label style
+        />
+      </VictoryChart>
+    </View>
   );
 };
 

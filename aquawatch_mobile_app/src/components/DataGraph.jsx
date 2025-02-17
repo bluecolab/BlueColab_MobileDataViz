@@ -1,13 +1,10 @@
-import React, {useContext} from "react";
+import React, {useState} from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { VictoryChart, VictoryArea, VictoryLine, VictoryLabel, VictoryAxis } from "victory-native";
 import EmptyGraph from "./EmptyGraph";
-import { useIsDark, GraphDataContext } from "@contexts"
+import { useIsDark } from "@contexts"
 import { FontAwesome } from '@expo/vector-icons';
-import FlipCard from 'react-native-flip-card'
-
 function DataGraph({ loading, yAxisLabel, data, unit }) {
-      const { setLoading } = useContext(GraphDataContext);
     const isDark = useIsDark();
     let chartData = [];
     let tickValues = [];
@@ -55,12 +52,9 @@ function DataGraph({ loading, yAxisLabel, data, unit }) {
     }
 
     return (
-        <FlipCard
-        // onFlipStart={()=>setLoading(!loading)}
-        friction={20}
->
-            <View className="flex-1 items-center justify-center my-default" style={{ backfaceVisibility: 'hidden'}}>
-                <View className="rounded-3xl w-[95%] dark:bg-gray-700 elevation-[5] " style={{ backgroundColor: 'white', backfaceVisibility: 'hidden'}}>
+        
+            <View className="flex-1 items-center justify-center my-default"  >
+                <View className="rounded-3xl w-[95%] bg-white dark:bg-gray-700 elevation-[5] "  >
                     <View className="relative mt-2">
                         <Text className="text-2xl font-bold text-center dark:text-white">
                             {yAxisLabel}
@@ -121,29 +115,26 @@ function DataGraph({ loading, yAxisLabel, data, unit }) {
                         </VictoryChart>
                     )}
                 </View>
-
-
             </View>
-            <View className="flex-1 items-center w-full justify-center my-default" style={{ backfaceVisibility: 'hidden'}}>
-                <View className="rounded-3xl w-[95%] dark:bg-gray-700 elevation-[5] " style={{ backgroundColor: 'white',backfaceVisibility: 'hidden'}}>
-                    <View className="relative mt-2">
-                        <Text className="text-2xl font-bold text-center dark:text-white">
-                            {yAxisLabel}
-                        </Text>
-                        <TouchableOpacity
-                            className="absolute top-1 right-2"
-                            onPress={() => console.log('Eat')}
-                        >
-                            <FontAwesome name="info-circle" size={24} color={isDark ? "white" : "grey"} />
-                        </TouchableOpacity>
-                    </View>
+            // <View className="flex-1 items-center w-full justify-center my-default" >
+            //     <View className="rounded-3xl w-[95%] bg-white dark:bg-gray-700 elevation-[5] " style={{ opacity: isFlipped ? 1 : 0 }} >
+            //         <View className="relative mt-2">
+            //             <Text className="text-2xl font-bold text-center dark:text-white">
+            //                 {yAxisLabel}
+            //             </Text>
+            //             <TouchableOpacity
+            //                 className="absolute top-1 right-2"
+            //                 onPress={() => console.log('Eat')}
+            //             >
+            //                 <FontAwesome name="info-circle" size={24} color={isDark ? "white" : "grey"} />
+            //             </TouchableOpacity>
+            //         </View>
 
 
-                    <EmptyGraph />
+            //         <EmptyGraph />
 
-                </View>
-            </View>
-        </FlipCard>
+            //     </View>
+            // </View>
     );
 }
 
