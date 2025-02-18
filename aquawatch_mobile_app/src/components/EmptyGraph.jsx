@@ -7,8 +7,7 @@ function EmptyGraph( {text="Loading data..."}) {
 
     return (
 
-        <VictoryChart padding={{ left: 70, top: 20, right: 50, bottom: 50 }}
-        >
+        <VictoryChart padding={{ left: 70, top: 20, right: 50, bottom: 50 }}>
             <VictoryAxis
                 label="Time"
                 style={{
