@@ -2,7 +2,6 @@ import React from "react";
 import { VictoryPie, VictoryLabel, VictoryChart, VictoryAxis } from "victory-native";
 import { useIsDark } from "@contexts";
 import { View } from 'react-native';
-import FlipCard from "./FlipCard";
 // Average sensors function - updated for flattened structure
 const averageSensors = (data) => {
   return data.reduce((acc, { Cond, DOpct, Sal, Temp, Turb, pH }) => {
@@ -61,7 +60,6 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
 
   return (
     <View>
-      <FlipCard/>
       <VictoryChart width={size} height={size}>
         <VictoryAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
         <VictoryAxis dependentAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />

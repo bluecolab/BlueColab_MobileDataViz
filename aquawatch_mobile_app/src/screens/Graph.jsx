@@ -2,7 +2,6 @@ import React, { useState, useContext, useCallback } from "react";
 import { View, Text, ScrollView, FlatList, Dimensions } from "react-native";
 import { WQIGauge, DataGraph, DropdownComponent } from "@components";
 import { GraphDataContext } from "@contexts";
-import { FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
 
 const getDaysInMonth = (month, year) => {
@@ -15,20 +14,108 @@ function Graph() {
   const { data, loading, setYear, setMonth, setEndDay } = useContext(GraphDataContext);
 
   const waterParameters = [
-    { yAxisLabel: "Temperature", unit: "Temp" },
-    { yAxisLabel: "pH", unit: "pH" },
-    { yAxisLabel: "Turbidity", unit: "Turb" },
-    { yAxisLabel: "Conductivity", unit: "Cond" },
-    { yAxisLabel: "Dissolved Oxygen", unit: "DOpct" },
-    { yAxisLabel: "Salinity", unit: "Sal" },
+    {
+      yAxisLabel: "Temperature", unit: "Temp",
+      meta: {
+        description: "The measure of how cold or hot the water is. Measured in celsius or fahrenheit.",
+        reason: "Changes in temperature have an effect on biological activity. Each species has a preferred range to live at. Temperature effects water chemistry as well. For example, higher temperature can dissolve for minerals but hold less gas.",
+        ref: [{
+          label: "USGS",
+          link: "https://www.usgs.gov/special-topics/water-science-school/science/temperature-and-water#overview",
+        }]
+      }
+    },
+    {
+      yAxisLabel: "pH", unit: "pH",
+      meta: {
+        description: "The measure to determine the acidity of water.",
+        reason: "pH is effected by changes in water chemistry and thus can be an important indicator. pH also affects solubility of metals, causing the water to be more toxic.",
+        ref: [
+          {
+            label: "USGS",
+            link: "https://www.usgs.gov/special-topics/water-science-school/science/ph-and-water#overview"
+          },
+          {
+            label: "EPA",
+            link: "https://www.epa.gov/system/files/documents/2021-07/parameter-factsheet_ph.pdf"
+          }
+        ]
+      }
+    },
+    {
+      yAxisLabel: "Dissolved Oxygen", unit: "DOpct",
+      meta: {
+        description: "The measure of oxygen in the water.",
+        reason: "It is an important indicator of the water body's ability to support aquatic life. Too little oxygen or too much can kill aquatic life.",
+        ref: [
+          {
+            label: "USGS",
+            url: "https://www.usgs.gov/special-topics/water-science-school/science/dissolved-oxygen-and-water#overview"
+          },
+          {
+            label: "EPA",
+            url: "https://www.epa.gov/national-aquatic-resource-surveys/indicators-dissolved-oxygen"
+          },
+        ]
+      }
+    },
+    {
+      yAxisLabel: "Conductivity", unit: "Cond",
+      meta: {
+        description: "The measure of the ability of the water to pass electrical current.",
+        reason: "Bodies of water usually have a base line range of conductivity. Significant changes in it may be indicators of a pollution event as conductivity is effected by salts and other compounds.",
+        ref: [
+          {
+            label: "USGS",
+            url: "https://www.usgs.gov/special-topics/water-science-school/science/conductivity-electrical-conductance-and-water#overview"
+          },
+          {
+            label: "EPA",
+            url: "https://www.epa.gov/national-aquatic-resource-surveys/indicators-conductivity"
+          },          
+        ]
+      }
+    },
+    {
+      yAxisLabel: "Salinity", unit: "Sal",
+      meta: {
+        description: "The measure of dissolved salt content in water. Effects conductivity.",
+        reason: "For organisms not used to changes in salinity, fluctuating levels can cause stress. Each living organism is adapted to the water body's usual salinity range.",
+        ref: [
+          {
+            label: "USGS",
+            url: "https://www.usgs.gov/special-topics/water-science-school/science/saline-water-and-salinity#overview"
+          },
+          {
+            label: "EPA",
+            url: "https://www.epa.gov/national-aquatic-resource-surveys/indicators-salinity"
+          },
+          
+        ]
+      }
+    },
+    {
+      yAxisLabel: "Turbidity", unit: "Turb",
+      meta: {
+        description: "The measure of the relative clarity of the water. Measured in NTU.",
+        reason: "High turbidity affects light penetration. Particles also provide places for bacteria and other pollutants to attach to.",
+        ref: [
+          {
+          label: "USGS",
+          link: "https://www.usgs.gov/special-topics/water-science-school/science/turbidity-and-water#overview"
+        }
+        ]
+      }
+    }
+
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentMonth = moment().month();
   const currentYear = moment().year();
 
-  const lastMonth = currentMonth === 0 ? 12 : currentMonth; 
-  const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear; 
+  const lastMonth = currentMonth === 0 ? 12 : currentMonth;
+  const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
 
   // Set the default selected month and year
   const [selectedMonth, setSelectedMonth] = useState(lastMonth.toString());
@@ -43,7 +130,7 @@ function Graph() {
   };
 
   const renderItem = useCallback(({ item }) => (
-    <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} />
+    <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} />
   ), [loading, data]);
 
   const monthOptions = [
@@ -71,38 +158,38 @@ function Graph() {
   const onMonthSelect = (value) => {
     setSelectedMonth(value);
     setMonth(value);  // Update the context's month
-    setEndDay(getDaysInMonth(value,selectedYear));
+    setEndDay(getDaysInMonth(value, selectedYear));
   };
 
   const onYearSelect = (value) => {
     setSelectedYear(value);
     setYear(value); // Update the context's year
-    setEndDay(getDaysInMonth(selectedMonth,value));
+    setEndDay(getDaysInMonth(selectedMonth, value));
   };
 
 
   return (
     <View className="bg-defaultbackground dark:bg-defaultdarkbackground">
       <View className="w-full bg-white elevation-[20] z-10 p-default dark:bg-gray-700">
-      <View className="flex-row w-full space-x-4">
-        <View className="flex-[2]">
-          <DropdownComponent
-            label="Month"
-            options={monthOptions}
-            value={selectedMonth}
-            onSelect={onMonthSelect}  // Use the updated onSelect handler
-          />
-        </View>
-        <View className="flex-[2]">
-          <DropdownComponent
-            label="Year"
-            options={yearOptions}
-            value={selectedYear}
-            onSelect={onYearSelect}  // Use the updated onSelect handler
-          />
+        <View className="flex-row w-full space-x-4">
+          <View className="flex-[2]">
+            <DropdownComponent
+              label="Month"
+              options={monthOptions}
+              value={selectedMonth}
+              onSelect={onMonthSelect}  // Use the updated onSelect handler
+            />
+          </View>
+          <View className="flex-[2]">
+            <DropdownComponent
+              label="Year"
+              options={yearOptions}
+              value={selectedYear}
+              onSelect={onYearSelect}  // Use the updated onSelect handler
+            />
+          </View>
         </View>
       </View>
-    </View>
 
       <ScrollView className="h-full" contentContainerStyle={{ paddingBottom: 175 }}>
         <FlatList
@@ -115,7 +202,7 @@ function Graph() {
           renderItem={renderItem}
         />
 
-        <View className="flex-row justify-center">
+        <View className="flex-row justify-center my-default">
           {waterParameters.map((_, index) => (
             <Text
               key={index}
@@ -124,7 +211,7 @@ function Graph() {
           ))}
         </View>
 
-        <View className="rounded-3xl bg-white elevation-[5] p-default mt-default flex-1 justify-center items-center dark:bg-gray-700 m-default">
+        <View className="rounded-3xl bg-white elevation-[5] p-default  flex-1 justify-center items-center dark:bg-gray-700 mx-default">
           <Text className="text-2xl font-bold dark:text-white">WQI</Text>
           <WQIGauge data={data} loading={loading} />
         </View>
