@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { ScrollView, View, Text, TouchableOpacity, Animated, Dimensions, Linking } from "react-native";
 import { VictoryChart, VictoryArea, VictoryLine, VictoryAxis, VictoryLabel } from "victory-native";
 import EmptyGraph from "./EmptyGraph";
+import LinkComp from "./LinkComp";
 import { useIsDark } from "@contexts";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -13,20 +14,6 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
     const isDark = useIsDark();
     const flipAnimation = useRef(new Animated.Value(0)).current;
     const [flipped, setFlipped] = useState(false);
-    const handleLinkPress = (url) => {
-        Linking.openURL(url);
-    };
-
-    const LinkComp = ({ label, url }) => {
-        return (
-            <View className="flex-row items-center space-x-2">
-                <Text className="dark:text-gray-300 pr-2">•</Text>
-                <TouchableOpacity onPress={() => handleLinkPress(url)}>
-                    <Text className="underline text-blue-400">{label}</Text>
-                </TouchableOpacity>
-            </View>
-        )
-    };
 
     const PercentageDotLine = ({ percentage }) => {
         const dotPosition = `${percentage}%`; // Calculate dot's position based on percentage
