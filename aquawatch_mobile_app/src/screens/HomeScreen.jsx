@@ -32,7 +32,7 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate("CurrentData");
   };
   return (
-    <View className="bg-defaultbackground">
+    <View className="bg-defaultbackground dark:bg-defaultdarkbackground">
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start", paddingBottom: 90 }}>
         {/* The paddingBottom should be at least as tall as the bottom tab navigator"s height */}
         {/* More info about the gradientCard Check GradientCard.js and StylesCard.js */}
