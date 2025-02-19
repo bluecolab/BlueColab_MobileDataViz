@@ -1,7 +1,7 @@
 import React from "react";
 import { VictoryPie, VictoryLabel, VictoryChart, VictoryAxis } from "victory-native";
 import { useIsDark } from "@contexts";
-import { View } from 'react-native';
+import { View, Text} from 'react-native';
 // Average sensors function - updated for flattened structure
 const averageSensors = (data) => {
   return data.reduce((acc, { Cond, DOpct, Sal, Temp, Turb, pH }) => {
@@ -59,7 +59,8 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
   else if (percentage >= 90 && percentage <= 100) color = "darkgreen";
 
   return (
-    <View>
+    <View className="rounded-3xl bg-white elevation-[5] p-default  flex-1 justify-center items-center dark:bg-gray-700 mx-default">
+      <Text className="text-2xl font-bold dark:text-white">WQI</Text>
       <VictoryChart width={size} height={size}>
         <VictoryAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
         <VictoryAxis dependentAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />

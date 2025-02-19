@@ -86,11 +86,11 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
             <View className="elevation-[5]">
                 {/* Title Bar */}
                 <View className="w-[95%] self-center">
-                    <Text className="text-2xl bg-white dark:bg-gray-700 rounded-3xl font-bold text-center dark:text-white">
+                    <Text className="text-3xl bg-white dark:bg-gray-700 rounded-3xl font-bold text-center dark:text-white p-1">
                         {yAxisLabel}
                     </Text>
                     <TouchableOpacity className="absolute top-1 right-2" onPress={startAnimation}>
-                        <FontAwesome name="info-circle" size={24} color={isDark ? "white" : "grey"} />
+                        <FontAwesome name="info-circle" size={32} color={isDark ? "white" : "grey"} />
                     </TouchableOpacity>
                 </View>
 

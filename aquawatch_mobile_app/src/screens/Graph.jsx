@@ -191,7 +191,7 @@ function Graph() {
         </View>
       </View>
 
-      <ScrollView className="h-full" contentContainerStyle={{ paddingBottom: 175 }}>
+      <ScrollView  contentContainerStyle={{ paddingBottom: 400 }}>
         <FlatList
           data={waterParameters}
           horizontal
@@ -211,10 +211,7 @@ function Graph() {
           ))}
         </View>
 
-        <View className="rounded-3xl bg-white elevation-[5] p-default  flex-1 justify-center items-center dark:bg-gray-700 mx-default">
-          <Text className="text-2xl font-bold dark:text-white">WQI</Text>
-          <WQIGauge data={data} loading={loading} />
-        </View>
+         <WQIGauge data={data} loading={loading} />
       </ScrollView>
     </View>
   );
