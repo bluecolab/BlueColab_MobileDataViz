@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { VictoryPie, VictoryLabel, VictoryChart, VictoryAxis } from "victory-native";
 import { useIsDark } from "@contexts";
-import { View, Text} from 'react-native';
+import { View, Text, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { FontAwesome } from "@expo/vector-icons";
+
 // Average sensors function - updated for flattened structure
 const averageSensors = (data) => {
   return data.reduce((acc, { Cond, DOpct, Sal, Temp, Turb, pH }) => {
@@ -16,7 +18,30 @@ const averageSensors = (data) => {
 };
 
 const WQIGauge = ({ loading, data, size = 200 }) => {
+  const { width } = Dimensions.get("window");
+  const containerWidth = width * 0.95;
   const isDark = useIsDark();
+  const flipAnimation = useRef(new Animated.Value(0)).current;
+  const [flipped, setFlipped] = useState(false);
+
+  const startAnimation = () => {
+    Animated.timing(flipAnimation, {
+      toValue: flipped ? 0 : 1,
+      duration: 500,
+      useNativeDriver: true, // RotateY doesn't support native driver
+    }).start(() => setFlipped(!flipped));
+  };
+
+
+  const frontInterpolate = flipAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "180deg"],
+  });
+
+  const backInterpolate = flipAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["180deg", "360deg"],
+  });
 
   let score = 0;
 
@@ -59,36 +84,92 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
   else if (percentage >= 90 && percentage <= 100) color = "darkgreen";
 
   return (
-    <View className="rounded-3xl bg-white elevation-[5] p-default  flex-1 justify-center items-center dark:bg-gray-700 mx-default">
-      <Text className="text-2xl font-bold dark:text-white">WQI</Text>
-      <VictoryChart width={size} height={size}>
-        <VictoryAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
-        <VictoryAxis dependentAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
-        {/* Pie Chart */}
-        <VictoryPie
-          standalone={true}
-          width={size}
-          height={size}
-          innerRadius={size / 2.5}
-          cornerRadius={5}
-          padAngle={1}
-          data={[
-            { x: "Completed", y: percentage },
-            { x: "Remaining", y: 100 - percentage },
-          ]}
-          colorScale={[color, "#E0E0E0"]}
-          labels={() => null}
-        />
-        {/* Label in the center */}
-        <VictoryLabel
-          text={loading ? "NA" : `${percentage}%`}
-          x={size / 2}  // Center X position
-          y={size / 2}  // Center Y position
-          textAnchor="middle"
-          style={{ fontSize: 32, fontWeight: "bold", fill: isDark ? "#fff" : "#000" }} // Customize the label style
-        />
-      </VictoryChart>
+    <View style={{ width, marginTop: 10 }}>
+      <View className="elevation-[5]">
+        {/* Title Bar */}
+        <View className="w-[95%] self-center">
+          <Text className="text-3xl bg-white dark:bg-gray-700 rounded-3xl font-bold text-center dark:text-white p-1">
+            WQI
+          </Text>
+          <TouchableOpacity className="absolute top-1 right-2" onPress={startAnimation}>
+            <FontAwesome name="info-circle" size={32} color={isDark ? "white" : "grey"} />
+          </TouchableOpacity>
+        </View>
+
+        {/* Graph Container */}
+        <View className="w-[95%] self-center z-10">
+          <View className="h-[310]">
+            {/* Front View - Graph */}
+            <Animated.View
+              style={[
+                {
+                  marginTop: 5,
+                  height: "100%",
+                  width: containerWidth,
+                  position: "absolute",
+                  justifyContent: "center",
+                  alignSelf: "center",
+                  backfaceVisibility: "hidden",
+                  transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }],
+                },
+              ]}
+            >
+              <View className="rounded-3xl bg-white elevation-[5] p-default  flex-1 justify-center items-center dark:bg-gray-700 mx-default">
+                <Text className="text-2xl font-bold dark:text-white">WQI</Text>
+                <VictoryChart width={size} height={size}>
+                  <VictoryAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
+                  <VictoryAxis dependentAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
+                  {/* Pie Chart */}
+                  <VictoryPie
+                    standalone={true}
+                    width={size}
+                    height={size}
+                    innerRadius={size / 2.5}
+                    cornerRadius={5}
+                    padAngle={1}
+                    data={[
+                      { x: "Completed", y: percentage },
+                      { x: "Remaining", y: 100 - percentage },
+                    ]}
+                    colorScale={[color, "#E0E0E0"]}
+                    labels={() => null}
+                  />
+                  {/* Label in the center */}
+                  <VictoryLabel
+                    text={loading ? "NA" : `${percentage}%`}
+                    x={size / 2}  // Center X position
+                    y={size / 2}  // Center Y position
+                    textAnchor="middle"
+                    style={{ fontSize: 32, fontWeight: "bold", fill: isDark ? "#fff" : "#000" }} // Customize the label style
+                  />
+                </VictoryChart>
+              </View>
+            </Animated.View>
+
+            {/* Back View - Information Card */}
+            <Animated.View
+              style={[
+                {
+                  marginTop: 5,
+                  height: "100%",
+                  width: containerWidth,
+                  position: "absolute",
+                  justifyContent: "center",
+                  alignSelf: "center",
+                  backfaceVisibility: "hidden",
+                  transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
+                },
+              ]}
+            >
+
+            </Animated.View>
+          </View>
+        </View>
+      </View>
     </View>
+
+
+
   );
 };
 

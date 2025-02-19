@@ -191,7 +191,7 @@ function Graph() {
         </View>
       </View>
 
-      <ScrollView  contentContainerStyle={{ paddingBottom: 400 }}>
+      <ScrollView  contentContainerStyle={{ paddingBottom: 175 }}>
         <FlatList
           data={waterParameters}
           horizontal
