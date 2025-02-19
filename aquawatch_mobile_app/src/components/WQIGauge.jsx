@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
 import { VictoryPie, VictoryLabel, VictoryChart, VictoryAxis } from "victory-native";
 import { useIsDark } from "@contexts";
-import { View, Text, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Animated, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { FontAwesome } from "@expo/vector-icons";
+import LinkComp from "./LinkComp";
 
 // Average sensors function - updated for flattened structure
 const averageSensors = (data) => {
@@ -97,8 +98,8 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
         </View>
 
         {/* Graph Container */}
-        <View className="w-[95%] self-center z-10">
-          <View className="h-[310]">
+        <View className="self-center z-10">
+          <View className="h-[250]">
             {/* Front View - Graph */}
             <Animated.View
               style={[
@@ -114,8 +115,7 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
                 },
               ]}
             >
-              <View className="rounded-3xl bg-white elevation-[5] p-default  flex-1 justify-center items-center dark:bg-gray-700 mx-default">
-                <Text className="text-2xl font-bold dark:text-white">WQI</Text>
+              <View className="rounded-3xl bg-white elevation-[5] p-default  flex-1 justify-center items-center dark:bg-gray-700 ">
                 <VictoryChart width={size} height={size}>
                   <VictoryAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
                   <VictoryAxis dependentAxis style={{ axis: { opacity: 0 }, tickLabels: { opacity: 0 } }} />
@@ -161,6 +161,29 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
                 },
               ]}
             >
+              <ScrollView className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
+
+
+                <Text className="text-lg font-semibold dark:text-white">
+                  What is WQI?
+                </Text>
+                <Text className="text-md dark:text-gray-300">
+                  WQI - water quality index - is a score that expresses the overall quality of water. It serves as a single, comprehensive indicator of the quality of water. The score ranges from 0 to 100.
+                </Text>
+
+                <Text className="text-lg font-semibold dark:text-white">
+                  Methodology
+                </Text>
+                <Text className="text-md dark:text-gray-300">
+                  The WQI for Choate Pond is calculated based on temperature, dissolved oxygen, pH, turbidity, and salinity. We then multiply each parameter by an assigned weight. Finally the product of each calculation is summed.
+                </Text>
+
+                <Text className="text-lg font-semibold dark:text-white">
+                  References
+                </Text>
+                <LinkComp url={"https://bluecolab.pace.edu/water-quality-index-dashboard-2/"} label={"Learn More"}/>
+                <Text></Text>
+              </ScrollView>
 
             </Animated.View>
           </View>
