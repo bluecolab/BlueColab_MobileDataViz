@@ -1,37 +1,34 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, Image, TouchableOpacity, Dimensions, ImageBackground } from "react-native";
 import { cardStyles } from "../../stylesCard";
 
 const { width } = Dimensions.get("window"); // Get the width of the device to set the image width
 
 // Define the GradientCard component with props for customization
-const GradientCard = ({ imageSource, title, buttonText, onButtonPress, gradientColors }) => {
+const GradientCard = ({ imageSource, title, buttonText, onButtonPress, isMain }) => {
   // Determine if imageSource is a URI or a local image
   const image = typeof imageSource === "string" ? { uri: imageSource } : imageSource;
-
   return (
-    <View style={{ width }}>
-      <View className="w-full m-[10]">
-        {/* Display the image with dynamic width and fixed height. */}
-        <Image 
-          className="rounded-t-3xl"
-          source={image} style={[cardStyles.cardImage, { width: width - 20, height: 200 }]} />
-        {/* Gradient stuff */}
-        <LinearGradient
-          colors={gradientColors}
-          style={cardStyles.gradientBackground}
-          start={{ x: 0, y: 1 }}
-          end={{ x: 0, y: 0 }}
+    <TouchableOpacity onPress={onButtonPress}>
+      <View className={`ml-[10] my-2 rounded-3xl overflow-hidden bg-white ${isMain ? 'mr-[10]' : ''}`}>
+        <ImageBackground
+          source={image}
+          style={[
+            cardStyles.cardImage,
+            {
+              width: isMain ? width : width / 2,
+              height: isMain ? 200 : 100,
+            },
+          ]}
+          imageStyle={{ borderRadiusTopLeft: 24, borderRadiusTopRight: 24}}
         >
-          {/* Title and button with styling and functionality. */}
-          <Text style={cardStyles.cardText}>{title}</Text>
-          <TouchableOpacity onPress={onButtonPress} style={cardStyles.cardButton}>
-            <Text style={cardStyles.buttonText}>{buttonText}</Text>
-          </TouchableOpacity>
-        </LinearGradient>
+
+        </ImageBackground>
+        <Text className={`text-gray-600 ${isMain ? 'text-lg' : 'text-sm'} pl-1`}>{buttonText}</Text>
+        <Text className={`text-gray-700 font-bold ${isMain ? 'text-3xl' : 'text-2xl'} pb-4 pl-1`}>{title}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
+
   );
 };
 

@@ -14,7 +14,7 @@ const GraphDataProvider = ({ children }) => {
 
   const fetchData = () => {
     if (year && month && start_day && end_day) {
-      const base_url = `https://colabprod01.pace.edu/api/influx/sensordata/Alan/idk/range?stream=false&start_date=${year}-${month
+      const base_url = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/idk/range?stream=false&start_date=${year}-${month
         .toString()
         .padStart(2, "0")}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month
         .toString()

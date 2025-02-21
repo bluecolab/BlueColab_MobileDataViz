@@ -3,8 +3,9 @@ import {
   ScrollView,
   View,
   FlatList,
+  Text
 } from "react-native";
-import { GradientCard } from "@components";
+import { GradientCard, QuickCurrentData } from "@components";
 
 //this is the first screen you see after the welcome screen
 //takes you to all the other sections of the app
@@ -45,15 +46,15 @@ export default function HomeScreen({ navigation }) {
   const data = [
     {
       imageSource: require("../../assets/homescreen/PXL_20221014_204618892.jpg"),
-      title: "This app is brought to you by Blue CoLab, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean." ,
-      buttonText: "Learn more...",
+      title: "Discover" ,
+      buttonText: "Blue CoLab Mission",
       onButtonPress: handleStoryScreenPress, 
       gradientColors: ["#ffdde1", "#ee9ca7"]
     },
     {
       imageSource: require("../../assets/homescreen/turtle.jpg"),
-      title: "Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!",
-      buttonText: "See Local Wildlife...",
+      title: "Discover Wildlife",
+      buttonText: "Choate Pond Wildlife",
       onButtonPress: handleWildlifeScreenPress,
       gradientColors: ["#FFFFFF", "#6DD5FA"],
     },
@@ -66,8 +67,8 @@ export default function HomeScreen({ navigation }) {
     // },
     {
       imageSource: require("../../assets/homescreen/waterSplash2.jpg"),
-      title: "Check out some of the Blue CoLab Blogs!",
-      buttonText: "Blog more...",
+      title: "Read Blogs",
+      buttonText: "Blue CoLab Blogs",
       onButtonPress: handleBlogScreenPress,
       gradientColors: ["#ffdde1", "#ee9ca7"],
     },
@@ -80,57 +81,33 @@ export default function HomeScreen({ navigation }) {
     // }
   ];
 
-  const data1 = [
-    {
-      imageSource: require("../../assets/homescreen/graph.png"),
-      title: "Updated Graph Views",
-      buttonText: "Test out...",
-      onButtonPress: handleGraphPress,
-      gradientColors: ["#6DD5FA", "#6DD5FA"],
-    },
-    {
-      imageSource: require("../../assets/homescreen/graph.png"),
-      title: "New Current Views",
-      buttonText: "Test out...",
-      onButtonPress: handleCurrentDataPress,
-      gradientColors: ["#6DD5FA", "#6DD5FA"],
-    }
-
-  ]
-
   return (
     <View className="bg-defaultbackground">
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start", paddingBottom: 90 }}>
+      <ScrollView className="h-full">
         {/* The paddingBottom should be at least as tall as the bottom tab navigator"s height */}
         {/* More info about the gradientCard Check GradientCard.js and StylesCard.js */}
-
+        <QuickCurrentData />
+        <GradientCard
+          imageSource={require("../../assets/homescreen/graph.png")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+          title="Historic Data"
+          buttonText="January 2025 Data"
+          onButtonPress={handleGraphPress}
+          gradientColors={["#ffdde1", "#ee9ca7"]} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
+          isMain
+        />
+        
+        <Text className="font-bold text-4xl mt-4 ml-4">More From Blue CoLab</Text>
         <FlatList
           data={data}
           horizontal
-          pagingEnabled
+          // pagingEnabled
           showsHorizontalScrollIndicator={true}
           keyExtractor={(item, index) => index.toString()}
           // onMomentumScrollEnd={handleScroll}
           renderItem={renderItem}
         />
 
-        {/* <GradientCard
-          imageSource={require("../../assets/homescreen/PXL_20221014_204618892.jpg")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
-          title="This app is brought to you by Blue CoLab, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean." // Pretty much the text
-          buttonText="Learn more..."
-          onButtonPress={handleStoryScreenPress}
-          gradientColors={["#ffdde1", "#ee9ca7"]} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
-        /> */}
-
-        <FlatList
-          data={data1}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={true}
-          keyExtractor={(item, index) => index.toString()}
-          // onMomentumScrollEnd={handleScroll}
-          renderItem={renderItem}
-        />
+       
       </ScrollView>
     </View>
   );
