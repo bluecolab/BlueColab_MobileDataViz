@@ -101,10 +101,43 @@ function CurrentData() {
   )
 
   return (
-    <ScrollView>
-        <Text>Water Temp: {waterTemp}</Text>
-     </ScrollView>
+    <ScrollView className="m-12 bg-default">
+       
+        <View className="border border-solid w-1/2" > 
+            <Text className="text-center" >{"Water Temperature"}</Text>
+            <Text className="text-center" >{waterTemp}</Text>
+        </View>
+
+        <View className="border border-solid w-1/2" > 
+            <Text className="text-center" >{"Conductivity"}</Text>
+            <Text className="text-center" >{cond}</Text>
+        </View>
+
+        <View className="border border-solid w-1/2" > 
+            <Text className="text-center" >{"Salinity"}</Text>
+            <Text className="text-center" >{sal}</Text>
+        </View>
+
+        <View className="border border-solid w-1/2" > 
+            <Text className="text-center" >{"pH"}</Text>
+            <Text className="text-center" >{pH}</Text>
+        </View>
+
+        <View className="border border-solid w-1/2" > 
+            <Text className="text-center" >{"Turbidity"}</Text>
+            <Text className="text-center" >{turb}</Text>
+        </View>
+
+        <View className="border border-solid w-1/2" > 
+            <Text className="text-center" >{"Oxygen"}</Text>
+            <Text className="text-center" >{dOpct}</Text>
+        </View>
+
+    </ScrollView>
+
+
   );
+
 }
 
 
