@@ -5,3 +5,4 @@ export { default as EmptyGraph } from './EmptyGraph';
 export { default as DataGraph } from './DataGraph';
 export { default as DropdownComponent } from './DropdownComponent';
 export { default as QuickCurrentData } from './QuickCurrentData';
+export { default as LinkComp } from './LinkComp';
