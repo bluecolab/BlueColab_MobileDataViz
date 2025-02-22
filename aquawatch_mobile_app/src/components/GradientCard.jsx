@@ -10,13 +10,13 @@ const GradientCard = ({ imageSource, title, buttonText, onButtonPress, isMain })
   const image = typeof imageSource === "string" ? { uri: imageSource } : imageSource;
   return (
     <TouchableOpacity onPress={onButtonPress}>
-      <View className={`ml-[10] my-2 rounded-3xl overflow-hidden bg-white ${isMain ? 'mr-[10]' : ''}`}>
+      <View className={`my-2 rounded-3xl overflow-hidden bg-white ${isMain ? '' : 'mr-4'}`}>
         <ImageBackground
           source={image}
           style={[
             cardStyles.cardImage,
             {
-              width: isMain ? width : width / 2,
+              width: isMain ? width : width / 1.8,
               height: isMain ? 200 : 100,
             },
           ]}

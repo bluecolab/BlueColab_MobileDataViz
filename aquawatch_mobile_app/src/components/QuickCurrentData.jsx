@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View } from "react-native";
+import { Text, View, Dimensions } from "react-native";
 import axios from 'axios';
 
 export default function QuickCurrentData() {
@@ -63,19 +63,31 @@ export default function QuickCurrentData() {
     const const_turb = 0.16 * data[0].Turb;
     const wqi = const_doptc + const_ph + const_temp + const_cond + const_turb;
 
-    const ParamView = ({param,name}) => {
-        return (<View className="">
-            <Text className="text-3xl text-center">{param}</Text>
-            <Text className="text-xl text-center">{name}</Text>
+    const ParamView = ({ param, name }) => {
+        return (<View style={{ width: itemWidth }}
+            className="rounded-lg flex items-center justify-center"
+        >
+            <Text className="text-2xl text-center">{param}</Text>
+            <Text className="text-lg text-center">{name}</Text>
         </View>)
     }
-    return <View>
-        <ParamView param={data[0].Cond} name={"Conductivity"} />
-        <ParamView param={data[0].DOpct} name={"Dissolved Oxygen"} />
-        <ParamView param={data[0].Sal} name={"Salinity"} />
-        <ParamView param={((data[0].Temp * (9 / 5)) + 32).toFixed(2) } name={"Temperature"} />
-        <ParamView param={data[0].Turb} name={"Turbidity"} />
-        <ParamView param={data[0].pH} name={"pH"} />
-        <ParamView param={wqi} name={"WQI"} />
-    </View>;
+    const screenWidth = Dimensions.get("window").width;
+    const itemWidth = (screenWidth - 100) / 2; // Adjust 32px for padding/margins
+
+    return (
+        <View className="bg-gray-300 m-4 rounded-3xl px-4 pt-4">
+            <View>
+                <Text className="text-2xl font-bold text-center">Live Data Quick Look</Text>
+            </View>
+
+            <View className="flex flex-row flex-wrap gap-4 py-4 items-center justify-center">
+                <ParamView param={((data[0].Temp * (9 / 5)) + 32).toFixed(2)} name={"Temperature"} />
+                <ParamView param={data[0].pH} name={"pH"} />
+                <ParamView param={data[0].DOpct} name={"Dissolved O2"} />
+                <ParamView param={data[0].Turb} name={"Turbidity"} />
+                <ParamView param={data[0].Cond} name={"Conductivity"} />
+                <ParamView param={data[0].Sal} name={"Salinity"} />
+                <ParamView param={wqi.toFixed(2)} name={"WQI"} />
+            </View>
+        </View>);
 }
