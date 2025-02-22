@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Dimensions } from "react-native";
+import { Text, View, Dimensions, TouchableOpacity } from "react-native";
 import axios from 'axios';
+import { LinearGradient } from 'expo-linear-gradient'; // if using Expo
 
 export default function QuickCurrentData() {
     // useState, a way to keep track of states (the values of variables)
@@ -19,7 +20,7 @@ export default function QuickCurrentData() {
                 // axios.get('https://colabprod01.pace.edu/api/influx/sensordata/Odin'),
             ]);
             // Reformat the data to remove nested objects
-            const cleanedData1 = { ...responses[0].data, ...responses[0].data.sensors };
+            const cleanedData1 = { ...responses[0].data, ...responses[0].data.sensors, ...responses[0].timestamp };
             delete cleanedData1.sensors;
 
             // const cleanedData2 = { ...responses[1].data, ...responses[1].data.sensors };
@@ -55,6 +56,7 @@ export default function QuickCurrentData() {
     console.log(data[0].Temp)
     console.log(data[0].Turb)
     console.log(data[0].pH)
+    console.log(data[0].timestamp)
 
     const const_doptc = 0.34 * data[0].DOpct;
     const const_ph = 0.22 * data[0].pH;
@@ -64,30 +66,52 @@ export default function QuickCurrentData() {
     const wqi = const_doptc + const_ph + const_temp + const_cond + const_turb;
 
     const ParamView = ({ param, name }) => {
-        return (<View style={{ width: itemWidth }}
-            className="rounded-lg flex items-center justify-center"
+        return (<View style={{ width: itemWidth, backgroundColor: "rgba(0, 100, 255, 0.1)" }}
+            className="rounded-lg flex items-center justify-center "
         >
-            <Text className="text-2xl text-center">{param}</Text>
-            <Text className="text-lg text-center">{name}</Text>
+            <Text className="text-2xl  text-white text-center">{param}</Text>
+            <Text className="text-lg text-white  text-center">{name}</Text>
         </View>)
     }
     const screenWidth = Dimensions.get("window").width;
     const itemWidth = (screenWidth - 100) / 2; // Adjust 32px for padding/margins
 
     return (
-        <View className="bg-gray-300 m-4 rounded-3xl px-4 pt-4">
-            <View>
-                <Text className="text-2xl font-bold text-center">Live Data Quick Look</Text>
-            </View>
+        <TouchableOpacity
+            onPress={()=>console.log("Hello")}>
+            <View className="px-4 pt-4">
+                <LinearGradient
+                    colors={["#00704d", "#9fb8ab"]}
+                    start={{ x: 0, y: 1 }}
+                    end={{ x: 0, y: 0 }}
+                    style={{
+                        paddingTop: 4,
+                        alignItems: 'center',
+                        borderRadius: 20,
+                    }}
+                >
+                    <View>
+                        <Text className="text-2xl text-white font-bold text-center">Live Data Quick Look</Text>
+                    </View>
 
-            <View className="flex flex-row flex-wrap gap-4 py-4 items-center justify-center">
-                <ParamView param={((data[0].Temp * (9 / 5)) + 32).toFixed(2)} name={"Temperature"} />
-                <ParamView param={data[0].pH} name={"pH"} />
-                <ParamView param={data[0].DOpct} name={"Dissolved O2"} />
-                <ParamView param={data[0].Turb} name={"Turbidity"} />
-                <ParamView param={data[0].Cond} name={"Conductivity"} />
-                <ParamView param={data[0].Sal} name={"Salinity"} />
-                <ParamView param={wqi.toFixed(2)} name={"WQI"} />
+                    <View className="flex flex-row flex-wrap gap-4 pt-4 items-center justify-center">
+                        <ParamView param={((data[0].Temp * (9 / 5)) + 32).toFixed(2)} name={"Temperature"} />
+                        <ParamView param={data[0].pH} name={"pH"} />
+                        <ParamView param={data[0].DOpct} name={"Dissolved O2"} />
+                        <ParamView param={data[0].Turb} name={"Turbidity"} />
+                        <ParamView param={data[0].Cond} name={"Conductivity"} />
+                        <ParamView param={data[0].Sal} name={"Salinity"} />
+                        <ParamView param={wqi.toFixed(2)} name={"WQI"} />
+                    </View>
+
+
+
+                    <View>
+                        <Text className="text-md text-white text-center py-4">As of {data[0].timestamp} UTC</Text>
+                    </View>
+                </LinearGradient>
             </View>
-        </View>);
+        </TouchableOpacity>
+    );
+
 }

@@ -22,13 +22,17 @@ export default function Attributions({ navigation }) {
       <View style={styles.attributions}>
         <Text>The members of the development team include:</Text>
 
+        <Text>• Alex Chen (<LinkComp url="https://www.linkedin.com/in/yan-yu-chen-3474a71aa/" label="in/yan-yu-chen-3474a71aa"/>) of the Blue Shield</Text>
         <Text>• Nicholas Davila (<LinkComp url="https://www.linkedin.com/in/nicholas--davila/" label="in/nicholas--davila"/>) of the Blue Shield</Text>
+        <Text>• Noor Ul Huda (<LinkComp url="https://www.linkedin.com/in/noorulhuda92/" label="in/noorulhuda92"/>) of the Blue CoLab</Text> 
         <Text>• Lizi Imedashvilli (<LinkComp url="https://www.linkedin.com/in/lizi-imedashvili-2b3a6b249" label="in/lizi-imedashvili-2b3a6b249"/>) of the Data Divas</Text> 
         <Text>• Ardin Kraja (<LinkComp url="https://www.linkedin.com/in/ardin-kraja-19ab61230" label="in/ardin-kraja-19ab61230"/>) of Blue Jelly</Text>
         <Text>• Victor Lima (<LinkComp url="https://www.linkedin.com/in/victor--lima" label="in/victor--lima"/>) of the Data Divas</Text>
         <Text>• Meryl Mizell (<LinkComp url="https://www.linkedin.com/in/meryl-mizell" label="in/meryl-mizell"/>) of Blue Jelly</Text>
+        <Text>• Charles Metayer (<LinkComp url="https://www.linkedin.com/in/charles-metayer-jr-9a983b267/" label="in/charles-metayer-jr-9a983b267"/>) of the Blue Shield</Text>
         <Text>• Lulu Moquette (<LinkComp url="https://www.linkedin.com/in/louisamoquete" label="in/louisamoquete"/>) of Blue Jelly</Text>
         <Text>• Kenji Okura (<LinkComp url="https://www.linkedin.com/in/kenji-okura" label="in/kenji-okura"/>) of Blue Jelly</Text>
+        <Text>• Michael Rourke (<LinkComp url="https://www.linkedin.com/in/michael-rourke-532b32225/" label="in/michael-rourke-532b32225"/>) of the Blue Shield</Text>
         <Text>• Erin Sorbella (<LinkComp url="https://www.linkedin.com/in/erin-sorbella-40936b241" label="in/erin-sorbella-40936b241"/>) of Blue Jelly</Text>
 
         <Text>We would like to give the following attributions:</Text>

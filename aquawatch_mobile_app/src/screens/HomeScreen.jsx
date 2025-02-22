@@ -62,13 +62,13 @@ export default function HomeScreen({ navigation }) {
       onButtonPress: handleWildlifeScreenPress,
       gradientColors: ["#FFFFFF", "#6DD5FA"],
     },
-    // {
-    //   imageSource: require("../../assets/homescreen/sky.jpg"),
-    //   title: "Check out the air quality index!",
-    //   buttonText: "Air Quality Index...",
-    //   onButtonPress: handleAqiPress,
-    //   gradientColors: ["#ffdde1", "#ee9ca7"],
-    // },
+    {
+      imageSource: require("../../assets/homescreen/sky.jpg"),
+      title: "Look!",
+      buttonText: "Air Quality Index...",
+      onButtonPress: handleAqiPress,
+      gradientColors: ["#ffdde1", "#ee9ca7"],
+    },
     {
       imageSource: require("../../assets/homescreen/waterSplash2.jpg"),
       title: "Read Blogs",
@@ -76,13 +76,13 @@ export default function HomeScreen({ navigation }) {
       onButtonPress: handleBlogScreenPress,
       gradientColors: ["#ffdde1", "#ee9ca7"],
     },
-    // {
-    //   imageSource: require("../../assets/homescreen/code.jpg"),
-    //   title: "Code & Data Attributions",
-    //   buttonText: "Learn more...",
-    //   onButtonPress: handleAttributionPress,
-    //   gradientColors: ["#FFFFFF", "#6DD5FA"],
-    // }
+    {
+      imageSource: require("../../assets/homescreen/code.jpg"),
+      title: "Credits",
+      buttonText: "Code & Data Attributions",
+      onButtonPress: handleAttributionPress,
+      gradientColors: ["#FFFFFF", "#6DD5FA"],
+    }
   ];
 
   return (
@@ -90,11 +90,13 @@ export default function HomeScreen({ navigation }) {
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start", paddingBottom: 90 }}>
         {/* The paddingBottom should be at least as tall as the bottom tab navigator"s height */}
         {/* More info about the gradientCard Check GradientCard.js and StylesCard.js */}
+        <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">Choate Pond Data</Text>
+
         <View>
           <QuickCurrentData />
         </View>
 
-        <View className="px-4">
+        <View className="px-4 pt-4">
           <GradientCard
             imageSource={require("../../assets/homescreen/graph.png")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
             title="Historic Data"
@@ -106,7 +108,7 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-        <Text className="font-bold text-4xl mt-4 ml-4">More From Blue CoLab</Text>
+        <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">More From Blue CoLab</Text>
         <View className="px-4">
           <FlatList
             data={data}

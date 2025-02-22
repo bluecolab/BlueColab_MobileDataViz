@@ -10,7 +10,7 @@ const GradientCard = ({ imageSource, title, buttonText, onButtonPress, isMain })
   const image = typeof imageSource === "string" ? { uri: imageSource } : imageSource;
   return (
     <TouchableOpacity onPress={onButtonPress}>
-      <View className={`my-2 rounded-3xl overflow-hidden bg-white ${isMain ? '' : 'mr-4'}`}>
+      <View className={`my-2 rounded-3xl overflow-hidden bg-white dark:bg-gray-700 ${isMain ? '' : 'mr-4'}`}>
         <ImageBackground
           source={image}
           style={[
@@ -24,8 +24,8 @@ const GradientCard = ({ imageSource, title, buttonText, onButtonPress, isMain })
         >
 
         </ImageBackground>
-        <Text className={`text-gray-600 ${isMain ? 'text-lg' : 'text-sm'} pl-1`}>{buttonText}</Text>
-        <Text className={`text-gray-700 font-bold ${isMain ? 'text-3xl' : 'text-2xl'} pb-4 pl-1`}>{title}</Text>
+        <Text className={`text-gray-600 dark:text-white ${isMain ? 'text-lg' : 'text-sm'} pl-1`}>{buttonText}</Text>
+        <Text className={`text-gray-700 dark:text-white font-bold ${isMain ? 'text-3xl' : 'text-2xl'} pb-4 pl-1`}>{title}</Text>
       </View>
     </TouchableOpacity>
 
