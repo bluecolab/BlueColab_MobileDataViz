@@ -22,6 +22,8 @@ const MonthlyDataStack = createStackNavigator();
 // Stack navigator for the Home tab
 function HomeStackNavigator() {
   const isDark = useIsDark();
+
+  console.log(isDark)
   return (
     <HomeStack.Navigator screenOptions={{
       headerShown: true, headerStyle: {

@@ -98,7 +98,7 @@ export default function HomeScreen({ navigation }) {
 
         <View className="px-4 pt-4">
           <GradientCard
-            imageSource={require("../../assets/homescreen/graph.png")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+            imageSource={require("../../assets/homescreen/IMG_9274.jpg")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
             title="Historic Data"
             buttonText={`${lastMonth} Data`}
             onButtonPress={handleGraphPress}
@@ -108,7 +108,7 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-        <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">More From Blue CoLab</Text>
+        <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">From Blue CoLab</Text>
         <View className="px-4">
           <FlatList
             data={data}
