@@ -48,6 +48,7 @@ function HomeStackNavigator() {
 
 // Stack navigator for the Middle tab (Data Hub)
 function MiddleStackNavigator() {
+  const isDark = useIsDark();
   return (
     <MiddleStack.Navigator screenOptions={{
       headerShown: true,
@@ -57,7 +58,11 @@ function MiddleStackNavigator() {
         shadowOpacity: 0.1,
         shadowRadius: 20,
         elevation: 20,
-      }
+        backgroundColor: isDark ? "#2e2e3b" : "white" ,
+      },
+      headerTitleStyle: {
+        color: isDark ? "white" : "black",  
+      },
     }}>
       <MiddleStack.Screen name="Current Data" component={MiddleScreen} />
     </MiddleStack.Navigator>
@@ -66,6 +71,7 @@ function MiddleStackNavigator() {
 
 // Stack navigator for the Monthly tab
 function MonthlyDataStackNavigator() {
+  const isDark = useIsDark();
   return (
     <MonthlyDataStack.Navigator screenOptions={{
       headerShown: true,
@@ -75,7 +81,11 @@ function MonthlyDataStackNavigator() {
         shadowOpacity: 0.1,
         shadowRadius: 20,
         elevation: 20,
-      }
+        backgroundColor: isDark ? "#2e2e3b" : "white" ,
+      },
+      headerTitleStyle: {
+        color: isDark ? "white" : "black",  
+      },
     }}>
       <MonthlyDataStack.Screen name="Monthly Data" component={MonthlyData} />
     </MonthlyDataStack.Navigator>
