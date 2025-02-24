@@ -7,10 +7,10 @@ import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, Monthly
 import { tabBarStyles, middleButtonStyles, iconStyles } from "./stylesCard";
 import { ColorSchemeProvider, GraphDataProvider, useIsDark } from "@contexts";
 import waterDropIcon from "./assets/free-water-drop-2-462137.png";
-import homeIcon from "./assets/HomeIcon.png";
-import homeIconDark from "./assets/HomeIcon - Copy.png";
-import monthlyDataIcon from "./assets/NavGraphIcon.png";
-import monthlyDataIconDark from "./assets/NavGraphIcon copy.png";
+import homeIcon from "./assets/HomeIcon_WB.png";
+import homeIconDark from "./assets/HomeIcon_BB.png";
+import monthlyDataIcon from "./assets/settings_WB.png";
+import monthlyDataIconDark from "./assets/settings_BB.png";
 
 import "./global.css"
 
