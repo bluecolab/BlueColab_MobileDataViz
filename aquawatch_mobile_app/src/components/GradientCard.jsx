@@ -24,8 +24,8 @@ const GradientCard = ({ imageSource, title, buttonText, onButtonPress, isMain })
         >
 
         </ImageBackground>
-        <Text className={`text-gray-600 dark:text-white ${isMain ? 'text-lg' : 'text-sm'} pl-1`}>{buttonText}</Text>
-        <Text className={`text-gray-700 dark:text-white font-bold ${isMain ? 'text-3xl' : 'text-2xl'} pb-4 pl-1`}>{title}</Text>
+        <Text className={`text-gray-700 dark:text-white font-bold ${isMain ? 'text-3xl' : 'text-2xl'}  pl-1`}>{title}</Text>
+        <Text className={`text-gray-600 dark:text-white ${isMain ? 'text-lg' : 'text-sm'} pb-4 pl-1`}>{buttonText}</Text>
       </View>
     </TouchableOpacity>
 

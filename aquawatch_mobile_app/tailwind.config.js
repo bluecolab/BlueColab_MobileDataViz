@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        defaultbackground: 'rgb(240, 240, 240)',
+        defaultbackground: 'rgb(220, 220, 220)',
         defaultdarkbackground: '#1a202c'
       },
       padding: {
