@@ -35,6 +35,10 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate("CurrentData");
   };
 
+  const handleMiddlePress = () => {
+    navigation.navigate("Current Data");
+  };
+
   const lastMonth = moment().subtract(1, "months").format("MMMM YYYY");
 
 
@@ -93,7 +97,7 @@ export default function HomeScreen({ navigation }) {
         <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">Choate Pond Data</Text>
 
         <View>
-          <QuickCurrentData />
+          <QuickCurrentData handleMiddlePress={handleMiddlePress} />
         </View>
 
         <View className="px-4 pt-4">

@@ -3,7 +3,7 @@ import { Text, View, Dimensions, TouchableOpacity } from "react-native";
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient'; // if using Expo
 
-export default function QuickCurrentData() {
+export default function QuickCurrentData({handleMiddlePress}) {
     // useState, a way to keep track of states (the values of variables)
     const [data, setData] = useState([]); // (1) data is the variable (2) setData is how to set the variable (3) useState([]), set's the data to [] initially 
     // data stores the response from the API
@@ -69,7 +69,7 @@ export default function QuickCurrentData() {
 
     return (
         <TouchableOpacity
-            onPress={()=>console.log("Hello")}>
+            onPress={handleMiddlePress}>
             <View className="px-4 pt-4">
                 <LinearGradient
                     colors={["#00104d", "#3fb8ab"]}

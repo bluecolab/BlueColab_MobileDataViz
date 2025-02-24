@@ -22,8 +22,6 @@ const MonthlyDataStack = createStackNavigator();
 // Stack navigator for the Home tab
 function HomeStackNavigator() {
   const isDark = useIsDark();
-
-  console.log(isDark)
   return (
     <HomeStack.Navigator screenOptions={{
       headerShown: true, headerStyle: {
@@ -43,6 +41,7 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="AQI" component={AirQuality} />
       <HomeStack.Screen name="Graph" component={Graph} />
       <HomeStack.Screen name="CurrentData" component={CurrentData} />
+      <HomeStack.Screen name="Current Data" component={MiddleScreen} />
     </HomeStack.Navigator>
   );
 }
