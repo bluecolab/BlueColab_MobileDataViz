@@ -3,7 +3,7 @@ import { ScrollView, View, Text, TouchableOpacity, Animated, Dimensions, Linking
 import { VictoryChart, VictoryArea, VictoryLine, VictoryAxis, VictoryLabel } from "victory-native";
 import EmptyGraph from "./EmptyGraph";
 import LinkComp from "./LinkComp";
-import { useIsDark } from "@contexts";
+import { useColorSchemeContext } from "@contexts";
 import { FontAwesome } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
@@ -11,7 +11,7 @@ const { width } = Dimensions.get("window");
 
 function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
     const containerWidth = width * 0.95;
-    const isDark = useIsDark();
+    const {isDark, setColorScheme}  = useColorSchemeContext();
     const flipAnimation = useRef(new Animated.Value(0)).current;
     const [flipped, setFlipped] = useState(false);
 
@@ -184,7 +184,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                                 },
                             ]}
                         >
-                            <ScrollView className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
+                            <ScrollView nestedScrollEnabled={true} className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
                                 <View style={{ borderBottomWidth: 1, borderBottomColor: isDark ? 'white' : 'black', marginVertical: 10 }} />
 
                                 <Text className="text-lg font-semibold dark:text-white text-center">

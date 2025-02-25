@@ -39,6 +39,10 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate("Current Data");
   };
 
+  const handleMonthlyPress = () => {
+    navigation.navigate("Monthly Data");
+  };
+
   const lastMonth = moment().subtract(1, "months").format("MMMM YYYY");
 
 
@@ -112,6 +116,34 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
+        <View className="px-4 pt-4">
+          <GradientCard
+            imageSource={require("../../assets/homescreen/IMG_9274.jpg")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+            title="Current Data"
+            buttonText={`New Current Data Screen`}
+            onButtonPress={handleCurrentDataPress}
+            gradientColors={["#ffdde1", "#ee9ca7"]} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
+            isMain
+          />
+        </View>
+
+
+        <View className="px-4 pt-4">
+          <GradientCard
+            imageSource={require("../../assets/homescreen/IMG_9274.jpg")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+            title="Monthly Data"
+            buttonText={`Old Monthly Data Screen`}
+            onButtonPress={handleMonthlyPress}
+            gradientColors={["#ffdde1", "#ee9ca7"]} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
+            isMain
+          />
+        </View>
+
+
+
+
+
+        
         <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">From Blue CoLab</Text>
         <View className="px-4">
           <FlatList

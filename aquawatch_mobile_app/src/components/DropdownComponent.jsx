@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import { useIsDark } from "@contexts";
+import { useColorSchemeContext } from "@contexts";
 
 const DropdownComponent = ({ label, options, value, onSelect }) => {
-  const isDark = useIsDark();
+  const {isDark} = useColorSchemeContext();
   const [isFocus, setIsFocus] = useState(false);
 
   useEffect(() => {

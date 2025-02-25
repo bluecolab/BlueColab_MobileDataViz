@@ -3,9 +3,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, TouchableOpacity, View } from "react-native";
-import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph, CurrentData } from "@screens";
+import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph, CurrentData, Settings } from "@screens";
 import { tabBarStyles, middleButtonStyles, iconStyles } from "./stylesCard";
-import { ColorSchemeProvider, GraphDataProvider, useIsDark } from "@contexts";
+import { ColorSchemeProvider, GraphDataProvider, useColorSchemeContext } from "@contexts";
 import waterDropIcon from "./assets/free-water-drop-2-462137.png";
 import homeIcon from "./assets/HomeIcon_WB.png";
 import homeIconDark from "./assets/HomeIcon_BB.png";
@@ -21,7 +21,7 @@ const MonthlyDataStack = createStackNavigator();
 
 // Stack navigator for the Home tab
 function HomeStackNavigator() {
-  const isDark = useIsDark();
+  const {isDark, setColorScheme} = useColorSchemeContext();
   return (
     <HomeStack.Navigator screenOptions={{
       headerShown: true, headerStyle: {
@@ -42,13 +42,14 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="Graph" component={Graph} />
       <HomeStack.Screen name="CurrentData" component={CurrentData} />
       <HomeStack.Screen name="Current Data" component={MiddleScreen} />
+      <HomeStack.Screen name="Monthly Data" component={MonthlyData} />
     </HomeStack.Navigator>
   );
 }
 
 // Stack navigator for the Middle tab (Data Hub)
 function MiddleStackNavigator() {
-  const isDark = useIsDark();
+  const {isDark, setColorScheme} = useColorSchemeContext();
   return (
     <MiddleStack.Navigator screenOptions={{
       headerShown: true,
@@ -71,7 +72,7 @@ function MiddleStackNavigator() {
 
 // Stack navigator for the Monthly tab
 function MonthlyDataStackNavigator() {
-  const isDark = useIsDark();
+  const {isDark, setColorScheme}  = useColorSchemeContext();
   return (
     <MonthlyDataStack.Navigator screenOptions={{
       headerShown: true,
@@ -87,7 +88,7 @@ function MonthlyDataStackNavigator() {
         color: isDark ? "white" : "black",  
       },
     }}>
-      <MonthlyDataStack.Screen name="Monthly Data" component={MonthlyData} />
+      <MonthlyDataStack.Screen name="Settings" component={Settings} />
     </MonthlyDataStack.Navigator>
   );
 }
@@ -105,7 +106,7 @@ const CustomTabBarButton = ({ children, onPress }) => (
 const Tab = createBottomTabNavigator();
 
 function MainNavigator() {
-  const isDark = useIsDark();
+  const {isDark, setColorScheme}  = useColorSchemeContext();
 
   return (
     <NavigationContainer>
