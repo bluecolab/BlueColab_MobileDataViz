@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SettingsDropdown } from "@components";
-import { useColorSchemeContext } from "@contexts";
+import { useIsDark } from "@contexts";
 import { FontAwesome } from "@expo/vector-icons";
 
 
 export default function Settings() {
-  const {isDark, colorScheme, setColorScheme}  = useColorSchemeContext();
+  const {isDark, colorScheme}  = useIsDark();
 
   const [selectedLocation, setSelectedLocation] = useState("1");
   const locationOptions = [
@@ -58,7 +58,7 @@ export default function Settings() {
     }
   
     // Set the color scheme using nativewind
-    setColorScheme(newColorScheme);
+    // setColorScheme(newColorScheme);
   };
 
   const resetToDefault = () => {

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { VictoryPie, VictoryLabel, VictoryChart, VictoryAxis } from "victory-native";
-import { useColorSchemeContext } from "@contexts";
+import { useIsDark } from "@contexts";
 import { View, Text, Animated, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { FontAwesome } from "@expo/vector-icons";
 import LinkComp from "./LinkComp";
@@ -21,7 +21,7 @@ const averageSensors = (data) => {
 const WQIGauge = ({ loading, data, size = 200 }) => {
   const { width } = Dimensions.get("window");
   const containerWidth = width * 0.95;
-  const {isDark, setColorScheme}  = useColorSchemeContext();
+  const {isDark}  = useIsDark();
   const flipAnimation = useRef(new Animated.Value(0)).current;
   const [flipped, setFlipped] = useState(false);
 

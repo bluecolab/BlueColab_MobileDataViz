@@ -3,7 +3,7 @@ import { ScrollView, View, Text, TouchableOpacity, Animated, Dimensions, Linking
 import { VictoryChart, VictoryArea, VictoryLine, VictoryAxis, VictoryLabel } from "victory-native";
 import EmptyGraph from "./EmptyGraph";
 import LinkComp from "./LinkComp";
-import { useColorSchemeContext } from "@contexts";
+import { useIsDark } from "@contexts";
 import { FontAwesome } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
@@ -11,7 +11,7 @@ const { width } = Dimensions.get("window");
 
 function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
     const containerWidth = width * 0.95;
-    const {isDark, setColorScheme}  = useColorSchemeContext();
+    const {isDark}  = useIsDark();
     const flipAnimation = useRef(new Animated.Value(0)).current;
     const [flipped, setFlipped] = useState(false);
 

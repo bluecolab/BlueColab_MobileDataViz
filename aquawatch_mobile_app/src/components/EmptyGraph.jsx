@@ -1,9 +1,9 @@
 import React from "react";
 import { VictoryChart, VictoryLabel, VictoryAxis } from "victory-native";
-import { useColorSchemeContext } from "@contexts";
+import { useIsDark } from "@contexts";
 
 function EmptyGraph( {text="Loading data..."}) {
-    const {isDark, setColorScheme}  = useColorSchemeContext();
+    const {isDark}  = useIsDark();
 
     return (
 
