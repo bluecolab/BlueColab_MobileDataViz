@@ -11,8 +11,7 @@ const getDaysInMonth = (month, year) => {
 };
 
 function Graph() {
-  const { data, loading, setYear, setMonth, setEndDay } = useContext(GraphDataContext);
-
+  const { data, loading, setYear, setMonth, setEndDay, defaultLocation } = useContext(GraphDataContext);
   const waterParameters = [
     {
       yAxisLabel: "Temperature", unit: "Temp",
@@ -189,6 +188,16 @@ function Graph() {
             />
           </View>
         </View>
+        <View>
+        <View>
+            <DropdownComponent
+              label="Year"
+              options={yearOptions}
+              value={selectedYear}
+              onSelect={onYearSelect}  // Use the updated onSelect handler
+            />
+          </View>
+        </View>
       </View>
 
       <ScrollView  contentContainerStyle={{ paddingBottom: 175 }}>
@@ -211,7 +220,7 @@ function Graph() {
           ))}
         </View>
 
-         <WQIGauge data={data} loading={loading} />
+         {defaultLocation == "Choate Pond" ? <WQIGauge data={data} loading={loading} /> : <></>}
       </ScrollView>
     </View>
   );
