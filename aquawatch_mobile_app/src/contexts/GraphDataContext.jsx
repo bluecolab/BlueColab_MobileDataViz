@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Create a provider component
 const GraphDataProvider = ({ children }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,70 +12,165 @@ const GraphDataProvider = ({ children }) => {
   const [start_day, setStartDay] = useState(null);
   const [end_day, setEndDay] = useState(null);
 
-  const fetchData = () => {
-    if (year && month && start_day && end_day) {
-      const base_url = `https://colabprod01.pace.edu/api/influx/sensordata/Alan/idk/range?stream=false&start_date=${year}-${month
-        .toString()
-        .padStart(2, "0")}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month
-        .toString()
-        .padStart(2, "0")}-${end_day}T23%3A59%3A59%2B00%3A00`;
-      console.log(base_url)
-      axios
-        .get(base_url)
-        .then((response) => {
-          const apiData = response.data;
+  const [defaultLocation, setDefaultLocation] = useState(null);
+  const [defaultTempUnit, setDefaultTempUnit] = useState(null);
 
-          // Flatten the data structure by merging "sensors" into each item
-          const cleanedData = apiData.map((item) => {
-            const { sensors, ...rest } = item;
-            return { ...rest, ...sensors };
-          });
-
-          setData(cleanedData);
-        })
-        .catch((error) => {
-          console.log(error)
-          console.error("Error fetching data:", error);
-          setData({ error: "Failed to load data" });
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
+  const locationMap = {
+    'New York City': '01376520',
+    'Piermont': '01376269',
+    'West Point': '01374019',
+    'Poughkeepsie': '01372043',
+    'Albany': '01359165',
   };
 
   useEffect(() => {
+    const parameterMap = {
+      "00010": "Temp",  
+      "00301": "DOpct", 
+      "90860": "Sal",    
+      "00095": "Cond",  
+      "63680": "Turb",  
+      "00400": "pH"    
+    };
+    
+    function cleanHudsonRiverData(rawData) {
+      if (!rawData?.value?.timeSeries) {
+        console.error("Invalid data format");
+        return [];
+      }
+
+
+    
+      const parsedData = {};
+
+      rawData.value.timeSeries.forEach(series => {
+        const paramCode = series.variable.variableCode[0].value;
+        const paramName = parameterMap[paramCode];
+
+
+        if (!paramName) return; // Skip unneeded parameters
+        console.log(paramName)
+        console.log(series)
+
+
+        const valuesList = series.values[0].value.length > 0 ?  series.values[0].value : series.values[1]?.value ?? []; 
+
+        valuesList.forEach(entry => {
+          const timestamp = entry.dateTime;
+          const value = parseFloat(entry.value);
+    
+          if (!parsedData[timestamp]) {
+            parsedData[timestamp] = { timestamp };
+          }
+          parsedData[timestamp][paramName] = value;
+        });
+      });
+    
+      return Object.values(parsedData);
+    }
+
+    const fetchData = () => {
+      if (year && month && start_day && end_day && defaultLocation) {  
+        let baseURL = '';
+  
+        switch (defaultLocation) {
+          case 'Choate Pond':
+            baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/range?stream=false&start_date=${year}-${month
+              .toString()
+              .padStart(2, "0")}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month
+              .toString()
+              .padStart(2, "0")}-${end_day}T23%3A59%3A59%2B00%3A00`;
+            break;
+          case 'New York City':
+          case 'Piermont':
+          case 'West Point':
+          case 'Poughkeepsie':
+          case 'Albany':
+            baseURL = `https://nwis.waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? "01376269"}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
+            break;
+          default:
+            baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/range?stream=false&start_date=${year}-${month
+              .toString()
+              .padStart(2, "0")}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month
+              .toString()
+              .padStart(2, "0")}-${end_day}T23%3A59%3A59%2B00%3A00`;
+            break;
+        }
+  
+        axios
+          .get(baseURL)
+          .then((response) => {
+            const apiData = response.data;
+
+            console.clear()
+            console.log(baseURL)
+            if (defaultLocation === 'Choate Pond') {
+              const cleanedData = apiData.map((item) => {
+                const { sensors, ...rest } = item;
+                return { ...rest, ...sensors };
+              });
+              setData(cleanedData);
+            } else {
+              const cleanedData = cleanHudsonRiverData(apiData);
+              setData(cleanedData);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+            setData({ error: "Failed to load data" });
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+    };
+
     setLoading(true);
-    setData([]);
-    fetchData();
-  }, [year, month, start_day, end_day]); 
+    if (defaultLocation) {
+      setData([]);
+      fetchData();
+    }
+  }, [year, month, start_day, end_day, defaultLocation]); 
 
   useEffect(() => {
+    const getStoredDefaultLocation = async () => {
+      try {
+        const value = await AsyncStorage.getItem('default-location');
+        if (value !== null) {
+          setDefaultLocation(value);
+        } else {
+          setDefaultLocation("Choate Pond");
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    getStoredDefaultLocation();
+
     const lastMonth = moment().subtract(1, "month");
-    console.log(lastMonth,
-      lastMonth.year(),
-      lastMonth.month() + 1,
-      lastMonth.daysInMonth()
-    )
+    console.log(lastMonth, lastMonth.year(), lastMonth.month() + 1, lastMonth.daysInMonth());
     setYear(lastMonth.year());
-    setMonth(lastMonth.month() + 1); // Months are 0-based
+    setMonth(lastMonth.month() + 1);
     setStartDay(1);
     setEndDay(lastMonth.daysInMonth());
   }, []);
-  
+
   return (
     <GraphDataContext.Provider
-    value={{
-      data,
-      loading,
-      setLoading,
-      setYear,
-      setMonth,
-      setEndDay 
-    }}
-  >
-    {children}
-  </GraphDataContext.Provider>
+      value={{
+        data,
+        loading,
+        defaultLocation,
+        setDefaultLocation,
+        setLoading,
+        setYear,
+        setMonth,
+        setEndDay,
+      }}
+    >
+      {children}
+    </GraphDataContext.Provider>
   );
 };
 

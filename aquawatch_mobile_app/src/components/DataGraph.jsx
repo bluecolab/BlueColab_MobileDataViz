@@ -64,13 +64,21 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
     
             return acc;
         }, {});
-    
+
         chartData = Object.keys(groupedData).map((date) => ({
             day: new Date(date),
-            avgTmp: groupedData[date].reduce((sum, v) => sum + v, 0) / groupedData[date].length,
+            avg: groupedData[date].reduce((sum, v) => sum + v, 0) / groupedData[date].length,
             y0: Math.min(...groupedData[date]),
             y: Math.max(...groupedData[date]),
         }));
+
+        chartData.forEach(
+            (ele) => {
+                ele.avg = !isNaN(ele.avg) && ele.avg !== -999999 ? ele.avg : null;
+                ele.y = !isNaN(ele.y) && ele.y !== -999999 ? ele.y : null;
+                ele.y0 = !isNaN(ele.y0) && ele.y0 !== -999999 ? ele.y0 : null;
+            }
+        )
         
         // Calculate overall min, max, and average
         const allValues = Object.values(groupedData).flat();
@@ -120,11 +128,11 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                                 ) : !Array.isArray(data) ? (
                                     <EmptyGraph text={"No data for location, try another."} />
                                 ) : (
-                                    <VictoryChart padding={{ left: 60, top: 20, right: 50, bottom: 50 }}>
+                                    chartData.length ? <VictoryChart padding={{ left: 60, top: 20, right: 50, bottom: 50 }}>
                                         <VictoryAxis
                                             label="Time"
                                             tickValues={tickValues}
-                                            tickFormat={(t) => `${t.getMonth() + 1}/${t.getDate()}`}
+                                            tickFormat={(t) => `${t ? t.getMonth() + 1 : ''}/${t ? t.getDate() : ''}`}
                                             style={{
                                                 axis: { stroke: isDark ? "#fff" : "#000" },
                                                 axisLabel: { fill: isDark ? "#fff" : "#000" },
@@ -159,12 +167,13 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                                         <VictoryLine
                                             data={chartData}
                                             x="day"
-                                            y="avgTmp"
+                                            y="avg"
                                             style={{
                                                 data: { stroke: isDark ? "rgb(0, 0, 138)" : "rgb(0, 0, 255)" },
                                             }}
                                         />
-                                    </VictoryChart>
+                                    </VictoryChart> :  <EmptyGraph text={"No data for parameter at this month."} />
+
                                 )}
                             </View>
                         </Animated.View>
