@@ -70,6 +70,9 @@ function cleanHudsonRiverData(rawData) {
     const paramName = parameterMap[paramCode];
 
     if (!paramName) return; // Skip unneeded parameters
+    console.log("Hello?")
+    console.log(series.values[0])
+    console.log(series.values[1])
 
     series.values[0].value.forEach(entry => {
       const timestamp = entry.dateTime;
@@ -85,7 +88,7 @@ function cleanHudsonRiverData(rawData) {
   return Object.values(parsedData);
 }
 
-axios.get('https://nwis.waterservices.usgs.gov/nwis/iv/?sites=01376307&startDT=2023-12-01&endDT=2023-12-31&format=json')
+axios.get('https://nwis.waterservices.usgs.gov/nwis/iv/?sites=01372043&startDT=2023-12-01&endDT=2023-12-31&format=json')
   .then((response) => {
     const processedData = response.data; 
     const newData = cleanHudsonRiverData(processedData); 
