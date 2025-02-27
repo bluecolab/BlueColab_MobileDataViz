@@ -139,7 +139,7 @@ const GraphDataProvider = ({ children }) => {
         if (value !== null) {
           setDefaultLocation(value);
         } else {
-          setDefaultLocation("Piermont");
+          setDefaultLocation("Choate Pond");
         }
       } catch (e) {
         console.error(e);

@@ -11,7 +11,7 @@ const getDaysInMonth = (month, year) => {
 };
 
 function Graph() {
-  const { data, loading, setYear, setMonth, setEndDay, defaultLocation } = useContext(GraphDataContext);
+  const { data, loading, setYear, setMonth, setEndDay, defaultLocation, setDefaultLocation } = useContext(GraphDataContext);
   const waterParameters = [
     {
       yAxisLabel: "Temperature", unit: "Temp",
@@ -119,6 +119,7 @@ function Graph() {
   // Set the default selected month and year
   const [selectedMonth, setSelectedMonth] = useState(lastMonth.toString());
   const [selectedYear, setSelectedYear] = useState(lastMonthYear);
+  // const [selectedLocation, setSelectedLocation] = useState(defaultLocation);
 
   const { width } = Dimensions.get("window");
 
@@ -153,6 +154,20 @@ function Graph() {
     yearOptions.push({ label: `${year}`, value: year });
   }
 
+  const locationOptions = [
+    { label: 'Choate Pond', value: '1'},
+    { label: 'Piermont', value: '2'},
+    { label: 'West Point', value: '3'},
+    { label: 'Poughkeepsie', value: '4'},
+    { label: 'New York City', value: '5'},
+    { label: 'Albany', value: '6'},
+  ]
+
+  const defaultLocationValue = locationOptions.find(option => option.label === defaultLocation)?.value || '';
+
+  const [selectedLocation, setSelectedLocation] = useState(defaultLocationValue);
+
+
   // Update year and month in context
   const onMonthSelect = (value) => {
     setSelectedMonth(value);
@@ -165,6 +180,15 @@ function Graph() {
     setYear(value); // Update the context's year
     setEndDay(getDaysInMonth(selectedMonth, value));
   };
+
+  const onLocationSelect = (value) => {
+    setSelectedLocation(value);
+
+    const defaultLocationLabel = locationOptions.find(option => option.value === value)?.label || '';
+
+
+    setDefaultLocation(defaultLocationLabel)
+  }
 
 
   return (
@@ -191,10 +215,10 @@ function Graph() {
         <View>
         <View>
             <DropdownComponent
-              label="Year"
-              options={yearOptions}
-              value={selectedYear}
-              onSelect={onYearSelect}  // Use the updated onSelect handler
+              label="Location"
+              options={locationOptions}
+              value={selectedLocation}
+              onSelect={onLocationSelect}  // Use the updated onSelect handler
             />
           </View>
         </View>

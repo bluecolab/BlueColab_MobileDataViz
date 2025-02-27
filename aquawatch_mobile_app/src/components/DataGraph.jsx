@@ -87,8 +87,6 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
         overallAvg = allValues.reduce((sum, value) => sum + value, 0) / allValues.length;
 
         tickValues = chartData.map(({ day }, index) => (index % 5 === 0 ? day : null)).filter(Boolean);
-
-        console.log(chartData)
     }
     
     return (
