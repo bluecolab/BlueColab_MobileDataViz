@@ -4,7 +4,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { useIsDark } from "@contexts";
 
 const SettingsDropdown = ({ label, options, value, onSelect }) => {
-    const {isDark}  = useIsDark();
+    const { isDark } = useIsDark();
     const [isFocus, setIsFocus] = useState(false);
 
     useEffect(() => {
@@ -24,7 +24,23 @@ const SettingsDropdown = ({ label, options, value, onSelect }) => {
                     borderColor: isFocus ? 'blue' : 'gray',
                     borderWidth: 0.5,
                     paddingHorizontal: 8,
-                    backgroundColor: isDark ? 'darkgrey' : 'white',
+                    backgroundColor: isDark ? '#333333' : 'white',
+                }}
+                renderItem={(item, selected) => (
+                    <View
+                        style={{
+                            backgroundColor: selected ? (isDark ? '#777' : '#d0d0d0') : isDark ? '#555' : 'white', // Improve background handling
+                            padding: 10,
+                        }}
+                    >
+                        <Text style={{ color: isDark ? 'white' : 'black' }}>
+                            {item.label}
+                        </Text>
+                    </View>
+                )}
+                itemTextStyle={{
+                    color: isDark ? 'white' : 'black',
+                    fontSize: 16,
                 }}
                 placeholderStyle={{
                     fontSize: 16,
@@ -46,6 +62,7 @@ const SettingsDropdown = ({ label, options, value, onSelect }) => {
                     setIsFocus(false);
                 }}
             />
+
         </View>
 
     );

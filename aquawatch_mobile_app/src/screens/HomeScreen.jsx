@@ -98,7 +98,7 @@ export default function HomeScreen({ navigation }) {
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start", paddingBottom: 90 }}>
         {/* The paddingBottom should be at least as tall as the bottom tab navigator"s height */}
         {/* More info about the gradientCard Check GradientCard.js and StylesCard.js */}
-        <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">Choate Pond Data</Text>
+        <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">Choate Pond Data!</Text>
 
         <View>
           <QuickCurrentData handleMiddlePress={handleMiddlePress} />
