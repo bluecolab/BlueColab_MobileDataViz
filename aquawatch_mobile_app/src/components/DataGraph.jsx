@@ -9,7 +9,7 @@ import { FontAwesome } from "@expo/vector-icons";
 const { width } = Dimensions.get("window");
 
 
-function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
+function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
     const containerWidth = width * 0.95;
     const {isDark}  = useIsDark();
     const flipAnimation = useRef(new Animated.Value(0)).current;
@@ -57,8 +57,8 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
     if (Array.isArray(data) && !loading) {
         const groupedData = data.reduce((acc, item) => {
             const date = new Date(item.timestamp).toISOString().split("T")[0];
-            const value = unit === "Temp" ? item[unit] * (9 / 5) + 32 : item[unit];
-    
+            const value = unit === "Temp" && defaultTempUnit === 'Fahrenheit' ? item[unit] * (9 / 5) + 32 : item[unit];
+            console.log(unit === "Temp" && defaultTempUnit === 'Fahrenheit')
             if (!acc[date]) acc[date] = [];
             acc[date].push(value);
     

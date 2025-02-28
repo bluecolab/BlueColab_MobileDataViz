@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SettingsDropdown } from "@components";
-import { useIsDark } from "@contexts";
+import { useIsDark, GraphDataContext } from "@contexts";
 import { FontAwesome } from "@expo/vector-icons";
 
 
 export default function Settings() {
+  const { changeLocation, changeUnit } = useContext(GraphDataContext);
+
   const {isDark, colorSchemeSys,  changeColor}  = useIsDark();
 
   const [selectedLocation, setSelectedLocation] = useState("1");
@@ -18,6 +20,8 @@ export default function Settings() {
     { label: 'Albany', value: '6'},
   ]
   const onLocationSelect = (value) => {
+    const newLocation = locationOptions.find(option => option.value === value)?.label || '';
+    changeLocation(newLocation);
     setSelectedLocation(value);
   };
 
@@ -27,6 +31,8 @@ export default function Settings() {
     { label: 'Celsius', value: '2' },
   ];
   const onTempUnitSelect = (value) => {
+    const newTempUnit = tempUnitOptions.find(option => option.value === value)?.label || '';
+    changeUnit(newTempUnit);
     setSelectedTempUnit(value);
   };
 

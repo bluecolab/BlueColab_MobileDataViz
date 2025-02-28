@@ -11,7 +11,7 @@ const getDaysInMonth = (month, year) => {
 };
 
 function Graph() {
-  const { data, loading, setYear, setMonth, setEndDay, defaultLocation, setDefaultLocation } = useContext(GraphDataContext);
+  const { data, loading, setYear, setMonth, setEndDay, defaultLocation, defaultTempUnit, setDefaultLocation } = useContext(GraphDataContext);
   const waterParameters = [
     {
       yAxisLabel: "Temperature", unit: "Temp",
@@ -130,7 +130,7 @@ function Graph() {
   };
 
   const renderItem = useCallback(({ item }) => (
-    <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} />
+    <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit}/>
   ), [loading, data]);
 
   const monthOptions = [

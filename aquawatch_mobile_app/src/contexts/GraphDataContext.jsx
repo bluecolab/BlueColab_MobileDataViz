@@ -15,6 +15,30 @@ const GraphDataProvider = ({ children }) => {
   const [defaultLocation, setDefaultLocation] = useState(null);
   const [defaultTempUnit, setDefaultTempUnit] = useState(null);
 
+  const changeUnit = (newUnit) => {
+    const setStoredTempUnit  = async (value) => {
+      try {
+        await AsyncStorage.setItem('default-temp-unit', value);
+      } catch(e) {
+        // save error
+      }
+    }
+    setStoredTempUnit(newUnit);
+    setDefaultTempUnit(newUnit);
+  }
+
+  const changeLocation = (newLocation) => {
+    const setStoredLocation  = async (value) => {
+      try {
+        await AsyncStorage.setItem('default-location', value);
+      } catch(e) {
+        // save error
+      }
+    }
+    setStoredLocation (newLocation);
+    setDefaultLocation(newLocation);
+  }
+
   const locationMap = {
     'New York City': '01376520',
     'Piermont': '01376269',
@@ -47,11 +71,7 @@ const GraphDataProvider = ({ children }) => {
         const paramCode = series.variable.variableCode[0].value;
         const paramName = parameterMap[paramCode];
 
-
         if (!paramName) return; // Skip unneeded parameters
-        console.log(paramName)
-        console.log(series)
-
 
         const valuesList = series.values[0].value.length > 0 ?  series.values[0].value : series.values[1]?.value ?? []; 
 
@@ -137,6 +157,7 @@ const GraphDataProvider = ({ children }) => {
       try {
         const value = await AsyncStorage.getItem('default-location');
         if (value !== null) {
+          console.log(`Stored value: ${value}`);
           setDefaultLocation(value);
         } else {
           setDefaultLocation("Choate Pond");
@@ -146,7 +167,23 @@ const GraphDataProvider = ({ children }) => {
       }
     };
 
+    const getStoredDefaultTempUnit = async () => {
+      try {
+        const value = await AsyncStorage.getItem('default-temp-unit');
+        if (value !== null) {
+          console.log(`Stored value: ${value}`);
+          setDefaultTempUnit(value);
+        } else {
+          console.log("fired")
+          setDefaultTempUnit("Fahrenheit");
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
     getStoredDefaultLocation();
+    getStoredDefaultTempUnit();
 
     const lastMonth = moment().subtract(1, "month");
     console.log(lastMonth, lastMonth.year(), lastMonth.month() + 1, lastMonth.daysInMonth());
@@ -162,11 +199,14 @@ const GraphDataProvider = ({ children }) => {
         data,
         loading,
         defaultLocation,
-        setDefaultLocation,
+        defaultTempUnit,
+        changeLocation,
         setLoading,
         setYear,
         setMonth,
         setEndDay,
+        setDefaultLocation,
+        changeUnit
       }}
     >
       {children}
