@@ -71,7 +71,7 @@ function Graph() {
           {
             label: "EPA",
             url: "https://www.epa.gov/national-aquatic-resource-surveys/indicators-conductivity"
-          },          
+          },
         ]
       }
     },
@@ -89,7 +89,7 @@ function Graph() {
             label: "EPA",
             url: "https://www.epa.gov/national-aquatic-resource-surveys/indicators-salinity"
           },
-          
+
         ]
       }
     },
@@ -100,9 +100,9 @@ function Graph() {
         reason: "High turbidity affects light penetration. Particles also provide places for bacteria and other pollutants to attach to.",
         ref: [
           {
-          label: "USGS",
-          link: "https://www.usgs.gov/special-topics/water-science-school/science/turbidity-and-water#overview"
-        }
+            label: "USGS",
+            link: "https://www.usgs.gov/special-topics/water-science-school/science/turbidity-and-water#overview"
+          }
         ]
       }
     }
@@ -130,7 +130,7 @@ function Graph() {
   };
 
   const renderItem = useCallback(({ item }) => (
-    <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit}/>
+    <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} />
   ), [loading, data]);
 
   const monthOptions = [
@@ -155,12 +155,12 @@ function Graph() {
   }
 
   const locationOptions = [
-    { label: 'Choate Pond', value: '1'},
-    { label: 'Piermont', value: '2'},
-    { label: 'West Point', value: '3'},
-    { label: 'Poughkeepsie', value: '4'},
-    { label: 'New York City', value: '5'},
-    { label: 'Albany', value: '6'},
+    { label: 'Choate Pond', value: '1' },
+    { label: 'Piermont', value: '2' },
+    { label: 'West Point', value: '3' },
+    { label: 'Poughkeepsie', value: '4' },
+    { label: 'New York City', value: '5' },
+    { label: 'Albany', value: '6' },
   ]
 
   const defaultLocationValue = locationOptions.find(option => option.label === defaultLocation)?.value || '';
@@ -190,9 +190,8 @@ function Graph() {
     setDefaultLocation(defaultLocationLabel)
   }
 
-
   return (
-    <View className="bg-defaultbackground dark:bg-defaultdarkbackground">
+    <View className="bg-defaultbackground dark:bg-defaultdarkbackground  pb-[100]">
       <View className="w-full bg-white elevation-[20] z-10 p-default dark:bg-gray-700">
         <View className="flex-row w-full space-x-4">
           <View className="flex-[2]">
@@ -213,7 +212,7 @@ function Graph() {
           </View>
         </View>
         <View>
-        <View>
+          <View>
             <DropdownComponent
               label="Location"
               options={locationOptions}
@@ -224,15 +223,24 @@ function Graph() {
         </View>
       </View>
 
-      <ScrollView  contentContainerStyle={{ paddingBottom: 175 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 175 }}>
         <FlatList
           data={waterParameters}
           horizontal
           pagingEnabled
-          showsHorizontalScrollIndicator={true}
+          showsHorizontalScrollIndicator
           keyExtractor={(item, index) => index.toString()}
           onMomentumScrollEnd={handleScroll}
           renderItem={renderItem}
+          initialNumToRender={2} 
+          maxToRenderPerBatch={2} 
+          windowSize={3} 
+          removeClippedSubviews={true} 
+          getItemLayout={(data, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
         />
 
         <View className="flex-row justify-center my-default">
@@ -244,7 +252,7 @@ function Graph() {
           ))}
         </View>
 
-         {defaultLocation == "Choate Pond" ? <WQIGauge data={data} loading={loading} /> : <></>}
+        {defaultLocation == "Choate Pond" ? <WQIGauge data={data} loading={loading} /> : <></>}
       </ScrollView>
     </View>
   );

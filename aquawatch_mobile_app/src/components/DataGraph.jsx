@@ -58,7 +58,6 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
         const groupedData = data.reduce((acc, item) => {
             const date = new Date(item.timestamp).toISOString().split("T")[0];
             const value = unit === "Temp" && defaultTempUnit === 'Fahrenheit' ? item[unit] * (9 / 5) + 32 : item[unit];
-            console.log(unit === "Temp" && defaultTempUnit === 'Fahrenheit')
             if (!acc[date]) acc[date] = [];
             acc[date].push(value);
     
