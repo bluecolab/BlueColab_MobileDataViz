@@ -101,40 +101,59 @@ function CurrentData() {
   )
 
   return (
-    <ScrollView className="m-12 bg-default">
-       
-        <View className="border border-solid w-1/2" > 
-            <Text className="text-center" >{"Water Temperature"}</Text>
-            <Text className="text-center" >{waterTemp}</Text>
+    <ScrollView className="m-4 bg-default"> 
+    <View className="flex flex-row flex-wrap">
+  
+      {/* Box #1 */}
+      <View className="w-1/2 p-4"> 
+        <View className="border border-solid p-6 min-h-[100px]">
+          <Text className="text-center text-xl font-bold">Water Temperature</Text>
+          <Text className="text-center text-lg">{waterTemp}</Text>
         </View>
-
-        <View className="border border-solid w-1/2" > 
-            <Text className="text-center" >{"Conductivity"}</Text>
-            <Text className="text-center" >{cond}</Text>
+      </View>
+  
+      {/* Box #2 */}
+      <View className="w-1/2 p-4">
+        <View className="border border-solid p-6 min-h-[100px]">
+          <Text className="text-center text-xl font-bold">Conductivity</Text>
+          <Text className="text-center text-lg">{cond}</Text>
         </View>
-
-        <View className="border border-solid w-1/2" > 
-            <Text className="text-center" >{"Salinity"}</Text>
-            <Text className="text-center" >{sal}</Text>
+      </View>
+  
+      {/* Box #3 */}
+      <View className="w-1/2 p-4">
+        <View className="border border-solid p-6 min-h-[100px]">
+          <Text className="text-center text-xl font-bold">Salinity</Text>
+          <Text className="text-center text-lg">{sal}</Text>
         </View>
-
-        <View className="border border-solid w-1/2" > 
-            <Text className="text-center" >{"pH"}</Text>
-            <Text className="text-center" >{pH}</Text>
+      </View>
+  
+      {/* Box #4 */}
+      <View className="w-1/2 p-4">
+        <View className="border border-solid p-6 min-h-[100px]">
+          <Text className="text-center text-xl font-bold">pH</Text>
+          <Text className="text-center text-lg">{pH}</Text>
         </View>
-
-        <View className="border border-solid w-1/2" > 
-            <Text className="text-center" >{"Turbidity"}</Text>
-            <Text className="text-center" >{turb}</Text>
+      </View>
+  
+      {/* Box #5 */}
+      <View className="w-1/2 p-4">
+        <View className="border border-solid p-6 min-h-[100px]">
+          <Text className="text-center text-xl font-bold">Turbidity</Text>
+          <Text className="text-center text-lg">{turb}</Text>
         </View>
-
-        <View className="border border-solid w-1/2" > 
-            <Text className="text-center" >{"Oxygen"}</Text>
-            <Text className="text-center" >{dOpct}</Text>
+      </View>
+  
+      {/* Box #6 */}
+      <View className="w-1/2 p-4">
+        <View className="border border-solid p-6 min-h-[100px]">
+          <Text className="text-center text-xl font-bold">Oxygen</Text>
+          <Text className="text-center text-lg">{dOpct}</Text>
         </View>
-
-    </ScrollView>
-
+      </View>
+  
+    </View>
+  </ScrollView>
 
   );
 
