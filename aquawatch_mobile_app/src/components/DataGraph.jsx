@@ -54,8 +54,6 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
     let overallMax = 0;
     let overallAvg = 0;
 
-    console.log(defaultTempUnit, 'Fahrenheit', defaultTempUnit.trim() === 'Fahrenheit');
-
     if (Array.isArray(data) && !loading) {
         const groupedData = data.reduce((acc, item) => {
             const date = new Date(item.timestamp).toISOString().split("T")[0];

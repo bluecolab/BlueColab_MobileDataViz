@@ -6,11 +6,10 @@ import { FontAwesome } from "@expo/vector-icons";
 
 
 export default function Settings() {
-  const { changeLocation, changeUnit } = useContext(GraphDataContext);
+  const { changeLocation, changeUnit, defaultLocation, defaultTempUnit  } = useContext(GraphDataContext);
 
   const {isDark, colorSchemeSys,  changeColor}  = useIsDark();
 
-  const [selectedLocation, setSelectedLocation] = useState("1");
   const locationOptions = [
     { label: 'Choate Pond', value: '1'},
     { label: 'Piermont', value: '2'},
@@ -19,17 +18,25 @@ export default function Settings() {
     { label: 'New York City', value: '5'},
     { label: 'Albany', value: '6'},
   ]
+
+  const [selectedLocation, setSelectedLocation] = useState(
+    `${(locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation.toLowerCase()) + 1)}`
+  );
+
   const onLocationSelect = (value) => {
     const newLocation = locationOptions.find(option => option.value === value)?.label || '';
     changeLocation(newLocation);
     setSelectedLocation(value);
   };
 
-  const [selectedTempUnit, setSelectedTempUnit] = useState("1");
   const tempUnitOptions = [
     { label: 'Fahrenheit ', value: '1' },
     { label: 'Celsius', value: '2' },
   ];
+  const [selectedTempUnit, setSelectedTempUnit] = useState(
+    `${(tempUnitOptions.findIndex((e) => e.label.toLowerCase() === defaultTempUnit.toLowerCase()) + 1)}`
+  );
+
   const onTempUnitSelect = (value) => {
     const newTempUnit = tempUnitOptions.find(option => option.value === value)?.label || '';
     changeUnit(newTempUnit);
@@ -55,6 +62,8 @@ export default function Settings() {
     onTempUnitSelect("1");
     onLocationSelect("1");
   }
+
+  console.log(selectedLocation)
 
   return (
     <ScrollView className="bg-defaultbackground dark:bg-defaultdarkbackground p-5">
