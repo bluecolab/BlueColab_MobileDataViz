@@ -28,9 +28,11 @@ export default function HomeScreen({ navigation }) {
   const handleGraphPress = () => {
     navigation.navigate("Graph");
   };
-
+  const handleCurrentDataPress = () => {
+    navigation.navigate("CurrentData");
+  };
   return (
-    <View className="bg-defaultbackground">
+    <View className="bg-defaultbackground dark:bg-defaultdarkbackground">
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start", paddingBottom: 90 }}>
         {/* The paddingBottom should be at least as tall as the bottom tab navigator"s height */}
         {/* More info about the gradientCard Check GradientCard.js and StylesCard.js */}
@@ -77,6 +79,14 @@ export default function HomeScreen({ navigation }) {
           onButtonPress={handleGraphPress}
           gradientColors={["#6DD5FA", "#6DD5FA"]}
         ></GradientCard>
+
+        <GradientCard
+          imageSource={require("../../assets/homescreen/graph.png")}
+          title="New Current Views"
+          buttonText="Test out..."
+          onButtonPress={handleCurrentDataPress}
+          gradientColors={["#6DD5FA", "#6DD5FA"]}
+        ></GradientCard>      
       </ScrollView>
     </View>
   );
