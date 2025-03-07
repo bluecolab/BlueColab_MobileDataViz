@@ -102,7 +102,7 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
           <View className="h-[250]">
             {/* Front View - Graph */}
             <Animated.View
-              style={[
+              style={
                 {
                   marginTop: 5,
                   height: "100%",
@@ -112,8 +112,7 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
                   alignSelf: "center",
                   backfaceVisibility: "hidden",
                   transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }],
-                },
-              ]}
+                }}
             >
               <View className="rounded-3xl bg-white elevation-[5] p-default  flex-1 justify-center items-center dark:bg-gray-700 ">
                 <VictoryChart width={size} height={size}>
@@ -148,7 +147,7 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
 
             {/* Back View - Information Card */}
             <Animated.View
-              style={[
+              style={
                 {
                   marginTop: 5,
                   height: "100%",
@@ -158,8 +157,8 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
                   alignSelf: "center",
                   backfaceVisibility: "hidden",
                   transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
-                },
-              ]}
+                }
+              }
               pointerEvents={flipped ? "auto" : "none"}
 
             >

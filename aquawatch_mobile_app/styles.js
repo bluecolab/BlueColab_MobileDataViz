@@ -1,5 +1,4 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { useFonts } from 'expo-font';
 
 
 
@@ -450,7 +449,6 @@ export default StyleSheet.create({
     camImageContainer: {
         height: '65%',
         width: '85%',
-        marginBottom: deviceWidth / 15,
         borderColor: "black",
         borderWidth: 2,
         borderRadius: 20,

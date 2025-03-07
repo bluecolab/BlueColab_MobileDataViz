@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, Dimensions, ImageBackground } from "react-native";
+import { View, Text, TouchableOpacity, Dimensions, ImageBackground } from "react-native";
 import { cardStyles } from "../../stylesCard";
 
 const { width } = Dimensions.get("window"); // Get the width of the device to set the image width

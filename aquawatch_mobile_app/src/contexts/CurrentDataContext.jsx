@@ -9,7 +9,7 @@ const CurrentDataProvider = ({ children }) => {
   const { defaultLocation, defaultTempUnit } = useGraphData();
   const [data, setData] = useState([]);
   const [loadingCurrent, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
   const locationMap = {
     'New York City': '01376520',
@@ -124,7 +124,7 @@ const CurrentDataProvider = ({ children }) => {
   }, [defaultLocation, defaultTempUnit]);
 
   return (
-    <CurrentDataContext.Provider value={{ data, defaultLocation, defaultTempUnit }}>
+    <CurrentDataContext.Provider value={{ data, defaultLocation, defaultTempUnit, loadingCurrent }}>
       {children}
     </CurrentDataContext.Provider>
   );

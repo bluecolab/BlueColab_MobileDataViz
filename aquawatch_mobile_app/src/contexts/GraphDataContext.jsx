@@ -22,7 +22,7 @@ const GraphDataProvider = ({ children }) => {
       try {
         await AsyncStorage.setItem('default-temp-unit', value);
       } catch(e) {
-        // save error
+        console.log(e);
       }
     }
     setStoredTempUnit(newUnit);
@@ -34,7 +34,7 @@ const GraphDataProvider = ({ children }) => {
       try {
         await AsyncStorage.setItem('default-location', value);
       } catch(e) {
-        // save error
+        console.log(e);
       }
     }
     setStoredLocation (newLocation);

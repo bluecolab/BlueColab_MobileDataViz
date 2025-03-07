@@ -314,7 +314,6 @@ const searchBarStyles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         paddingLeft: 10,
-        marginBottom: 10,
         color: "white",
         alignSelf: "center",
         marginTop: 15,

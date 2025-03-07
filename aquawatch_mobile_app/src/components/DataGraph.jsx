@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import { ScrollView, View, Text, TouchableOpacity, Animated, Dimensions, Linking } from "react-native";
-import { VictoryChart, VictoryArea, VictoryLine, VictoryAxis, VictoryLabel } from "victory-native";
+import { ScrollView, View, Text, TouchableOpacity, Animated, Dimensions, } from "react-native";
+import { VictoryChart, VictoryArea, VictoryLine, VictoryAxis,  VictoryLabel} from "victory-native";
 import EmptyGraph from "./EmptyGraph";
 import LinkComp from "./LinkComp";
 import { useIsDark } from "@contexts";
@@ -106,7 +106,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
                     <View className="h-[310]">
                         {/* Front View - Graph */}
                         <Animated.View
-                            style={[
+                            style={
                                 {
                                     marginTop: 5,
                                     height: "100%",
@@ -116,8 +116,8 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
                                     alignSelf: "center",
                                     backfaceVisibility: "hidden",
                                     transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }],
-                                },
-                            ]}
+                                }
+                            }
                         >
                             <View className="bg-white dark:bg-gray-700 rounded-3xl px-2 h-full">
                                 {loading ? (
@@ -179,7 +179,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
 
                         {/* Back View - Information Card */}
                         <Animated.View
-                            style={[
+                            style={
                                 {
                                     marginTop: 5,
                                     height: "100%",
@@ -189,8 +189,8 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
                                     alignSelf: "center",
                                     backfaceVisibility: "hidden",
                                     transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
-                                },
-                            ]}
+                                }
+                            }
                             pointerEvents={flipped ? "auto" : "none"}
                         >
                             <ScrollView nestedScrollEnabled={true} className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">

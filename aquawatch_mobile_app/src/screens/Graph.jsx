@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { View, Text, ScrollView, FlatList, Dimensions } from "react-native";
 import { WQIGauge, DataGraph, DropdownComponent } from "@components";
 import { useGraphData } from "@contexts";

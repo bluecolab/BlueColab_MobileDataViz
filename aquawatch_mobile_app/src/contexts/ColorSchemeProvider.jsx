@@ -15,7 +15,7 @@ const ColorSchemeProvider = ({ children }) => {
       try {
         await AsyncStorage.setItem('default-appearance', value);
       } catch(e) {
-        // save error
+        console.log(e);
       }
     }
     setStoredAppearance (newColorScheme);
