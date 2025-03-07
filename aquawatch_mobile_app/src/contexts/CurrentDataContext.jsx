@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import {useGraphData} from "./GraphDataContext";
+import { useGraphData } from "./GraphDataContext";
 import axios from 'axios';
+import moment from 'moment';
 
 const CurrentDataContext = createContext(null);
 
 const CurrentDataProvider = ({ children }) => {
-  const { defaultLocation, defaultTempUnit} = useGraphData();
+  const { defaultLocation, defaultTempUnit } = useGraphData();
   const [data, setData] = useState([]);
-  const [loadingCurrent, setLoading] = useState(true); 
+  const [loadingCurrent, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const locationMap = {
@@ -27,15 +28,13 @@ const CurrentDataProvider = ({ children }) => {
       "63680": "Turb",  
       "00400": "pH"    
     };
-    
+
     function cleanHudsonRiverData(rawData) {
       if (!rawData?.value?.timeSeries) {
         console.error("Invalid data format");
         return [];
       }
 
-
-    
       const parsedData = {};
 
       rawData.value.timeSeries.forEach(series => {
@@ -49,21 +48,20 @@ const CurrentDataProvider = ({ children }) => {
         valuesList.forEach(entry => {
           const timestamp = entry.dateTime;
           const value = parseFloat(entry.value);
-    
+
           if (!parsedData[timestamp]) {
             parsedData[timestamp] = { timestamp };
           }
           parsedData[timestamp][paramName] = value;
         });
       });
-    
+
       return Object.values(parsedData);
     }
 
     const fetchData = () => {
-      if (defaultLocation) {  
+      if (defaultLocation) {
         let baseURL = '';
-  
         switch (defaultLocation) {
           case 'Choate Pond':
             baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/delta?days=1`;
@@ -79,12 +77,12 @@ const CurrentDataProvider = ({ children }) => {
             baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/delta?days=1`;
             break;
         }
-  
+
         axios
           .get(baseURL)
           .then((response) => {
             const apiData = response.data;
-            console.log(baseURL)
+            console.log(baseURL);
             if (defaultLocation === 'Choate Pond') {
               const cleanedData = apiData.map((item) => {
                 const { sensors, ...rest } = item;
@@ -106,13 +104,24 @@ const CurrentDataProvider = ({ children }) => {
       }
     };
 
-    setLoading(true);
-    if (defaultLocation) {
-      setData([]);
-      fetchData();
-    }
-  }, [defaultLocation]); 
+    const checkTimeAndFetchData = () => {
+      const currentTime = moment();
+      const currentMinute = currentTime.minute();
 
+      if ([0, 15, 30, 45].includes(currentMinute)) {
+        fetchData();
+      }
+    };
+
+    const intervalId = setInterval(() => {
+      checkTimeAndFetchData();
+    }, 1000); // 1 seconds
+
+    setLoading(true);
+    fetchData();
+
+    return () => clearInterval(intervalId);
+  }, [defaultLocation, defaultTempUnit]);
 
   return (
     <CurrentDataContext.Provider value={{ data, defaultLocation, defaultTempUnit }}>

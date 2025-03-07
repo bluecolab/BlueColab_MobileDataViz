@@ -1,14 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { Text, View, Dimensions, TouchableOpacity } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient'; // if using Expo
 import { useCurrentData } from "@contexts";
 import moment from "moment";
 
-export default function QuickCurrentData({handleMiddlePress}) {
+
+const Timer = ({ timestamp }) => {
+    const [minutes, setMinutes] = useState(null); 
+
+    useEffect(() => {
+        if (!timestamp) return;
+
+        const intervalId = setInterval(() => {
+            const currentTime = moment();
+            const timestampMoment = moment(timestamp); 
+            
+            if (timestampMoment.isValid()) {
+                const diffInSeconds = currentTime.diff(timestampMoment, 'seconds');
+                setMinutes(diffInSeconds); 
+            } else {
+                console.error("Invalid timestamp", timestamp); 
+                setMinutes("Invalid Timestamp");
+            }
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, [timestamp]); 
+
+    return (
+        <View>
+            <Text className="text-md text-white text-center py-4">
+                As of {minutes !== null ? `${Math.floor(minutes / 60)} minutes ago` : 'Loading...'}
+            </Text>
+        </View>
+    );
+};
+
+
+export default function QuickCurrentData({ handleMiddlePress }) {
     const { data, defaultLocation, defaultTempUnit } = useCurrentData();
 
     const last = data[data.length - 1]
-   
+
     const dopct = last?.DOpct ?? 0;
     const ph = last?.pH ?? 0;
     const temp = last?.Temp ?? 0;
@@ -16,9 +49,6 @@ export default function QuickCurrentData({handleMiddlePress}) {
     const turb = last?.Turb ?? 0;
     const sal = last?.Sal ?? 0;
     const timestamp = last?.timestamp ?? "Loading";
-
-    const currentTime = moment();
-    const minutes = currentTime.diff(moment(timestamp), 'minutes');
 
     const const_doptc = 0.34 * dopct;
     const const_ph = 0.22 * ph;
@@ -57,24 +87,23 @@ export default function QuickCurrentData({handleMiddlePress}) {
                     </View>
 
                     <View className="flex flex-row flex-wrap gap-4 pt-4 items-center justify-center">
-                        <ParamView param={(defaultTempUnit ? defaultTempUnit.trim() : "Fahrenheit" ) === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp} name={"Temperature"} />
+                        <ParamView param={(defaultTempUnit ? defaultTempUnit.trim() : "Fahrenheit") === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp} name={"Temperature"} />
                         <ParamView param={ph} name={"pH"} />
                         <ParamView param={dopct} name={"Dissolved O2"} />
                         <ParamView param={turb} name={"Turbidity"} />
                         <ParamView param={cond} name={"Conductivity"} />
                         <ParamView param={sal} name={"Salinity"} />
-                        { defaultLocation == "Choate Pond" ?
-                            <ParamView param={wqi.toFixed(2)} name={"WQI"} /> : <></> }
+                        {defaultLocation == "Choate Pond" ?
+                            <ParamView param={wqi.toFixed(2)} name={"WQI"} /> : <></>}
                     </View>
 
-
-
-                    <View>
-                        <Text className="text-md text-white text-center py-4">As of {minutes} Minutes Ago</Text>
-                    </View>
+                    <Timer timestamp={timestamp} />
                 </LinearGradient>
             </View>
         </TouchableOpacity>
     );
 
 }
+
+
+
