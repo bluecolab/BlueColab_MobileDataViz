@@ -98,64 +98,44 @@ function CurrentData() {
     }
   )
 
+  const Widget = ({name, value } ) => { 
+    return (
+      <View className="w-1/2 p-4">
+      <View className="border border-solid p-6 h-[120px] bg-blue-100 rounded-3xl flex items-center justify-center"> 
+      {/*Flexbox for centering content horizontally and vertically.*/}
+        <View className="text-center">
+          <Text className="text-center text-md font-bold">{name}</Text>
+          <Text className="text-center text-base">{value}</Text>
+        </View>
+      </View>
+    </View>
+    );
+  }
+
   return (
     <ScrollView className="m-4 bg-default"> 
     <View className="flex flex-row flex-wrap">
+
+    {/*.toFixed(2) will ensure that each floating-point number is displayed with two decimal places when passed as the value prop to the Widget component.*/}
   
-      {/* Box #1 */}
-      <View className="w-1/2 p-4"> 
-        <View className="border border-solid p-6 min-h-[100px]">
-          <Text className="text-center text-xl font-bold">Water Temperature</Text>
-          <Text className="text-center text-lg">{waterTemp}</Text>
-        </View>
-      </View>
-  
-      {/* Box #2 */}
-      <View className="w-1/2 p-4">
-        <View className="border border-solid p-6 min-h-[100px]">
-          <Text className="text-center text-xl font-bold">Conductivity</Text>
-          <Text className="text-center text-lg">{cond}</Text>
-        </View>
-      </View>
-  
-      {/* Box #3 */}
-      <View className="w-1/2 p-4">
-        <View className="border border-solid p-6 min-h-[100px]">
-          <Text className="text-center text-xl font-bold">Salinity</Text>
-          <Text className="text-center text-lg">{sal}</Text>
-        </View>
-      </View>
-  
-      {/* Box #4 */}
-      <View className="w-1/2 p-4">
-        <View className="border border-solid p-6 min-h-[100px]">
-          <Text className="text-center text-xl font-bold">pH</Text>
-          <Text className="text-center text-lg">{pH}</Text>
-        </View>
-      </View>
-  
-      {/* Box #5 */}
-      <View className="w-1/2 p-4">
-        <View className="border border-solid p-6 min-h-[100px]">
-          <Text className="text-center text-xl font-bold">Turbidity</Text>
-          <Text className="text-center text-lg">{turb}</Text>
-        </View>
-      </View>
-  
-      {/* Box #6 */}
-      <View className="w-1/2 p-4">
-        <View className="border border-solid p-6 min-h-[100px]">
-          <Text className="text-center text-xl font-bold">Oxygen</Text>
-          <Text className="text-center text-lg">{dOpct}</Text>
-        </View>
-      </View>
+    <Widget name="Water Temperature" value={waterTemp.toFixed(2)}/>
+
+    <Widget name="Contuctivity" value={cond.toFixed(2)}/>
+
+    <Widget name="Salinity" value={sal.toFixed(2)}/>
+
+    <Widget name="pH" value={pH.toFixed(2)}/>
+
+    <Widget name="Turbidity" value={turb.toFixed(2)}/>
+
+    <Widget name="Oxygen" value={dOpct.toFixed(2)}/>
+    
   
     </View>
-  </ScrollView>
+   </ScrollView>
 
   );
 
 }
-
 
 export default CurrentData;
