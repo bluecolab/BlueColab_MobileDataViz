@@ -191,6 +191,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
                                     transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
                                 },
                             ]}
+                            pointerEvents={flipped ? "auto" : "none"}
                         >
                             <ScrollView nestedScrollEnabled={true} className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
                                 <View style={{ borderBottomWidth: 1, borderBottomColor: isDark ? 'white' : 'black', marginVertical: 10 }} />

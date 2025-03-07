@@ -160,6 +160,8 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
                   transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
                 },
               ]}
+              pointerEvents={flipped ? "auto" : "none"}
+
             >
               <ScrollView className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
 
