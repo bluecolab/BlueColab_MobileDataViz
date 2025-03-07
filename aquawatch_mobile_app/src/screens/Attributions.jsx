@@ -1,21 +1,17 @@
-import React from "react";
-import { View, Text, Linking, TouchableOpacity, ScrollView } from "react-native";
-import styles from "../../styles";
+import React from 'react';
+import { View, Text, Linking, TouchableOpacity, ScrollView } from 'react-native';
+import styles from '../../styles';
 
 export default function Attributions() {
   const handleLinkPress = (url) => {
     Linking.openURL(url);
   };
 
-  const LinkComp = (props) => {
-    return (<TouchableOpacity onPress={() => handleLinkPress(props.url)}>
+  const LinkComp = (props) => (<TouchableOpacity onPress={() => handleLinkPress(props.url)}>
     <Text style={styles.links} >
       {props.label}
     </Text>
-  </TouchableOpacity>)
-  };
-
-
+  </TouchableOpacity>);
 
   return (
     <ScrollView>
@@ -39,8 +35,8 @@ export default function Attributions() {
 
         <Text>
           • The calculations to convert dissolved oxygen units are adapted from the
-          U of MN Natural Resources Research Institute, see{" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://www.waterontheweb.org/under/waterquality/dosatcalc.html")}>
+          U of MN Natural Resources Research Institute, see{' '}
+          <TouchableOpacity onPress={() => handleLinkPress('https://www.waterontheweb.org/under/waterquality/dosatcalc.html')}>
             <Text style={styles.links} >
               waterontheweb
             </Text>
@@ -49,8 +45,8 @@ export default function Attributions() {
 
         <Text>
           • The calculations to calculate WQI are adapted from George Moses & Ali
-          Tejeda, see{" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://colab.research.google.com/drive/17uZffhhG-OtwZyPsU5QVXbhWqQcfp7jv#scrollTo=QJ7FQ4m8BnA8")}>
+          Tejeda, see{' '}
+          <TouchableOpacity onPress={() => handleLinkPress('https://colab.research.google.com/drive/17uZffhhG-OtwZyPsU5QVXbhWqQcfp7jv#scrollTo=QJ7FQ4m8BnA8')}>
             <Text style={styles.links} >
               Python
             </Text>
@@ -58,8 +54,8 @@ export default function Attributions() {
         </Text>
 
         <Text>
-          • Pace University water data is courtesy of Blue CoLab. Join the team:{" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://bluecolab.pace.edu/")}>
+          • Pace University water data is courtesy of Blue CoLab. Join the team:{' '}
+          <TouchableOpacity onPress={() => handleLinkPress('https://bluecolab.pace.edu/')}>
             <Text style={styles.links}>
               https://bluecolab.pace.edu/
             </Text>
@@ -68,8 +64,8 @@ export default function Attributions() {
 
         <Text>
           • Yonkers, Poughkeepsie, and West Point water data is courtesy of the
-          USGS. Discover more here:{" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://waterdata.usgs.gov/nwis")}>
+          USGS. Discover more here:{' '}
+          <TouchableOpacity onPress={() => handleLinkPress('https://waterdata.usgs.gov/nwis')}>
             <Text style={styles.links}>
               Water Data
             </Text>
@@ -77,8 +73,8 @@ export default function Attributions() {
         </Text>
 
         <Text>
-          • Shiny CSS Spinner was adapted from Dean Attali. Code taken from here: {" "}
-          <TouchableOpacity onPress={() => handleLinkPress("https://github.com/daattali/shinycssloaders/blob/master/inst/assets/spinner.css")}>
+          • Shiny CSS Spinner was adapted from Dean Attali. Code taken from here: {' '}
+          <TouchableOpacity onPress={() => handleLinkPress('https://github.com/daattali/shinycssloaders/blob/master/inst/assets/spinner.css')}>
             <Text style={styles.links}>
               GitHub
             </Text>

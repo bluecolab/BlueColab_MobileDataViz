@@ -9,7 +9,7 @@ import axios from 'axios';
 function CurrentData() {
   // useState, a way to keep track of states (the values of variables)
   const [data, setData] = useState([]); // (1) data is the variable (2) setData is how to set the variable (3) useState([]), set's the data to [] initially 
-                                        // data stores the response from the API
+  // data stores the response from the API
   const [loading, setLoading] = useState(true); // loading is a way to track if API has loaded or not 
   const [error, setError] = useState(null);
 
@@ -87,23 +87,22 @@ function CurrentData() {
 
   console.log(
     {
-        adaTimestamp, waterTemp, cond, dOpct, sal, pH, turb
-    }
-  )
+      adaTimestamp, waterTemp, cond, dOpct, sal, pH, turb,
+    },
+  );
 
   console.log(
     {
-        odinTimestamp, airTemp, pressure, distLightning, lightningStrikes, maxWindSpeed, rain, relHumid, relHumidTemp, solarFlux,
-        solarTotalFlux, tiltNS, tiltWE, vaporPressure, windDir, windSpeed,
-    }
-  )
+      odinTimestamp, airTemp, pressure, distLightning, lightningStrikes, maxWindSpeed, rain, relHumid, relHumidTemp, solarFlux,
+      solarTotalFlux, tiltNS, tiltWE, vaporPressure, windDir, windSpeed,
+    },
+  );
 
   return (
     <ScrollView>
-        <Text>Water Temp: {waterTemp}</Text>
-     </ScrollView>
+      <Text>Water Temp: {waterTemp}</Text>
+    </ScrollView>
   );
 }
-
 
 export default CurrentData;

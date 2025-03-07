@@ -1,13 +1,13 @@
-import React from "react";
-import { Text, ScrollView } from "react-native";
+import React from 'react';
+import { Text, ScrollView } from 'react-native';
 
 export default function Socials() {
 
   return (
     <ScrollView>
-        <Text >
+      <Text >
             In Progress
-        </Text>
+      </Text>
     </ScrollView>
   );
 }

@@ -1,27 +1,25 @@
-import React, { useRef, useState } from "react";
-import { VictoryPie, VictoryLabel, VictoryChart, VictoryAxis } from "victory-native";
-import { useIsDark } from "@contexts";
+import React, { useRef, useState } from 'react';
+import { VictoryPie, VictoryLabel, VictoryChart, VictoryAxis } from 'victory-native';
+import { useIsDark } from '@contexts';
 import { View, Text, Animated, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
-import { FontAwesome } from "@expo/vector-icons";
-import LinkComp from "./LinkComp";
+import { FontAwesome } from '@expo/vector-icons';
+import LinkComp from './LinkComp';
 
 // Average sensors function - updated for flattened structure
-const averageSensors = (data) => {
-  return data.reduce((acc, { Cond, DOpct, Sal, Temp, Turb, pH }) => {
-    acc.Cond = (acc.Cond || 0) + Cond;
-    acc.DOpct = (acc.DOpct || 0) + DOpct;
-    acc.Sal = (acc.Sal || 0) + Sal;
-    acc.Temp = (acc.Temp || 0) + Temp;
-    acc.Turb = (acc.Turb || 0) + Turb;
-    acc.pH = (acc.pH || 0) + pH;
-    return acc;
-  }, {});
-};
+const averageSensors = (data) => data.reduce((acc, { Cond, DOpct, Sal, Temp, Turb, pH }) => {
+  acc.Cond = (acc.Cond || 0) + Cond;
+  acc.DOpct = (acc.DOpct || 0) + DOpct;
+  acc.Sal = (acc.Sal || 0) + Sal;
+  acc.Temp = (acc.Temp || 0) + Temp;
+  acc.Turb = (acc.Turb || 0) + Turb;
+  acc.pH = (acc.pH || 0) + pH;
+  return acc;
+}, {});
 
 const WQIGauge = ({ loading, data, size = 200 }) => {
-  const { width } = Dimensions.get("window");
+  const { width } = Dimensions.get('window');
   const containerWidth = width * 0.95;
-  const {isDark}  = useIsDark();
+  const { isDark }  = useIsDark();
   const flipAnimation = useRef(new Animated.Value(0)).current;
   const [flipped, setFlipped] = useState(false);
 
@@ -33,15 +31,14 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
     }).start(() => setFlipped(!flipped));
   };
 
-
   const frontInterpolate = flipAnimation.interpolate({
     inputRange: [0, 1],
-    outputRange: ["0deg", "180deg"],
+    outputRange: ['0deg', '180deg'],
   });
 
   const backInterpolate = flipAnimation.interpolate({
     inputRange: [0, 1],
-    outputRange: ["180deg", "360deg"],
+    outputRange: ['180deg', '360deg'],
   });
 
   let score = 0;
@@ -57,7 +54,7 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
     const sensorAverages = averageSensors(data);
 
     // Divide each total by the number of data points to get the average
-    for (let sensor in sensorAverages) {
+    for (const sensor in sensorAverages) {
       sensorAverages[sensor] = sensorAverages[sensor] / data.length;
     }
 
@@ -77,12 +74,12 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
   }
 
   const percentage = score > 100 ? 100 : score;
-  let color = "#E0E0E0";
-  if (percentage >= 0 && percentage < 25) color = "darkred";
-  else if (percentage >= 25 && percentage < 50) color = "darkorange";
-  else if (percentage >= 50 && percentage < 70) color = "yellow";
-  else if (percentage >= 70 && percentage < 90) color = "green";
-  else if (percentage >= 90 && percentage <= 100) color = "darkgreen";
+  let color = '#E0E0E0';
+  if (percentage >= 0 && percentage < 25) color = 'darkred';
+  else if (percentage >= 25 && percentage < 50) color = 'darkorange';
+  else if (percentage >= 50 && percentage < 70) color = 'yellow';
+  else if (percentage >= 70 && percentage < 90) color = 'green';
+  else if (percentage >= 90 && percentage <= 100) color = 'darkgreen';
 
   return (
     <View style={{ width, marginTop: 10 }}>
@@ -93,7 +90,7 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
             WQI
           </Text>
           <TouchableOpacity className="absolute top-1 right-2" onPress={startAnimation}>
-            <FontAwesome name="info-circle" size={32} color={isDark ? "white" : "grey"} />
+            <FontAwesome name="info-circle" size={32} color={isDark ? 'white' : 'grey'} />
           </TouchableOpacity>
         </View>
 
@@ -105,12 +102,12 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
               style={
                 {
                   marginTop: 5,
-                  height: "100%",
+                  height: '100%',
                   width: containerWidth,
-                  position: "absolute",
-                  justifyContent: "center",
-                  alignSelf: "center",
-                  backfaceVisibility: "hidden",
+                  position: 'absolute',
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  backfaceVisibility: 'hidden',
                   transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }],
                 }}
             >
@@ -127,19 +124,19 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
                     cornerRadius={5}
                     padAngle={1}
                     data={[
-                      { x: "Completed", y: percentage },
-                      { x: "Remaining", y: 100 - percentage },
+                      { x: 'Completed', y: percentage },
+                      { x: 'Remaining', y: 100 - percentage },
                     ]}
-                    colorScale={[color, "#E0E0E0"]}
+                    colorScale={[color, '#E0E0E0']}
                     labels={() => null}
                   />
                   {/* Label in the center */}
                   <VictoryLabel
-                    text={loading ? "NA" : `${percentage}%`}
+                    text={loading ? 'NA' : `${percentage}%`}
                     x={size / 2}  // Center X position
                     y={size / 2}  // Center Y position
                     textAnchor="middle"
-                    style={{ fontSize: 32, fontWeight: "bold", fill: isDark ? "#fff" : "#000" }} // Customize the label style
+                    style={{ fontSize: 32, fontWeight: 'bold', fill: isDark ? '#fff' : '#000' }} // Customize the label style
                   />
                 </VictoryChart>
               </View>
@@ -150,20 +147,19 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
               style={
                 {
                   marginTop: 5,
-                  height: "100%",
+                  height: '100%',
                   width: containerWidth,
-                  position: "absolute",
-                  justifyContent: "center",
-                  alignSelf: "center",
-                  backfaceVisibility: "hidden",
+                  position: 'absolute',
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  backfaceVisibility: 'hidden',
                   transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
                 }
               }
-              pointerEvents={flipped ? "auto" : "none"}
+              pointerEvents={flipped ? 'auto' : 'none'}
 
             >
               <ScrollView className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
-
 
                 <Text className="text-lg font-semibold dark:text-white">
                   What is WQI?
@@ -182,7 +178,7 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
                 <Text className="text-lg font-semibold dark:text-white">
                   References
                 </Text>
-                <LinkComp url={"https://bluecolab.pace.edu/water-quality-index-dashboard-2/"} label={"Learn More"}/>
+                <LinkComp url={'https://bluecolab.pace.edu/water-quality-index-dashboard-2/'} label={'Learn More'}/>
                 <Text></Text>
               </ScrollView>
 
@@ -191,8 +187,6 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
         </View>
       </View>
     </View>
-
-
 
   );
 };

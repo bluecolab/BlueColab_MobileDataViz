@@ -1,38 +1,37 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import { SettingsDropdown } from "@components";
-import { useIsDark, useGraphData } from "@contexts";
-import { FontAwesome } from "@expo/vector-icons";
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { SettingsDropdown } from '@components';
+import { useIsDark, useGraphData } from '@contexts';
+import { FontAwesome } from '@expo/vector-icons';
 
-
-export default function Settings({navigation}) {
+export default function Settings({ navigation }) {
   const { changeLocation, changeUnit, defaultLocation, defaultTempUnit  } = useGraphData();
-  const {isDark, colorSchemeSys,  changeColor}  = useIsDark();
+  const { isDark, colorSchemeSys,  changeColor }  = useIsDark();
 
   const handleAttributionPress = () => {
-    navigation.navigate("Attributions");
-  }
+    navigation.navigate('Attributions');
+  };
   const handleFeedbackPress = () => {
-    navigation.navigate("Feedback");
-  }
+    navigation.navigate('Feedback');
+  };
   const handleVersionHistoryPress = () => {
-    navigation.navigate("Version History");
-  }
+    navigation.navigate('Version History');
+  };
   const handleSocialsPress = () => {
-    navigation.navigate("Socials");
-  }
+    navigation.navigate('Socials');
+  };
 
   const locationOptions = [
-    { label: 'Choate Pond', value: '1'},
-    { label: 'Piermont', value: '2'},
-    { label: 'West Point', value: '3'},
-    { label: 'Poughkeepsie', value: '4'},
-    { label: 'New York City', value: '5'},
-    { label: 'Albany', value: '6'},
-  ]
+    { label: 'Choate Pond', value: '1' },
+    { label: 'Piermont', value: '2' },
+    { label: 'West Point', value: '3' },
+    { label: 'Poughkeepsie', value: '4' },
+    { label: 'New York City', value: '5' },
+    { label: 'Albany', value: '6' },
+  ];
 
   const [selectedLocation, setSelectedLocation] = useState(
-    `${(locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation.toLowerCase()) + 1)}`
+    `${(locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation.toLowerCase()) + 1)}`,
   );
 
   const onLocationSelect = (value) => {
@@ -46,7 +45,7 @@ export default function Settings({navigation}) {
     { label: 'Celsius', value: '2' },
   ];
   const [selectedTempUnit, setSelectedTempUnit] = useState(
-    `${(tempUnitOptions.findIndex((e) => e.label.toLowerCase() === defaultTempUnit.toLowerCase()) + 1)}`
+    `${(tempUnitOptions.findIndex((e) => e.label.toLowerCase() === defaultTempUnit.toLowerCase()) + 1)}`,
   );
 
   const onTempUnitSelect = (value) => {
@@ -61,7 +60,7 @@ export default function Settings({navigation}) {
     { label: 'Dark', value: '3' },
   ];
   const [selectedAppearance, setSelectedAppearance] = useState(
-    `${(appearanceOptions.findIndex((e) => e.label.toLowerCase() === colorSchemeSys.toLowerCase()) + 1)}`
+    `${(appearanceOptions.findIndex((e) => e.label.toLowerCase() === colorSchemeSys.toLowerCase()) + 1)}`,
   );
   const onAppearanceSelect = (value) => {
     setSelectedAppearance(value);  
@@ -70,10 +69,10 @@ export default function Settings({navigation}) {
   };
 
   const resetToDefault = () => {
-    onAppearanceSelect("1");
-    onTempUnitSelect("1");
-    onLocationSelect("1");
-  }
+    onAppearanceSelect('1');
+    onTempUnitSelect('1');
+    onLocationSelect('1');
+  };
 
   return (
     <ScrollView className="bg-defaultbackground dark:bg-defaultdarkbackground p-5">
@@ -98,21 +97,21 @@ export default function Settings({navigation}) {
         <TouchableOpacity onPress={handleFeedbackPress}> 
           <View className="flex-row items-center">
             <Text className="text-lg mr-2  dark:text-white">Feedback</Text>
-            <FontAwesome name="sign-in" size={20} color={isDark ? "white" : "grey"}  />
+            <FontAwesome name="sign-in" size={20} color={isDark ? 'white' : 'grey'}  />
           </View>
         </TouchableOpacity>
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'lightgray', marginVertical: 1 }} />
         <TouchableOpacity onPress={handleVersionHistoryPress}>
           <View className="flex-row items-center">
             <Text className="text-lg mr-2  dark:text-white">Version History</Text>
-            <FontAwesome name="sign-in" size={20} color={isDark ? "white" : "grey"} />
+            <FontAwesome name="sign-in" size={20} color={isDark ? 'white' : 'grey'} />
           </View>
         </TouchableOpacity>
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'lightgray', marginVertical: 1 }} />
         <TouchableOpacity onPress={handleAttributionPress}>
           <View className="flex-row items-center">
             <Text className="text-lg mr-2  dark:text-white">Attributions</Text>
-            <FontAwesome name="sign-in" size={20} color={isDark ? "white" : "grey"} />
+            <FontAwesome name="sign-in" size={20} color={isDark ? 'white' : 'grey'} />
           </View>
         </TouchableOpacity>
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'lightgray', marginVertical: 1 }} />
@@ -120,7 +119,7 @@ export default function Settings({navigation}) {
           <View className="flex-row items-center">
             <Text className="text-lg mr-2  dark:text-white">Socials</Text>
             <FontAwesome 
-              color={isDark ? "white" : "grey"} 
+              color={isDark ? 'white' : 'grey'} 
               name="sign-in" size={20} />
           </View>
         </TouchableOpacity>

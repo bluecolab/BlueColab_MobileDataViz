@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { useGraphData } from "./GraphDataContext";
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useGraphData } from './GraphDataContext';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -21,17 +21,17 @@ const CurrentDataProvider = ({ children }) => {
 
   useEffect(() => {
     const parameterMap = {
-      "00010": "Temp",  
-      "00301": "DOpct", 
-      "90860": "Sal",    
-      "00095": "Cond",  
-      "63680": "Turb",  
-      "00400": "pH"    
+      '00010': 'Temp',  
+      '00301': 'DOpct', 
+      '90860': 'Sal',    
+      '00095': 'Cond',  
+      '63680': 'Turb',  
+      '00400': 'pH',    
     };
 
     function cleanHudsonRiverData(rawData) {
       if (!rawData?.value?.timeSeries) {
-        console.error("Invalid data format");
+        console.error('Invalid data format');
         return [];
       }
 
@@ -63,19 +63,19 @@ const CurrentDataProvider = ({ children }) => {
       if (defaultLocation) {
         let baseURL = '';
         switch (defaultLocation) {
-          case 'Choate Pond':
-            baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/delta?days=1`;
-            break;
-          case 'New York City':
-          case 'Piermont':
-          case 'West Point':
-          case 'Poughkeepsie':
-          case 'Albany':
-            baseURL = `https://nwis.waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? "01376269"}&period=P2D&format=json`;
-            break;
-          default:
-            baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/delta?days=1`;
-            break;
+        case 'Choate Pond':
+          baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Ada/delta?days=1';
+          break;
+        case 'New York City':
+        case 'Piermont':
+        case 'West Point':
+        case 'Poughkeepsie':
+        case 'Albany':
+          baseURL = `https://nwis.waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? '01376269'}&period=P2D&format=json`;
+          break;
+        default:
+          baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Ada/delta?days=1';
+          break;
         }
 
         axios
@@ -95,8 +95,8 @@ const CurrentDataProvider = ({ children }) => {
             }
           })
           .catch((error) => {
-            console.error("Error fetching data:", error);
-            setData({ error: "Failed to load data" });
+            console.error('Error fetching data:', error);
+            setData({ error: 'Failed to load data' });
           })
           .finally(() => {
             setLoading(false);

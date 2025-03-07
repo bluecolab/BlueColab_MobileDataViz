@@ -2,9 +2,6 @@
 // This file is the keeper of styles for the bottom NavBar and for the Gradient Cards
 import { StyleSheet } from 'react-native';
 
-
-
-
 export const containerStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -61,7 +58,6 @@ export const middleButtonStyles = StyleSheet.create({
   },
 });
 
-
 export const iconStyles = StyleSheet.create({
   iconStyle: {
     width: 30,
@@ -89,12 +85,12 @@ export const cardStyles = StyleSheet.create({
   gradientBackground: {
     padding: 5,
     alignItems: 'center',
-    width: "95%",
+    width: '95%',
     borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20
+    borderBottomRightRadius: 20,
   },
   cardImage: {
-    width: "95%",
+    width: '95%',
     height: 200,
   },
   cardText: {

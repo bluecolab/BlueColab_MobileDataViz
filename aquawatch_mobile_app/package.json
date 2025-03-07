@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "fix": "eslint . --fix"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
+    "@babel/eslint-parser": "^7.26.8",
     "@eslint/js": "^9.21.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "eslint": "^9.21.0",

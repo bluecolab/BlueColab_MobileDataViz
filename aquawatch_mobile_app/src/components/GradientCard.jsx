@@ -1,13 +1,13 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Dimensions, ImageBackground } from "react-native";
-import { cardStyles } from "../../stylesCard";
+import React from 'react';
+import { View, Text, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
+import { cardStyles } from '../../stylesCard';
 
-const { width } = Dimensions.get("window"); // Get the width of the device to set the image width
+const { width } = Dimensions.get('window'); // Get the width of the device to set the image width
 
 // Define the GradientCard component with props for customization
 const GradientCard = ({ imageSource, title, buttonText, onButtonPress, isMain }) => {
   // Determine if imageSource is a URI or a local image
-  const image = typeof imageSource === "string" ? { uri: imageSource } : imageSource;
+  const image = typeof imageSource === 'string' ? { uri: imageSource } : imageSource;
   return (
     <TouchableOpacity onPress={onButtonPress}>
       <View className={`my-2 rounded-3xl overflow-hidden bg-white dark:bg-gray-700 ${isMain ? '' : 'mr-4'}`}>
@@ -20,7 +20,7 @@ const GradientCard = ({ imageSource, title, buttonText, onButtonPress, isMain })
               height: isMain ? 200 : 100,
             },
           ]}
-          imageStyle={{ borderRadiusTopLeft: 24, borderRadiusTopRight: 24}}
+          imageStyle={{ borderRadiusTopLeft: 24, borderRadiusTopRight: 24 }}
         >
 
         </ImageBackground>

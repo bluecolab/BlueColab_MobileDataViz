@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
-import axios from "axios";
-import moment from "moment";
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const GraphDataContext = createContext(null);
@@ -24,10 +24,10 @@ const GraphDataProvider = ({ children }) => {
       } catch(e) {
         console.log(e);
       }
-    }
+    };
     setStoredTempUnit(newUnit);
     setDefaultTempUnit(newUnit);
-  }
+  };
 
   const changeLocation = (newLocation) => {
     const setStoredLocation  = async (value) => {
@@ -36,10 +36,10 @@ const GraphDataProvider = ({ children }) => {
       } catch(e) {
         console.log(e);
       }
-    }
+    };
     setStoredLocation (newLocation);
     setDefaultLocation(newLocation);
-  }
+  };
 
   const locationMap = {
     'New York City': '01376520',
@@ -51,21 +51,19 @@ const GraphDataProvider = ({ children }) => {
 
   useEffect(() => {
     const parameterMap = {
-      "00010": "Temp",  
-      "00301": "DOpct", 
-      "90860": "Sal",    
-      "00095": "Cond",  
-      "63680": "Turb",  
-      "00400": "pH"    
+      '00010': 'Temp',  
+      '00301': 'DOpct', 
+      '90860': 'Sal',    
+      '00095': 'Cond',  
+      '63680': 'Turb',  
+      '00400': 'pH',    
     };
     
     function cleanHudsonRiverData(rawData) {
       if (!rawData?.value?.timeSeries) {
-        console.error("Invalid data format");
+        console.error('Invalid data format');
         return [];
       }
-
-
     
       const parsedData = {};
 
@@ -96,27 +94,27 @@ const GraphDataProvider = ({ children }) => {
         let baseURL = '';
   
         switch (defaultLocation) {
-          case 'Choate Pond':
-            baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/range?stream=false&start_date=${year}-${month
-              .toString()
-              .padStart(2, "0")}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month
-              .toString()
-              .padStart(2, "0")}-${end_day}T23%3A59%3A59%2B00%3A00`;
-            break;
-          case 'New York City':
-          case 'Piermont':
-          case 'West Point':
-          case 'Poughkeepsie':
-          case 'Albany':
-            baseURL = `https://nwis.waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? "01376269"}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
-            break;
-          default:
-            baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/range?stream=false&start_date=${year}-${month
-              .toString()
-              .padStart(2, "0")}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month
-              .toString()
-              .padStart(2, "0")}-${end_day}T23%3A59%3A59%2B00%3A00`;
-            break;
+        case 'Choate Pond':
+          baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/range?stream=false&start_date=${year}-${month
+            .toString()
+            .padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month
+            .toString()
+            .padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00`;
+          break;
+        case 'New York City':
+        case 'Piermont':
+        case 'West Point':
+        case 'Poughkeepsie':
+        case 'Albany':
+          baseURL = `https://nwis.waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
+          break;
+        default:
+          baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/range?stream=false&start_date=${year}-${month
+            .toString()
+            .padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month
+            .toString()
+            .padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00`;
+          break;
         }
   
         axios
@@ -124,8 +122,8 @@ const GraphDataProvider = ({ children }) => {
           .then((response) => {
             const apiData = response.data;
 
-            console.clear()
-            console.log(baseURL)
+            console.clear();
+            console.log(baseURL);
             if (defaultLocation === 'Choate Pond') {
               const cleanedData = apiData.map((item) => {
                 const { sensors, ...rest } = item;
@@ -138,8 +136,8 @@ const GraphDataProvider = ({ children }) => {
             }
           })
           .catch((error) => {
-            console.error("Error fetching data:", error);
-            setData({ error: "Failed to load data" });
+            console.error('Error fetching data:', error);
+            setData({ error: 'Failed to load data' });
           })
           .finally(() => {
             setLoading(false);
@@ -162,7 +160,7 @@ const GraphDataProvider = ({ children }) => {
           console.log(`Stored value: ${value}`);
           setDefaultLocation(value);
         } else {
-          setDefaultLocation("Choate Pond");
+          setDefaultLocation('Choate Pond');
         }
       } catch (e) {
         console.error(e);
@@ -176,7 +174,7 @@ const GraphDataProvider = ({ children }) => {
           console.log(`Stored value: ${value}`);
           setDefaultTempUnit(value);
         } else {
-          setDefaultTempUnit("Fahrenheit");
+          setDefaultTempUnit('Fahrenheit');
         }
       } catch (e) {
         console.error(e);
@@ -186,7 +184,7 @@ const GraphDataProvider = ({ children }) => {
     getStoredDefaultLocation();
     getStoredDefaultTempUnit();
 
-    const lastMonth = moment().subtract(1, "month");
+    const lastMonth = moment().subtract(1, 'month');
     setYear(lastMonth.year());
     setMonth(lastMonth.month() + 1);
     setStartDay(1);
@@ -206,7 +204,7 @@ const GraphDataProvider = ({ children }) => {
         setMonth,
         setEndDay,
         setDefaultLocation,
-        changeUnit
+        changeUnit,
       }}
     >
       {children}

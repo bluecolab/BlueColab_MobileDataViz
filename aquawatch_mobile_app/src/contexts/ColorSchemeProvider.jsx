@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { Appearance } from "react-native";
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useColorScheme } from "nativewind";
+import { useColorScheme } from 'nativewind';
 
 const ColorSchemeContext = createContext(false);
 
 const ColorSchemeProvider = ({ children }) => {
   const { setColorScheme } = useColorScheme();
-  const [isDark, setIsDark] = useState(Appearance.getColorScheme() === "dark");
-  const [colorSchemeSys, setColorSchemeSys ] = useState("system"); 
+  const [isDark, setIsDark] = useState(Appearance.getColorScheme() === 'dark');
+  const [colorSchemeSys, setColorSchemeSys ] = useState('system'); 
 
   const changeColor = (newColorScheme) => {
     const setStoredAppearance  = async (value) => {
@@ -17,12 +17,12 @@ const ColorSchemeProvider = ({ children }) => {
       } catch(e) {
         console.log(e);
       }
-    }
+    };
     setStoredAppearance (newColorScheme);
     setColorSchemeSys(newColorScheme);
-    setIsDark(newColorScheme === "system" ? Appearance.getColorScheme() === "dark" : newColorScheme === "dark");
+    setIsDark(newColorScheme === 'system' ? Appearance.getColorScheme() === 'dark' : newColorScheme === 'dark');
     setColorScheme(newColorScheme);
-  }
+  };
 
   useEffect(() => {
     const getStoredAppearance = async () => {
@@ -31,12 +31,12 @@ const ColorSchemeProvider = ({ children }) => {
         if (value !== null) {
           console.log(`Stored value: ${value}`);
           setColorSchemeSys(value);
-          setIsDark(value === "system" ? Appearance.getColorScheme() === "dark" : value === "dark");
+          setIsDark(value === 'system' ? Appearance.getColorScheme() === 'dark' : value === 'dark');
           setColorScheme(value);
         } else {
-          console.log(`Nothing stored`);
-          setColorSchemeSys("system");
-          setIsDark(Appearance.getColorScheme() === "dark");
+          console.log('Nothing stored');
+          setColorSchemeSys('system');
+          setIsDark(Appearance.getColorScheme() === 'dark');
         }
       } catch (e) {
         console.error(e);
@@ -45,7 +45,7 @@ const ColorSchemeProvider = ({ children }) => {
     getStoredAppearance();
 
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      if (colorSchemeSys === "system") setIsDark(colorScheme === "dark");
+      if (colorSchemeSys === 'system') setIsDark(colorScheme === 'dark');
     });
 
     return () => {
@@ -57,8 +57,8 @@ const ColorSchemeProvider = ({ children }) => {
     <ColorSchemeContext.Provider value={{
       isDark,
       colorSchemeSys,
-      changeColor
-      }}>
+      changeColor,
+    }}>
       {children}
     </ColorSchemeContext.Provider>
   );

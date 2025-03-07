@@ -1,8 +1,7 @@
-import React from "react";
-import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
-import { CustomWebView } from "@components";
-import { styled } from "nativewind";
-
+import React from 'react';
+import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
+import { CustomWebView } from '@components';
+import { styled } from 'nativewind';
 
 export default function StoryScreen() {
   return (
@@ -15,7 +14,7 @@ export default function StoryScreen() {
 
       {/* Top Image */}
       <Image
-        source={require("../../assets/StoryScreen/Three-labs-copy.jpg")} style={styles.image}
+        source={require('../../assets/StoryScreen/Three-labs-copy.jpg')} style={styles.image}
       />
 
       {/* Content Sections */}
@@ -33,7 +32,7 @@ export default function StoryScreen() {
       <Text style={styles.paragraph}>
         At our technology lab overlooking the Hudson River, our Choate Pond lab
         on campus, and our data lab in the Goldstein Academic Center, Blue CoLab
-        is dedicated to the proposition that you have the{" "}
+        is dedicated to the proposition that you have the{' '}
         <Text style={styles.bold}>right-to-know</Text> the quality of your water
         before you drink it, swim in it, fish it, or even swamp your canoe.
       </Text>
@@ -52,7 +51,7 @@ export default function StoryScreen() {
       <Text style={styles.paragraph}>
         In <Text style={styles.bold}>Milwaukee (1993)</Text>, 400,000 residents
         were made ill and 100 died due to drinking water contaminated with
-        cryptosporidium. Residents in <Text style={styles.bold}>Hoosick Falls</Text> and{" "}
+        cryptosporidium. Residents in <Text style={styles.bold}>Hoosick Falls</Text> and{' '}
         <Text style={styles.bold}>Newburgh, NY</Text> were exposed to highly
         toxic PFAS and may have been for years without knowing it.
       </Text>
@@ -60,7 +59,7 @@ export default function StoryScreen() {
       <Text style={styles.paragraph}>
         Water contamination is endemic across the planet, making hundreds of
         millions of people ill, including tens of millions in the United States.
-        The best defense against this threat are innovations that enable{" "}
+        The best defense against this threat are innovations that enable{' '}
         <Text style={styles.bold}>real-time</Text>, technological detection of
         water contaminants before they can reach our taps or recreational
         waters.
@@ -68,7 +67,7 @@ export default function StoryScreen() {
 
       <Text style={styles.sectionTitle}>Blue CoLab's Hands-On Approach</Text>
       <Text style={styles.paragraph}>
-        To advance these innovations, Blue CoLab is decidedly{" "}
+        To advance these innovations, Blue CoLab is decidedly{' '}
         <Text style={styles.bold}>“hands-on.”</Text> Our students dive into:
       </Text>
       <Text style={styles.listItem}>• Operation of real-time sensors and instruments</Text>
@@ -94,59 +93,59 @@ export default function StoryScreen() {
       <Text style={styles.author}>— John Cronin, Blue CoLab Director</Text>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: '#f4f4f4',
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     marginBottom: 20,
-    color: "#0047AB", // Blue CoLab brand color
+    color: '#0047AB', // Blue CoLab brand color
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: "600",
+    fontWeight: '600',
     marginTop: 15,
     marginBottom: 5,
-    color: "#0047AB",
+    color: '#0047AB',
   },
   paragraph: {
     fontSize: 16,
     lineHeight: 24,
-    color: "#333",
+    color: '#333',
     marginBottom: 10,
   },
   listItem: {
     fontSize: 16,
-    color: "#333",
+    color: '#333',
     marginLeft: 10,
     marginBottom: 5,
   },
   bold: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   quote: {
     fontSize: 18,
-    fontStyle: "italic",
-    textAlign: "center",
+    fontStyle: 'italic',
+    textAlign: 'center',
     marginTop: 20,
-    color: "#555",
+    color: '#555',
   },
   author: {
     fontSize: 16,
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   image: {
-    width: "100%", 
+    width: '100%', 
     height: 100, 
-    resizeMode: "cover", 
+    resizeMode: 'cover', 
     borderRadius: 5, 
     marginBottom: 15, 
   },

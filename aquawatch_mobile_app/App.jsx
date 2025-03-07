@@ -1,18 +1,18 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image, TouchableOpacity, View } from "react-native";
-import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph, CurrentData, Settings, Feedback, VersionHistory, Socials } from "@screens";
-import { tabBarStyles, middleButtonStyles, iconStyles } from "./stylesCard";
-import { ColorSchemeProvider, GraphDataProvider, useIsDark, CurrentDataProvider } from "@contexts";
-import waterDropIcon from "./assets/free-water-drop-2-462137.png";
-import homeIcon from "./assets/HomeIcon_WB.png";
-import homeIconDark from "./assets/HomeIcon_BB.png";
-import monthlyDataIcon from "./assets/settings_WB.png";
-import monthlyDataIconDark from "./assets/settings_BB.png";
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Image, TouchableOpacity, View } from 'react-native';
+import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph, CurrentData, Settings, Feedback, VersionHistory, Socials } from '@screens';
+import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard';
+import { ColorSchemeProvider, GraphDataProvider, useIsDark, CurrentDataProvider } from '@contexts';
+import waterDropIcon from './assets/free-water-drop-2-462137.png';
+import homeIcon from './assets/HomeIcon_WB.png';
+import homeIconDark from './assets/HomeIcon_BB.png';
+import monthlyDataIcon from './assets/settings_WB.png';
+import monthlyDataIconDark from './assets/settings_BB.png';
 
-import "./global.css"
+import './global.css';
 
 // Create the stack navigators
 const HomeStack = createStackNavigator();
@@ -21,16 +21,16 @@ const SettingsStack = createStackNavigator();
 
 // Stack navigator for the Home tab
 function HomeStackNavigator() {
-  const {isDark} = useIsDark();
+  const { isDark } = useIsDark();
   return (
     <HomeStack.Navigator screenOptions={{
       headerShown: true, headerStyle: {
-        backgroundColor: isDark ? "#2e2e3b" : "white" ,
+        backgroundColor: isDark ? '#2e2e3b' : 'white' ,
         
         elevation: 20,
       },
       headerTitleStyle: {
-        color: isDark ? "white" : "black",  
+        color: isDark ? 'white' : 'black',  
       },
     }}>
       <HomeStack.Screen name="Home" component={HomeScreen} />
@@ -48,20 +48,20 @@ function HomeStackNavigator() {
 
 // Stack navigator for the Middle tab (Data Hub)
 function MiddleStackNavigator() {
-  const {isDark} = useIsDark();
+  const { isDark } = useIsDark();
   return (
     <MiddleStack.Navigator screenOptions={{
       headerShown: true,
       headerStyle: {
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.1,
         shadowRadius: 20,
         elevation: 20,
-        backgroundColor: isDark ? "#2e2e3b" : "white" ,
+        backgroundColor: isDark ? '#2e2e3b' : 'white' ,
       },
       headerTitleStyle: {
-        color: isDark ? "white" : "black",  
+        color: isDark ? 'white' : 'black',  
       },
     }}>
       <MiddleStack.Screen name="Current Data" component={MiddleScreen} />
@@ -71,20 +71,20 @@ function MiddleStackNavigator() {
 
 // Stack navigator for the Monthly tab
 function SettingsStackNavigator() {
-  const {isDark}  = useIsDark();
+  const { isDark }  = useIsDark();
   return (
     <SettingsStack.Navigator screenOptions={{
       headerShown: true,
       headerStyle: {
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.1,
         shadowRadius: 20,
         elevation: 20,
-        backgroundColor: isDark ? "#2e2e3b" : "white" ,
+        backgroundColor: isDark ? '#2e2e3b' : 'white' ,
       },
       headerTitleStyle: {
-        color: isDark ? "white" : "black",  
+        color: isDark ? 'white' : 'black',  
       },
     }}>
       <SettingsStack.Screen name="Settings" component={Settings} />
@@ -110,11 +110,11 @@ const CustomTabBarButton = ({ children, onPress }) => (
 const Tab = createBottomTabNavigator();
 
 function MainNavigator() {
-  const {isDark}  = useIsDark();
+  const { isDark }  = useIsDark();
 
   return (
     <NavigationContainer>
-       <Tab.Navigator screenOptions={{ tabBarShowLabel: false, tabBarStyle: isDark ? tabBarStyles.tabBarDark : tabBarStyles.tabBarLight , headerShown: false }}>
+      <Tab.Navigator screenOptions={{ tabBarShowLabel: false, tabBarStyle: isDark ? tabBarStyles.tabBarDark : tabBarStyles.tabBarLight , headerShown: false }}>
         <Tab.Screen
           name="HomeTab"
           component={HomeStackNavigator}
@@ -149,7 +149,6 @@ function MainNavigator() {
     </NavigationContainer>
   );
 }
-
 
 export default function App() {
   return (
