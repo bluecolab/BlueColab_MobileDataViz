@@ -1,6 +1,11 @@
 // stylesCard.js
 // This file is the keeper of styles for the bottom NavBar and for the Gradient Cards
-import { StyleSheet } from 'react-native';
+import { topLeft } from '@shopify/react-native-skia';
+import { StyleSheet,  Dimensions } from 'react-native';
+
+const deviceWidth = Dimensions.get('window').width;
+
+
 
 export const containerStyles = StyleSheet.create({
   container: {
@@ -70,9 +75,10 @@ export const iconStyles = StyleSheet.create({
 //_+_+_+_+_+_+_+_+_+_+_+_+_Card Settings_+_+_+_+_+_+_+_+_+_+_+_+
 export const cardStyles = StyleSheet.create({
   cardContainer: {
-    borderRadius: 20,
-    overflow: 'hidden',
-    margin: 10,
+    // borderRadius: 20,
+    // // overflow: 'hidden',
+    // padding: 10,
+    // width: deviceWidth * 1,
     // Shadow for iOS
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -85,10 +91,12 @@ export const cardStyles = StyleSheet.create({
   gradientBackground: {
     padding: 5,
     alignItems: 'center',
-    // borderRadius: 2,
+    width: "95%",
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20
   },
   cardImage: {
-    width: '100%',
+    width: "95%",
     height: 200,
   },
   cardText: {

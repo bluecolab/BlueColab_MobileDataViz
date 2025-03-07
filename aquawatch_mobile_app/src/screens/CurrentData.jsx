@@ -19,11 +19,9 @@ function CurrentData() {
     setError(null);
     try {
       const responses = await Promise.all([
-        axios.get('https://colabprod01.pace.edu/api/influx/sensordata/Alan'),
+        axios.get('https://colabprod01.pace.edu/api/influx/sensordata/Ada'),
         axios.get('https://colabprod01.pace.edu/api/influx/sensordata/Odin'),
       ]);
-
-      console.log(responses[0].data);
       
       // Reformat the data to remove nested objects
       const cleanedData1 = { ...responses[0].data, ...responses[0].data.sensors };
@@ -46,7 +44,7 @@ function CurrentData() {
     fetchData();
   }, []);
 
-  // temprary screen to show while data is loading
+  // temporary screen to show while data is loading
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>{error}</Text>;
 
@@ -58,15 +56,15 @@ function CurrentData() {
   // fyi - this page may not work right now
   // looks like API is down
 
-  // Alan Data
-  const alanData = data[0];
-  const alanTimestamp = alanData.timestamp;
-  const waterTemp = alanData.Temp * (9 / 5) + 32; // Celsius to Fahrenheit
-  const cond = alanData.Cond;
-  const dOpct = alanData.DOpct;
-  const sal = alanData.Sal;
-  const pH = alanData.pH;
-  const turb = alanData.Turb;
+  // ada Data
+  const adaData = data[0];
+  const adaTimestamp = adaData.timestamp;
+  const waterTemp = adaData.Temp * (9 / 5) + 32; // Celsius to Fahrenheit
+  const cond = adaData.Cond;
+  const dOpct = adaData.DOpct;
+  const sal = adaData.Sal;
+  const pH = adaData.pH;
+  const turb = adaData.Turb;
 
   // Odin Data
   const odinData = data[1];
@@ -89,7 +87,7 @@ function CurrentData() {
 
   console.log(
     {
-        alanTimestamp, waterTemp, cond, dOpct, sal, pH, turb
+        adaTimestamp, waterTemp, cond, dOpct, sal, pH, turb
     }
   )
 

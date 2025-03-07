@@ -3,7 +3,7 @@ import { VictoryChart, VictoryLabel, VictoryAxis } from "victory-native";
 import { useIsDark } from "@contexts";
 
 function EmptyGraph( {text="Loading data..."}) {
-    const isDark = useIsDark();
+    const {isDark}  = useIsDark();
 
     return (
 

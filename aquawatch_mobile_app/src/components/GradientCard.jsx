@@ -1,33 +1,34 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, Image, TouchableOpacity, Dimensions, ImageBackground } from "react-native";
 import { cardStyles } from "../../stylesCard";
 
 const { width } = Dimensions.get("window"); // Get the width of the device to set the image width
 
 // Define the GradientCard component with props for customization
-const GradientCard = ({ imageSource, title, buttonText, onButtonPress, gradientColors }) => {
+const GradientCard = ({ imageSource, title, buttonText, onButtonPress, isMain }) => {
   // Determine if imageSource is a URI or a local image
   const image = typeof imageSource === "string" ? { uri: imageSource } : imageSource;
-
   return (
-    <View style={cardStyles.cardContainer}>
-      {/* Display the image with dynamic width and fixed height. */}
-      <Image source={image} style={[cardStyles.cardImage, { width: width - 20, height: 200 }]} />
-      {/* Gradient stuff */}
-      <LinearGradient
-        colors={gradientColors}
-        style={cardStyles.gradientBackground}
-        start={{ x: 0, y: 1 }} 
-        end={{ x: 0, y: 0 }}
-      >
-      {/* Title and button with styling and functionality. */}
-        <Text style={cardStyles.cardText}>{title}</Text>
-        <TouchableOpacity onPress={onButtonPress} style={cardStyles.cardButton}>
-          <Text style={cardStyles.buttonText}>{buttonText}</Text>
-        </TouchableOpacity>
-      </LinearGradient>
-    </View>
+    <TouchableOpacity onPress={onButtonPress}>
+      <View className={`my-2 rounded-3xl overflow-hidden bg-white dark:bg-gray-700 ${isMain ? '' : 'mr-4'}`}>
+        <ImageBackground
+          source={image}
+          style={[
+            cardStyles.cardImage,
+            {
+              width: isMain ? width : width / 1.8,
+              height: isMain ? 200 : 100,
+            },
+          ]}
+          imageStyle={{ borderRadiusTopLeft: 24, borderRadiusTopRight: 24}}
+        >
+
+        </ImageBackground>
+        <Text className={`text-gray-700 dark:text-white font-bold ${isMain ? 'text-3xl' : 'text-2xl'}  pl-1`}>{title}</Text>
+        <Text className={`text-gray-600 dark:text-white ${isMain ? 'text-lg' : 'text-sm'} pb-4 pl-1`}>{buttonText}</Text>
+      </View>
+    </TouchableOpacity>
+
   );
 };
 
