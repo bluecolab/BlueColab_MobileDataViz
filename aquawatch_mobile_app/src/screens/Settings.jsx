@@ -5,10 +5,22 @@ import { useIsDark, useGraphData } from "@contexts";
 import { FontAwesome } from "@expo/vector-icons";
 
 
-export default function Settings() {
+export default function Settings({navigation}) {
   const { changeLocation, changeUnit, defaultLocation, defaultTempUnit  } = useGraphData();
-
   const {isDark, colorSchemeSys,  changeColor}  = useIsDark();
+
+  const handleAttributionPress = () => {
+    navigation.navigate("Attributions");
+  }
+  const handleFeedbackPress = () => {
+    navigation.navigate("Feedback");
+  }
+  const handleVersionHistoryPress = () => {
+    navigation.navigate("Version History");
+  }
+  const handleSocialsPress = () => {
+    navigation.navigate("Socials");
+  }
 
   const locationOptions = [
     { label: 'Choate Pond', value: '1'},
@@ -70,7 +82,7 @@ export default function Settings() {
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'black', marginVertical: 5 }} />
         <SettingsDropdown label="Default Location" options={locationOptions} value={selectedLocation} onSelect={onLocationSelect} />
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'lightgray', marginVertical: 1 }} />
-        <SettingsDropdown label="Default Temperature Unit:" options={tempUnitOptions} value={selectedTempUnit} onSelect={onTempUnitSelect} />
+        <SettingsDropdown label="Unit:" options={tempUnitOptions} value={selectedTempUnit} onSelect={onTempUnitSelect} />
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'lightgray', marginVertical: 1 }} />
         <SettingsDropdown label="Appearance:" options={appearanceOptions} value={selectedAppearance} onSelect={onAppearanceSelect} />
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'lightgray', marginVertical: 1 }} />
@@ -83,29 +95,28 @@ export default function Settings() {
       <View className="bg-white dark:bg-gray-700  px-2 py-4 rounded-3xl mt-4">
         <Text className="text-2xl font-bold  dark:text-white">Other:</Text>
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'black', marginVertical: 5 }} />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleFeedbackPress}> 
           <View className="flex-row items-center">
             <Text className="text-lg mr-2  dark:text-white">Feedback</Text>
             <FontAwesome name="sign-in" size={20} color={isDark ? "white" : "grey"}  />
           </View>
         </TouchableOpacity>
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'lightgray', marginVertical: 1 }} />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleVersionHistoryPress}>
           <View className="flex-row items-center">
             <Text className="text-lg mr-2  dark:text-white">Version History</Text>
             <FontAwesome name="sign-in" size={20} color={isDark ? "white" : "grey"} />
           </View>
         </TouchableOpacity>
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'lightgray', marginVertical: 1 }} />
-        <TouchableOpacity>
-        
+        <TouchableOpacity onPress={handleAttributionPress}>
           <View className="flex-row items-center">
             <Text className="text-lg mr-2  dark:text-white">Attributions</Text>
             <FontAwesome name="sign-in" size={20} color={isDark ? "white" : "grey"} />
           </View>
         </TouchableOpacity>
         <View style={{ borderBottomWidth: 0.5, borderBottomColor: isDark ? 'white' : 'lightgray', marginVertical: 1 }} />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSocialsPress}>
           <View className="flex-row items-center">
             <Text className="text-lg mr-2  dark:text-white">Socials</Text>
             <FontAwesome 

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Linking, TouchableOpacity, ScrollView } from "react-native";
 import styles from "../../styles";
 
-export default function Attributions({ navigation }) {
+export default function Attributions() {
   const handleLinkPress = (url) => {
     Linking.openURL(url);
   };

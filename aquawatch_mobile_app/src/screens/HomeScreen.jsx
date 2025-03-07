@@ -25,9 +25,6 @@ export default function HomeScreen({ navigation }) {
   const handleBlogScreenPress = () => {
     navigation.navigate("Blog");
   };
-  const handleAttributionPress = () => {
-    navigation.navigate("Attributions");
-  }
   const handleAqiPress = () => {
     navigation.navigate("AQI");
   };
@@ -87,13 +84,13 @@ export default function HomeScreen({ navigation }) {
       onButtonPress: handleBlogScreenPress,
       gradientColors: ["#ffdde1", "#ee9ca7"],
     },
-    {
-      imageSource: require("../../assets/homescreen/code.jpg"),
-      title: "Credits",
-      buttonText: "Code & Data Attributions",
-      onButtonPress: handleAttributionPress,
-      gradientColors: ["#FFFFFF", "#6DD5FA"],
-    }
+    // {
+    //   imageSource: require("../../assets/homescreen/code.jpg"),
+    //   title: "Credits",
+    //   buttonText: "Code & Data Attributions",
+    //   onButtonPress: handleAttributionPress,
+    //   gradientColors: ["#FFFFFF", "#6DD5FA"],
+    // }
   ];
 
   return (

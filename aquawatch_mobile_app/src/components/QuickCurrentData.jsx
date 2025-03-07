@@ -13,7 +13,7 @@ const Timer = ({ timestamp }) => {
 
         const intervalId = setInterval(() => {
             const currentTime = moment();
-            const timestampMoment = moment(timestamp); 
+            const timestampMoment = timestamp == "Loading" ? moment() : moment(timestamp); 
             
             if (timestampMoment.isValid()) {
                 const diffInSeconds = currentTime.diff(timestampMoment, 'seconds');

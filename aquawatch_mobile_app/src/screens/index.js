@@ -9,3 +9,6 @@ export { default as WildlifeScreen } from './WildlifeScreen';
 export { default as Graph } from './Graph';
 export { default as CurrentData } from './CurrentData';
 export { default as Settings } from './Settings';
+export { default as Feedback } from './Feedback';
+export { default as VersionHistory} from './VersionHistory';
+export { default as Socials } from './Socials';
