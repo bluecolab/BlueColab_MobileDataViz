@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { Text, View, Dimensions, TouchableOpacity } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient'; // if using Expo
-import { useCurrentData } from '@contexts';
-import moment from 'moment';
+import { useCurrentData } from "@contexts";
+import moment from "moment";
+
 
 const Timer = ({ timestamp }) => {
     const [minutes, setMinutes] = useState(null); 
@@ -12,14 +13,14 @@ const Timer = ({ timestamp }) => {
 
         const intervalId = setInterval(() => {
             const currentTime = moment();
-            const timestampMoment = timestamp == 'Loading' ? moment() : moment(timestamp); 
+            const timestampMoment = timestamp == "Loading" ? moment() : moment(timestamp); 
             
             if (timestampMoment.isValid()) {
                 const diffInSeconds = currentTime.diff(timestampMoment, 'seconds');
                 setMinutes(diffInSeconds); 
             } else {
-                console.error('Invalid timestamp', timestamp); 
-                setMinutes('Invalid Timestamp');
+                console.error("Invalid timestamp", timestamp); 
+                setMinutes("Invalid Timestamp");
             }
         }, 1000);
 
@@ -35,18 +36,20 @@ const Timer = ({ timestamp }) => {
     );
 };
 
+
 export default function QuickCurrentData({ handleMiddlePress }) {
     const { data, defaultLocation, defaultTempUnit } = useCurrentData();
 
     const last = data[data.length - 1];
-
-    const dopct = last?.DOpct ?? 0;
-    const ph = last?.pH ?? 0;
-    const temp = last?.Temp ?? 0;
-    const cond = last?.Cond ?? 0;
-    const turb = last?.Turb ?? 0;
-    const sal = last?.Sal ?? 0;
-    const timestamp = last?.timestamp ?? 'Loading';
+    
+    const dopct = last?.DOpct ?? "NA";
+    const ph = last?.pH ?? "NA";
+    const temp = last?.Temp ?? "NA";
+    const convertedTemp = temp == "NA" ? "NA" : (defaultTempUnit ? defaultTempUnit.trim() : "Fahrenheit") === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp
+    const cond = last?.Cond ?? "NA";
+    const turb = last?.Turb ?? "NA"
+    const sal = last?.Sal ?? "NA";
+    const timestamp = last?.timestamp ?? "Loading";
 
     const const_doptc = 0.34 * dopct;
     const const_ph = 0.22 * ph;
@@ -55,13 +58,15 @@ export default function QuickCurrentData({ handleMiddlePress }) {
     const const_turb = 0.16 * turb;
     const wqi = const_doptc + const_ph + const_temp + const_cond + const_turb;
 
-    const ParamView = ({ param, name }) => (<View style={{ width: itemWidth }}
-        className="rounded-lg flex items-center justify-center "
-    >
-        <Text className="text-2xl  text-white text-center">{param}</Text>
-        <Text className="text-lg text-white  text-center">{name}</Text>
-    </View>);
-    const screenWidth = Dimensions.get('window').width;
+    const ParamView = ({ param, name }) => {
+        return (<View style={{ width: itemWidth }}
+            className="rounded-lg flex items-center justify-center "
+        >
+            <Text className="text-2xl  text-white text-center">{param}</Text>
+            <Text className="text-lg text-white  text-center">{name}</Text>
+        </View>)
+    }
+    const screenWidth = Dimensions.get("window").width;
     const itemWidth = (screenWidth - 100) / 2; // Adjust 32px for padding/margins
 
     return (
@@ -69,7 +74,7 @@ export default function QuickCurrentData({ handleMiddlePress }) {
             onPress={handleMiddlePress}>
             <View className="px-4 pt-4">
                 <LinearGradient
-                    colors={['#00104d', '#3fb8ab']}
+                    colors={["#00104d", "#3fb8ab"]}
                     start={{ x: 0, y: 1 }}
                     end={{ x: 0, y: 0 }}
                     style={{
@@ -83,14 +88,15 @@ export default function QuickCurrentData({ handleMiddlePress }) {
                     </View>
 
                     <View className="flex flex-row flex-wrap gap-4 pt-4 items-center justify-center">
-                        <ParamView param={(defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp} name={'Temperature'} />
-                        <ParamView param={ph} name={'pH'} />
-                        <ParamView param={dopct} name={'Dissolved O2'} />
-                        <ParamView param={turb} name={'Turbidity'} />
-                        <ParamView param={cond} name={'Conductivity'} />
-                        <ParamView param={sal} name={'Salinity'} />
-                        {defaultLocation == 'Choate Pond' ?
-                            <ParamView param={wqi.toFixed(2)} name={'WQI'} /> : <></>}
+                        <ParamView param={convertedTemp} name={"Temperature"} />
+                        <ParamView param={ph} name={"pH"} />
+                        <ParamView param={dopct} name={"Dissolved O2"} />
+                        <ParamView param={turb} name={"Turbidity"} />
+                        <ParamView param={cond} name={"Conductivity"} />
+                        <ParamView param={sal} name={"Salinity"} />
+                        {defaultLocation == "Choate Pond" ?
+                            <ParamView param={
+                                !isNaN(wqi.toFixed(2)) ? wqi.toFixed(2) : "NA"} name={"WQI"} /> : <></>}
                     </View>
 
                     <Timer timestamp={timestamp} />
@@ -100,4 +106,3 @@ export default function QuickCurrentData({ handleMiddlePress }) {
     );
 
 }
-
