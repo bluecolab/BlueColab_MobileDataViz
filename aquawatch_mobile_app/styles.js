@@ -1,14 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { useFonts } from 'expo-font';
 
-
-
-
-let deviceHeight = Dimensions.get('window').height;
-let deviceWidth = Dimensions.get('window').width;
-
-
-
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 
 export default StyleSheet.create({
 
@@ -44,7 +37,7 @@ export default StyleSheet.create({
     },
     aiButtonText: {
         color: 'black',
-        fontSize: deviceHeight / 27
+        fontSize: deviceHeight / 27,
     },
     //The big paragraph on the AI screen
     aiParagraphText: {
@@ -184,7 +177,7 @@ export default StyleSheet.create({
     },
     //button in the data widget
     graphButton: {
-        /*borderRadius: 20,
+    /*borderRadius: 20,
         height: deviceHeight / 25, 
         width: deviceWidth / 2,
         alignItems: 'center',
@@ -382,19 +375,19 @@ export default StyleSheet.create({
         fontSize: 16,
         margin: 5,
         textAlign: 'center',
-        fontStyle: "italic"
+        fontStyle: 'italic',
     },
     //date text for the wildlife page
     dateText: {
         margin: 15,
-        color: "white",
+        color: 'white',
     },
     //general image styling for widgets 
     imageContainer: {
         height: deviceHeight / 3,
-        width: "90%",
+        width: '90%',
         margin: deviceWidth / 30,
-        borderColor: "black",
+        borderColor: 'black',
         borderWidth: 2,
         borderRadius: 20,
         marginLeft: deviceWidth / 19.5,
@@ -425,10 +418,10 @@ export default StyleSheet.create({
     },
     sidewaystitle: {
         fontSize: 32,
-        fontStyle: 'italic'
+        fontStyle: 'italic',
     },
     sideways: {
-        fontStyle: 'italic'
+        fontStyle: 'italic',
     },
 
     thumbnail: {
@@ -450,8 +443,7 @@ export default StyleSheet.create({
     camImageContainer: {
         height: '65%',
         width: '85%',
-        marginBottom: deviceWidth / 15,
-        borderColor: "black",
+        borderColor: 'black',
         borderWidth: 2,
         borderRadius: 20,
         marginBottom: deviceHeight / 17,
@@ -499,7 +491,7 @@ export default StyleSheet.create({
         paddingBottom: 100,
     },
     
-     loadingIndicator: {
+    loadingIndicator: {
         marginTop: 20,
     },
     //Header text for air quality
@@ -540,10 +532,10 @@ export default StyleSheet.create({
     pickerContainer: {
         marginBottom: 20,  
         paddingHorizontal: 10,  
-        width: "100%", 
-        alignItems: "center", 
-        justifyContent: "center", 
+        width: '100%', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
         height: 100,  
-    }
+    },
    
 }); 

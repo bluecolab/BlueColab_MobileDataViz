@@ -1,6 +1,6 @@
 
-import React from "react";
-import {View, Text , TouchableOpacity, Linking } from "react-native";
+import React from 'react';
+import { View, Text , TouchableOpacity, Linking } from 'react-native';
 
 const LinkComp = ({ label, url }) => {
     const handleLinkPress = (url) => {
@@ -14,7 +14,7 @@ const LinkComp = ({ label, url }) => {
                 <Text className="underline text-blue-400">{label}</Text>
             </TouchableOpacity>
         </View>
-    )
+    );
 };
 
 export default LinkComp;
