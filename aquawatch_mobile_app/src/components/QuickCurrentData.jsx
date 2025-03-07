@@ -40,14 +40,15 @@ const Timer = ({ timestamp }) => {
 export default function QuickCurrentData({ handleMiddlePress }) {
     const { data, defaultLocation, defaultTempUnit } = useCurrentData();
 
-    const last = data[data.length - 1]
-
-    const dopct = last?.DOpct ?? 0;
-    const ph = last?.pH ?? 0;
-    const temp = last?.Temp ?? 0;
-    const cond = last?.Cond ?? 0;
-    const turb = last?.Turb ?? 0;
-    const sal = last?.Sal ?? 0;
+    const last = data[data.length - 1];
+    
+    const dopct = last?.DOpct ?? "NA";
+    const ph = last?.pH ?? "NA";
+    const temp = last?.Temp ?? "NA";
+    const convertedTemp = temp == "NA" ? "NA" : (defaultTempUnit ? defaultTempUnit.trim() : "Fahrenheit") === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp
+    const cond = last?.Cond ?? "NA";
+    const turb = last?.Turb ?? "NA"
+    const sal = last?.Sal ?? "NA";
     const timestamp = last?.timestamp ?? "Loading";
 
     const const_doptc = 0.34 * dopct;
@@ -87,14 +88,15 @@ export default function QuickCurrentData({ handleMiddlePress }) {
                     </View>
 
                     <View className="flex flex-row flex-wrap gap-4 pt-4 items-center justify-center">
-                        <ParamView param={(defaultTempUnit ? defaultTempUnit.trim() : "Fahrenheit") === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp} name={"Temperature"} />
+                        <ParamView param={convertedTemp} name={"Temperature"} />
                         <ParamView param={ph} name={"pH"} />
                         <ParamView param={dopct} name={"Dissolved O2"} />
                         <ParamView param={turb} name={"Turbidity"} />
                         <ParamView param={cond} name={"Conductivity"} />
                         <ParamView param={sal} name={"Salinity"} />
                         {defaultLocation == "Choate Pond" ?
-                            <ParamView param={wqi.toFixed(2)} name={"WQI"} /> : <></>}
+                            <ParamView param={
+                                !isNaN(wqi.toFixed(2)) ? wqi.toFixed(2) : "NA"} name={"WQI"} /> : <></>}
                     </View>
 
                     <Timer timestamp={timestamp} />

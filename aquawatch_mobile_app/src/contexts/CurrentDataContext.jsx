@@ -115,7 +115,7 @@ const CurrentDataProvider = ({ children }) => {
 
     const intervalId = setInterval(() => {
       checkTimeAndFetchData();
-    }, 1000); // 1 seconds
+    }, 30000); // 1 seconds
 
     setLoading(true);
     fetchData();
