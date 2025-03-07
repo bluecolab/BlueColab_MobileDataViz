@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useIsDark } from '@contexts';
 
-const DropdownComponent = ({ label, options, value, onSelect }) => {
+const SettingsDropdown = ({ label, options, value, onSelect }) => {
     const { isDark } = useIsDark();
     const [isFocus, setIsFocus] = useState(false);
 
@@ -12,15 +12,15 @@ const DropdownComponent = ({ label, options, value, onSelect }) => {
     }, [value]);
 
     return (
-        <View className="p-4">
-            {(value || isFocus) && (
-                <Text className={`absolute left-4 -top-2 z-10 px-2 text-sm ${isFocus ? 'text-blue-500' : isDark ? 'text-white' : 'text-gray-500'}`}>
-                    {label}
-                </Text>
-            )}
+        <View className="flex-row items-center justify-between my-1">
+            <Text className="text-lg dark:text-white text-black">
+                {label}
+            </Text>
+
             <Dropdown
                 style={{
-                    height: 50,
+                    height: 30,
+                    width: 175,
                     borderColor: isFocus ? 'blue' : 'gray',
                     borderWidth: 0.5,
                     paddingHorizontal: 8,
@@ -62,8 +62,10 @@ const DropdownComponent = ({ label, options, value, onSelect }) => {
                     setIsFocus(false);
                 }}
             />
+
         </View>
+
     );
 };
 
-export default DropdownComponent;
+export default SettingsDropdown;

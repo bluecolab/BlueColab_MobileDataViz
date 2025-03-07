@@ -1,17 +1,16 @@
-import React, { useRef, useState } from "react";
-import { ScrollView, View, Text, TouchableOpacity, Animated, Dimensions, Linking } from "react-native";
-import { VictoryChart, VictoryArea, VictoryLine, VictoryAxis, VictoryLabel } from "victory-native";
-import EmptyGraph from "./EmptyGraph";
-import LinkComp from "./LinkComp";
-import { useIsDark } from "@contexts";
-import { FontAwesome } from "@expo/vector-icons";
+import React, { useRef, useState } from 'react';
+import { ScrollView, View, Text, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { VictoryChart, VictoryArea, VictoryLine, VictoryAxis,  VictoryLabel } from 'victory-native';
+import EmptyGraph from './EmptyGraph';
+import LinkComp from './LinkComp';
+import { useIsDark } from '@contexts';
+import { FontAwesome } from '@expo/vector-icons';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 
-
-function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
+function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
     const containerWidth = width * 0.95;
-    const isDark = useIsDark();
+    const { isDark }  = useIsDark();
     const flipAnimation = useRef(new Animated.Value(0)).current;
     const [flipped, setFlipped] = useState(false);
 
@@ -19,16 +18,16 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
         const dotPosition = `${percentage}%`; // Calculate dot's position based on percentage
       
         return (
-          <View className="flex-1 justify-center items-center my-2">
-            <View className="relative w-4/5 h-1.5 bg-gray-500 dark:bg-gray-300">
-              <View
-                className="absolute w-2.5 h-3.5 rounded-full bg-fuchsia-400"
-                style={{ left: dotPosition, top: -3 }}
-              />
+            <View className="flex-1 justify-center items-center my-2">
+                <View className="relative w-4/5 h-1.5 bg-gray-500 dark:bg-gray-300">
+                    <View
+                        className="absolute w-2.5 h-3.5 rounded-full bg-fuchsia-400"
+                        style={{ left: dotPosition, top: -3 }}
+                    />
+                </View>
             </View>
-          </View>
         );
-      };
+    };
       
     const startAnimation = () => {
         Animated.timing(flipAnimation, {
@@ -40,12 +39,12 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
 
     const frontInterpolate = flipAnimation.interpolate({
         inputRange: [0, 1],
-        outputRange: ["0deg", "180deg"],
+        outputRange: ['0deg', '180deg'],
     });
 
     const backInterpolate = flipAnimation.interpolate({
         inputRange: [0, 1],
-        outputRange: ["180deg", "360deg"],
+        outputRange: ['180deg', '360deg'],
     });
 
     let chartData = [];
@@ -56,9 +55,8 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
 
     if (Array.isArray(data) && !loading) {
         const groupedData = data.reduce((acc, item) => {
-            const date = new Date(item.timestamp).toISOString().split("T")[0];
-            const value = unit === "Temp" ? item[unit] * (9 / 5) + 32 : item[unit];
-    
+            const date = new Date(item.timestamp).toISOString().split('T')[0];
+            const value = unit === 'Temp' && defaultTempUnit.trim() === 'Fahrenheit' ? item[unit] * (9 / 5) + 32 : item[unit];
             if (!acc[date]) acc[date] = [];
             acc[date].push(value);
     
@@ -77,8 +75,8 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                 ele.avg = !isNaN(ele.avg) && ele.avg !== -999999 ? ele.avg : null;
                 ele.y = !isNaN(ele.y) && ele.y !== -999999 ? ele.y : null;
                 ele.y0 = !isNaN(ele.y0) && ele.y0 !== -999999 ? ele.y0 : null;
-            }
-        )
+            },
+        );
         
         // Calculate overall min, max, and average
         const allValues = Object.values(groupedData).flat();
@@ -98,7 +96,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                         {yAxisLabel}
                     </Text>
                     <TouchableOpacity className="absolute top-1 right-2" onPress={startAnimation}>
-                        <FontAwesome name="info-circle" size={32} color={isDark ? "white" : "grey"} />
+                        <FontAwesome name="info-circle" size={32} color={isDark ? 'white' : 'grey'} />
                     </TouchableOpacity>
                 </View>
 
@@ -107,26 +105,26 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                     <View className="h-[310]">
                         {/* Front View - Graph */}
                         <Animated.View
-                            style={[
+                            style={
                                 {
                                     marginTop: 5,
-                                    height: "100%",
+                                    height: '100%',
                                     width: containerWidth,
-                                    position: "absolute",
-                                    justifyContent: "center",
-                                    alignSelf: "center",
-                                    backfaceVisibility: "hidden",
+                                    position: 'absolute',
+                                    justifyContent: 'center',
+                                    alignSelf: 'center',
+                                    backfaceVisibility: 'hidden',
                                     transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }],
-                                },
-                            ]}
+                                }
+                            }
                         >
                             <View className="bg-white dark:bg-gray-700 rounded-3xl px-2 h-full">
                                 {loading ? (
                                     <EmptyGraph />
                                 ) : data?.error ? (
-                                    <EmptyGraph text={"No Wifi, please connect to Wifi!"} />
+                                    <EmptyGraph text={'No Wifi, please connect to Wifi!'} />
                                 ) : !Array.isArray(data) ? (
-                                    <EmptyGraph text={"No data for location, try another."} />
+                                    <EmptyGraph text={'No data for location, try another.'} />
                                 ) : (
                                     chartData.length ? <VictoryChart padding={{ left: 60, top: 20, right: 50, bottom: 50 }}>
                                         <VictoryAxis
@@ -134,12 +132,12 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                                             tickValues={tickValues}
                                             tickFormat={(t) => `${t ? t.getMonth() + 1 : ''}/${t ? t.getDate() : ''}`}
                                             style={{
-                                                axis: { stroke: isDark ? "#fff" : "#000" },
-                                                axisLabel: { fill: isDark ? "#fff" : "#000" },
+                                                axis: { stroke: isDark ? '#fff' : '#000' },
+                                                axisLabel: { fill: isDark ? '#fff' : '#000' },
                                                 tickLabels: {
                                                     fontSize: 12,
                                                     padding: 5,
-                                                    fill: isDark ? "#fff" : "#000",
+                                                    fill: isDark ? '#fff' : '#000',
                                                 },
                                             }}
                                         />
@@ -147,9 +145,9 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                                             dependentAxis
                                             label={yAxisLabel}
                                             style={{
-                                                axis: { stroke: isDark ? "#fff" : "#000" },
-                                                axisLabel: { fill: isDark ? "#fff" : "#000" },
-                                                tickLabels: { fill: isDark ? "#fff" : "#000" },
+                                                axis: { stroke: isDark ? '#fff' : '#000' },
+                                                axisLabel: { fill: isDark ? '#fff' : '#000' },
+                                                tickLabels: { fill: isDark ? '#fff' : '#000' },
                                             }}
                                             axisLabelComponent={<VictoryLabel dy={-20} angle={270} />}
                                         />
@@ -160,7 +158,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                                             y="y"
                                             style={{
                                                 data: {
-                                                    fill: isDark ? "rgba(73, 146, 255, 0.95)" : "rgba(0, 100, 255, 0.4)",
+                                                    fill: isDark ? 'rgba(73, 146, 255, 0.95)' : 'rgba(0, 100, 255, 0.4)',
                                                 },
                                             }}
                                         />
@@ -169,10 +167,10 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                                             x="day"
                                             y="avg"
                                             style={{
-                                                data: { stroke: isDark ? "rgb(0, 0, 138)" : "rgb(0, 0, 255)" },
+                                                data: { stroke: isDark ? 'rgb(0, 0, 138)' : 'rgb(0, 0, 255)' },
                                             }}
                                         />
-                                    </VictoryChart> :  <EmptyGraph text={"No data for parameter at this month."} />
+                                    </VictoryChart> :  <EmptyGraph text={'No data for parameter at this month.'} />
 
                                 )}
                             </View>
@@ -180,20 +178,21 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
 
                         {/* Back View - Information Card */}
                         <Animated.View
-                            style={[
+                            style={
                                 {
                                     marginTop: 5,
-                                    height: "100%",
+                                    height: '100%',
                                     width: containerWidth,
-                                    position: "absolute",
-                                    justifyContent: "center",
-                                    alignSelf: "center",
-                                    backfaceVisibility: "hidden",
+                                    position: 'absolute',
+                                    justifyContent: 'center',
+                                    alignSelf: 'center',
+                                    backfaceVisibility: 'hidden',
                                     transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
-                                },
-                            ]}
+                                }
+                            }
+                            pointerEvents={flipped ? 'auto' : 'none'}
                         >
-                            <ScrollView className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
+                            <ScrollView nestedScrollEnabled={true} className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
                                 <View style={{ borderBottomWidth: 1, borderBottomColor: isDark ? 'white' : 'black', marginVertical: 10 }} />
 
                                 <Text className="text-lg font-semibold dark:text-white text-center">
@@ -216,7 +215,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                                             Average
                                         </Text>
                                     </View>                           
-                                     <View className="flex-1">
+                                    <View className="flex-1">
                                         <Text className="text-3xl text-center font-bold dark:text-white">
                                             {overallMax.toFixed(1)}
                                         </Text>
@@ -232,9 +231,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
 
                                 <PercentageDotLine percentage={((overallAvg - overallMin) / (overallMax - overallMin)) * 100}/>
 
-
                                 <View style={{ borderBottomWidth: 1, borderBottomColor: isDark ? 'white' : 'black', marginVertical: 10 }} />
-
 
                                 <Text className="text-lg font-semibold dark:text-white">
                                     What is {yAxisLabel}?
