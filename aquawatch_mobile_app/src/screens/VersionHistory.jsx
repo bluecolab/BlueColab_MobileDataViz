@@ -3,11 +3,11 @@ import { Text, ScrollView } from 'react-native';
 
 export default function VersionHistory() {
 
-  return (
-    <ScrollView>
-      <Text >
+    return (
+        <ScrollView>
+            <Text >
             In Progress
-      </Text>
-    </ScrollView>
-  );
+            </Text>
+        </ScrollView>
+    );
 }
