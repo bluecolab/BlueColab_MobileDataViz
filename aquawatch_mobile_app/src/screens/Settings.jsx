@@ -1,12 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SettingsDropdown } from "@components";
-import { useIsDark, GraphDataContext } from "@contexts";
+import { useIsDark, useGraphData } from "@contexts";
 import { FontAwesome } from "@expo/vector-icons";
 
 
 export default function Settings() {
-  const { changeLocation, changeUnit, defaultLocation, defaultTempUnit  } = useContext(GraphDataContext);
+  const { changeLocation, changeUnit, defaultLocation, defaultTempUnit  } = useGraphData();
 
   const {isDark, colorSchemeSys,  changeColor}  = useIsDark();
 
@@ -62,8 +62,6 @@ export default function Settings() {
     onTempUnitSelect("1");
     onLocationSelect("1");
   }
-
-  console.log(selectedLocation)
 
   return (
     <ScrollView className="bg-defaultbackground dark:bg-defaultdarkbackground p-5">

@@ -1,7 +1,9 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 import moment from "moment";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const GraphDataContext = createContext(null);
 
 const GraphDataProvider = ({ children }) => {
   const [data, setData] = useState(null);
@@ -174,7 +176,6 @@ const GraphDataProvider = ({ children }) => {
           console.log(`Stored value: ${value}`);
           setDefaultTempUnit(value);
         } else {
-          console.log("fired")
           setDefaultTempUnit("Fahrenheit");
         }
       } catch (e) {
@@ -186,7 +187,6 @@ const GraphDataProvider = ({ children }) => {
     getStoredDefaultTempUnit();
 
     const lastMonth = moment().subtract(1, "month");
-    console.log(lastMonth, lastMonth.year(), lastMonth.month() + 1, lastMonth.daysInMonth());
     setYear(lastMonth.year());
     setMonth(lastMonth.month() + 1);
     setStartDay(1);
@@ -216,4 +216,4 @@ const GraphDataProvider = ({ children }) => {
 
 export default GraphDataProvider;
 
-export const GraphDataContext = createContext();
+export const useGraphData = () => useContext(GraphDataContext);

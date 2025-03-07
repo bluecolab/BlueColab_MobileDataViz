@@ -22,8 +22,6 @@ function CurrentData() {
         axios.get('https://colabprod01.pace.edu/api/influx/sensordata/Ada'),
         axios.get('https://colabprod01.pace.edu/api/influx/sensordata/Odin'),
       ]);
-
-      console.log(responses[0].data);
       
       // Reformat the data to remove nested objects
       const cleanedData1 = { ...responses[0].data, ...responses[0].data.sensors };

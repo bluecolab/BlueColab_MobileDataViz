@@ -1,53 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Text, View, Dimensions, TouchableOpacity } from "react-native";
-import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient'; // if using Expo
+import { useCurrentData } from "@contexts";
+import moment from "moment";
 
 export default function QuickCurrentData({handleMiddlePress}) {
-    // useState, a way to keep track of states (the values of variables)
-    const [data, setData] = useState([]); // (1) data is the variable (2) setData is how to set the variable (3) useState([]), set's the data to [] initially 
-    // data stores the response from the API
-    const [loading, setLoading] = useState(true); // loading is a way to track if API has loaded or not 
-    const [error, setError] = useState(null);
+    const { data, defaultLocation, defaultTempUnit } = useCurrentData();
 
-    // you can ignore this for now but, this is how we get data
-    const fetchData = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const responses = await Promise.all([
-                axios.get('https://colabprod01.pace.edu/api/influx/sensordata/Ada'),
-            ]);
-            // Reformat the data to remove nested objects
-            const cleanedData1 = { ...responses[0].data, ...responses[0].data.sensors, ...responses[0].timestamp };
-            delete cleanedData1.sensors;
+    const last = data[data.length - 1]
+   
+    const dopct = last?.DOpct ?? 0;
+    const ph = last?.pH ?? 0;
+    const temp = last?.Temp ?? 0;
+    const cond = last?.Cond ?? 0;
+    const turb = last?.Turb ?? 0;
+    const sal = last?.Sal ?? 0;
+    const timestamp = last?.timestamp ?? "Loading";
 
-            setData([cleanedData1]);
-        } catch (err) {
-            console.error(err); // Log the error for debugging
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // helps handle api requests
-    useEffect(() => {
-        fetchData();
-    }, []);
-    if (error) return <Text>{error}</Text>;
-
-
-    // Ensure data exists before accessing properties
-    if (!data) {
-        return <Text>No data available</Text>;
-    }
-
-    const dopct = data[0]?.DOpct ?? 0;
-    const ph = data[0]?.pH ?? 0;
-    const temp = data[0]?.Temp ?? 0;
-    const cond = data[0]?.Cond ?? 0;
-    const turb = data[0]?.Turb ?? 0;
-    const sal = data[0]?.Sal ?? 0;
+    const currentTime = moment();
+    const minutes = currentTime.diff(moment(timestamp), 'minutes');
 
     const const_doptc = 0.34 * dopct;
     const const_ph = 0.22 * ph;
@@ -86,19 +57,20 @@ export default function QuickCurrentData({handleMiddlePress}) {
                     </View>
 
                     <View className="flex flex-row flex-wrap gap-4 pt-4 items-center justify-center">
-                        <ParamView param={((temp * (9 / 5)) + 32).toFixed(2)} name={"Temperature"} />
+                        <ParamView param={(defaultTempUnit ? defaultTempUnit.trim() : "Fahrenheit" ) === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp} name={"Temperature"} />
                         <ParamView param={ph} name={"pH"} />
                         <ParamView param={dopct} name={"Dissolved O2"} />
                         <ParamView param={turb} name={"Turbidity"} />
                         <ParamView param={cond} name={"Conductivity"} />
                         <ParamView param={sal} name={"Salinity"} />
-                        <ParamView param={wqi.toFixed(2)} name={"WQI"} />
+                        { defaultLocation == "Choate Pond" ?
+                            <ParamView param={wqi.toFixed(2)} name={"WQI"} /> : <></> }
                     </View>
 
 
 
                     <View>
-                        <Text className="text-md text-white text-center py-4">As of {data[0]?.timestamp ?? "Loading"} UTC</Text>
+                        <Text className="text-md text-white text-center py-4">As of {minutes} Minutes Ago</Text>
                     </View>
                 </LinearGradient>
             </View>

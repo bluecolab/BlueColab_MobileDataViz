@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, TouchableOpacity, View } from "react-native";
 import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph, CurrentData, Settings } from "@screens";
 import { tabBarStyles, middleButtonStyles, iconStyles } from "./stylesCard";
-import { ColorSchemeProvider, GraphDataProvider, useIsDark } from "@contexts";
+import { ColorSchemeProvider, GraphDataProvider, useIsDark, CurrentDataProvider } from "@contexts";
 import waterDropIcon from "./assets/free-water-drop-2-462137.png";
 import homeIcon from "./assets/HomeIcon_WB.png";
 import homeIconDark from "./assets/HomeIcon_BB.png";
@@ -150,9 +150,11 @@ function MainNavigator() {
 export default function App() {
   return (
     <GraphDataProvider>
-      <ColorSchemeProvider>
-        <MainNavigator />
-      </ColorSchemeProvider>
+      <CurrentDataProvider>
+        <ColorSchemeProvider>
+          <MainNavigator />
+        </ColorSchemeProvider>
+      </CurrentDataProvider>
     </GraphDataProvider>
   );
 }

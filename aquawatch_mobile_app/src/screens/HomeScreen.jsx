@@ -6,12 +6,15 @@ import {
   Text
 } from "react-native";
 import { GradientCard, QuickCurrentData } from "@components";
+import { useCurrentData } from "@contexts";
 import moment from "moment";
 
 //this is the first screen you see after the welcome screen
 //takes you to all the other sections of the app
 
 export default function HomeScreen({ navigation }) {
+  const { defaultLocation } = useCurrentData();
+  
   //each of these constants handle navigation from each button
   const handleStoryScreenPress = () => {
     navigation.navigate("Story");
@@ -98,7 +101,7 @@ export default function HomeScreen({ navigation }) {
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start", paddingBottom: 90 }}>
         {/* The paddingBottom should be at least as tall as the bottom tab navigator"s height */}
         {/* More info about the gradientCard Check GradientCard.js and StylesCard.js */}
-        <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">Choate Pond Data!</Text>
+        <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">{defaultLocation} Data!</Text>
 
         <View>
           <QuickCurrentData handleMiddlePress={handleMiddlePress} />

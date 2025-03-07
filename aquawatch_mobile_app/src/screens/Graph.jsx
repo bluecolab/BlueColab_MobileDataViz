@@ -1,7 +1,7 @@
 import React, { useState, useContext, useCallback, useEffect } from "react";
 import { View, Text, ScrollView, FlatList, Dimensions } from "react-native";
 import { WQIGauge, DataGraph, DropdownComponent } from "@components";
-import { GraphDataContext } from "@contexts";
+import { useGraphData } from "@contexts";
 import moment from 'moment';
 
 const getDaysInMonth = (month, year) => {
@@ -11,7 +11,7 @@ const getDaysInMonth = (month, year) => {
 };
 
 function Graph() {
-  const { data, loading, setYear, setMonth, setEndDay, defaultLocation, defaultTempUnit, setDefaultLocation } = useContext(GraphDataContext);
+  const { data, loading, setYear, setMonth, setEndDay, defaultLocation, defaultTempUnit, setDefaultLocation } = useGraphData();
   const waterParameters = [
     {
       yAxisLabel: "Temperature", unit: "Temp",
@@ -193,8 +193,6 @@ function Graph() {
 
   const RenderTab = useCallback(() => {
 
-    console.log("RenderTab re-rendered:", defaultLocation, selectedLocation); // Check if it updates
-
     return (
       <View className="w-full bg-white elevation-[20] z-10 p-default dark:bg-gray-700">
         <View className="flex-row w-full space-x-4">
@@ -227,7 +225,6 @@ function Graph() {
     );
   }, [selectedLocation]);
   
-  console.log(defaultLocation)
   return (
     <View className="bg-defaultbackground dark:bg-defaultdarkbackground  pb-[100]">
       <RenderTab />
