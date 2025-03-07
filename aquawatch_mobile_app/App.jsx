@@ -3,25 +3,25 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, TouchableOpacity, View } from "react-native";
-import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph, CurrentData } from "@screens";
+import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph, CurrentData, Settings, Feedback, VersionHistory, Socials } from "@screens";
 import { tabBarStyles, middleButtonStyles, iconStyles } from "./stylesCard";
-import { ColorSchemeProvider, GraphDataProvider, useIsDark } from "@contexts";
+import { ColorSchemeProvider, GraphDataProvider, useIsDark, CurrentDataProvider } from "@contexts";
 import waterDropIcon from "./assets/free-water-drop-2-462137.png";
-import homeIcon from "./assets/HomeIcon.png";
-import homeIconDark from "./assets/HomeIcon - Copy.png";
-import monthlyDataIcon from "./assets/NavGraphIcon.png";
-import monthlyDataIconDark from "./assets/NavGraphIcon copy.png";
+import homeIcon from "./assets/HomeIcon_WB.png";
+import homeIconDark from "./assets/HomeIcon_BB.png";
+import monthlyDataIcon from "./assets/settings_WB.png";
+import monthlyDataIconDark from "./assets/settings_BB.png";
 
 import "./global.css"
 
 // Create the stack navigators
 const HomeStack = createStackNavigator();
 const MiddleStack = createStackNavigator();
-const MonthlyDataStack = createStackNavigator();
+const SettingsStack = createStackNavigator();
 
 // Stack navigator for the Home tab
 function HomeStackNavigator() {
-  const isDark = useIsDark();
+  const {isDark} = useIsDark();
   return (
     <HomeStack.Navigator screenOptions={{
       headerShown: true, headerStyle: {
@@ -37,16 +37,18 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="Story" component={StoryScreen} />
       <HomeStack.Screen name="Wildlife" component={WildlifeScreen} />
       <HomeStack.Screen name="Blog" component={BlogScreen} />
-      <HomeStack.Screen name="Attributions" component={Attributions} />
       <HomeStack.Screen name="AQI" component={AirQuality} />
       <HomeStack.Screen name="Graph" component={Graph} />
       <HomeStack.Screen name="CurrentData" component={CurrentData} />
+      <HomeStack.Screen name="Current Data" component={MiddleScreen} />
+      <HomeStack.Screen name="Monthly Data" component={MonthlyData} />
     </HomeStack.Navigator>
   );
 }
 
 // Stack navigator for the Middle tab (Data Hub)
 function MiddleStackNavigator() {
+  const {isDark} = useIsDark();
   return (
     <MiddleStack.Navigator screenOptions={{
       headerShown: true,
@@ -56,7 +58,11 @@ function MiddleStackNavigator() {
         shadowOpacity: 0.1,
         shadowRadius: 20,
         elevation: 20,
-      }
+        backgroundColor: isDark ? "#2e2e3b" : "white" ,
+      },
+      headerTitleStyle: {
+        color: isDark ? "white" : "black",  
+      },
     }}>
       <MiddleStack.Screen name="Current Data" component={MiddleScreen} />
     </MiddleStack.Navigator>
@@ -64,9 +70,10 @@ function MiddleStackNavigator() {
 }
 
 // Stack navigator for the Monthly tab
-function MonthlyDataStackNavigator() {
+function SettingsStackNavigator() {
+  const {isDark}  = useIsDark();
   return (
-    <MonthlyDataStack.Navigator screenOptions={{
+    <SettingsStack.Navigator screenOptions={{
       headerShown: true,
       headerStyle: {
         shadowColor: "#000",
@@ -74,10 +81,19 @@ function MonthlyDataStackNavigator() {
         shadowOpacity: 0.1,
         shadowRadius: 20,
         elevation: 20,
-      }
+        backgroundColor: isDark ? "#2e2e3b" : "white" ,
+      },
+      headerTitleStyle: {
+        color: isDark ? "white" : "black",  
+      },
     }}>
-      <MonthlyDataStack.Screen name="Monthly Data" component={MonthlyData} />
-    </MonthlyDataStack.Navigator>
+      <SettingsStack.Screen name="Settings" component={Settings} />
+      <SettingsStack.Screen name="Attributions" component={Attributions} />
+      <SettingsStack.Screen name="Feedback" component={Feedback} />
+      <SettingsStack.Screen name="Version History" component={VersionHistory} />
+      <SettingsStack.Screen name="Socials" component={Socials} />
+
+    </SettingsStack.Navigator>
   );
 }
 
@@ -94,7 +110,7 @@ const CustomTabBarButton = ({ children, onPress }) => (
 const Tab = createBottomTabNavigator();
 
 function MainNavigator() {
-  const isDark = useIsDark();
+  const {isDark}  = useIsDark();
 
   return (
     <NavigationContainer>
@@ -120,8 +136,8 @@ function MainNavigator() {
           }}
         />
         <Tab.Screen
-          name="MonthlyDataTab"
-          component={MonthlyDataStackNavigator}
+          name="SettingsTab"
+          component={SettingsStackNavigator}
           options={{
             tabBarIcon: ({ focused }) => (
               <Image source={
@@ -138,9 +154,11 @@ function MainNavigator() {
 export default function App() {
   return (
     <GraphDataProvider>
-      <ColorSchemeProvider>
-        <MainNavigator />
-      </ColorSchemeProvider>
+      <CurrentDataProvider>
+        <ColorSchemeProvider>
+          <MainNavigator />
+        </ColorSchemeProvider>
+      </CurrentDataProvider>
     </GraphDataProvider>
   );
 }

@@ -21,7 +21,7 @@ const averageSensors = (data) => {
 const WQIGauge = ({ loading, data, size = 200 }) => {
   const { width } = Dimensions.get("window");
   const containerWidth = width * 0.95;
-  const isDark = useIsDark();
+  const {isDark}  = useIsDark();
   const flipAnimation = useRef(new Animated.Value(0)).current;
   const [flipped, setFlipped] = useState(false);
 
@@ -160,6 +160,8 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
                   transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
                 },
               ]}
+              pointerEvents={flipped ? "auto" : "none"}
+
             >
               <ScrollView className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
 

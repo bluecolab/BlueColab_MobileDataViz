@@ -9,9 +9,9 @@ import { FontAwesome } from "@expo/vector-icons";
 const { width } = Dimensions.get("window");
 
 
-function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
+function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
     const containerWidth = width * 0.95;
-    const isDark = useIsDark();
+    const {isDark}  = useIsDark();
     const flipAnimation = useRef(new Animated.Value(0)).current;
     const [flipped, setFlipped] = useState(false);
 
@@ -57,8 +57,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
     if (Array.isArray(data) && !loading) {
         const groupedData = data.reduce((acc, item) => {
             const date = new Date(item.timestamp).toISOString().split("T")[0];
-            const value = unit === "Temp" ? item[unit] * (9 / 5) + 32 : item[unit];
-    
+            const value = unit === "Temp" && defaultTempUnit.trim() === 'Fahrenheit' ? item[unit] * (9 / 5) + 32 : item[unit];
             if (!acc[date]) acc[date] = [];
             acc[date].push(value);
     
@@ -192,8 +191,9 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta }) {
                                     transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
                                 },
                             ]}
+                            pointerEvents={flipped ? "auto" : "none"}
                         >
-                            <ScrollView className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
+                            <ScrollView nestedScrollEnabled={true} className="bg-white dark:bg-gray-700 rounded-3xl p-4 h-full">
                                 <View style={{ borderBottomWidth: 1, borderBottomColor: isDark ? 'white' : 'black', marginVertical: 10 }} />
 
                                 <Text className="text-lg font-semibold dark:text-white text-center">

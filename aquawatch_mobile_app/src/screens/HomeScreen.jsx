@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   ScrollView,
-  View
+  View,
+  FlatList,
+  Text
 } from "react-native";
-import { GradientCard } from "@components";
+import { GradientCard, QuickCurrentData } from "@components";
+import { useCurrentData } from "@contexts";
+import moment from "moment";
 
 //this is the first screen you see after the welcome screen
 //takes you to all the other sections of the app
 
 export default function HomeScreen({ navigation }) {
+  const { defaultLocation } = useCurrentData();
+  
   //each of these constants handle navigation from each button
   const handleStoryScreenPress = () => {
     navigation.navigate("Story");
@@ -19,9 +25,6 @@ export default function HomeScreen({ navigation }) {
   const handleBlogScreenPress = () => {
     navigation.navigate("Blog");
   };
-  const handleAttributionPress = () => {
-    navigation.navigate("Attributions");
-  }
   const handleAqiPress = () => {
     navigation.navigate("AQI");
   };
@@ -31,62 +34,129 @@ export default function HomeScreen({ navigation }) {
   const handleCurrentDataPress = () => {
     navigation.navigate("CurrentData");
   };
+
+  const handleMiddlePress = () => {
+    navigation.navigate("Current Data");
+  };
+
+  const handleMonthlyPress = () => {
+    navigation.navigate("Monthly Data");
+  };
+
+  const lastMonth = moment().subtract(1, "months").format("MMMM YYYY");
+
+
+  const renderItem = useCallback(({ item }) => (
+    <GradientCard
+      imageSource={item.imageSource}
+      title={item.title}
+      buttonText={item.buttonText}
+      onButtonPress={item.onButtonPress}
+      gradientColors={item.gradientColors} />
+  ), []);
+
+  const data = [
+    {
+      imageSource: require("../../assets/homescreen/PXL_20221014_204618892.jpg"),
+      title: "Discover",
+      buttonText: "Blue CoLab Mission",
+      onButtonPress: handleStoryScreenPress,
+      gradientColors: ["#ffdde1", "#ee9ca7"]
+    },
+    {
+      imageSource: require("../../assets/homescreen/turtle.jpg"),
+      title: "Discover Wildlife",
+      buttonText: "Choate Pond Wildlife",
+      onButtonPress: handleWildlifeScreenPress,
+      gradientColors: ["#FFFFFF", "#6DD5FA"],
+    },
+    {
+      imageSource: require("../../assets/homescreen/sky.jpg"),
+      title: "Look!",
+      buttonText: "Air Quality Index...",
+      onButtonPress: handleAqiPress,
+      gradientColors: ["#ffdde1", "#ee9ca7"],
+    },
+    {
+      imageSource: require("../../assets/homescreen/waterSplash2.jpg"),
+      title: "Read Blogs",
+      buttonText: "Blue CoLab Blogs",
+      onButtonPress: handleBlogScreenPress,
+      gradientColors: ["#ffdde1", "#ee9ca7"],
+    },
+    // {
+    //   imageSource: require("../../assets/homescreen/code.jpg"),
+    //   title: "Credits",
+    //   buttonText: "Code & Data Attributions",
+    //   onButtonPress: handleAttributionPress,
+    //   gradientColors: ["#FFFFFF", "#6DD5FA"],
+    // }
+  ];
+
   return (
     <View className="bg-defaultbackground dark:bg-defaultdarkbackground">
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start", paddingBottom: 90 }}>
         {/* The paddingBottom should be at least as tall as the bottom tab navigator"s height */}
         {/* More info about the gradientCard Check GradientCard.js and StylesCard.js */}
-        <GradientCard
-          imageSource={require("../../assets/homescreen/PXL_20221014_204618892.jpg")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
-          title="This app is brought to you by Blue CoLab, a program committed to the principle that the human right to clean water requires the right-to-know that water is clean." // Pretty much the text
-          buttonText="Learn more..."
-          onButtonPress={handleStoryScreenPress}
-          gradientColors={["#ffdde1", "#ee9ca7"]} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
-        />
-        <GradientCard
-          imageSource={require("../../assets/homescreen/turtle.jpg")}
-          title="Some of the local wildlife in both Choate Pond and the Hudson River might surprise you!"
-          buttonText="See Local Wildlife..."
-          onButtonPress={handleWildlifeScreenPress}
-          gradientColors={["#FFFFFF", "#6DD5FA"]}
-        />
-        <GradientCard
-          imageSource={require("../../assets/homescreen/sky.jpg")}
-          title="Check out the air quality index!"
-          buttonText="Air Quality Index..."
-          onButtonPress={handleAqiPress}
-          gradientColors={["#ffdde1", "#ee9ca7"]} // Example gradient colors
-        />
-        <GradientCard
-          imageSource={require("../../assets/homescreen/waterSplash2.jpg")}
-          title="Check out some of the Blue CoLab Blogs!"
-          buttonText="Blog more..."
-          onButtonPress={handleBlogScreenPress}
-          gradientColors={["#ffdde1", "#ee9ca7"]} // Example gradient colors
-        />
-        <GradientCard
-          imageSource={require("../../assets/homescreen/code.jpg")}
-          title="Code & Data Attributions"
-          buttonText="Learn more..."
-          onButtonPress={handleAttributionPress}
-          gradientColors={["#FFFFFF", "#6DD5FA"]}
-        ></GradientCard>
+        <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">{defaultLocation} Data!</Text>
 
-        <GradientCard
-          imageSource={require("../../assets/homescreen/graph.png")}
-          title="Updated Graph Views"
-          buttonText="Test out..."
-          onButtonPress={handleGraphPress}
-          gradientColors={["#6DD5FA", "#6DD5FA"]}
-        ></GradientCard>
+        <View>
+          <QuickCurrentData handleMiddlePress={handleMiddlePress} />
+        </View>
 
-        <GradientCard
-          imageSource={require("../../assets/homescreen/graph.png")}
-          title="New Current Views"
-          buttonText="Test out..."
-          onButtonPress={handleCurrentDataPress}
-          gradientColors={["#6DD5FA", "#6DD5FA"]}
-        ></GradientCard>      
+        <View className="px-4 pt-4">
+          <GradientCard
+            imageSource={require("../../assets/homescreen/IMG_9274.jpg")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+            title="Historic Data"
+            buttonText={`${lastMonth} Data`}
+            onButtonPress={handleGraphPress}
+            gradientColors={["#ffdde1", "#ee9ca7"]} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
+            isMain
+
+          />
+        </View>
+
+        <View className="px-4 pt-4">
+          <GradientCard
+            imageSource={require("../../assets/homescreen/IMG_9274.jpg")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+            title="Current Data"
+            buttonText={`New Current Data Screen`}
+            onButtonPress={handleCurrentDataPress}
+            gradientColors={["#ffdde1", "#ee9ca7"]} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
+            isMain
+          />
+        </View>
+
+
+        <View className="px-4 pt-4">
+          <GradientCard
+            imageSource={require("../../assets/homescreen/IMG_9274.jpg")} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+            title="Monthly Data"
+            buttonText={`Old Monthly Data Screen`}
+            onButtonPress={handleMonthlyPress}
+            gradientColors={["#ffdde1", "#ee9ca7"]} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
+            isMain
+          />
+        </View>
+
+
+
+
+
+        
+        <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">From Blue CoLab</Text>
+        <View className="px-4">
+          <FlatList
+            data={data}
+            horizontal
+            // pagingEnabled
+            showsHorizontalScrollIndicator={true}
+            keyExtractor={(item, index) => index.toString()}
+            // onMomentumScrollEnd={handleScroll}
+            renderItem={renderItem}
+          />
+        </View>
+
       </ScrollView>
     </View>
   );

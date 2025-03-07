@@ -1,7 +1,7 @@
-import React, { useState, useContext, useCallback } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import { View, Text, ScrollView, FlatList, Dimensions } from "react-native";
 import { WQIGauge, DataGraph, DropdownComponent } from "@components";
-import { GraphDataContext } from "@contexts";
+import { useGraphData } from "@contexts";
 import moment from 'moment';
 
 const getDaysInMonth = (month, year) => {
@@ -11,7 +11,7 @@ const getDaysInMonth = (month, year) => {
 };
 
 function Graph() {
-  const { data, loading, setYear, setMonth, setEndDay, defaultLocation, setDefaultLocation } = useContext(GraphDataContext);
+  const { data, loading, setYear, setMonth, setEndDay, defaultLocation, defaultTempUnit, setDefaultLocation } = useGraphData();
   const waterParameters = [
     {
       yAxisLabel: "Temperature", unit: "Temp",
@@ -71,7 +71,7 @@ function Graph() {
           {
             label: "EPA",
             url: "https://www.epa.gov/national-aquatic-resource-surveys/indicators-conductivity"
-          },          
+          },
         ]
       }
     },
@@ -89,7 +89,7 @@ function Graph() {
             label: "EPA",
             url: "https://www.epa.gov/national-aquatic-resource-surveys/indicators-salinity"
           },
-          
+
         ]
       }
     },
@@ -100,9 +100,9 @@ function Graph() {
         reason: "High turbidity affects light penetration. Particles also provide places for bacteria and other pollutants to attach to.",
         ref: [
           {
-          label: "USGS",
-          link: "https://www.usgs.gov/special-topics/water-science-school/science/turbidity-and-water#overview"
-        }
+            label: "USGS",
+            link: "https://www.usgs.gov/special-topics/water-science-school/science/turbidity-and-water#overview"
+          }
         ]
       }
     }
@@ -119,7 +119,6 @@ function Graph() {
   // Set the default selected month and year
   const [selectedMonth, setSelectedMonth] = useState(lastMonth.toString());
   const [selectedYear, setSelectedYear] = useState(lastMonthYear);
-  // const [selectedLocation, setSelectedLocation] = useState(defaultLocation);
 
   const { width } = Dimensions.get("window");
 
@@ -130,8 +129,10 @@ function Graph() {
   };
 
   const renderItem = useCallback(({ item }) => (
-    <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} />
-  ), [loading, data]);
+    <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} />
+  ), [loading, data, defaultTempUnit, defaultLocation]);
+
+
 
   const monthOptions = [
     { label: 'January', value: '1' },
@@ -155,44 +156,44 @@ function Graph() {
   }
 
   const locationOptions = [
-    { label: 'Choate Pond', value: '1'},
-    { label: 'Piermont', value: '2'},
-    { label: 'West Point', value: '3'},
-    { label: 'Poughkeepsie', value: '4'},
-    { label: 'New York City', value: '5'},
-    { label: 'Albany', value: '6'},
+    { label: 'Choate Pond', value: '1' },
+    { label: 'Piermont', value: '2' },
+    { label: 'West Point', value: '3' },
+    { label: 'Poughkeepsie', value: '4' },
+    { label: 'New York City', value: '5' },
+    { label: 'Albany', value: '6' },
   ]
 
   const defaultLocationValue = locationOptions.find(option => option.label === defaultLocation)?.value || '';
 
   const [selectedLocation, setSelectedLocation] = useState(defaultLocationValue);
 
-
-  // Update year and month in context
   const onMonthSelect = (value) => {
     setSelectedMonth(value);
-    setMonth(value);  // Update the context's month
+    setMonth(value);
     setEndDay(getDaysInMonth(value, selectedYear));
   };
 
   const onYearSelect = (value) => {
     setSelectedYear(value);
-    setYear(value); // Update the context's year
+    setYear(value);
     setEndDay(getDaysInMonth(selectedMonth, value));
   };
 
   const onLocationSelect = (value) => {
     setSelectedLocation(value);
-
     const defaultLocationLabel = locationOptions.find(option => option.value === value)?.label || '';
-
-
     setDefaultLocation(defaultLocationLabel)
   }
 
+  useEffect(() => {
+    const defaultLocationValue = locationOptions.find(option => option.label === defaultLocation)?.value || '';
+    setSelectedLocation(defaultLocationValue);
+  }, [defaultLocation]);
 
-  return (
-    <View className="bg-defaultbackground dark:bg-defaultdarkbackground">
+  const RenderTab = useCallback(() => {
+
+    return (
       <View className="w-full bg-white elevation-[20] z-10 p-default dark:bg-gray-700">
         <View className="flex-row w-full space-x-4">
           <View className="flex-[2]">
@@ -200,7 +201,7 @@ function Graph() {
               label="Month"
               options={monthOptions}
               value={selectedMonth}
-              onSelect={onMonthSelect}  // Use the updated onSelect handler
+              onSelect={onMonthSelect}
             />
           </View>
           <View className="flex-[2]">
@@ -208,31 +209,44 @@ function Graph() {
               label="Year"
               options={yearOptions}
               value={selectedYear}
-              onSelect={onYearSelect}  // Use the updated onSelect handler
+              onSelect={onYearSelect}
             />
           </View>
         </View>
         <View>
-        <View>
-            <DropdownComponent
-              label="Location"
-              options={locationOptions}
-              value={selectedLocation}
-              onSelect={onLocationSelect}  // Use the updated onSelect handler
-            />
-          </View>
+          <DropdownComponent
+            label="Location"
+            options={locationOptions}
+            value={selectedLocation}
+            onSelect={onLocationSelect}
+          />
         </View>
       </View>
+    );
+  }, [selectedLocation]);
+  
+  return (
+    <View className="bg-defaultbackground dark:bg-defaultdarkbackground  pb-[100]">
+      <RenderTab />
 
-      <ScrollView  contentContainerStyle={{ paddingBottom: 175 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 175 }}>
         <FlatList
           data={waterParameters}
           horizontal
           pagingEnabled
-          showsHorizontalScrollIndicator={true}
+          showsHorizontalScrollIndicator
           keyExtractor={(item, index) => index.toString()}
           onMomentumScrollEnd={handleScroll}
           renderItem={renderItem}
+          initialNumToRender={2}
+          maxToRenderPerBatch={2}
+          windowSize={3}
+          removeClippedSubviews={true}
+          getItemLayout={(data, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
         />
 
         <View className="flex-row justify-center my-default">
@@ -244,7 +258,7 @@ function Graph() {
           ))}
         </View>
 
-         {defaultLocation == "Choate Pond" ? <WQIGauge data={data} loading={loading} /> : <></>}
+        {defaultLocation == "Choate Pond" ? <WQIGauge data={data} loading={loading} /> : <></>}
       </ScrollView>
     </View>
   );
