@@ -106,7 +106,7 @@ const GraphDataProvider = ({ children }) => {
                 case 'West Point':
                 case 'Poughkeepsie':
                 case 'Albany':
-                    baseURL = `https://nwis.waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
+                    baseURL = `https://waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
                     break;
                 default:
                     baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/range?stream=false&start_date=${year}-${month

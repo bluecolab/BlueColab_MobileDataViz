@@ -71,7 +71,7 @@ const CurrentDataProvider = ({ children }) => {
                 case 'West Point':
                 case 'Poughkeepsie':
                 case 'Albany':
-                    baseURL = `https://nwis.waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? '01376269'}&period=P2D&format=json`;
+                    baseURL = `https://waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? '01376269'}&period=P2D&format=json`;
                     break;
                 default:
                     baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Ada/delta?days=1';
