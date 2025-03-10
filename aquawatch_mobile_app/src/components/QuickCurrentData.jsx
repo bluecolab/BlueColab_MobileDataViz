@@ -40,20 +40,20 @@ export default function QuickCurrentData({ handleMiddlePress }) {
 
     const last = data[data.length - 1];
     
-    const dopct = last?.DOpct ?? 'NA';
-    const ph = last?.pH ?? 'NA';
+    const dopct = last?.DOpct.toFixed(2) ?? 'NA';
+    const ph = last?.pH.toFixed(2) ?? 'NA';
     const temp = last?.Temp ?? 'NA';
-    const convertedTemp = temp == 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp;
-    const cond = last?.Cond ?? 'NA';
-    const turb = last?.Turb ?? 'NA';
-    const sal = last?.Sal ?? 'NA';
+    const convertedTemp = temp == 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32).toFixed(2) : temp;
+    const cond = last?.Cond.toFixed(2) ?? 'NA';
+    const turb = last?.Turb.toFixed(2) ?? 'NA';
+    const sal = last?.Sal.toFixed(2) ?? 'NA';
     const timestamp = last?.timestamp ?? 'Loading';
 
-    const const_doptc = 0.34 * dopct;
-    const const_ph = 0.22 * ph;
-    const const_temp = 0.2 * temp;
-    const const_cond = 0.08 * cond;
-    const const_turb = 0.16 * turb;
+    const const_doptc = !isNaN(dopct) ? 0.34 * dopct : 0;
+    const const_ph =  !isNaN(ph) ? 0.22 * ph    :0;
+    const const_temp = !isNaN(temp) ? 0.2 * temp : 0;
+    const const_cond = !isNaN(cond) ? 0.08 * cond: 0;
+    const const_turb = !isNaN(turb) ? 0.16 * turb: 0;
     const wqi = const_doptc + const_ph + const_temp + const_cond + const_turb;
 
     const ParamView = ({ param, name }) => (<View style={{ width: itemWidth }}
