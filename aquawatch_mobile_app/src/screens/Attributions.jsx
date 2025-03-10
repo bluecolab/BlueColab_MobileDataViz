@@ -65,7 +65,7 @@ export default function Attributions() {
                 <Text>
           • Yonkers, Poughkeepsie, and West Point water data is courtesy of the
           USGS. Discover more here:{' '}
-                    <TouchableOpacity onPress={() => handleLinkPress('https://waterdata.usgs.gov/nwis')}>
+                    <TouchableOpacity onPress={() => handleLinkPress('https://waterservices.usgs.gov/')}>
                         <Text style={styles.links}>
               Water Data
                         </Text>
