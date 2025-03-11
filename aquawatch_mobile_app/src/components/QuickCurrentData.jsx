@@ -88,12 +88,12 @@ export default function QuickCurrentData({ handleMiddlePress }) {
 
                     <View className="flex flex-row flex-wrap gap-4 pt-4 items-center justify-center">
                         <ParamView param={convertedTemp} name={'Temperature'} unit={
-                            (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? '°F' : unitMap['Temp']} />
-                        <ParamView param={ph} name={'pH'} unit={unitMap['pH']}  />
-                        <ParamView param={dopct} name={'Dissolved O2'} unit={unitMap['DOpct'] ?? unitMap['DO']} />
-                        <ParamView param={turb} name={'Turbidity'} unit={unitMap['Turb']} />
-                        <ParamView param={cond} name={'Conductivity'} unit={unitMap['Cond']} />
-                        <ParamView param={sal} name={'Salinity'} unit={unitMap['Sal']} />
+                            (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? '°F' : unitMap ? unitMap['Temp'] : ''} />
+                        <ParamView param={ph} name={'pH'} unit={unitMap ? unitMap['pH'] : ''}  />
+                        <ParamView param={dopct} name={'Dissolved O2'} unit={unitMap ? unitMap['DOpct'] ?? unitMap['DO'] : ''} />
+                        <ParamView param={turb} name={'Turbidity'} unit={unitMap ? unitMap['Turb'] : ''} />
+                        <ParamView param={cond} name={'Conductivity'} unit={unitMap ? unitMap['Cond']: ''} />
+                        <ParamView param={sal} name={'Salinity'} unit={unitMap ? unitMap['Sal'] : ''} />
                         {defaultLocation == 'Choate Pond' ?
                             <ParamView param={
                                 !isNaN(wqi) ? wqi?.toFixed(2) : 'NA'} name={'WQI'} /> : <></>}

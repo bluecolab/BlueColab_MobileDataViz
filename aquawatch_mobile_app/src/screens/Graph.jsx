@@ -13,7 +13,8 @@ const getDaysInMonth = (month, year) => {
 
 function Graph() {
     const { data, loading, setYear, setMonth, setEndDay, defaultLocation, defaultTempUnit, setDefaultLocation } = useGraphData();
-    const { parameterInfo, locationOptions } = useLocationMetaProvider();
+    const { parameterInfo, locationOptions, units } = useLocationMetaProvider();
+    const unitMap = units[defaultLocation];
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const currentMonth = moment().month();
@@ -35,7 +36,7 @@ function Graph() {
     };
 
     const renderItem = useCallback(({ item }) => (
-        <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} />
+        <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} unitMap={unitMap} />
     ), [loading, data, defaultTempUnit, defaultLocation]);
 
     const monthOptions = [
