@@ -94,6 +94,8 @@ const GraphDataProvider = ({ children }) => {
                 case 'West Point':
                 case 'Poughkeepsie':
                 case 'Albany':
+                case 'Cohoes':
+                case 'Gowanda':
                     baseURL = `https://waterservices.usgs.gov/nwis/iv/?sites=${stationIds[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
                     break;
                 default:

@@ -4,5 +4,7 @@
     { "label": "West Point", "value": "3" },
     { "label": "Poughkeepsie", "value": "4" },
     { "label": "New York City", "value": "5" },
-    { "label": "Albany", "value": "6" }
+    { "label": "Albany", "value": "6" },
+    { "label": "Cohoes", "value": "7" },
+    { "label": "Gowanda", "value": "8" }
 ]

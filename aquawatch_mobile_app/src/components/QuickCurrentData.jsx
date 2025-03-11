@@ -40,7 +40,7 @@ export default function QuickCurrentData({ handleMiddlePress }) {
 
     const last = data[data.length - 1];
     
-    const dopct = last?.DOpct?.toFixed(2) ?? 'NA';
+    const dopct = last?.DOpct?.toFixed(2) ?? last?.DO?.toFixed(2) ?? 'NA';
     const ph = last?.pH?.toFixed(2) ?? 'NA';
     const temp = last?.Temp ?? 'NA';
     const convertedTemp = temp == 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32)?.toFixed(2) : temp;
