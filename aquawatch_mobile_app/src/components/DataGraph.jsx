@@ -8,7 +8,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
-function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
+function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit, unitMap }) {
     const containerWidth = width * 0.95;
     const { isDark }  = useIsDark();
     const flipAnimation = useRef(new Animated.Value(0)).current;
@@ -93,7 +93,12 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit }) {
                 {/* Title Bar */}
                 <View className="w-[95%] self-center">
                     <Text className="text-3xl bg-white dark:bg-gray-700 rounded-3xl font-bold text-center dark:text-white p-1">
-                        {yAxisLabel}
+                        {yAxisLabel} {unitMap ? `- ${
+                            unit == 'Temp' ? 
+                                defaultTempUnit.trim() === 'Fahrenheit' ? 
+                                    '°F'
+                                    :  unitMap[unit] : unitMap[unit]
+                        }` : ''}
                     </Text>
                     <TouchableOpacity className="absolute top-1 right-2" onPress={startAnimation}>
                         <FontAwesome name="info-circle" size={32} color={isDark ? 'white' : 'grey'} />

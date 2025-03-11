@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, ScrollView, FlatList, Dimensions } from 'react-native';
 import { WQIGauge, DataGraph, DropdownComponent } from '@components';
 import { useGraphData } from '@contexts';
+import { useLocationMetaProvider } from '@hooks';
 import moment from 'moment';
 
 const getDaysInMonth = (month, year) => {
@@ -12,102 +13,8 @@ const getDaysInMonth = (month, year) => {
 
 function Graph() {
     const { data, loading, setYear, setMonth, setEndDay, defaultLocation, defaultTempUnit, setDefaultLocation } = useGraphData();
-    const waterParameters = [
-        {
-            yAxisLabel: 'Temperature', unit: 'Temp',
-            meta: {
-                description: 'The measure of how cold or hot the water is. Measured in celsius or fahrenheit.',
-                reason: 'Changes in temperature have an effect on biological activity. Each species has a preferred range to live at. Temperature effects water chemistry as well. For example, higher temperature can dissolve for minerals but hold less gas.',
-                ref: [{
-                    label: 'USGS',
-                    link: 'https://www.usgs.gov/special-topics/water-science-school/science/temperature-and-water#overview',
-                }],
-            },
-        },
-        {
-            yAxisLabel: 'pH', unit: 'pH',
-            meta: {
-                description: 'The measure to determine the acidity of water.',
-                reason: 'pH is effected by changes in water chemistry and thus can be an important indicator. pH also affects solubility of metals, causing the water to be more toxic.',
-                ref: [
-                    {
-                        label: 'USGS',
-                        link: 'https://www.usgs.gov/special-topics/water-science-school/science/ph-and-water#overview',
-                    },
-                    {
-                        label: 'EPA',
-                        link: 'https://www.epa.gov/system/files/documents/2021-07/parameter-factsheet_ph.pdf',
-                    },
-                ],
-            },
-        },
-        {
-            yAxisLabel: 'Dissolved Oxygen', unit: 'DOpct',
-            meta: {
-                description: 'The measure of oxygen in the water.',
-                reason: 'It is an important indicator of the water body\'s ability to support aquatic life. Too little oxygen or too much can kill aquatic life.',
-                ref: [
-                    {
-                        label: 'USGS',
-                        url: 'https://www.usgs.gov/special-topics/water-science-school/science/dissolved-oxygen-and-water#overview',
-                    },
-                    {
-                        label: 'EPA',
-                        url: 'https://www.epa.gov/national-aquatic-resource-surveys/indicators-dissolved-oxygen',
-                    },
-                ],
-            },
-        },
-        {
-            yAxisLabel: 'Conductivity', unit: 'Cond',
-            meta: {
-                description: 'The measure of the ability of the water to pass electrical current.',
-                reason: 'Bodies of water usually have a base line range of conductivity. Significant changes in it may be indicators of a pollution event as conductivity is effected by salts and other compounds.',
-                ref: [
-                    {
-                        label: 'USGS',
-                        url: 'https://www.usgs.gov/special-topics/water-science-school/science/conductivity-electrical-conductance-and-water#overview',
-                    },
-                    {
-                        label: 'EPA',
-                        url: 'https://www.epa.gov/national-aquatic-resource-surveys/indicators-conductivity',
-                    },
-                ],
-            },
-        },
-        {
-            yAxisLabel: 'Salinity', unit: 'Sal',
-            meta: {
-                description: 'The measure of dissolved salt content in water. Effects conductivity.',
-                reason: 'For organisms not used to changes in salinity, fluctuating levels can cause stress. Each living organism is adapted to the water body\'s usual salinity range.',
-                ref: [
-                    {
-                        label: 'USGS',
-                        url: 'https://www.usgs.gov/special-topics/water-science-school/science/saline-water-and-salinity#overview',
-                    },
-                    {
-                        label: 'EPA',
-                        url: 'https://www.epa.gov/national-aquatic-resource-surveys/indicators-salinity',
-                    },
-
-                ],
-            },
-        },
-        {
-            yAxisLabel: 'Turbidity', unit: 'Turb',
-            meta: {
-                description: 'The measure of the relative clarity of the water. Measured in NTU.',
-                reason: 'High turbidity affects light penetration. Particles also provide places for bacteria and other pollutants to attach to.',
-                ref: [
-                    {
-                        label: 'USGS',
-                        link: 'https://www.usgs.gov/special-topics/water-science-school/science/turbidity-and-water#overview',
-                    },
-                ],
-            },
-        },
-
-    ];
+    const { parameterInfo, locationOptions, units } = useLocationMetaProvider();
+    const unitMap = units[defaultLocation];
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const currentMonth = moment().month();
@@ -129,7 +36,7 @@ function Graph() {
     };
 
     const renderItem = useCallback(({ item }) => (
-        <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} />
+        <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} unitMap={unitMap} />
     ), [loading, data, defaultTempUnit, defaultLocation]);
 
     const monthOptions = [
@@ -152,15 +59,6 @@ function Graph() {
     for (let year = currentYear; year >= 2020; year--) {
         yearOptions.push({ label: `${year}`, value: year });
     }
-
-    const locationOptions = [
-        { label: 'Choate Pond', value: '1' },
-        { label: 'Piermont', value: '2' },
-        { label: 'West Point', value: '3' },
-        { label: 'Poughkeepsie', value: '4' },
-        { label: 'New York City', value: '5' },
-        { label: 'Albany', value: '6' },
-    ];
 
     const defaultLocationValue = locationOptions.find(option => option.label === defaultLocation)?.value || '';
 
@@ -226,7 +124,7 @@ function Graph() {
 
             <ScrollView contentContainerStyle={{ paddingBottom: 175 }}>
                 <FlatList
-                    data={waterParameters}
+                    data={parameterInfo}
                     horizontal
                     pagingEnabled
                     showsHorizontalScrollIndicator
@@ -245,7 +143,7 @@ function Graph() {
                 />
 
                 <View className="flex-row justify-center my-default">
-                    {waterParameters.map((_, index) => (
+                    {parameterInfo.map((_, index) => (
                         <Text
                             key={index}
                             className={`w-2.5 h-2.5 rounded-full mx-1 ${currentIndex === index ? 'bg-blue-500' : 'bg-gray-400'}`}
