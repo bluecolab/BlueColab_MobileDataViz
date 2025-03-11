@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SettingsDropdown } from '@components';
 import { useIsDark, useGraphData } from '@contexts';
+import { useLocationMetaProvider } from '@hooks';
 import { FontAwesome } from '@expo/vector-icons';
 
 export default function Settings({ navigation }) {
     const { changeLocation, changeUnit, defaultLocation, defaultTempUnit  } = useGraphData();
     const { isDark, colorSchemeSys,  changeColor }  = useIsDark();
+    const { locationOptions } = useLocationMetaProvider();
 
     const handleAttributionPress = () => {
         navigation.navigate('Attributions');
@@ -20,15 +22,6 @@ export default function Settings({ navigation }) {
     const handleSocialsPress = () => {
         navigation.navigate('Socials');
     };
-
-    const locationOptions = [
-        { label: 'Choate Pond', value: '1' },
-        { label: 'Piermont', value: '2' },
-        { label: 'West Point', value: '3' },
-        { label: 'Poughkeepsie', value: '4' },
-        { label: 'New York City', value: '5' },
-        { label: 'Albany', value: '6' },
-    ];
 
     const [selectedLocation, setSelectedLocation] = useState(
         `${(locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation.toLowerCase()) + 1)}`,

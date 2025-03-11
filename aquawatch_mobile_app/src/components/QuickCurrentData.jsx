@@ -40,17 +40,17 @@ export default function QuickCurrentData({ handleMiddlePress }) {
 
     const last = data[data.length - 1];
     
-    const dopct = last?.DOpct.toFixed(2) ?? 'NA';
-    const ph = last?.pH.toFixed(2) ?? 'NA';
+    const dopct = last?.DOpct?.toFixed(2) ?? 'NA';
+    const ph = last?.pH?.toFixed(2) ?? 'NA';
     const temp = last?.Temp ?? 'NA';
-    const convertedTemp = temp == 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32).toFixed(2) : temp;
-    const cond = last?.Cond.toFixed(2) ?? 'NA';
-    const turb = last?.Turb.toFixed(2) ?? 'NA';
-    const sal = last?.Sal.toFixed(2) ?? 'NA';
+    const convertedTemp = temp == 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32)?.toFixed(2) : temp;
+    const cond = last?.Cond?.toFixed(2) ?? 'NA';
+    const turb = last?.Turb?.toFixed(2) ?? 'NA';
+    const sal = last?.Sal?.toFixed(2) ?? 'NA';
     const timestamp = last?.timestamp ?? 'Loading';
 
     const const_doptc = !isNaN(dopct) ? 0.34 * dopct : 0;
-    const const_ph =  !isNaN(ph) ? 0.22 * ph    :0;
+    const const_ph =  !isNaN(ph) ? 0.22 * ph : 0;
     const const_temp = !isNaN(temp) ? 0.2 * temp : 0;
     const const_cond = !isNaN(cond) ? 0.08 * cond: 0;
     const const_turb = !isNaN(turb) ? 0.16 * turb: 0;
@@ -92,7 +92,7 @@ export default function QuickCurrentData({ handleMiddlePress }) {
                         <ParamView param={sal} name={'Salinity'} />
                         {defaultLocation == 'Choate Pond' ?
                             <ParamView param={
-                                !isNaN(wqi.toFixed(2)) ? wqi.toFixed(2) : 'NA'} name={'WQI'} /> : <></>}
+                                !isNaN(wqi) ? wqi?.toFixed(2) : 'NA'} name={'WQI'} /> : <></>}
                     </View>
 
                     <Timer timestamp={timestamp} />

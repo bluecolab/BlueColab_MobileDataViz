@@ -1,8 +1,8 @@
-# AquaWatch Mobile App and Backend
+# AquaWatch Mobile App
 <div align="center">
 <img src="./aquawatch_mobile_app/assets/Blue-CoLab-logo-brighter-1000.png" height="250px">
 <h2>Bringing water quality to your finger tips!</h2>
-This repository contains both the backend and frontend powering the application. 
+Repo from AquaWatch Mobile app
 <hr>
 </div>
 
@@ -23,8 +23,7 @@ One day you'll know what's in the water that's coming out of your tap.
 1. Clone the repository `git clone https://github.com/bluecolab/BlueColab_MobileDataViz.git`. 
     1. We use [git 🔗](https://git-scm.com/) for version control. For installing git, please see the [git website 🔗](https://git-scm.com/).
 2. To get started on the frontend, see [here](./aquawatch_mobile_app/README.md)
-3. To get started on the backend, see [here](./backend_py/README.md)
-4. For details on the app internals, please see our [Wiki](https://github.com/bluecolab/BlueColab_MobileDataViz/wiki/).
+3. For details on the app internals, please see our [Wiki](https://github.com/bluecolab/BlueColab_MobileDataViz/wiki/).
 <hr>
 
 ### Wiki (technical breakdown)

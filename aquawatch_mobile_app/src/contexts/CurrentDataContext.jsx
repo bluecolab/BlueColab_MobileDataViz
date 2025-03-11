@@ -2,33 +2,21 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useGraphData } from './GraphDataContext';
 import axios from 'axios';
 import moment from 'moment';
+import { useLocationMetaProvider } from '@hooks';
 
 const CurrentDataContext = createContext(null);
 
 const CurrentDataProvider = ({ children }) => {
     const { defaultLocation, defaultTempUnit } = useGraphData();
+    const {
+        stationIds,
+        usgsParameterMappings } = useLocationMetaProvider();
+    
     const [data, setData] = useState([]);
     const [loadingCurrent, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const locationMap = {
-        'New York City': '01376520',
-        'Piermont': '01376269',
-        'West Point': '01374019',
-        'Poughkeepsie': '01372043',
-        'Albany': '01359165',
-    };
-
     useEffect(() => {
-        const parameterMap = {
-            '00010': 'Temp',  
-            '00301': 'DOpct', 
-            '90860': 'Sal',    
-            '00095': 'Cond',  
-            '63680': 'Turb',  
-            '00400': 'pH',    
-        };
-
         function cleanHudsonRiverData(rawData) {
             if (!rawData?.value?.timeSeries) {
                 console.error('Invalid data format');
@@ -39,7 +27,7 @@ const CurrentDataProvider = ({ children }) => {
 
             rawData.value.timeSeries.forEach(series => {
                 const paramCode = series.variable.variableCode[0].value;
-                const paramName = parameterMap[paramCode];
+                const paramName = usgsParameterMappings[paramCode];
 
                 if (!paramName) return; // Skip unneeded parameters
 
@@ -71,7 +59,7 @@ const CurrentDataProvider = ({ children }) => {
                 case 'West Point':
                 case 'Poughkeepsie':
                 case 'Albany':
-                    baseURL = `https://nwis.waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? '01376269'}&period=P2D&format=json`;
+                    baseURL = `https://waterservices.usgs.gov/nwis/iv/?sites=${stationIds[defaultLocation] ?? '01376269'}&period=P2D&format=json`;
                     break;
                 default:
                     baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Ada/delta?days=1';

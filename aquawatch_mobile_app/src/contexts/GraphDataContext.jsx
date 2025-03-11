@@ -2,10 +2,15 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useLocationMetaProvider } from '@hooks';
 
 const GraphDataContext = createContext(null);
 
 const GraphDataProvider = ({ children }) => {
+    const {
+        stationIds,
+        usgsParameterMappings } = useLocationMetaProvider();
+
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -41,24 +46,7 @@ const GraphDataProvider = ({ children }) => {
         setDefaultLocation(newLocation);
     };
 
-    const locationMap = {
-        'New York City': '01376520',
-        'Piermont': '01376269',
-        'West Point': '01374019',
-        'Poughkeepsie': '01372043',
-        'Albany': '01359165',
-    };
-
     useEffect(() => {
-        const parameterMap = {
-            '00010': 'Temp',  
-            '00301': 'DOpct', 
-            '90860': 'Sal',    
-            '00095': 'Cond',  
-            '63680': 'Turb',  
-            '00400': 'pH',    
-        };
-    
         function cleanHudsonRiverData(rawData) {
             if (!rawData?.value?.timeSeries) {
                 console.error('Invalid data format');
@@ -69,7 +57,7 @@ const GraphDataProvider = ({ children }) => {
 
             rawData.value.timeSeries.forEach(series => {
                 const paramCode = series.variable.variableCode[0].value;
-                const paramName = parameterMap[paramCode];
+                const paramName = usgsParameterMappings[paramCode];
 
                 if (!paramName) return; // Skip unneeded parameters
 
@@ -106,7 +94,7 @@ const GraphDataProvider = ({ children }) => {
                 case 'West Point':
                 case 'Poughkeepsie':
                 case 'Albany':
-                    baseURL = `https://nwis.waterservices.usgs.gov/nwis/iv/?sites=${locationMap[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
+                    baseURL = `https://waterservices.usgs.gov/nwis/iv/?sites=${stationIds[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
                     break;
                 default:
                     baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/range?stream=false&start_date=${year}-${month
@@ -121,8 +109,6 @@ const GraphDataProvider = ({ children }) => {
                     .get(baseURL)
                     .then((response) => {
                         const apiData = response.data;
-
-                        console.clear();
                         console.log(baseURL);
                         if (defaultLocation === 'Choate Pond') {
                             const cleanedData = apiData.map((item) => {
