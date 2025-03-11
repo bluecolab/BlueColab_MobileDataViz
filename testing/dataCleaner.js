@@ -88,7 +88,7 @@ function cleanHudsonRiverData(rawData) {
   return Object.values(parsedData);
 }
 
-axios.get('https://nwis.waterservices.usgs.gov/nwis/iv/?sites=01372043&startDT=2023-12-01&endDT=2023-12-31&format=json')
+axios.get('https://waterservices.usgs.gov/nwis/iv/?sites=01372043&startDT=2023-12-01&endDT=2023-12-31&format=json')
   .then((response) => {
     const processedData = response.data; 
     const newData = cleanHudsonRiverData(processedData); 
