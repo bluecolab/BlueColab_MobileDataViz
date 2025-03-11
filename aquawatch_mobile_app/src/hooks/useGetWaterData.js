@@ -48,6 +48,7 @@ export default function useGetWaterData() {
         case 'Albany':
         case 'Cohoes':
         case 'Gowanda':
+        case 'Bronx River':
             baseURL = 'https://waterservices.usgs.gov/nwis/iv/';
             query = isCurrentData ?  `?sites=${stationIds[defaultLocation] ?? '01376269'}&period=P2D&format=json` : `?sites=${stationIds[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
             break;

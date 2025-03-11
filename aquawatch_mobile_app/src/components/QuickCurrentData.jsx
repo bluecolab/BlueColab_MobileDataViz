@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'; // if using Expo
 import { useCurrentData } from '@contexts';
+import { useLocationMetaProvider } from '@hooks';
+
 import moment from 'moment';
 
 const Timer = ({ timestamp }) => {
     const [minutes, setMinutes] = useState(null); 
-
     useEffect(() => {
         if (!timestamp) return;
 
@@ -37,6 +38,7 @@ const Timer = ({ timestamp }) => {
 
 export default function QuickCurrentData({ handleMiddlePress }) {
     const { data, defaultLocation, defaultTempUnit } = useCurrentData();
+    const { units } = useLocationMetaProvider();
 
     const last = data[data.length - 1];
     
@@ -55,11 +57,12 @@ export default function QuickCurrentData({ handleMiddlePress }) {
     const const_cond = !isNaN(cond) ? 0.08 * cond: 0;
     const const_turb = !isNaN(turb) ? 0.16 * turb: 0;
     const wqi = const_doptc + const_ph + const_temp + const_cond + const_turb;
+    const unitMap = units[defaultLocation];
 
-    const ParamView = ({ param, name }) => (<View style={{ width: itemWidth }}
+    const ParamView = ({ param, name, unit }) => (<View style={{ width: itemWidth }}
         className="rounded-lg flex items-center justify-center "
     >
-        <Text className="text-2xl  text-white text-center">{param}</Text>
+        <Text className="text-2xl  text-white text-center">{param} {unit}</Text>
         <Text className="text-lg text-white  text-center">{name}</Text>
     </View>);
     const screenWidth = Dimensions.get('window').width;
@@ -84,12 +87,13 @@ export default function QuickCurrentData({ handleMiddlePress }) {
                     </View>
 
                     <View className="flex flex-row flex-wrap gap-4 pt-4 items-center justify-center">
-                        <ParamView param={convertedTemp} name={'Temperature'} />
-                        <ParamView param={ph} name={'pH'} />
-                        <ParamView param={dopct} name={'Dissolved O2'} />
-                        <ParamView param={turb} name={'Turbidity'} />
-                        <ParamView param={cond} name={'Conductivity'} />
-                        <ParamView param={sal} name={'Salinity'} />
+                        <ParamView param={convertedTemp} name={'Temperature'} unit={
+                            (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? '°F' : unitMap['Temp']} />
+                        <ParamView param={ph} name={'pH'} unit={unitMap['pH']}  />
+                        <ParamView param={dopct} name={'Dissolved O2'} unit={unitMap['DOpct'] ?? unitMap['DO']} />
+                        <ParamView param={turb} name={'Turbidity'} unit={unitMap['Turb']} />
+                        <ParamView param={cond} name={'Conductivity'} unit={unitMap['Cond']} />
+                        <ParamView param={sal} name={'Salinity'} unit={unitMap['Sal']} />
                         {defaultLocation == 'Choate Pond' ?
                             <ParamView param={
                                 !isNaN(wqi) ? wqi?.toFixed(2) : 'NA'} name={'WQI'} /> : <></>}
