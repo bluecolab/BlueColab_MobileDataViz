@@ -1,15 +1,12 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useLocationMetaProvider } from '@hooks';
+import { useGetWaterData } from '@hooks';
 
 const GraphDataContext = createContext(null);
 
 const GraphDataProvider = ({ children }) => {
-    const {
-        stationIds,
-        usgsParameterMappings } = useLocationMetaProvider();
+    const { fetchData } = useGetWaterData();
 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -47,96 +44,10 @@ const GraphDataProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        function cleanHudsonRiverData(rawData) {
-            if (!rawData?.value?.timeSeries) {
-                console.error('Invalid data format');
-                return [];
-            }
-    
-            const parsedData = {};
-
-            rawData.value.timeSeries.forEach(series => {
-                const paramCode = series.variable.variableCode[0].value;
-                const paramName = usgsParameterMappings[paramCode];
-
-                if (!paramName) return; // Skip unneeded parameters
-
-                const valuesList = series.values[0].value.length > 0 ?  series.values[0].value : series.values[1]?.value ?? []; 
-
-                valuesList.forEach(entry => {
-                    const timestamp = entry.dateTime;
-                    const value = parseFloat(entry.value);
-    
-                    if (!parsedData[timestamp]) {
-                        parsedData[timestamp] = { timestamp };
-                    }
-                    parsedData[timestamp][paramName] = value;
-                });
-            });
-    
-            return Object.values(parsedData);
-        }
-
-        const fetchData = () => {
-            if (year && month && start_day && end_day && defaultLocation) {  
-                let baseURL = '';
-  
-                switch (defaultLocation) {
-                case 'Choate Pond':
-                    baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/range?stream=false&start_date=${year}-${month
-                        .toString()
-                        .padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month
-                        .toString()
-                        .padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00`;
-                    break;
-                case 'New York City':
-                case 'Piermont':
-                case 'West Point':
-                case 'Poughkeepsie':
-                case 'Albany':
-                case 'Cohoes':
-                case 'Gowanda':
-                    baseURL = `https://waterservices.usgs.gov/nwis/iv/?sites=${stationIds[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
-                    break;
-                default:
-                    baseURL = `https://colabprod01.pace.edu/api/influx/sensordata/Ada/range?stream=false&start_date=${year}-${month
-                        .toString()
-                        .padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month
-                        .toString()
-                        .padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00`;
-                    break;
-                }
-  
-                axios
-                    .get(baseURL)
-                    .then((response) => {
-                        const apiData = response.data;
-                        console.log(baseURL);
-                        if (defaultLocation === 'Choate Pond') {
-                            const cleanedData = apiData.map((item) => {
-                                const { sensors, ...rest } = item;
-                                return { ...rest, ...sensors };
-                            });
-                            setData(cleanedData);
-                        } else {
-                            const cleanedData = cleanHudsonRiverData(apiData);
-                            setData(cleanedData);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error fetching data:', error);
-                        setData({ error: 'Failed to load data' });
-                    })
-                    .finally(() => {
-                        setLoading(false);
-                    });
-            }
-        };
-
         setLoading(true);
-        if (defaultLocation) {
-            setData([]);
-            fetchData();
+        setData([]);
+        if (year && month && start_day && end_day && defaultLocation) {
+            fetchData(defaultLocation, false, year, month, start_day, end_day, setData, setLoading );
         }
     }, [year, month, start_day, end_day, defaultLocation]); 
 
