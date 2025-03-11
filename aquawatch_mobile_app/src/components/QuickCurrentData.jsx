@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'; // if using Expo
 import { useCurrentData } from '@contexts';
+import { useLocationMetaProvider } from '@hooks';
+
 import moment from 'moment';
 
 const Timer = ({ timestamp }) => {
     const [minutes, setMinutes] = useState(null); 
-
     useEffect(() => {
         if (!timestamp) return;
 
@@ -37,29 +38,31 @@ const Timer = ({ timestamp }) => {
 
 export default function QuickCurrentData({ handleMiddlePress }) {
     const { data, defaultLocation, defaultTempUnit } = useCurrentData();
+    const { units } = useLocationMetaProvider();
 
     const last = data[data.length - 1];
     
-    const dopct = last?.DOpct ?? 'NA';
-    const ph = last?.pH ?? 'NA';
+    const dopct = last?.DOpct?.toFixed(2) ?? last?.DO?.toFixed(2) ?? 'NA';
+    const ph = last?.pH?.toFixed(2) ?? 'NA';
     const temp = last?.Temp ?? 'NA';
-    const convertedTemp = temp == 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp;
-    const cond = last?.Cond ?? 'NA';
-    const turb = last?.Turb ?? 'NA';
-    const sal = last?.Sal ?? 'NA';
+    const convertedTemp = temp == 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32)?.toFixed(2) : temp;
+    const cond = last?.Cond?.toFixed(2) ?? 'NA';
+    const turb = last?.Turb?.toFixed(2) ?? 'NA';
+    const sal = last?.Sal?.toFixed(2) ?? 'NA';
     const timestamp = last?.timestamp ?? 'Loading';
 
-    const const_doptc = 0.34 * dopct;
-    const const_ph = 0.22 * ph;
-    const const_temp = 0.2 * temp;
-    const const_cond = 0.08 * cond;
-    const const_turb = 0.16 * turb;
+    const const_doptc = !isNaN(dopct) ? 0.34 * dopct : 0;
+    const const_ph =  !isNaN(ph) ? 0.22 * ph : 0;
+    const const_temp = !isNaN(temp) ? 0.2 * temp : 0;
+    const const_cond = !isNaN(cond) ? 0.08 * cond: 0;
+    const const_turb = !isNaN(turb) ? 0.16 * turb: 0;
     const wqi = const_doptc + const_ph + const_temp + const_cond + const_turb;
+    const unitMap = units[defaultLocation];
 
-    const ParamView = ({ param, name }) => (<View style={{ width: itemWidth }}
+    const ParamView = ({ param, name, unit }) => (<View style={{ width: itemWidth }}
         className="rounded-lg flex items-center justify-center "
     >
-        <Text className="text-2xl  text-white text-center">{param}</Text>
+        <Text className="text-2xl  text-white text-center">{param} {unit}</Text>
         <Text className="text-lg text-white  text-center">{name}</Text>
     </View>);
     const screenWidth = Dimensions.get('window').width;
@@ -84,15 +87,16 @@ export default function QuickCurrentData({ handleMiddlePress }) {
                     </View>
 
                     <View className="flex flex-row flex-wrap gap-4 pt-4 items-center justify-center">
-                        <ParamView param={convertedTemp} name={'Temperature'} />
-                        <ParamView param={ph} name={'pH'} />
-                        <ParamView param={dopct} name={'Dissolved O2'} />
-                        <ParamView param={turb} name={'Turbidity'} />
-                        <ParamView param={cond} name={'Conductivity'} />
-                        <ParamView param={sal} name={'Salinity'} />
+                        <ParamView param={convertedTemp} name={'Temperature'} unit={
+                            (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? '°F' : unitMap ? unitMap['Temp'] : ''} />
+                        <ParamView param={ph} name={'pH'} unit={unitMap ? unitMap['pH'] : ''}  />
+                        <ParamView param={dopct} name={'Dissolved O2'} unit={unitMap ? unitMap['DOpct'] ?? unitMap['DO'] : ''} />
+                        <ParamView param={turb} name={'Turbidity'} unit={unitMap ? unitMap['Turb'] : ''} />
+                        <ParamView param={cond} name={'Conductivity'} unit={unitMap ? unitMap['Cond']: ''} />
+                        <ParamView param={sal} name={'Salinity'} unit={unitMap ? unitMap['Sal'] : ''} />
                         {defaultLocation == 'Choate Pond' ?
                             <ParamView param={
-                                !isNaN(wqi.toFixed(2)) ? wqi.toFixed(2) : 'NA'} name={'WQI'} /> : <></>}
+                                !isNaN(wqi) ? wqi?.toFixed(2) : 'NA'} name={'WQI'} /> : <></>}
                     </View>
 
                     <Timer timestamp={timestamp} />
