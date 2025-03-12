@@ -127,9 +127,9 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit, uni
                                 {loading ? (
                                     <EmptyGraph />
                                 ) : data?.error ? (
-                                    <EmptyGraph text={'No Wifi, please connect to Wifi!'} />
+                                    <EmptyGraph text={data?.error} />
                                 ) : !Array.isArray(data) ? (
-                                    <EmptyGraph text={'No data for location, try another.'} />
+                                    <EmptyGraph text={'No data :('} />
                                 ) : (
                                     chartData.length ? <VictoryChart padding={{ left: 60, top: 20, right: 50, bottom: 50 }}>
                                         <VictoryAxis

@@ -25,7 +25,7 @@ const CurrentDataProvider = ({ children }) => {
 
         const intervalId = setInterval(() => {
             checkTimeAndFetchData();
-        }, 30000);
+        }, 60000);
 
         setLoading(true);
         if (defaultLocation)
