@@ -7,8 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint .",
-    "fix": "eslint . --fix"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
@@ -18,8 +17,7 @@
     "@react-navigation/stack": "^6.4.1",
     "@shopify/react-native-skia": "1.5.0",
     "axios": "^1.8.2",
-    "eslint-plugin-react-native": "^5.0.0",
-    "expo": "~52.0.36",
+    "expo": "~52.0.38",
     "expo-file-system": "~18.0.11",
     "expo-font": "~13.0.4",
     "expo-linear-gradient": "~14.0.2",
@@ -47,12 +45,10 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
-    "@babel/eslint-parser": "^7.26.8",
-    "@eslint/js": "^9.21.0",
     "babel-plugin-module-resolver": "^5.0.2",
-    "eslint": "^9.21.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-react": "^7.37.4",
+    "eslint": "^8.57.0",
+    "eslint-config-expo": "~8.0.1",
+    "eslint-import-resolver-babel-module": "^5.3.2",
     "globals": "^16.0.0"
   },
   "private": true

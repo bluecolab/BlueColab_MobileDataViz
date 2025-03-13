@@ -1,5 +1,5 @@
 import { default as useLocationMetaProvider } from './useLocationMetaProvider';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 
 export default function useGetWaterData() {
     const { usgsParameterMappings, stationIds } = useLocationMetaProvider();
@@ -75,8 +75,26 @@ export default function useGetWaterData() {
                 }
             })
             .catch((error) => {
-                console.error('Error fetching data:', error);
-                setData({ error: 'Failed to load data' });
+                if (isAxiosError(error)) {
+                    if (error.response) {
+                        console.error(`Response error: ${error.response.status}`);
+                        if (error.response.data.status == 404)  // Server response body
+                            setData({ error: 'No data :(' });
+                        else
+                            setData({ error: `HTTP Error: ${error.response.status}` });
+                        console.error(error.response.headers); // Server response headers
+                    } else if (error.request) {
+                        console.error('Request error: No response received');
+                        console.error(error.request);
+                        setData({ error: 'No response from server, check WiFi connection' });
+                    } else {
+                        console.error(`General Axios error: ${error.message}`);
+                        setData({ error: `Error: ${error.message}` });
+                    }
+                } else {
+                    console.error('Non-Axios error: ', error);
+                    setData({ error: 'Unknown error occurred' });
+                }
             })
             .finally(() => {
                 setLoading(false);

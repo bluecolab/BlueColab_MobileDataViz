@@ -92,9 +92,9 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit, uni
             <View className="elevation-[5]">
                 {/* Title Bar */}
                 <View className="w-[95%] self-center">
-                    <Text className="text-3xl bg-white dark:bg-gray-700 rounded-3xl font-bold text-center dark:text-white p-1">
+                    <Text className="text-2xl bg-white dark:bg-gray-700 rounded-3xl font-bold text-center dark:text-white p-1">
                         {yAxisLabel} {unitMap ? `- ${
-                            unit == 'Temp' ? 
+                            unit === 'Temp' ? 
                                 defaultTempUnit.trim() === 'Fahrenheit' ? 
                                     '°F'
                                     :  unitMap[unit] : unitMap[unit]
@@ -127,9 +127,9 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit, uni
                                 {loading ? (
                                     <EmptyGraph />
                                 ) : data?.error ? (
-                                    <EmptyGraph text={'No Wifi, please connect to Wifi!'} />
+                                    <EmptyGraph text={data?.error} />
                                 ) : !Array.isArray(data) ? (
-                                    <EmptyGraph text={'No data for location, try another.'} />
+                                    <EmptyGraph text={'No data :('} />
                                 ) : (
                                     chartData.length ? <VictoryChart padding={{ left: 60, top: 20, right: 50, bottom: 50 }}>
                                         <VictoryAxis
