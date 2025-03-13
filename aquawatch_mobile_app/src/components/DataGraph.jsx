@@ -94,7 +94,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit, uni
                 <View className="w-[95%] self-center">
                     <Text className="text-3xl bg-white dark:bg-gray-700 rounded-3xl font-bold text-center dark:text-white p-1">
                         {yAxisLabel} {unitMap ? `- ${
-                            unit == 'Temp' ? 
+                            unit === 'Temp' ? 
                                 defaultTempUnit.trim() === 'Fahrenheit' ? 
                                     '°F'
                                     :  unitMap[unit] : unitMap[unit]

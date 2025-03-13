@@ -35,9 +35,11 @@ function Graph() {
         setCurrentIndex(index);
     };
 
-    const renderItem = useCallback(({ item }) => (
-        <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} unitMap={unitMap} />
-    ), [loading, data, defaultTempUnit, defaultLocation]);
+    const renderItem = useCallback(({ item }) => {
+        if (!defaultTempUnit && !defaultLocation)
+            return <Text>Loading...</Text>
+        return <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} unitMap={unitMap} />
+    }, [loading, data, defaultTempUnit, defaultLocation, unitMap]);
 
     const monthOptions = [
         { label: 'January', value: '1' },
@@ -85,7 +87,7 @@ function Graph() {
     useEffect(() => {
         const defaultLocationValue = locationOptions.find(option => option.label === defaultLocation)?.value || '';
         setSelectedLocation(defaultLocationValue);
-    }, [defaultLocation]);
+    }, [defaultLocation, locationOptions]);
 
     const RenderTab = useCallback(() => (
         <View className="w-full bg-white elevation-[20] z-10 p-default dark:bg-gray-700">
@@ -151,7 +153,7 @@ function Graph() {
                     ))}
                 </View>
 
-                {defaultLocation == 'Choate Pond' ? <WQIGauge data={data} loading={loading} /> : <></>}
+                {defaultLocation === 'Choate Pond' ? <WQIGauge data={data} loading={loading} /> : <></>}
             </ScrollView>
         </View>
     );
