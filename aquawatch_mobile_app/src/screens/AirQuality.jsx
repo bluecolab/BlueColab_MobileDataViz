@@ -167,7 +167,7 @@ const AirQuality = () => {
         }
     };
 
-    const useCurrentLocation = async () => {
+    const getCurrentLocation = async () => {
         setLoading(true);
     
         const { status } = await Location.requestForegroundPermissionsAsync();
@@ -198,7 +198,7 @@ const AirQuality = () => {
     
         if (value === 'currentLocation') {
             setTitle('Current Location AQI Data');
-            useCurrentLocation();  // Use current location
+            getCurrentLocation();  // get current location
         } else if (value === 'paceUniversity') {
             setTitle('Pace University AQI Data');
             setLocation({ latitude: 41.128380, longitude: -73.808189 });

@@ -13,7 +13,7 @@ const Timer = ({ timestamp }) => {
 
         const intervalId = setInterval(() => {
             const currentTime = moment();
-            const timestampMoment = timestamp == 'Loading' ? moment() : moment(timestamp); 
+            const timestampMoment = timestamp === 'Loading' ? moment() : moment(timestamp); 
             
             if (timestampMoment.isValid()) {
                 const diffInSeconds = currentTime.diff(timestampMoment, 'seconds');
@@ -45,7 +45,7 @@ export default function QuickCurrentData({ handleMiddlePress }) {
     const dopct = last?.DOpct?.toFixed(2) ?? last?.DO?.toFixed(2) ?? 'NA';
     const ph = last?.pH?.toFixed(2) ?? 'NA';
     const temp = last?.Temp ?? 'NA';
-    const convertedTemp = temp == 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32)?.toFixed(2) : temp;
+    const convertedTemp = temp === 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32)?.toFixed(2) : temp;
     const cond = last?.Cond?.toFixed(2) ?? 'NA';
     const turb = last?.Turb?.toFixed(2) ?? 'NA';
     const sal = last?.Sal?.toFixed(2) ?? 'NA';
@@ -94,7 +94,7 @@ export default function QuickCurrentData({ handleMiddlePress }) {
                         <ParamView param={turb} name={'Turbidity'} unit={unitMap ? unitMap['Turb'] : ''} />
                         <ParamView param={cond} name={'Conductivity'} unit={unitMap ? unitMap['Cond']: ''} />
                         <ParamView param={sal} name={'Salinity'} unit={unitMap ? unitMap['Sal'] : ''} />
-                        {defaultLocation == 'Choate Pond' ?
+                        {defaultLocation === 'Choate Pond' ?
                             <ParamView param={
                                 !isNaN(wqi) ? wqi?.toFixed(2) : 'NA'} name={'WQI'} /> : <></>}
                     </View>

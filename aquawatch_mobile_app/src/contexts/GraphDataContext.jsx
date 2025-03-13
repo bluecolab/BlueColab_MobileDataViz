@@ -49,7 +49,7 @@ const GraphDataProvider = ({ children }) => {
         if (year && month && start_day && end_day && defaultLocation) {
             fetchData(defaultLocation, false, year, month, start_day, end_day, setData, setLoading );
         }
-    }, [year, month, start_day, end_day, defaultLocation]); 
+    }, [year, month, start_day, end_day, defaultLocation, fetchData]); 
 
     useEffect(() => {
         const getStoredDefaultLocation = async () => {
