@@ -32,10 +32,10 @@ const CurrentDataProvider = ({ children }) => {
             fetchData(defaultLocation,true, 0, 0, 0, 0, setData, setLoading);
 
         return () => clearInterval(intervalId);
-    }, [defaultLocation, defaultTempUnit, fetchData]);
+    }, [defaultLocation, defaultTempUnit]);
 
     return (
-        <CurrentDataContext.Provider value={{ data, defaultLocation, defaultTempUnit, loadingCurrent }}>
+        <CurrentDataContext.Provider value={{ data, defaultLocation, defaultTempUnit }}>
             {children}
         </CurrentDataContext.Provider>
     );
