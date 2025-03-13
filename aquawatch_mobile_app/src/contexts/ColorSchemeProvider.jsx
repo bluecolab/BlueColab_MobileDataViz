@@ -51,7 +51,7 @@ const ColorSchemeProvider = ({ children }) => {
         return () => {
             subscription.remove();
         };
-    }, []);
+    }, [colorSchemeSys, setColorScheme]);
 
     return (
         <ColorSchemeContext.Provider value={{
