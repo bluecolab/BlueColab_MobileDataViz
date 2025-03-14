@@ -35,7 +35,7 @@ const CurrentDataProvider = ({ children }) => {
     }, [defaultLocation, defaultTempUnit]);
 
     return (
-        <CurrentDataContext.Provider value={{ data, defaultLocation, defaultTempUnit }}>
+        <CurrentDataContext.Provider value={{ data, defaultLocation, defaultTempUnit, loadingCurrent }}>
             {children}
         </CurrentDataContext.Provider>
     );

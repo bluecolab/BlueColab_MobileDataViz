@@ -140,6 +140,7 @@ const AirQuality = () => {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [selectedOption, setSelectedOption] = useState('currentLocation');
+    console.log(selectedOption);
     const [location, setLocation] = useState({
         latitude: 41.12838,
         longitude: -73.808189,
