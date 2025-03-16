@@ -44,7 +44,7 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
     let score = 0;
 
     if (!loading && data && data.length >= 1) {
-        const const_doptc = 0.34;
+        const const_dopct = 0.34;
         const const_ph = 0.22;
         const const_temp = 0.2;
         const const_cond = 0.08;
@@ -60,7 +60,7 @@ const WQIGauge = ({ loading, data, size = 200 }) => {
 
         // Multiply the averages by respective constants
         const result = {
-            DOpct: sensorAverages.DOpct * const_doptc,
+            DOpct: sensorAverages.DOpct * const_dopct,
             pH: sensorAverages.pH * const_ph,
             Temp: sensorAverages.Temp * const_temp,
             Cond: sensorAverages.Cond * const_cond,

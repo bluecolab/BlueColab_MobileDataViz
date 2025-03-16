@@ -51,12 +51,12 @@ export default function QuickCurrentData({ handleMiddlePress }) {
     const sal = last?.Sal?.toFixed(2) ?? 'NA';
     const timestamp = last?.timestamp ?? 'Loading';
 
-    const const_doptc = !isNaN(dopct) ? 0.34 * dopct : 0;
+    const const_dopct = !isNaN(dopct) ? 0.34 * dopct : 0;
     const const_ph =  !isNaN(ph) ? 0.22 * ph : 0;
     const const_temp = !isNaN(temp) ? 0.2 * temp : 0;
     const const_cond = !isNaN(cond) ? 0.08 * cond: 0;
     const const_turb = !isNaN(turb) ? 0.16 * turb: 0;
-    const wqi = const_doptc + const_ph + const_temp + const_cond + const_turb;
+    const wqi = const_dopct + const_ph + const_temp + const_cond + const_turb;
     const unitMap = units[defaultLocation];
 
     const ParamView = ({ param, name, unit }) => (<View style={{ width: itemWidth }}

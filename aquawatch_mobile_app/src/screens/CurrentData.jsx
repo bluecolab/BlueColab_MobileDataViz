@@ -118,7 +118,7 @@ function CurrentData() {
   
                 <Widget name="Water Temperature" value={waterTemp.toFixed(2)}/>
 
-                <Widget name="Contuctivity" value={cond.toFixed(2)}/>
+                <Widget name="Conductivity" value={cond.toFixed(2)}/>
 
                 <Widget name="Salinity" value={sal.toFixed(2)}/>
 

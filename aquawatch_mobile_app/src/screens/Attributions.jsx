@@ -82,7 +82,7 @@ export default function Attributions() {
                 </Text>
 
                 <Text>
-          • Lastly we would like to thank our friends and fellow classmates in our Software Engineering Class for their support and feedback. A shotout to Prolog 2.0, TLX, PowerPuff, and SCRUMptious. We also appreciate feedback by various persons not listed here in improving our UI/UX design.
+          • Lastly we would like to thank our friends and fellow classmates in our Software Engineering Class for their support and feedback. A shout out to Prolog 2.0, TLX, PowerPuff, and SCRUMptious. We also appreciate feedback by various persons not listed here in improving our UI/UX design.
                 </Text>
             </View>
         </ScrollView>
