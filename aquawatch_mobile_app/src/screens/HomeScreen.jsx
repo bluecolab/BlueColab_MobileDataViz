@@ -101,11 +101,11 @@ export default function HomeScreen({ navigation }) {
 
                 <View className="px-4 pt-4">
                     <GradientCard
-                        imageSource={require('../../assets/homescreen/IMG_9274.jpg')} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+                        imageSource={require('../../assets/homescreen/IMG_9274.jpg')} // image source als identify URl all u gotta do is "http//something.com" for local images use {require("./something")}
                         title="Historic Data"
                         buttonText={`${lastMonth} Data`}
                         onButtonPress={handleGraphPress}
-                        gradientColors={['#ffdde1', '#ee9ca7']} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
+                        gradientColors={['#ffdde1', '#ee9ca7']} // [Bottom Color, Upper Color] yes order is a bit messy but still works :)
                         isMain
 
                     />
@@ -113,22 +113,22 @@ export default function HomeScreen({ navigation }) {
 
                 {/* <View className="px-4 pt-4">
                     <GradientCard
-                        imageSource={require('../../assets/homescreen/IMG_9274.jpg')} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+                        imageSource={require('../../assets/homescreen/IMG_9274.jpg')} // image source als identify URl all u gotta do is "http//something.com" for local images use {require("./something")}
                         title="Current Data"
                         buttonText={'New Current Data Screen'}
                         onButtonPress={handleCurrentDataPress}
-                        gradientColors={['#ffdde1', '#ee9ca7']} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
+                        gradientColors={['#ffdde1', '#ee9ca7']} // [Bottom Color, Upper Color] yes order is abet messy but still works :)
                         isMain
                     />
                 </View> */}
 
                 <View className="px-4 pt-4">
                     <GradientCard
-                        imageSource={require('../../assets/homescreen/IMG_9274.jpg')} // image soruce als idendify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+                        imageSource={require('../../assets/homescreen/IMG_9274.jpg')} // image source als identify URl all u gotta do is "http//something.com" for local images use {require("./something")}
                         title="Monthly Data"
                         buttonText={'Old Monthly Data Screen'}
                         onButtonPress={handleMonthlyPress}
-                        gradientColors={['#ffdde1', '#ee9ca7']} // [Bottom Color, Upper Color] yes order is abit messy buuut still works :)
+                        gradientColors={['#ffdde1', '#ee9ca7']} // [Bottom Color, Upper Color] yes order is a bit messy but still works :)
                         isMain
                     />
                 </View>
