@@ -11,7 +11,6 @@ import homeIcon from './assets/HomeIcon_WB.png';
 import homeIconDark from './assets/HomeIcon_BB.png';
 import monthlyDataIcon from './assets/settings_WB.png';
 import monthlyDataIconDark from './assets/settings_BB.png';
-
 import './global.css';
 
 // Create the stack navigators
