@@ -32,7 +32,7 @@ export default function HomeScreen({ navigation }) {
         navigation.navigate('Graph');
     };
     const handleCurrentDataPress = () => {
-        navigation.navigate('CurrentData');
+        navigation.navigate('Current Data');
     };
 
     // const handleMonthlyPress = () => {

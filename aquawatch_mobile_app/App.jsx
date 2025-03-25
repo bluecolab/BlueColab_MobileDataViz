@@ -38,8 +38,8 @@ function HomeStackNavigator() {
             <HomeStack.Screen name="Blog" component={BlogScreen} />
             <HomeStack.Screen name="AQI" component={AirQuality} />
             <HomeStack.Screen name="Graph" component={Graph} />
-            <HomeStack.Screen name="CurrentData" component={CurrentData} />
-            <HomeStack.Screen name="Current Data" component={MiddleScreen} />
+            <HomeStack.Screen name="Current Data" component={CurrentData} />
+            {/* <HomeStack.Screen name="Current Data" component={MiddleScreen} /> */}
             <HomeStack.Screen name="Monthly Data" component={MonthlyData} />
         </HomeStack.Navigator>
     );
@@ -63,7 +63,7 @@ function MiddleStackNavigator() {
                 color: isDark ? 'white' : 'black',  
             },
         }}>
-            <MiddleStack.Screen name="Current Data" component={MiddleScreen} />
+            <MiddleStack.Screen name="Current Data" component={CurrentData} />
         </MiddleStack.Navigator>
     );
 }
