@@ -6,7 +6,7 @@
         "Sal" : "ppt",
         "Cond" : "mS/cm",
         "Turb" : "NTU",
-        "pH" : ""
+        "pH" : "std"
     },  
     "Piermont" : {
         "Temp" : "°C",

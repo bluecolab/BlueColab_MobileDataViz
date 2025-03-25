@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useGetWaterData } from '@hooks';
 
@@ -83,11 +83,11 @@ const GraphDataProvider = ({ children }) => {
         getStoredDefaultLocation();
         getStoredDefaultTempUnit();
 
-        const lastMonth = moment().subtract(1, 'month');
-        setYear(lastMonth.year());
-        setMonth(lastMonth.month() + 1);
+        const lastMonth = DateTime.now().minus({ months: 1 });
+        setYear(lastMonth.year);
+        setMonth(lastMonth.month + 1);
         setStartDay(1);
-        setEndDay(lastMonth.daysInMonth());
+        setEndDay(lastMonth.daysInMonth);
     }, []);
 
     return (

@@ -4,28 +4,27 @@ import { LinearGradient } from 'expo-linear-gradient'; // if using Expo
 import { useCurrentData } from '@contexts';
 import { useLocationMetaProvider } from '@hooks';
 
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 const Timer = ({ timestamp }) => {
     const [minutes, setMinutes] = useState(null); 
     useEffect(() => {
-        if (!timestamp) return;
-
         const intervalId = setInterval(() => {
-            const currentTime = moment();
-            const timestampMoment = timestamp === 'Loading' ? moment() : moment(timestamp); 
-            
-            if (timestampMoment.isValid()) {
-                const diffInSeconds = currentTime.diff(timestampMoment, 'seconds');
-                setMinutes(diffInSeconds); 
+            const currentTime = DateTime.now();
+            const timestampDateTime = timestamp === 'Loading' ? DateTime.now() : DateTime.fromISO(timestamp);
+    
+            if (timestampDateTime.isValid) {
+                const diffInSeconds = currentTime.diff(timestampDateTime, 'seconds');
+                setMinutes(diffInSeconds.seconds);
             } else {
-                console.error('Invalid timestamp', timestamp); 
+                console.error('Invalid timestamp', timestamp);
                 setMinutes('Invalid Timestamp');
             }
         }, 1000);
-
+    
         return () => clearInterval(intervalId);
-    }, [timestamp]); 
+    }, [timestamp]);
+    
 
     return (
         <View>

@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { GradientCard, QuickCurrentData } from '@components';
 import { useCurrentData } from '@contexts';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 //this is the first screen you see after the welcome screen
 //takes you to all the other sections of the app
@@ -39,7 +39,7 @@ export default function HomeScreen({ navigation }) {
     //     navigation.navigate('Monthly Data');
     // };
 
-    const lastMonth = moment().subtract(1, 'months').format('MMMM YYYY');
+    const lastMonth = DateTime.now().minus({ months: 1 }).toFormat('MMMM yyyy');
 
     const renderItem = useCallback(({ item }) => (
         <GradientCard

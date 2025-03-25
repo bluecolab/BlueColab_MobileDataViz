@@ -3,12 +3,12 @@ import { View, Text, ScrollView, FlatList, Dimensions } from 'react-native';
 import { WQIGauge, DataGraph, DropdownComponent } from '@components';
 import { useGraphData } from '@contexts';
 import { useLocationMetaProvider } from '@hooks';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 const getDaysInMonth = (month, year) => {
     // Create a moment object for the first day of the given month and year
-    const date = moment({ year, month: month - 1 }); // month is 1-indexed, so we subtract 1
-    return date.daysInMonth();
+    const date = DateTime.fromObject({ year, month });
+    return date.daysInMonth;
 };
 
 function Graph() {
@@ -17,11 +17,11 @@ function Graph() {
     const unitMap = units[defaultLocation];
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const currentMonth = moment().month();
-    const currentYear = moment().year();
-
-    const lastMonth = currentMonth === 0 ? 12 : currentMonth;
-    const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    const currentMonth = DateTime.now().month;
+    const currentYear = DateTime.now().year;
+    
+    const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+    const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
 
     // Set the default selected month and year
     const [selectedMonth, setSelectedMonth] = useState(lastMonth.toString());
