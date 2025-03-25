@@ -69,3 +69,10 @@ The members of the team include:
  - Kenji Okura ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/kenji-okura](https://www.linkedin.com/in/kenji-okura/)) of Blue Jelly
  - Michael Rourke ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/michael-rourke-532b32225](https://www.linkedin.com/in/michael-rourke-532b32225/)) of Blue Shield
  - Erin Sorbella ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/erin-sorbella-40936b241](https://www.linkedin.com/in/erin-sorbella-40936b241/)) of Blue Jelly
+
+### Screenshots
+<div align="center">
+<img src="./screenshots/home.png" height="250px" />
+<img src="./screenshots/data.png" height="250px"  />
+<img src="./screenshots/settings.png" height="250px" />
+</div>
