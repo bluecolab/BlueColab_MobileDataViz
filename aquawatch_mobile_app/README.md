@@ -2,21 +2,6 @@
 
 This folder contains the various files related to the application.
 
-## Tech Stack
--   Languages + Bundler
-    -   [JavaScript](https://www.typescriptlang.org/)
-    -   [Metro](https://metrobundler.dev/) (Bundler. under the hood)
--   Framework
-    -   [React Native](https://reactnative.dev/)
--   UI Components
-    -   [Expo](https://expo.dev/)
--   Styling 
-    -   [Tailwind](https://tailwindcss.com/docs/installation/using-vite) + [Nativewind](https://www.nativewind.dev/)
--   Deploy
-    -   [Expo EAS](https://expo.dev/eas)
--   Linting
-    -   [ESLint](https://eslint.org/)
-
 ## Prerequisites (required)
  - [git 🔗](https://git-scm.com/) - version control. For installing git, please see the [git website 🔗](https://git-scm.com/).
  - [npm 🔗](https://www.npmjs.com/) - package manager. For installing npm, please see [npm docs 🔗](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
