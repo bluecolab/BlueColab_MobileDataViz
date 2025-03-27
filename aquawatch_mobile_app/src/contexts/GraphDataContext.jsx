@@ -16,7 +16,8 @@ const GraphDataProvider = ({ children }) => {
     const [start_day, setStartDay] = useState(null);
     const [end_day, setEndDay] = useState(null);
 
-    const [defaultLocation, setDefaultLocation] = useState(null);
+    const [defaultLocation, setDefaultLocation] = useState(null); // the saved location in settings
+    const [selectedLocation, setSelectedLocation] = useState(null); // if the user changed location. this is updated
     const [defaultTempUnit, setDefaultTempUnit] = useState(null);
 
     const changeUnit = (newUnit) => {
@@ -47,9 +48,9 @@ const GraphDataProvider = ({ children }) => {
         setLoading(true);
         setData([]);
         if (year && month && start_day && end_day && defaultLocation) {
-            fetchData(defaultLocation, false, year, month, start_day, end_day, setData, setLoading );
+            fetchData(selectedLocation ?? defaultLocation, false, year, month, start_day, end_day, setData, setLoading );
         }
-    }, [year, month, start_day, end_day, defaultLocation]); 
+    }, [year, month, start_day, end_day, defaultLocation, selectedLocation]); 
 
     useEffect(() => {
         const getStoredDefaultLocation = async () => {
@@ -97,6 +98,7 @@ const GraphDataProvider = ({ children }) => {
                 loading,
                 defaultLocation,
                 defaultTempUnit,
+                selectedLocationTemp: selectedLocation,
                 changeLocation,
                 setLoading,
                 setYear,
@@ -104,6 +106,7 @@ const GraphDataProvider = ({ children }) => {
                 setEndDay,
                 setDefaultLocation,
                 changeUnit,
+                setSelectedLocationTemp: setSelectedLocation,
             }}
         >
             {children}

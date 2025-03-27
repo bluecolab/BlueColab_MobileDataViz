@@ -34,6 +34,7 @@
     {
         "yAxisLabel": "Dissolved Oxygen",
         "unit": "DOpct",
+        "alternateName": "DO",
         "meta": {
             "description": "The measure of oxygen in the water.",
             "reason": "It is an important indicator of the water body’s ability to support aquatic life. Too little oxygen or too much can kill aquatic life.",

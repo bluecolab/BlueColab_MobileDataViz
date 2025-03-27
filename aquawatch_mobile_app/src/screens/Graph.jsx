@@ -12,9 +12,9 @@ const getDaysInMonth = (month, year) => {
 };
 
 function Graph() {
-    const { data, loading, setYear, setMonth, setEndDay, defaultLocation, defaultTempUnit, setDefaultLocation } = useGraphData();
+    const { data, loading, setYear, setMonth, setEndDay, defaultLocation, defaultTempUnit, selectedLocationTemp, setSelectedLocationTemp } = useGraphData();
     const { parameterInfo, locationOptions, units } = useLocationMetaProvider();
-    const unitMap = units[defaultLocation];
+    const unitMap = units[selectedLocationTemp ?? defaultLocation];
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const currentMonth = DateTime.now().month;
@@ -38,7 +38,7 @@ function Graph() {
     const renderItem = useCallback(({ item }) => {
         if (!defaultTempUnit && !defaultLocation)
             return <Text>Loading...</Text>
-        return <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} unitMap={unitMap} />
+        return <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} unitMap={unitMap} alternateName={item.alternateName ?? 'none'} />
     }, [loading, data, defaultTempUnit, defaultLocation, unitMap]);
 
     const monthOptions = [
@@ -62,7 +62,7 @@ function Graph() {
         yearOptions.push({ label: `${year}`, value: year });
     }
 
-    const defaultLocationValue = locationOptions.find(option => option.label === defaultLocation)?.value || '';
+    const defaultLocationValue = locationOptions.find(option => option.label === (selectedLocationTemp ?? defaultLocation) )?.value || '';
 
     const [selectedLocation, setSelectedLocation] = useState(defaultLocationValue);
 
@@ -81,11 +81,11 @@ function Graph() {
     const onLocationSelect = (value) => {
         setSelectedLocation(value);
         const defaultLocationLabel = locationOptions.find(option => option.value === value)?.label || '';
-        setDefaultLocation(defaultLocationLabel);
+        setSelectedLocationTemp(defaultLocationLabel);
     };
 
     useEffect(() => {
-        const defaultLocationValue = locationOptions.find(option => option.label === defaultLocation)?.value || '';
+        const defaultLocationValue = locationOptions.find(option => option.label === (selectedLocationTemp ?? defaultLocation))?.value || '';
         setSelectedLocation(defaultLocationValue);
     }, [defaultLocation, locationOptions]);
 
@@ -153,7 +153,7 @@ function Graph() {
                     ))}
                 </View>
 
-                {defaultLocation === 'Choate Pond' ? <WQIGauge data={data} loading={loading} /> : <></>}
+                {(selectedLocationTemp ?? defaultLocation) === 'Choate Pond' ? <WQIGauge data={data} loading={loading} /> : <></>}
             </ScrollView>
         </View>
     );

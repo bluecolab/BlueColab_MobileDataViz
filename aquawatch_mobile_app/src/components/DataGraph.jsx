@@ -8,7 +8,8 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
-function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit, unitMap }) {
+function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit, unitMap, alternateName }) {
+    const finalUnitToUse = unitMap[unit] === null ? alternateName : unit ;
     const containerWidth = width * 0.95;
     const { isDark }  = useIsDark();
     const flipAnimation = useRef(new Animated.Value(0)).current;
@@ -56,7 +57,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit, uni
     if (Array.isArray(data) && !loading) {
         const groupedData = data.reduce((acc, item) => {
             const date = new Date(item.timestamp).toISOString().split('T')[0];
-            const value = unit === 'Temp' && defaultTempUnit.trim() === 'Fahrenheit' ? item[unit] * (9 / 5) + 32 : item[unit];
+            const value = finalUnitToUse === 'Temp' && defaultTempUnit.trim() === 'Fahrenheit' ? item[finalUnitToUse] * (9 / 5) + 32 : item[finalUnitToUse];
             if (!acc[date]) acc[date] = [];
             acc[date].push(value);
     
@@ -93,11 +94,11 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit, uni
                 {/* Title Bar */}
                 <View className="w-[95%] self-center">
                     <Text className="text-2xl bg-white dark:bg-gray-700 rounded-3xl font-bold text-center dark:text-white p-1">
-                        {yAxisLabel} {unitMap && unit !== 'pH' ? `- ${
-                            unit === 'Temp' ? 
+                        {yAxisLabel} {unitMap && finalUnitToUse !== 'pH' ? `- ${
+                            finalUnitToUse === 'Temp' ? 
                                 defaultTempUnit.trim() === 'Fahrenheit' ? 
                                     '°F'
-                                    :  unitMap[unit] : unitMap[unit]
+                                    :  unitMap[finalUnitToUse] : unitMap[finalUnitToUse]
                         }` : ''}
                     </Text>
                     <TouchableOpacity className="absolute top-1 right-2" onPress={startAnimation}>
