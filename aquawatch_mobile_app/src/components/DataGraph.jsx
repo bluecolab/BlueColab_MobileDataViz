@@ -80,7 +80,7 @@ function DataGraph({ loading, yAxisLabel, data, unit, meta, defaultTempUnit, uni
         );
         
         // Calculate overall min, max, and average
-        const allValues = Object.values(groupedData).flat();
+        const allValues = Object.values(groupedData).flat().filter(value => value !== undefined && !Number.isNaN(value) );
         overallMin = Math.min(...allValues);
         overallMax = Math.max(...allValues);
         overallAvg = allValues.reduce((sum, value) => sum + value, 0) / allValues.length;
