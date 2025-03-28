@@ -1,106 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import axios from 'axios';
+import { useCurrentData } from '@contexts';
+import { useLocationMetaProvider } from '@hooks';
 
 // you can see this page by going to the home page of the app
 // scroll all the way down
 // then click on the very last card 
 
 function CurrentData() {
-    // useState, a way to keep track of states (the values of variables)
-    const [data, setData] = useState([]); // (1) data is the variable (2) setData is how to set the variable (3) useState([]), set's the data to [] initially 
-    // data stores the response from the API
-    const [loading, setLoading] = useState(true); // loading is a way to track if API has loaded or not 
-    const [error, setError] = useState(null);
+    const { data, defaultLocation, defaultTempUnit, loading } = useCurrentData();
+    const { units } = useLocationMetaProvider();
 
-    // you can ignore this for now but, this is how we get data
-    const fetchData = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const responses = await Promise.all([
-                axios.get('https://colabprod01.pace.edu/api/influx/sensordata/Ada'),
-                axios.get('https://colabprod01.pace.edu/api/influx/sensordata/Odin'),
-            ]);
-      
-            // Reformat the data to remove nested objects
-            const cleanedData1 = { ...responses[0].data, ...responses[0].data.sensors };
-            delete cleanedData1.sensors;
+    const last = data[data.length - 1];
 
-            const cleanedData2 = { ...responses[1].data, ...responses[1].data.sensors };
-            delete cleanedData2.sensors;
-
-            setData([cleanedData1, cleanedData2]);
-        } catch (err) {
-            setError('Error fetching data');
-            console.error(err); // Log the error for debugging
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // helps handle api requests
-    useEffect(() => {
-        fetchData();
-    }, []);
 
     // temporary screen to show while data is loading
     if (loading) return <Text>Loading...</Text>;
-    if (error) return <Text>{error}</Text>;
 
     // Ensure data exists before accessing properties
     if (data.length === 0) {
         return <Text>No data available</Text>;
     }
 
-    // fyi - this page may not work right now
-    // looks like API is down
-
-    // ada Data
-    const adaData = data[0];
+    const adaData = last;
     const adaTimestamp = adaData.timestamp;
-    const waterTemp = adaData.Temp * (9 / 5) + 32; // Celsius to Fahrenheit
+    const temp = last?.Temp ?? 'NA';
+    const waterTemp = temp === 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32)?.toFixed(2) : temp;
     const cond = adaData.Cond;
     const dOpct = adaData.DOpct;
     const sal = adaData.Sal;
     const pH = adaData.pH;
     const turb = adaData.Turb;
 
-    // Odin Data
-    const odinData = data[1];
-    const odinTimestamp = odinData.timestamp;
-    const airTemp = odinData.AirTemp * (9 / 5) + 32; // Celsius to Fahrenheit
-    const pressure = odinData.BaroPressure;
-    const distLightning = odinData.DistLightning;
-    const lightningStrikes = odinData.LightningStrikes;
-    const maxWindSpeed = odinData.MaxWindSpeed;
-    const rain = odinData.Rain;
-    const relHumid = odinData.RelHumid;
-    const relHumidTemp = odinData.RelHumidTemp;
-    const solarFlux = odinData.SolarFlux;
-    const solarTotalFlux = odinData.SolarTotalFlux;
-    const tiltNS = odinData.TiltNS;
-    const tiltWE = odinData.TiltWE;
-    const vaporPressure = odinData.VaporPressure;
-    const windDir = odinData.WindDir;
-    const windSpeed = odinData.WindSpeed;
-
-    console.log(
-        {
-            adaTimestamp, waterTemp, cond, dOpct, sal, pH, turb,
-        },
-    );
-
-    console.log(
-        {
-            odinTimestamp, airTemp, pressure, distLightning, lightningStrikes, maxWindSpeed, rain, relHumid, relHumidTemp, solarFlux,
-            solarTotalFlux, tiltNS, tiltWE, vaporPressure, windDir, windSpeed,
-        },
-    );
-
     const Widget = ({ name, value } ) => (
         <View className="w-1/2 p-4">
-            <View className="border border-solid p-6 h-[120px] bg-blue-100 rounded-3xl flex items-center justify-center"> 
+            <View className="p-6 h-[120px] bg-blue-100 rounded-3xl flex items-center justify-center"> 
                 {/*Flexbox for centering content horizontally and vertically.*/}
                 <View className="text-center">
                     <Text className="text-center text-md font-bold">{name}</Text>
@@ -111,10 +46,11 @@ function CurrentData() {
     );
 
     return (
-        <ScrollView className="m-4 bg-default"> 
+        <ScrollView className="bg-defaultbackground dark:bg-defaultdarkbackground">
+            <View>
+                <Text className="text-center text-2xl font-bold dark:text-white">{defaultLocation} Data</Text>
+            </View>
             <View className="flex flex-row flex-wrap">
-
-                {/*.toFixed(2) will ensure that each floating-point number is displayed with two decimal places when passed as the value prop to the Widget component.*/}
   
                 <Widget name="Water Temperature" value={waterTemp.toFixed(2)}/>
 

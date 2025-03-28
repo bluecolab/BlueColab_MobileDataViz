@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { GradientCard, QuickCurrentData } from '@components';
 import { useCurrentData } from '@contexts';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 //this is the first screen you see after the welcome screen
 //takes you to all the other sections of the app
@@ -32,14 +32,14 @@ export default function HomeScreen({ navigation }) {
         navigation.navigate('Graph');
     };
     const handleCurrentDataPress = () => {
-        navigation.navigate('CurrentData');
+        navigation.navigate('Current Data');
     };
 
-    const handleMonthlyPress = () => {
-        navigation.navigate('Monthly Data');
-    };
+    // const handleMonthlyPress = () => {
+    //     navigation.navigate('Monthly Data');
+    // };
 
-    const lastMonth = moment().subtract(1, 'months').format('MMMM YYYY');
+    const lastMonth = DateTime.now().minus({ months: 1 }).toFormat('MMMM yyyy');
 
     const renderItem = useCallback(({ item }) => (
         <GradientCard
@@ -122,7 +122,7 @@ export default function HomeScreen({ navigation }) {
                     />
                 </View> */}
 
-                <View className="px-4 pt-4">
+                {/* <View className="px-4 pt-4">
                     <GradientCard
                         imageSource={require('../../assets/homescreen/IMG_9274.jpg')} // image source als identify URl all u gotta do is "http//something.com" for local images use {require("./something")}
                         title="Monthly Data"
@@ -131,7 +131,7 @@ export default function HomeScreen({ navigation }) {
                         gradientColors={['#ffdde1', '#ee9ca7']} // [Bottom Color, Upper Color] yes order is a bit messy but still works :)
                         isMain
                     />
-                </View>
+                </View> */}
         
                 <Text className="font-bold dark:text-white text-4xl mt-4 ml-4">From Blue CoLab</Text>
                 <View className="px-4">
