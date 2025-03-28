@@ -3,25 +3,25 @@ import { View, Text, ScrollView, FlatList, Dimensions } from 'react-native';
 import { WQIGauge, DataGraph, DropdownComponent } from '@components';
 import { useGraphData } from '@contexts';
 import { useLocationMetaProvider } from '@hooks';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 const getDaysInMonth = (month, year) => {
     // Create a moment object for the first day of the given month and year
-    const date = moment({ year, month: month - 1 }); // month is 1-indexed, so we subtract 1
-    return date.daysInMonth();
+    const date = DateTime.fromObject({ year, month });
+    return date.daysInMonth;
 };
 
 function Graph() {
-    const { data, loading, setYear, setMonth, setEndDay, defaultLocation, defaultTempUnit, setDefaultLocation } = useGraphData();
+    const { data, loading, setYear, setMonth, setEndDay, defaultLocation, defaultTempUnit, selectedLocationTemp, setSelectedLocationTemp } = useGraphData();
     const { parameterInfo, locationOptions, units } = useLocationMetaProvider();
-    const unitMap = units[defaultLocation];
+    const unitMap = units[selectedLocationTemp ?? defaultLocation];
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const currentMonth = moment().month();
-    const currentYear = moment().year();
-
-    const lastMonth = currentMonth === 0 ? 12 : currentMonth;
-    const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    const currentMonth = DateTime.now().month;
+    const currentYear = DateTime.now().year;
+    
+    const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+    const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
 
     // Set the default selected month and year
     const [selectedMonth, setSelectedMonth] = useState(lastMonth.toString());
@@ -38,7 +38,7 @@ function Graph() {
     const renderItem = useCallback(({ item }) => {
         if (!defaultTempUnit && !defaultLocation)
             return <Text>Loading...</Text>
-        return <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} unitMap={unitMap} />
+        return <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} unitMap={unitMap} alternateName={item.alternateName ?? 'none'} />
     }, [loading, data, defaultTempUnit, defaultLocation, unitMap]);
 
     const monthOptions = [
@@ -62,7 +62,7 @@ function Graph() {
         yearOptions.push({ label: `${year}`, value: year });
     }
 
-    const defaultLocationValue = locationOptions.find(option => option.label === defaultLocation)?.value || '';
+    const defaultLocationValue = locationOptions.find(option => option.label === (selectedLocationTemp ?? defaultLocation) )?.value || '';
 
     const [selectedLocation, setSelectedLocation] = useState(defaultLocationValue);
 
@@ -81,11 +81,11 @@ function Graph() {
     const onLocationSelect = (value) => {
         setSelectedLocation(value);
         const defaultLocationLabel = locationOptions.find(option => option.value === value)?.label || '';
-        setDefaultLocation(defaultLocationLabel);
+        setSelectedLocationTemp(defaultLocationLabel);
     };
 
     useEffect(() => {
-        const defaultLocationValue = locationOptions.find(option => option.label === defaultLocation)?.value || '';
+        const defaultLocationValue = locationOptions.find(option => option.label === (selectedLocationTemp ?? defaultLocation))?.value || '';
         setSelectedLocation(defaultLocationValue);
     }, [defaultLocation, locationOptions]);
 
@@ -153,7 +153,7 @@ function Graph() {
                     ))}
                 </View>
 
-                {defaultLocation === 'Choate Pond' ? <WQIGauge data={data} loading={loading} /> : <></>}
+                {(selectedLocationTemp ?? defaultLocation) === 'Choate Pond' ? <WQIGauge data={data} loading={loading} /> : <></>}
             </ScrollView>
         </View>
     );

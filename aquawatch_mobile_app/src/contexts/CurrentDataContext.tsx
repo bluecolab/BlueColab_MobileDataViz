@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useGraphData } from './GraphDataContext';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { useGetWaterData } from '@hooks';
 
 const CurrentDataContext = createContext(null);
@@ -15,8 +15,8 @@ const CurrentDataProvider = ({ children }) => {
 
     useEffect(() => {
         const checkTimeAndFetchData = () => {
-            const currentTime = moment();
-            const currentMinute = currentTime.minute();
+            const currentTime = DateTime.now();
+            const currentMinute = currentTime.minute;
 
             if (defaultLocation && [0, 15, 30, 45].includes(currentMinute)) {
                 fetchData(defaultLocation,true, 0, 0, 0, 0, setData, setLoading);

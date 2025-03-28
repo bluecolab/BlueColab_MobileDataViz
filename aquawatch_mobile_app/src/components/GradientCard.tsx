@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
-import { cardStyles } from '../../stylesCard';
 
 const { width } = Dimensions.get('window'); // Get the width of the device to set the image width
 
@@ -14,7 +13,6 @@ const GradientCard = ({ imageSource, title, buttonText, onButtonPress, isMain })
                 <ImageBackground
                     source={image}
                     style={[
-                        cardStyles.cardImage,
                         {
                             width: isMain ? width : width / 1.8,
                             height: isMain ? 200 : 100,

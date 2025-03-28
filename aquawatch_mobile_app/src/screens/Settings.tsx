@@ -38,7 +38,7 @@ export default function Settings({ navigation }) {
         { label: 'Celsius', value: '2' },
     ];
     const [selectedTempUnit, setSelectedTempUnit] = useState(
-        `${(tempUnitOptions.findIndex((e) => e.label.toLowerCase() === defaultTempUnit.toLowerCase()) + 1)}`,
+        `${(tempUnitOptions.findIndex((e) => e.label.toLowerCase().trim() === defaultTempUnit.toLowerCase().trim()) + 1)}`,
     );
 
     const onTempUnitSelect = (value) => {

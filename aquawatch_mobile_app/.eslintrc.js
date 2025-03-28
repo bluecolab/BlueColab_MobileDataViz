@@ -1,4 +1,7 @@
-// https://docs.expo.dev/guides/using-eslint/
+/** Config for ESLint (linter).
+ * 
+ * More info: https://docs.expo.dev/guides/using-eslint/
+ */ 
 module.exports = {
   extends: ['expo', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser', // Use the TypeScript parser
