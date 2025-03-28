@@ -23,7 +23,6 @@ function CurrentData() {
         return <Text>No data available</Text>;
     }
 
-    console.log()
     const adaData = last;
     const adaTimestamp = adaData.timestamp;
     const temp = last?.Temp ?? 'NA';
@@ -47,9 +46,9 @@ function CurrentData() {
     );
 
     return (
-        <ScrollView className="m-4 bg-default"> 
+        <ScrollView className="bg-defaultbackground dark:bg-defaultdarkbackground">
             <View>
-                <Text className="text-center text-2xl font-bold">{defaultLocation} Data</Text>
+                <Text className="text-center text-2xl font-bold dark:text-white">{defaultLocation} Data</Text>
             </View>
             <View className="flex flex-row flex-wrap">
   
