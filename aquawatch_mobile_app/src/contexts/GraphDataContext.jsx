@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useGetWaterData } from '@hooks';
 
@@ -16,7 +16,8 @@ const GraphDataProvider = ({ children }) => {
     const [start_day, setStartDay] = useState(null);
     const [end_day, setEndDay] = useState(null);
 
-    const [defaultLocation, setDefaultLocation] = useState(null);
+    const [defaultLocation, setDefaultLocation] = useState(null); // the saved location in settings
+    const [selectedLocation, setSelectedLocation] = useState(null); // if the user changed location. this is updated
     const [defaultTempUnit, setDefaultTempUnit] = useState(null);
 
     const changeUnit = (newUnit) => {
@@ -47,9 +48,9 @@ const GraphDataProvider = ({ children }) => {
         setLoading(true);
         setData([]);
         if (year && month && start_day && end_day && defaultLocation) {
-            fetchData(defaultLocation, false, year, month, start_day, end_day, setData, setLoading );
+            fetchData(selectedLocation ?? defaultLocation, false, year, month, start_day, end_day, setData, setLoading );
         }
-    }, [year, month, start_day, end_day, defaultLocation]); 
+    }, [year, month, start_day, end_day, defaultLocation, selectedLocation]); 
 
     useEffect(() => {
         const getStoredDefaultLocation = async () => {
@@ -83,11 +84,11 @@ const GraphDataProvider = ({ children }) => {
         getStoredDefaultLocation();
         getStoredDefaultTempUnit();
 
-        const lastMonth = moment().subtract(1, 'month');
-        setYear(lastMonth.year());
-        setMonth(lastMonth.month() + 1);
+        const lastMonth = DateTime.now().minus({ months: 1 });
+        setYear(lastMonth.year);
+        setMonth(lastMonth.month + 1);
         setStartDay(1);
-        setEndDay(lastMonth.daysInMonth());
+        setEndDay(lastMonth.daysInMonth);
     }, []);
 
     return (
@@ -97,6 +98,7 @@ const GraphDataProvider = ({ children }) => {
                 loading,
                 defaultLocation,
                 defaultTempUnit,
+                selectedLocationTemp: selectedLocation,
                 changeLocation,
                 setLoading,
                 setYear,
@@ -104,6 +106,7 @@ const GraphDataProvider = ({ children }) => {
                 setEndDay,
                 setDefaultLocation,
                 changeUnit,
+                setSelectedLocationTemp: setSelectedLocation,
             }}
         >
             {children}

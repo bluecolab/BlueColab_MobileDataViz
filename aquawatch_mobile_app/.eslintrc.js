@@ -1,7 +1,10 @@
-// https://docs.expo.dev/guides/using-eslint/
+/** Config for ESLint (linter).
+ * 
+ * More info: https://docs.expo.dev/guides/using-eslint/
+ */ 
 module.exports = {
   extends: 'expo',
-  ignorePatterns: ['/dist/*'],
+  ignorePatterns: ['/dist/*','/node_modules/*'],
   env: {
     node: true,
     es2021: true,
@@ -9,7 +12,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       'babel-module': {
-        root: ['./src'], // Same root as in your babel.config.js
+        root: ['./src'], // Should match root as in babel.config.js
       },
     },
   },

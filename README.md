@@ -1,10 +1,35 @@
 # AquaWatch Mobile App
 <div align="center">
-<img src="./aquawatch_mobile_app/assets/Blue-CoLab-logo-brighter-1000.png" height="250px">
+<img src="./aquawatch_mobile_app/assets/Blue-CoLab-logo-brighter-1000.png" height="250px" style="padding:10px;">
+ 
+<br>
+
+<a href="./LICENSE">
+  <img src="https://img.shields.io/badge/MIT-green?style=for-the-badge" alt="MIT License">
+</a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
+  <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" alt="JavaScript">
+</a>
+<a href="https://eslint.org/">
+  <img src="https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint">
+</a>
+<a href="https://react.dev/">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
+</a>
+
+<br>
+
+<a href="https://expo.dev/client">
+  <img src="https://img.shields.io/badge/Runs%20with%20Expo%20Go-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000" alt="Runs with Expo Go">
+</a>
 <h2>Bringing water quality to your finger tips!</h2>
-Repo from AquaWatch Mobile app
+Repo for AquaWatch Mobile app
+
 <hr>
 </div>
+
+
+
 
 ### About the Project
 Knowing what's in your water - is a human right. The AquaWatch Mobile App bring water data right to your finger tips. While the current scope of the app is limited to pond and river data, we hope to set an example for what's possible. 
@@ -20,10 +45,9 @@ One day you'll know what's in the water that's coming out of your tap.
 <hr>
 
 ### Getting Started
-1. Clone the repository `git clone https://github.com/bluecolab/BlueColab_MobileDataViz.git`. 
-    1. We use [git 🔗](https://git-scm.com/) for version control. For installing git, please see the [git website 🔗](https://git-scm.com/).
-2. To get started on the frontend, see [here](./aquawatch_mobile_app/README.md)
-3. For details on the app internals, please see our [Wiki](https://github.com/bluecolab/BlueColab_MobileDataViz/wiki/).
+1. To get started, please see [here](./aquawatch_mobile_app/README.md)
+2. For details on the app internals, please see our [Wiki](https://github.com/bluecolab/BlueColab_MobileDataViz/wiki/).
+
 <hr>
 
 ### Wiki (technical breakdown)
@@ -45,3 +69,10 @@ The members of the team include:
  - Kenji Okura ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/kenji-okura](https://www.linkedin.com/in/kenji-okura/)) of Blue Jelly
  - Michael Rourke ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/michael-rourke-532b32225](https://www.linkedin.com/in/michael-rourke-532b32225/)) of Blue Shield
  - Erin Sorbella ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/erin-sorbella-40936b241](https://www.linkedin.com/in/erin-sorbella-40936b241/)) of Blue Jelly
+
+### Screenshots
+<div align="center">
+<img src="./screenshots/home.png" height="250px" />
+<img src="./screenshots/data.png" height="250px"  />
+<img src="./screenshots/settings.png" height="250px" />
+</div>
