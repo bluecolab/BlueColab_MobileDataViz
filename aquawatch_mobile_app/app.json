@@ -26,6 +26,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      [
         "expo-splash-screen",
         {
           "backgroundColor": "#232323",
@@ -36,6 +37,7 @@
           },
           "imageWidth": 200
         }
+      ]
     ],
     "extra": {
       "eas": {
