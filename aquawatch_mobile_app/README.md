@@ -49,6 +49,10 @@ Dependencies are all the files created by others that help run the app.
    ```bash
    npx expo start
    ```
+   5a. If you aren't able to connect to same network try (if it fails try again):
+   ```bash
+   npx expo start --tunnel
+   ```
 7. After running the above, a QR code should pop up.  
    1. iPhone: Open the Camera on iPhone, then scan the QR Code.
    2. Android: Open the Expo Go app, hit "Scan QR Code". then scan the QR Code.
