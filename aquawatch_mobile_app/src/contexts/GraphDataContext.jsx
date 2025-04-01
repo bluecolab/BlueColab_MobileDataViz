@@ -86,7 +86,7 @@ const GraphDataProvider = ({ children }) => {
 
         const lastMonth = DateTime.now().minus({ months: 1 });
         setYear(lastMonth.year);
-        setMonth(lastMonth.month + 1);
+        setMonth(lastMonth.month);
         setStartDay(1);
         setEndDay(lastMonth.daysInMonth);
     }, []);

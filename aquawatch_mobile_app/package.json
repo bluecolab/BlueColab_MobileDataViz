@@ -20,7 +20,8 @@
           "react-native-navigation-bar",
           "react-navigation",
           "react-navigation-stack",
-          "tailwindcss"
+          "tailwindcss",
+          "luxon"
         ]
       }
     }
