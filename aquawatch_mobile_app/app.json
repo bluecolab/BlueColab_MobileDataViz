@@ -3,6 +3,7 @@
     "name": "AquaWatch Mobile",
     "slug": "AquaWatch_Mobile",
     "version": "1.5.0",
+    "scheme": "test-expo-app",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
