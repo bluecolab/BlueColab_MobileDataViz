@@ -1,5 +1,5 @@
 /** Config file for Metro (Bundler).
- * 
+ *
  * More info: https://docs.expo.dev/versions/latest/config/metro/
  */
 // Learn more https://docs.expo.io/guides/customizing-metro
