@@ -1,4 +1,3 @@
-import { useIsDark } from '@contexts';
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react';
 import {
@@ -9,16 +8,18 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
-import {
-  VictoryChart,
-  VictoryArea,
-  VictoryLine,
-  VictoryAxis,
-  VictoryLabel,
-} from 'victory-native';
+import { VictoryChart, VictoryLine, VictoryArea, VictoryAxis, VictoryLabel} from 'victory';
+// import {
+//   // VictoryChart,
+//   VictoryArea,
+//   // VictoryLine,
+//   VictoryAxis,
+//   VictoryLabel,
+// } from 'victory-native';
 
 import EmptyGraph from './EmptyGraph';
 import LinkComp from './LinkComp';
+import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 const { width } = Dimensions.get('window');
 

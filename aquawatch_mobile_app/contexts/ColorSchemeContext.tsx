@@ -1,17 +1,39 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useColorScheme } from 'nativewind';
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from 'react';
 import { Appearance } from 'react-native';
 
-const ColorSchemeContext = createContext(false);
+const ColorSchemeContext = createContext({
+  isDark: false,
+  colorSchemeSys: 'system',
+  changeColor: (newColorScheme: ColorScheme) => {},
+});
 
-const ColorSchemeProvider = ({ children }) => {
+interface ColorSchemeProviderProps {
+  children: ReactNode;
+}
+
+export enum ColorScheme {
+  System = 'system',
+  Light = 'light',
+  Dark = 'dark',
+}
+
+export default function ColorSchemeProvider({
+  children,
+}: ColorSchemeProviderProps) {
   const { setColorScheme } = useColorScheme();
   const [isDark, setIsDark] = useState(Appearance.getColorScheme() === 'dark');
   const [colorSchemeSys, setColorSchemeSys] = useState('system');
 
-  const changeColor = (newColorScheme) => {
-    const setStoredAppearance = async (value) => {
+  const changeColor = (newColorScheme: ColorScheme) => {
+    const setStoredAppearance = async (value: ColorScheme) => {
       try {
         await AsyncStorage.setItem('default-appearance', value);
       } catch (e) {
@@ -40,7 +62,7 @@ const ColorSchemeProvider = ({ children }) => {
               ? Appearance.getColorScheme() === 'dark'
               : value === 'dark'
           );
-          setColorScheme(value);
+          setColorScheme(value as ColorScheme);
         } else {
           console.log('Nothing stored');
           setColorSchemeSys('system');
@@ -71,8 +93,6 @@ const ColorSchemeProvider = ({ children }) => {
       {children}
     </ColorSchemeContext.Provider>
   );
-};
-
-export default ColorSchemeProvider;
+}
 
 export const useIsDark = () => useContext(ColorSchemeContext);

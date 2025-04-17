@@ -1,27 +1,53 @@
-import { useGetWaterData } from '@hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DateTime } from 'luxon';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
-const GraphDataContext = createContext(null);
+import useGetWaterData from '@/hooks/useGetWaterData';
 
-const GraphDataProvider = ({ children }) => {
+interface GraphDataContextType {
+  data: Record<string, { timestamp: string; [key: string]: number | string }>[];
+  loading: boolean;
+  defaultLocation?: string;
+  defaultTempUnit?: string;
+  selectedLocationTemp?: string;
+  changeLocation: (newLocation: string) => void;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setYear: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setMonth: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setEndDay: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setDefaultLocation: React.Dispatch<React.SetStateAction<string | undefined>>;
+  changeUnit: (newUnit: string) => void;
+  setSelectedLocationTemp: React.Dispatch<
+    React.SetStateAction<string | undefined>
+  >;
+}
+
+const GraphDataContext = createContext<GraphDataContextType | null>(null);
+
+interface GraphDataProviderProps {
+  children: React.ReactNode;
+}
+
+const GraphDataProvider = ({ children }: GraphDataProviderProps) => {
   const { fetchData } = useGetWaterData();
 
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<
+    Record<string, { timestamp: string; [key: string]: number | string }>[]
+  >([]);
 
-  const [year, setYear] = useState(null);
-  const [month, setMonth] = useState(null);
-  const [start_day, setStartDay] = useState(null);
-  const [end_day, setEndDay] = useState(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const [defaultLocation, setDefaultLocation] = useState(null); // the saved location in settings
-  const [selectedLocation, setSelectedLocation] = useState(null); // if the user changed location. this is updated
-  const [defaultTempUnit, setDefaultTempUnit] = useState(null);
+  const [year, setYear] = useState<number>();
+  const [month, setMonth] = useState<number>();
+  const [start_day, setStartDay] = useState<number>();
+  const [end_day, setEndDay] = useState<number>();
 
-  const changeUnit = (newUnit) => {
-    const setStoredTempUnit = async (value) => {
+  const [defaultLocation, setDefaultLocation] = useState<string>(); // the saved location in settings
+  const [selectedLocation, setSelectedLocation] = useState<string>(); // if the user changed location. this is updated
+  const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
+
+  const changeUnit = (newUnit: string) => {
+    const setStoredTempUnit = async (value: string) => {
       try {
         await AsyncStorage.setItem('default-temp-unit', value);
       } catch (e) {
@@ -32,8 +58,8 @@ const GraphDataProvider = ({ children }) => {
     setDefaultTempUnit(newUnit);
   };
 
-  const changeLocation = (newLocation) => {
-    const setStoredLocation = async (value) => {
+  const changeLocation = (newLocation: string) => {
+    const setStoredLocation = async (value: string) => {
       try {
         await AsyncStorage.setItem('default-location', value);
       } catch (e) {

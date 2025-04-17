@@ -33,6 +33,8 @@
     "@react-native-picker/picker": "2.9.0",
     "@react-navigation/native": "^7.0.3",
     "@shopify/react-native-skia": "1.5.0",
+    "@types/luxon": "^3.6.2",
+    "@types/victory": "^33.1.5",
     "axios": "^1.8.4",
     "expo": "^52.0.46",
     "expo-constants": "~17.0.8",
@@ -57,7 +59,7 @@
     "react-native-svg": "15.8.0",
     "react-native-web": "~0.19.10",
     "react-native-webview": "13.12.5",
-    "victory-native": "^41.17.0"
+    "victory-native": "^41.17.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

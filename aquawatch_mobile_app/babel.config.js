@@ -1,35 +1,26 @@
-/** Config file for Babel (compiler).
- *
- * Uses:
- *  - Set up presets (ex. needed when adding nativewind)
- *  - Set up plugins
- *      - If you want to do @ imports like it's done for
- *        components you would add them below.
- *
- * More info: https://docs.expo.dev/versions/latest/config/babel/
- */
 module.exports = function (api) {
-  api.cache(true);
+  api.cache(true);  // Cache for performance
   const plugins = [
-    'react-native-reanimated/plugin',
+    'react-native-reanimated/plugin', // Required for Reanimated 2
+    // Uncomment and modify below if you want to use module aliases
     // [
-    //     'module-resolver',
-    //     {
-    //         root: ['./src'],
-    //         alias: {
-    //             '@components': './src/components',
-    //             '@screens': './src/screens',
-    //             '@contexts': './src/contexts',
-    //             '@hooks': './src/hooks',
-    //         },
+    //   'module-resolver',
+    //   {
+    //     root: ['./src'],
+    //     alias: {
+    //       '@components': './src/components',
+    //       '@screens': './src/screens',
+    //       '@contexts': './src/contexts',
+    //       '@hooks': './src/hooks',
     //     },
+    //   },
     // ],
   ];
 
   return {
     presets: [
-      ['babel-preset-expo', { jsxImportSource: 'nativewind' }],
-      'nativewind/babel',
+      ['babel-preset-expo', { jsxImportSource: 'nativewind' }],  // Expo preset with nativewind for Tailwind-like styling
+      'nativewind/babel',  // Required for NativeWind to function
     ],
     plugins,
   };

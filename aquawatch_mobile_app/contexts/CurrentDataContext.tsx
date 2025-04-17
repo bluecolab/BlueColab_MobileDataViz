@@ -1,13 +1,26 @@
-import { useGetWaterData } from '@hooks';
 import { DateTime } from 'luxon';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-import { useGraphData } from './GraphDataContext';
+import { useGraphData } from '@/contexts/GraphDataContext';
+import useGetWaterData from '@/hooks/useGetWaterData';
 
-const CurrentDataContext = createContext(null);
+interface CurrentDataContextType {
+  data: any[];
+  defaultLocation: string;
+  defaultTempUnit: string;
+  loadingCurrent: boolean;
+}
 
-const CurrentDataProvider = ({ children }) => {
-  const { defaultLocation, defaultTempUnit } = useGraphData();
+const CurrentDataContext = createContext<CurrentDataContextType | null>(null);
+
+interface CurrentDataProviderProps {
+  children: React.ReactNode;
+}
+
+const CurrentDataProvider = ({ children }: CurrentDataProviderProps) => {
+  const graphData = useGraphData();
+  const defaultLocation = graphData?.defaultLocation || '';
+  const defaultTempUnit = graphData?.defaultTempUnit || 'C';
   const { fetchData } = useGetWaterData();
 
   const [data, setData] = useState([]);
@@ -37,7 +50,7 @@ const CurrentDataProvider = ({ children }) => {
 
   return (
     <CurrentDataContext.Provider
-      value={{ data, defaultLocation, defaultTempUnit }}>
+      value={{ data, defaultLocation, defaultTempUnit, loadingCurrent }}>
       {children}
     </CurrentDataContext.Provider>
   );

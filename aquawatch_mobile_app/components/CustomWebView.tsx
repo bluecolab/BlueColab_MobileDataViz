@@ -2,10 +2,18 @@ import React, { useRef } from 'react';
 import { Linking } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-const CustomWebView = ({ uri }) => {
+interface CustomWebViewProps {
+  uri: string;
+}
+
+const CustomWebView = ({ uri }: CustomWebViewProps) => {
   const webviewRef = useRef(null);
 
-  const handleNavigation = (event) => {
+  interface NavigationEvent {
+    url: string;
+  }
+
+  const handleNavigation = (event: NavigationEvent): boolean => {
     const { url } = event;
     if (
       url.includes('aquawatchmobile.shinyapps.io') ||

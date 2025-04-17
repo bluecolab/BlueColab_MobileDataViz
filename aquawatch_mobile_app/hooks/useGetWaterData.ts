@@ -4,16 +4,20 @@ import { default as useLocationMetaProvider } from './useLocationMetaProvider';
 
 export default function useGetWaterData() {
   const { usgsParameterMappings, stationIds } = useLocationMetaProvider();
-  const cleanHudsonRiverData = (rawData) => {
+  const cleanHudsonRiverData = (rawData: { value: { timeSeries: any[] } }) => {
     if (!rawData?.value?.timeSeries) {
       console.error('Invalid data format');
       return [];
     }
 
-    const parsedData = {};
+    const parsedData: Record<
+      string,
+      { timestamp: string; [key: string]: number | string }
+    > = {};
 
     rawData.value.timeSeries.forEach((series) => {
-      const paramCode = series.variable.variableCode[0].value;
+      const paramCode = series.variable.variableCode[0]
+        .value as keyof typeof usgsParameterMappings;
       const paramName = usgsParameterMappings[paramCode];
 
       if (!paramName) return; // Skip unneeded parameters
@@ -23,7 +27,7 @@ export default function useGetWaterData() {
           ? series.values[0].value
           : (series.values[1]?.value ?? []);
 
-      valuesList.forEach((entry) => {
+      valuesList.forEach((entry: { dateTime: any; value: string }) => {
         const timestamp = entry.dateTime;
         const value = parseFloat(entry.value);
 
@@ -38,14 +42,14 @@ export default function useGetWaterData() {
   };
 
   const fetchData = (
-    defaultLocation,
-    isCurrentData,
-    year,
-    month,
-    start_day,
-    end_day,
-    setData,
-    setLoading
+    defaultLocation: string,
+    isCurrentData: boolean,
+    year: number,
+    month: number,
+    start_day: number,
+    end_day: number,
+    setData: (data: any) => void,
+    setLoading: (loading: boolean) => void
   ) => {
     let baseURL = '';
     let query = '';
@@ -83,10 +87,12 @@ export default function useGetWaterData() {
         const apiData = response.data;
         console.log(baseURL + query, response.status);
         if (defaultLocation === 'Choate Pond') {
-          const cleanedData = apiData.map((item) => {
-            const { sensors, ...rest } = item;
-            return { ...rest, ...sensors };
-          });
+          const cleanedData = apiData.map(
+            (item: { sensors: Record<string, any>; [key: string]: any }) => {
+              const { sensors, ...rest } = item;
+              return { ...rest, ...sensors };
+            }
+          );
           setData(cleanedData);
         } else {
           const cleanedData = cleanHudsonRiverData(apiData);
@@ -97,7 +103,7 @@ export default function useGetWaterData() {
         if (isAxiosError(error)) {
           if (error.response) {
             console.error(`Response error: ${error.response.status}`);
-            if (error.response.data.status == 404)
+            if (error.response.data.status === 404)
               // Server response body
               setData({ error: 'No data :(' });
             else setData({ error: `HTTP Error: ${error.response.status}` });
