@@ -10,6 +10,10 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -18,12 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.okaykenji.AquaWatch_Mobile",
-      "versionCode": 5
-    },
-    "web": {
-      "bundler": "metro",
-      "favicon": "./assets/favicon.png"
+      "package": "com.okaykenji.AquaWatch_Mobile"
     },
     "plugins": [
       [
@@ -37,7 +36,8 @@
           },
           "imageWidth": 200
         }
-      ]
+      ],
+      ["expo-router"]
     ]
   }
 }

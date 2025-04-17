@@ -3,7 +3,6 @@
     "name": "test-expo-app",
     "slug": "test-expo-app",
     "version": "1.0.0",
-
     "scheme": "test-expo-app",
     "web": {
       "bundler": "metro",
@@ -13,7 +12,6 @@
     "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true,
-
       "tsconfigPaths": true
     },
 

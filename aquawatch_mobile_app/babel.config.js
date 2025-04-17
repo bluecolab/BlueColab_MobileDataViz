@@ -10,25 +10,27 @@
  */
 module.exports = function(api) {
     api.cache(true);
+    const plugins = [
+        'react-native-reanimated/plugin',
+        // [
+        //     'module-resolver',
+        //     {
+        //         root: ['./src'],
+        //         alias: {
+        //             '@components': './src/components',
+        //             '@screens': './src/screens',
+        //             '@contexts': './src/contexts',
+        //             '@hooks': './src/hooks',
+        //         },
+        //     },
+        // ],
+    ];
+
     return {
         presets: [
             ['babel-preset-expo', { jsxImportSource: 'nativewind' }],
             'nativewind/babel',
         ],
-        plugins: [
-            'react-native-reanimated/plugin',
-            [
-                'module-resolver',
-                {
-                    root: ['./src'],
-                    alias: {
-                        '@components': './src/components',
-                        '@screens': './src/screens',
-                        '@contexts': './src/contexts',
-                        '@hooks': './src/hooks',
-                    },
-                },
-            ],
-        ],
+        plugins,
     };
 };
