@@ -24,14 +24,14 @@ function CurrentData() {
     }
 
     const adaData = last;
-    const adaTimestamp = adaData.timestamp;
-    const temp = last?.Temp ?? 'NA';
+    const adaTimestamp = adaData?.timestamp;;
+    const temp = last?.Temp;
     const waterTemp = temp === 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32) : temp;
-    const cond = adaData.Cond;
-    const dOpct = adaData.DOpct;
-    const sal = adaData.Sal;
-    const pH = adaData.pH;
-    const turb = adaData.Turb;
+    const cond = adaData?.Cond;
+    const dOpct = adaData?.DOpct;
+    const sal = adaData?.Sal;
+    const pH = adaData?.pH;
+    const turb = adaData?.Turb;
 
     const Widget = ({ name, value } ) => (
         <View className="w-1/2 p-4">
@@ -54,15 +54,15 @@ function CurrentData() {
   
                 <Widget name="Water Temperature" value={waterTemp?.toFixed(2) ?? "NA"}/>
 
-                <Widget name="Conductivity" value={cond?.toFixed(2)}/>
+                <Widget name="Conductivity" value={cond?.toFixed(2) ?? "NA"}/>
 
-                <Widget name="Salinity" value={sal?.toFixed(2)}/>
+                <Widget name="Salinity" value={sal?.toFixed(2) ?? "NA"}/>
 
-                <Widget name="pH" value={pH?.toFixed(2)}/>
+                <Widget name="pH" value={pH?.toFixed(2) ?? "NA"}/>
 
-                <Widget name="Turbidity" value={turb?.toFixed(2)}/>
+                <Widget name="Turbidity" value={turb?.toFixed(2) ?? "NA"}/>
 
-                <Widget name="Oxygen" value={dOpct?.toFixed(2)}/>
+                <Widget name="Oxygen" value={dOpct?.toFixed(2) ?? "NA"}/>
   
             </View>
         </ScrollView>
