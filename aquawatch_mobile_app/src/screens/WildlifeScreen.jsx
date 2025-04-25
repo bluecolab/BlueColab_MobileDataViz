@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, Image, Dimensions, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import { DateTime } from 'luxon';
+import { useIsDark } from '@contexts';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -9,6 +10,8 @@ const WildlifeScreen = () => {
   const [choateActiveIndex, setChoateActiveIndex] = useState(0);
   const [hudsonActiveIndex, setHudsonActiveIndex] = useState(0);
   
+  const { isDark }  = useIsDark();
+
   // Refs for FlatLists to programmatically scroll
   const choateListRef = useRef(null);
   const hudsonListRef = useRef(null);
@@ -245,7 +248,7 @@ const WildlifeScreen = () => {
       fontSize: 22,
       fontWeight: 'bold',
       color: '#333',
-      backgroundColor: '#e0e0e0',
+      backgroundColor: isDark ? '#e0e0e0' : '#fff',
       padding: 12,
       marginTop: 16,
       marginBottom: 12
