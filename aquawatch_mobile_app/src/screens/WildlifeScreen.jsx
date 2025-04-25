@@ -234,20 +234,20 @@ const WildlifeScreen = () => {
   const styles = {
     container: {
       flex: 1,
-      backgroundColor: '#f7f7f7',
+      //backgroundColor: '#f7f7f7',
       paddingBottom: 40
     },
     header: {
       backgroundColor: '#2c2d35',
       padding: 15
     },
-    headerText: {
-      color: 'white',
-      fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginVertical: 10
-    },
+    // headerText: {
+    //   color: 'white',
+    //   fontSize: 18,
+    //   fontWeight: 'bold',
+    //   textAlign: 'center',
+    //   marginVertical: 10
+    // },
     sectionHeader: {
       fontSize: 22,
       fontWeight: 'bold',
