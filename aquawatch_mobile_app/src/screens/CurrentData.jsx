@@ -17,19 +17,14 @@ function CurrentData() {
     }
 
     const adaData = last;
-    const temp = last?.Temp ?? 'NA';
-    const waterTemp =
-        temp === 'NA'
-            ? 'NA'
-            : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit'
-            ? temp * (9 / 5) + 32
-            : temp;
-
-    const cond = adaData.Cond;
-    const dOpct = adaData.DOpct;
-    const sal = adaData.Sal;
-    const pH = adaData.pH;
-    const turb = adaData.Turb;
+    const adaTimestamp = adaData?.timestamp;;
+    const temp = last?.Temp;
+    const waterTemp = temp === 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32) : temp;
+    const cond = adaData?.Cond;
+    const dOpct = adaData?.DOpct;
+    const sal = adaData?.Sal;
+    const pH = adaData?.pH;
+    const turb = adaData?.Turb;
 
     // ✅ Status and text color logic
     const getStatusAndColor = (name, value) => {
@@ -99,12 +94,19 @@ function CurrentData() {
                 </Text>
             </View>
             <View className="flex flex-row flex-wrap">
-                <Widget name="Water Temperature" value={waterTemp?.toFixed(2) ?? "NA"} />
-                <Widget name="Conductivity" value={cond?.toFixed(2)} />
-                <Widget name="Salinity" value={sal?.toFixed(2)} />
-                <Widget name="pH" value={pH?.toFixed(2)} />
-                <Widget name="Turbidity" value={turb?.toFixed(2)} />
-                <Widget name="Oxygen" value={dOpct?.toFixed(2)} />
+  
+                <Widget name="Water Temperature" value={waterTemp?.toFixed(2) ?? "NA"}/>
+
+                <Widget name="Conductivity" value={cond?.toFixed(2) ?? "NA"}/>
+
+                <Widget name="Salinity" value={sal?.toFixed(2) ?? "NA"}/>
+
+                <Widget name="pH" value={pH?.toFixed(2) ?? "NA"}/>
+
+                <Widget name="Turbidity" value={turb?.toFixed(2) ?? "NA"}/>
+
+                <Widget name="Oxygen" value={dOpct?.toFixed(2) ?? "NA"}/>
+  
             </View>
         </ScrollView>
     );
