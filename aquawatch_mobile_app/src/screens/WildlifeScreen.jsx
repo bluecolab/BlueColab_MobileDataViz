@@ -239,41 +239,25 @@ const WildlifeScreen = () => {
   const styles = {
     container: {
       flex: 1,
+      backgroundColor: isDark ? '#1a202c' : 'rgb(220, 220, 220)',
       paddingBottom: 40
     },
-    header: {
-      backgroundColor: '#2c2d35',
-      padding: 15
-    },
+
 
     sectionHeader: {
-      fontSize: 22,
+      fontSize: 30,
       fontWeight: 'bold',
-      color: '#333',
-      backgroundColor: isDark ? '#e0e0e0' : '#fff',
-      padding: 12,
-      marginTop: 16,
-      marginBottom: 12
-    },
-    dateText: {
-      fontSize: 18,
-      fontWeight: 'bold',
+      color: isDark ? '#fff' :  '#333',
       textAlign: 'center',
-      marginVertical: 15,
-      color: '#333'
+      marginTop: 20,
+      marginBottom: 5,
     },
     cardContainer: {
       width: windowWidth * 0.85,
       marginHorizontal: windowWidth * 0.075 / 2,
       marginVertical: 12,
       borderRadius: 12,
-      backgroundColor: '#fff',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 3 },
-      shadowOpacity: 0.2,
-      shadowRadius: 5,
-      elevation: 5,
-      overflow: 'hidden'
+      backgroundColor: isDark ? '#374151' : '#fff',
     },
     imageContainer: {
       width: '100%',
@@ -293,18 +277,18 @@ const WildlifeScreen = () => {
     animalName: {
       fontSize: 20,
       fontWeight: 'bold',
-      color: '#333',
+      color: isDark ? '#fff' : '#333',
       marginBottom: 5
     },
     scientificName: {
       fontSize: 16,
       fontStyle: 'italic',
-      color: '#666',
+      color: isDark ? '#fff' : '#666',
       marginBottom: 12
     },
     factText: {
       fontSize: 16,
-      color: '#333',
+      color: isDark ? '#fff' : '#333',
       lineHeight: 22
     },
     paginationContainer: {
@@ -420,7 +404,7 @@ const WildlifeScreen = () => {
           if (item.key === 'choate') {
             return renderWildlifeSection(
               choateWildlifeData,
-              'Wildlife in Choate Pond:',
+              'Wildlife in Choate Pond',
               choateActiveIndex,
               setChoateActiveIndex,
               choateListRef
@@ -428,7 +412,7 @@ const WildlifeScreen = () => {
           } else {
             return renderWildlifeSection(
               hudsonWildlifeData,
-              'Wildlife in The Hudson River:',
+              'Wildlife in The Hudson River',
               hudsonActiveIndex,
               setHudsonActiveIndex,
               hudsonListRef
