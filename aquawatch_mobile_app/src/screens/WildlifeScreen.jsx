@@ -3,6 +3,8 @@ import { View, Text, Image, Dimensions, TouchableOpacity, SafeAreaView, FlatList
 import { DateTime } from 'luxon';
 import { useIsDark } from '@contexts';
 
+// defaultbackground: 'rgb(220, 220, 220)',
+// defaultdarkbackground: '#1a202c',
 const windowWidth = Dimensions.get('window').width;
 
 const WildlifeScreen = () => {
