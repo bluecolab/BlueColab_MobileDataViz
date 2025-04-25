@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import axios from 'axios';
 import { useCurrentData } from '@contexts';
-import { useLocationMetaProvider } from '@hooks';
+// import { useLocationMetaProvider } from '@hooks';
 
 function CurrentData() {
     const { data, defaultLocation, defaultTempUnit, loading } = useCurrentData();
-    const { units } = useLocationMetaProvider();
+    // const { units } = useLocationMetaProvider();
 
     const last = data[data.length - 1];
 
@@ -17,7 +16,7 @@ function CurrentData() {
     }
 
     const adaData = last;
-    const adaTimestamp = adaData?.timestamp;;
+    // const adaTimestamp = adaData?.timestamp;;
     const temp = last?.Temp;
     const waterTemp = temp === 'NA' ? 'NA' : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit' ? (temp * (9 / 5) + 32) : temp;
     const cond = adaData?.Cond;
