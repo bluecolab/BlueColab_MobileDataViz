@@ -38,7 +38,7 @@ export default function useGetWaterData() {
         let query = '';
         switch (defaultLocation) {
         case 'Choate Pond':
-            baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Alan/';
+            baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Ada/';
             query = isCurrentData ? 'delta?days=1' : `range?stream=false&start_date=${year}-${month.toString().padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month.toString().padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00` ;
             break;
         case 'New York City':
@@ -53,7 +53,7 @@ export default function useGetWaterData() {
             query = isCurrentData ?  `?sites=${stationIds[defaultLocation] ?? '01376269'}&period=P2D&format=json` : `?sites=${stationIds[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json`;
             break;
         default:
-            baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Alan/';
+            baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Ada/';
             query = isCurrentData ? 'delta?days=1' : `range?stream=false&start_date=${year}-${month.toString().padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month.toString().padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00` ;
             break;
         }
