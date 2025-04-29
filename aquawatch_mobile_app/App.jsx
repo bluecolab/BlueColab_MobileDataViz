@@ -3,8 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { AirQuality, Attributions, BlogScreen, HomeScreen, MiddleScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph, CurrentData, Settings, Feedback, VersionHistory, Socials } from '@screens';
-import { tabBarStyles, middleButtonStyles, iconStyles } from './stylesCard';
+import { AirQuality, Attributions, BlogScreen, HomeScreen, MonthlyData, StoryScreen, WildlifeScreen, Graph, CurrentData, Settings, Feedback, VersionHistory, Socials } from '@screens';
 import { ColorSchemeProvider, GraphDataProvider, useIsDark, CurrentDataProvider } from '@contexts';
 import waterDropIcon from './assets/free-water-drop-2-462137.png';
 import homeIcon from './assets/HomeIcon_WB.png';
@@ -12,6 +11,7 @@ import homeIconDark from './assets/HomeIcon_BB.png';
 import monthlyDataIcon from './assets/settings_WB.png';
 import monthlyDataIconDark from './assets/settings_BB.png';
 import './global.css';
+import { StyleSheet } from 'react-native';
 
 // Create the stack navigators
 const HomeStack = createStackNavigator();
@@ -160,3 +160,58 @@ export default function App() {
         </GraphDataProvider>
     );
 }
+
+const tabBarStyles = StyleSheet.create({
+    tabBarLight: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        elevation: 0,
+        backgroundColor: 'white',
+        height: 60,
+        alignItems: 'center',
+    },
+    tabBarDark: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        elevation: 0,
+        backgroundColor: '#2e2e3b',
+        height: 60,
+        alignItems: 'center',
+    },
+});
+
+const middleButtonStyles = StyleSheet.create({
+    MiddleButtonContainer: {
+        position: 'absolute',
+        top: -30,
+        left: '50%',
+        marginLeft: -30,
+        width: 60,
+        height: 60,
+    },
+    customButton: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: '#00D6FC',
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 6,
+        shadowColor: '#00D6FC',
+        shadowOpacity: 0.4,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 4,
+    },
+});
+
+export const iconStyles = StyleSheet.create({
+    iconStyle: {
+        width: 30,
+        height: 30,
+        resizeMode: 'contain',
+    },
+});

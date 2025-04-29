@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, FlatList, Image } from 'react-native';
-import styles from '../../styles'; 
+import { View, Text, FlatList, Image, StyleSheet, Dimensions } from 'react-native';
+
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 
 const WildlifeScreen = () => {
     const choateWildlifeData = [
@@ -23,7 +25,7 @@ const WildlifeScreen = () => {
     return (
         <View style={styles.wildLifeContainer}>
             <Text style={styles.paragraphTextWildlife}>Wildlife in Choate Pond</Text>
-      
+
             <FlatList
                 data={choateWildlifeData}
                 horizontal
@@ -32,9 +34,9 @@ const WildlifeScreen = () => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.card}>
-                        <Image 
-                            source={{ uri: item.imageUri }} 
-                            style={styles.smallImage} 
+                        <Image
+                            source={{ uri: item.imageUri }}
+                            style={styles.smallImage}
                         />
                         <Text style={styles.animalName}>{item.animalName}</Text>
                         <Text style={styles.scientificName}>{item.scientificName}</Text>
@@ -47,3 +49,53 @@ const WildlifeScreen = () => {
 };
 
 export default WildlifeScreen;
+
+const styles = StyleSheet.create({
+    //wildlife screen background
+    wildLifeContainer: {
+        flex: 1,
+        backgroundColor: '#2B2D35',
+        alignItems: 'center',
+        width: deviceWidth,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight / 200,
+        color: 'white',
+
+    },
+    //header for the wildlife page
+    paragraphTextWildlife: {
+        color: 'white',
+        fontSize: deviceHeight / 25,
+        marginTop: deviceHeight / 100,
+        marginBottom: deviceHeight / 100,
+        marginLeft: deviceWidth / 15,
+        marginRight: deviceWidth / 15,
+        textAlign: 'center',
+    },
+    //image on wildlife page
+    smallImage: {
+        width: 350,
+        height: 250,
+        borderRadius: 10,
+        margin: 10,
+    },
+    //animal name on wildlife page
+    animalName: {
+        color: 'white',
+        textAlign: 'center',
+        fontStyle: 'strong',
+    },
+    //scientific name on wildlife page
+    scientificName: {
+        marginTop: 2,
+        color: 'white',
+        textAlign: 'center',
+    },
+    //fun fact for wildlife page
+    funFact: {
+        marginTop: 2,
+        color: 'white',
+        textAlign: 'center',
+        width: 350,
+    },
+});

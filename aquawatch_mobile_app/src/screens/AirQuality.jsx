@@ -8,8 +8,8 @@ import {
     RefreshControl,
     TextInput,
     Alert,
+    Dimensions,
 } from 'react-native';
-import styles from '../../styles';  
 import * as Location from 'expo-location';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -96,6 +96,70 @@ const aqiBarStyles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: 'white',
+    },
+});
+
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
+
+const styles = StyleSheet.create({
+    //AIR QUALITY PAGE
+    airQualityContainer: {
+        flexGrow: 1,
+        backgroundColor: '#2B2D35',
+        alignItems: 'center',
+        width: deviceWidth,
+        padding: 10,
+        marginTop: deviceHeight / 200,
+        marginBottom: deviceHeight / 200,
+        paddingBottom: 100,
+    },
+    
+    loadingIndicator: {
+        marginTop: 20,
+    },
+    //Header text for air quality
+    airQualityHeader: {
+        color: 'white',
+        fontSize: deviceHeight / 25,
+        textAlign: 'center',
+        marginBottom: deviceHeight / 40,
+        fontWeight: 'bold',
+    },
+    //Text for air quality readings
+    airQualityText: {
+        color: '#FFFFFF',
+        textShadowColor: '#000000',  // Black shadow color
+        textShadowOffset: { width: 1, height: 1 },  // Adjust shadow offset
+        textShadowRadius: 2,  // Adjust shadow blur radius
+        fontSize: deviceHeight / 30,
+        textAlign: 'center',
+        marginTop: deviceHeight / 100,
+        marginBottom: deviceHeight / 100,
+        backgroundColor: '#4A6D7C',
+        padding: 10,
+        borderRadius: 15,
+        width: deviceWidth / 1.2,
+    }, 
+
+    currentLocationTitle: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: deviceHeight / 35,
+        width: deviceWidth / 1.4,
+        height: deviceHeight / 15,
+        marginTop: 15,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+
+    pickerContainer: {
+        marginBottom: 20,  
+        paddingHorizontal: 10,  
+        width: '100%', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        height: 100,  
     },
 });
 
