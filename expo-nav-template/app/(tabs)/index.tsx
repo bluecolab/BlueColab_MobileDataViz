@@ -1,22 +1,7 @@
-import { Stack } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+// app/(tabs)/index.tsx
+import { Redirect } from 'expo-router';
 
-import { ScreenContent } from '~/components/ScreenContent';
-
-export default function Home() {
-  return (
-    <>
-      <Stack.Screen options={{ title: 'Tab One' }} />
-      <View style={styles.container}>
-        <ScreenContent path="app/(tabs)/index.tsx" title="Tab One" />
-      </View>
-    </>
-  );
+export default function TabsIndex() {
+  // Redirect to the desired default tab
+  return <Redirect href="/home" />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-  },
-});

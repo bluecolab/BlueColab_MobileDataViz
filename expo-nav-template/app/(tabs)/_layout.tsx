@@ -12,6 +12,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen name="home" options={{ title: 'Home' }} />
+      <Tabs.Screen
+        name="feed"
+        options={{
           title: 'Tab One',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (

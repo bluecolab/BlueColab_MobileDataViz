@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-nav-template",
-    "slug": "expo-nav-template",
+    "name": "AquaWatch Mobile",
+    "slug": "AquaWatch Mobile",
     "version": "1.0.0",
 
     "scheme": "expo-nav-template",
@@ -35,7 +35,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
-    }
+      },
+      "package": "com.okaykenji.AquaWatch_Mobile"
+    },
+
+    "newArchEnabled": true
   }
 }
