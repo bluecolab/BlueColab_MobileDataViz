@@ -1,4 +1,3 @@
-// CurrentData.js
 import React, { useRef, useState } from 'react';
 import {
   View,
@@ -39,7 +38,7 @@ function CurrentData() {
   const pH = adaData?.pH;
   const turb = adaData?.Turb;
 
-  // ✅ Status and text color logic
+  //  Status and text color logic
   const getStatusAndColor = (name, value) => {
     if (isNaN(value)) return { label: 'NA', color: 'text-gray-500' };
 
@@ -98,7 +97,7 @@ function CurrentData() {
     Oxygen: 'Dissolved oxygen in water (mg/L). Essential for fish and other organisms.',
   };
 
-  // ✅ Widget with colored status label + flip info
+  //  Widget with colored status label + flip info
   const Widget = ({ name, value }) => {
     const numericValue = parseFloat(value);
     const { label, color } = getStatusAndColor(name, numericValue);
