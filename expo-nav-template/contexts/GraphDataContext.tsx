@@ -1,30 +1,45 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { DateTime } from 'luxon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useGetWaterData } from '@hooks';
+import { DateTime } from 'luxon';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
-const GraphDataContext = createContext(null);
-                            
-const GraphDataProvider = ({ children }) => {
+import useGetWaterData from '../hooks/useGetWaterData';
+
+const GraphDataContext = createContext({
+    data: undefined,
+    loading: false,
+    defaultLocation: undefined as string | undefined,
+    defaultTempUnit: undefined as string | undefined,
+    selectedLocationTemp: undefined as string | undefined,
+    changeLocation: (newLocation: string) => {},
+    setLoading: (newValue: boolean) => {},
+    setYear: (newValue: number | undefined) => {},
+    setMonth: (newValue: number | undefined) => {},
+    setEndDay: (newValue: number | undefined) => {},
+    setDefaultLocation: (newValue: string | undefined) => {},
+    changeUnit: (newUnit: string) => {},
+    setSelectedLocationTemp: (newValue: string | undefined) => {},
+});
+
+const GraphDataProvider = ({ children }: { children: React.ReactNode }) => {
     const { fetchData } = useGetWaterData();
 
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState();
+    const [loading, setLoading] = useState<boolean>(true);
 
-    const [year, setYear] = useState(null);
-    const [month, setMonth] = useState(null);
-    const [start_day, setStartDay] = useState(null);
-    const [end_day, setEndDay] = useState(null);
+    const [year, setYear] = useState<number>();
+    const [month, setMonth] = useState<number>();
+    const [start_day, setStartDay] = useState<number>();
+    const [end_day, setEndDay] = useState<number>();
 
-    const [defaultLocation, setDefaultLocation] = useState(null); // the saved location in settings
-    const [selectedLocation, setSelectedLocation] = useState(null); // if the user changed location. this is updated
-    const [defaultTempUnit, setDefaultTempUnit] = useState(null);
+    const [defaultLocation, setDefaultLocation] = useState<string>(); // the saved location in settings
+    const [selectedLocation, setSelectedLocation] = useState<string>(); // if the user changed location. this is updated
+    const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
 
-    const changeUnit = (newUnit) => {
-        const setStoredTempUnit  = async (value) => {
+    const changeUnit = (newUnit: string) => {
+        const setStoredTempUnit = async (value: string) => {
             try {
                 await AsyncStorage.setItem('default-temp-unit', value);
-            } catch(e) {
+            } catch (e) {
                 console.log(e);
             }
         };
@@ -32,25 +47,34 @@ const GraphDataProvider = ({ children }) => {
         setDefaultTempUnit(newUnit);
     };
 
-    const changeLocation = (newLocation) => {
-        const setStoredLocation  = async (value) => {
+    const changeLocation = (newLocation: string) => {
+        const setStoredLocation = async (value: string) => {
             try {
                 await AsyncStorage.setItem('default-location', value);
-            } catch(e) {
+            } catch (e) {
                 console.log(e);
             }
         };
-        setStoredLocation (newLocation);
+        setStoredLocation(newLocation);
         setDefaultLocation(newLocation);
     };
 
     useEffect(() => {
         setLoading(true);
-        setData([]);
+        setData(undefined);
         if (year && month && start_day && end_day && defaultLocation) {
-            fetchData(selectedLocation ?? defaultLocation, false, year, month, start_day, end_day, setData, setLoading );
+            fetchData(
+                selectedLocation ?? defaultLocation,
+                false,
+                year,
+                month,
+                start_day,
+                end_day,
+                setData,
+                setLoading
+            );
         }
-    }, [year, month, start_day, end_day, defaultLocation, selectedLocation]); 
+    }, [year, month, start_day, end_day, defaultLocation, selectedLocation]);
 
     useEffect(() => {
         const getStoredDefaultLocation = async () => {
@@ -107,8 +131,7 @@ const GraphDataProvider = ({ children }) => {
                 setDefaultLocation,
                 changeUnit,
                 setSelectedLocationTemp: setSelectedLocation,
-            }}
-        >
+            }}>
             {children}
         </GraphDataContext.Provider>
     );

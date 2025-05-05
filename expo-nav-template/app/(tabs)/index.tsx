@@ -2,6 +2,6 @@
 import { Redirect } from 'expo-router';
 
 export default function TabsIndex() {
-  // Redirect to the desired default tab
-  return <Redirect href="/home" />;
+    // Redirect to the home screen of the app
+    return <Redirect href="/home" />;
 }

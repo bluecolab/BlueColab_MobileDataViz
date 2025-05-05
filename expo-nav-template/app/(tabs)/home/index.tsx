@@ -1,11 +1,10 @@
 // app/(tabs)/home/index.tsx
-import { Link } from 'expo-router';
-import { View, Text, Button } from 'react-native';
+import { View, Text } from 'react-native';
 
 export default function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Welcome to the Home Tab!</Text>
-    </View>
-  );
+    return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text>Welcome to the Home Tab!</Text>
+        </View>
+    );
 }
