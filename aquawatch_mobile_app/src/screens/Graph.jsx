@@ -1,9 +1,13 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, ScrollView, FlatList, Dimensions } from 'react-native';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { View,  ScrollView, Dimensions } from 'react-native';
 import { WQIGauge, DataGraph, DropdownComponent } from '@components';
 import { useGraphData } from '@contexts';
 import { useLocationMetaProvider } from '@hooks';
 import { DateTime } from 'luxon';
+import Carousel, { Pagination } from 'react-native-reanimated-carousel';
+import {
+	useSharedValue,
+} from "react-native-reanimated";
 
 const getDaysInMonth = (month, year) => {
     // Create a moment object for the first day of the given month and year
@@ -16,10 +20,9 @@ function Graph() {
     const { parameterInfo, locationOptions, units } = useLocationMetaProvider();
     const unitMap = units[selectedLocationTemp ?? defaultLocation];
 
-    const [currentIndex, setCurrentIndex] = useState(0);
     const currentMonth = DateTime.now().month;
     const currentYear = DateTime.now().year;
-    
+
     const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
 
@@ -29,18 +32,21 @@ function Graph() {
 
     const { width } = Dimensions.get('window');
 
-    const handleScroll = event => {
-        const contentOffsetX = event.nativeEvent.contentOffset.x;
-        const index = Math.round(contentOffsetX / width);
-        setCurrentIndex(index);
-    };
+    const progress = useSharedValue(0);
 
-    const renderItem = useCallback(({ item }) => {
-        if (!defaultTempUnit && !defaultLocation)
-            return <Text>Loading...</Text>
-        return <DataGraph loading={loading} yAxisLabel={item.yAxisLabel} data={data} unit={item.unit} meta={item.meta} defaultTempUnit={defaultTempUnit} unitMap={unitMap} alternateName={item.alternateName ?? 'none'} />
-    }, [loading, data, defaultTempUnit, defaultLocation, unitMap]);
+	const ref = useRef(null);
 
+	const onPressPagination = (index) => {
+		ref.current?.scrollTo({
+			/**
+			 * Calculate the difference between the current index and the target index
+			 * to ensure that the carousel scrolls to the nearest index
+			 */
+			count: index - progress.value,
+			animated: true,
+		});
+	};
+ 
     const monthOptions = [
         { label: 'January', value: '1' },
         { label: 'February', value: '2' },
@@ -62,7 +68,7 @@ function Graph() {
         yearOptions.push({ label: `${year}`, value: year });
     }
 
-    const defaultLocationValue = locationOptions.find(option => option.label === (selectedLocationTemp ?? defaultLocation) )?.value || '';
+    const defaultLocationValue = locationOptions.find(option => option.label === (selectedLocationTemp ?? defaultLocation))?.value || '';
 
     const [selectedLocation, setSelectedLocation] = useState(defaultLocationValue);
 
@@ -119,39 +125,50 @@ function Graph() {
             </View>
         </View>
     ), [selectedLocation]);
-  
+
     return (
-        <View className="bg-defaultbackground dark:bg-defaultdarkbackground  pb-[100]">
+        <View className="bg-defaultbackground dark:bg-defaultdarkbackground ">
             <RenderTab />
 
-            <ScrollView contentContainerStyle={{ paddingBottom: 175 }}>
-                <FlatList
+            <ScrollView contentContainerStyle={{ paddingBottom: 300 }}>
+                <Carousel
+                	ref={ref}
+                    loop={true}
+                    width={width}
+                    onProgressChange={progress}
+                    height={370}
                     data={parameterInfo}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator
-                    keyExtractor={(item, index) => index.toString()}
-                    onMomentumScrollEnd={handleScroll}
-                    renderItem={renderItem}
-                    initialNumToRender={2}
-                    maxToRenderPerBatch={2}
-                    windowSize={3}
-                    removeClippedSubviews={true}
-                    getItemLayout={(data, index) => ({
-                        length: width,
-                        offset: width * index,
-                        index,
-                    })}
+                    scrollAnimationDuration={500}
+                    // onSnapToItem={index => setCurrentIndex(index)}
+                    renderItem={({ item }) => (
+                        <View style={{ width }}>
+                            <DataGraph
+                                loading={loading}
+                                yAxisLabel={item.yAxisLabel}
+                                data={data}
+                                unit={item.unit}
+                                meta={item.meta}
+                                defaultTempUnit={defaultTempUnit}
+                                unitMap={unitMap}
+                                alternateName={item.alternateName ?? 'none'}
+                            />
+                        </View>
+                    )}
+                    onConfigurePanGesture={(panGesture) => {
+                        panGesture.activeOffsetX([-10, 10])
+                    }}
                 />
 
-                <View className="flex-row justify-center my-default">
-                    {parameterInfo.map((_, index) => (
-                        <Text
-                            key={index}
-                            className={`w-2.5 h-2.5 rounded-full mx-1 ${currentIndex === index ? 'bg-blue-500' : 'bg-gray-400'}`}
-                        />
-                    ))}
-                </View>
+
+            <Pagination.Basic
+				progress={progress}
+				data={parameterInfo}
+				dotStyle={{ backgroundColor: "#262626" }}
+				activeDotStyle={{ backgroundColor: "#f1f1f1" }}
+				containerStyle={{ gap: 5, marginBottom: 10 }}
+				onPress={onPressPagination}
+			/>          
+
 
                 {(selectedLocationTemp ?? defaultLocation) === 'Choate Pond' ? <WQIGauge data={data} loading={loading} /> : <></>}
             </ScrollView>
