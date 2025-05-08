@@ -4,6 +4,22 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 import useGetWaterData from '../hooks/useGetWaterData';
 
+interface GraphDataContextType {
+    data: any[] | undefined;
+    loading: boolean;
+    defaultLocation?: string;
+    defaultTempUnit?: string;
+    selectedLocationTemp?: string;
+    changeLocation: (newLocation: string) => void;
+    setLoading: (newValue: boolean) => void;
+    setYear: (newValue: number | undefined) => void;
+    setMonth: (newValue: number | undefined) => void;
+    setEndDay: (newValue: number | undefined) => void;
+    setDefaultLocation: (newValue: string | undefined) => void;
+    changeUnit: (newUnit: string) => void;
+    setSelectedLocationTemp: (newValue: string | undefined) => void;
+}
+
 const GraphDataContext = createContext({
     data: undefined,
     loading: false,
@@ -18,7 +34,7 @@ const GraphDataContext = createContext({
     setDefaultLocation: (newValue: string | undefined) => {},
     changeUnit: (newUnit: string) => {},
     setSelectedLocationTemp: (newValue: string | undefined) => {},
-});
+} as GraphDataContextType);
 
 const GraphDataProvider = ({ children }: { children: React.ReactNode }) => {
     const { fetchData } = useGetWaterData();

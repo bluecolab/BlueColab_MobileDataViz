@@ -10,6 +10,7 @@ const ColorSchemeContext = createContext({
 });
 
 function ColorSchemeProvider({ children }: { children: React.ReactNode }) {
+    console.log(Appearance.getColorScheme());
     const { setColorScheme } = useColorScheme();
     const [isDark, setIsDark] = useState<boolean>(Appearance.getColorScheme() === 'dark');
     const [colorSchemeSys, setColorSchemeSys] = useState<string>('system');

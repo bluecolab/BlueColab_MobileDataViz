@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
 import { createContext, useContext, useState, useEffect } from 'react';
 
-import { useGraphData } from './GraphDataContext';
-import useGetWaterData from '../hooks/useGetWaterData';
+import { useGraphData } from '@/contexts/GraphDataContext';
+import useGetWaterData from '@/hooks/useGetWaterData';
 
 interface CurrentDataContextType {
     data: any[];
@@ -11,7 +11,12 @@ interface CurrentDataContextType {
     loadingCurrent?: boolean;
 }
 
-const CurrentDataContext = createContext<CurrentDataContextType | null>(null);
+const CurrentDataContext = createContext({
+    data: [] as any[],
+    defaultLocation: undefined as string | undefined,
+    defaultTempUnit: undefined as string | undefined,
+    loadingCurrent: false,
+} as CurrentDataContextType);
 
 const CurrentDataProvider = ({ children }: { children: React.ReactNode }) => {
     const { defaultLocation, defaultTempUnit } = useGraphData();

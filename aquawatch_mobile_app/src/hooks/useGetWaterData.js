@@ -59,7 +59,7 @@ export default function useGetWaterData() {
 
         switch (defaultLocation) {
             case 'Choate Pond':
-                baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Ada/';
+                baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Alan/';
                 query = isCurrentData
                     ? 'delta?days=1'
                     : `range?stream=false&start_date=${year}-${String(month).padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${String(month).padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00`;
@@ -78,7 +78,7 @@ export default function useGetWaterData() {
                     : `?sites=${stationIds[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json&parameterCd=00010,00301,00300,90860,00095,63680,00400`;
                 break;
             default:
-                baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Ada/';
+                baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Alan/';
                 query = isCurrentData
                     ? 'delta?days=1'
                     : `range?stream=false&start_date=${year}-${String(month).padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${String(month).padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00`;

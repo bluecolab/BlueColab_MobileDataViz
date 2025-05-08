@@ -2,14 +2,24 @@ import '../global.css';
 
 import { Stack } from 'expo-router';
 
+import ColorSchemeProvider from '@/contexts/ColorSchemeContext';
+import CurrentDataProvider from '@/contexts/CurrentDataContext';
+import GraphDataProvider from '@/contexts/GraphDataContext';
+
 export const unstable_settings = {
     initialRouteName: '(tabs)',
 };
 
 export default function RootLayout() {
     return (
-        <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
+        <GraphDataProvider>
+            <CurrentDataProvider>
+                <ColorSchemeProvider>
+                    <Stack>
+                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    </Stack>
+                </ColorSchemeProvider>
+            </CurrentDataProvider>
+        </GraphDataProvider>
     );
 }

@@ -1,6 +1,6 @@
 import axios, { isAxiosError } from 'axios';
 
-import useGetMetadata from './useGetMetadata';
+import useGetMetadata from '@/hooks/useGetMetadata';
 
 export default function useGetWaterData() {
     const { usgsParameterMappings, stationIds } = useGetMetadata();
