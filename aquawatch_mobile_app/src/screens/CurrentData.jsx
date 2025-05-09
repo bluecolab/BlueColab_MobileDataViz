@@ -137,8 +137,15 @@ function CurrentData() {
               >
                 <FontAwesome name="info-circle" size={20} color="gray" />
               </TouchableOpacity>
-
-              <Text className="text-md font-bold text-center">{name}</Text>
+            
+              {/* -13px aligns water temperature with others */}
+              <Text
+                className={`text-md font-bold text-center ${
+                  name === 'Water Temperature' ? 'mt-[-13px]' : '' 
+                }`}
+              >
+                {name}
+              </Text>
               <View className="mt-4 items-center">
                 <Text className="text-base">{value}</Text>
                 <Text className={`text-sm italic ${color}`}>{label}</Text>
@@ -205,5 +212,3 @@ function CurrentData() {
 }
 
 export default CurrentData;
-
-
