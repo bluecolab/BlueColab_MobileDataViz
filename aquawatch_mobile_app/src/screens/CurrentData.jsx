@@ -8,40 +8,37 @@ import {
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useCurrentData } from '@contexts';
-// import { useLocationMetaProvider } from '@hooks';
+
+// ← adjust this path if your WQIGauge is elsewhere
+import WQIGauge from '../components/WQIGauge';
 
 function CurrentData() {
   const { data, defaultLocation, defaultTempUnit, loading } =
     useCurrentData();
-  // const { units } = useLocationMetaProvider();
 
+  // grab the latest sample
   const last = data[data.length - 1];
 
   if (loading) return <Text>Loading...</Text>;
+  if (!last) return <Text>No data available</Text>;
 
-  if (data.length === 0) {
-    return <Text>No data available</Text>;
-  }
-
-  const adaData = last;
-  // const adaTimestamp = adaData?.timestamp;
-  const temp = last?.Temp;
+  // convert temperature if needed
+  const temp = last.Temp;
   const waterTemp =
-    temp === 'NA'
-      ? 'NA'
-      : (defaultTempUnit?.trim() ?? 'Fahrenheit') === 'Fahrenheit'
+    (defaultTempUnit?.trim() ?? 'Fahrenheit') === 'Fahrenheit'
       ? temp * (9 / 5) + 32
       : temp;
-  const cond = adaData?.Cond;
-  const dOpct = adaData?.DOpct;
-  const sal = adaData?.Sal;
-  const pH = adaData?.pH;
-  const turb = adaData?.Turb;
 
-  //  Status and text color logic
+  // sensor values
+  const cond = last.Cond;
+  const sal = last.Sal;
+  const pH = last.pH;
+  const turb = last.Turb;
+  const dOpct = last.DOpct;
+
+  // status & color logic
   const getStatusAndColor = (name, value) => {
     if (isNaN(value)) return { label: 'NA', color: 'text-gray-500' };
-
     switch (name) {
       case 'Water Temperature':
         if (value < 77) return { label: 'Good', color: 'text-green-600' };
@@ -50,8 +47,9 @@ function CurrentData() {
         else return { label: 'Bad', color: 'text-red-600' };
 
       case 'Conductivity':
-        if (value < 53999) return { label: 'Good', color: 'text-green-600' };
-        else return { label: 'Bad', color: 'text-red-600' };
+        return value < 53999
+          ? { label: 'Good', color: 'text-green-600' }
+          : { label: 'Bad', color: 'text-red-600' };
 
       case 'Salinity':
         if (value < 4) return { label: 'Good', color: 'text-green-600' };
@@ -83,7 +81,7 @@ function CurrentData() {
     }
   };
 
-  // metric descriptions for info flip
+  // flip‐card descriptions
   const DESCRIPTIONS = {
     'Water Temperature':
       'The temperature of the water, in °F or °C. Affects oxygen solubility and aquatic life metabolism.',
@@ -97,12 +95,11 @@ function CurrentData() {
     Oxygen: 'Dissolved oxygen in water (mg/L). Essential for fish and other organisms.',
   };
 
-  //  Widget with colored status label + flip info
+  // your existing 6‐widget flip‐card
   const Widget = ({ name, value }) => {
     const numericValue = parseFloat(value);
     const { label, color } = getStatusAndColor(name, numericValue);
 
-    // flip animation setup
     const anim = useRef(new Animated.Value(0)).current;
     const [flipped, setFlipped] = useState(false);
 
@@ -126,16 +123,14 @@ function CurrentData() {
     return (
       <View className="w-1/2 p-4">
         <TouchableOpacity activeOpacity={0.9} onPress={doFlip}>
-          {/* FRONT SIDE */}
+          {/* FRONT */}
           <Animated.View
             style={{
               backfaceVisibility: 'hidden',
               transform: [{ perspective: 1000 }, { rotateY: frontRotate }],
             }}
           >
-            {/* entire card is relative so icon can sit */}
             <View className="relative p-6 h-[120px] bg-blue-100 rounded-3xl">
-              {/* absolutely positioned info icon */}
               <TouchableOpacity
                 onPress={doFlip}
                 className="absolute top-3 right-3"
@@ -143,10 +138,7 @@ function CurrentData() {
                 <FontAwesome name="info-circle" size={20} color="gray" />
               </TouchableOpacity>
 
-              {/* centered title */}
               <Text className="text-md font-bold text-center">{name}</Text>
-
-              {/* value + status */}
               <View className="mt-4 items-center">
                 <Text className="text-base">{value}</Text>
                 <Text className={`text-sm italic ${color}`}>{label}</Text>
@@ -154,7 +146,7 @@ function CurrentData() {
             </View>
           </Animated.View>
 
-          {/* BACK SIDE */}
+          {/* BACK */}
           <Animated.View
             style={{
               position: 'absolute',
@@ -166,7 +158,6 @@ function CurrentData() {
               transform: [{ perspective: 1000 }, { rotateY: backRotate }],
             }}
           >
-            {/* back also blue */}
             <View className="p-4 h-[120px] bg-blue-100 rounded-3xl justify-center">
               <Text className="font-bold mb-1 text-center">{name}</Text>
               <Text className="text-sm text-center">
@@ -181,11 +172,14 @@ function CurrentData() {
 
   return (
     <ScrollView className="bg-defaultbackground dark:bg-defaultdarkbackground">
+      {/* — Title — */}
       <View>
         <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
           {defaultLocation} Data
         </Text>
       </View>
+
+      {/* — Your 6 Widgets — */}
       <View className="flex flex-row flex-wrap">
         <Widget
           name="Water Temperature"
@@ -197,8 +191,19 @@ function CurrentData() {
         <Widget name="Turbidity" value={turb?.toFixed(2) ?? 'NA'} />
         <Widget name="Oxygen" value={dOpct?.toFixed(2) ?? 'NA'} />
       </View>
+
+      {/* — Current‐Data WQI Gauge — */}
+      <View className="mt-6 px-4 items-center">
+        <WQIGauge
+          loading={loading}
+          data={[last]}   // run WQI on the latest point
+          size={180}     // adjust as you like
+        />
+      </View>
     </ScrollView>
   );
 }
 
 export default CurrentData;
+
+
