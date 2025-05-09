@@ -1,15 +1,15 @@
+import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import { VictoryChart, VictoryArea, VictoryLine, VictoryAxis, VictoryLabel } from 'victory-native';
 
-import LinkComp from '@/components/LinkComp';
-import EmptyGraph from '@/components/visualizations/EmptyGraph';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import EmptyGraph from './EmptyGraph';
+import LinkComp from '../LinkComp';
 
 const { width } = Dimensions.get('window');
 
-function DataGraph({
+function MonthlyDataGraph({
     loading,
     yAxisLabel,
     data,
@@ -308,4 +308,4 @@ function DataGraph({
     );
 }
 
-export default DataGraph;
+export default MonthlyDataGraph;

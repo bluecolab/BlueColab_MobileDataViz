@@ -1,0 +1,68 @@
+{
+    "AnimatedPath": [Function AnimatedPath
+    ],
+    "Area": [Function Area
+    ],
+    "AreaRange": [Function AreaRange
+    ],
+    "Bar": [Function Bar
+    ],
+    "BarGroup": [Function BarGroup
+    ],
+    "CartesianAxis": [Function CartesianAxis
+    ],
+    "CartesianChart": [Function CartesianChart
+    ],
+    "Line": [Function Line
+    ],
+    "Pie": {
+        "Chart": [Function PieChart
+        ],
+        "Label": [Function PieLabel
+        ],
+        "Slice": [Function PieSlice
+        ],
+        "SliceAngularInset": [Function PieSliceAngularInset
+        ]
+    },
+    "PolarChart": [Function PolarChart
+    ],
+    "Scatter": [Function Scatter
+    ],
+    "StackedArea": [Function StackedArea
+    ],
+    "StackedBar": [Function StackedBar
+    ],
+    "getTransformComponents": [Function transformTs1
+    ],
+    "invert4": [Function transformTs5
+    ],
+    "setScale": [Function transformTs2
+    ],
+    "setTranslate": [Function transformTs3
+    ],
+    "useAnimatedPath": [Function useAnimatedPath
+    ],
+    "useAreaPath": [Function useAreaPath
+    ],
+    "useBarGroupPaths": [Function useBarGroupPaths
+    ],
+    "useBarPath": [Function useBarPath
+    ],
+    "useChartPressState": [Function useChartPressState
+    ],
+    "useChartTransformState": [Function useChartTransformState
+    ],
+    "useLinePath": [Function useLinePath
+    ],
+    "usePrevious": [Function usePrevious
+    ],
+    "useSliceAngularInsetPath": [Function useSliceAngularInsetPath
+    ],
+    "useSlicePath": [Function useSlicePath
+    ],
+    "useStackedAreaPaths": [Function useStackedAreaPaths
+    ],
+    "useStackedBarPaths": [Function useStackedBarPaths
+    ]
+}

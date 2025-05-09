@@ -41,11 +41,11 @@
             "ref": [
                 {
                     "label": "USGS",
-                    "url": "https://www.usgs.gov/special-topics/water-science-school/science/dissolved-oxygen-and-water#overview"
+                    "link": "https://www.usgs.gov/special-topics/water-science-school/science/dissolved-oxygen-and-water#overview"
                 },
                 {
                     "label": "EPA",
-                    "url": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-dissolved-oxygen"
+                    "link": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-dissolved-oxygen"
                 }
             ]
         }
@@ -59,11 +59,11 @@
             "ref": [
                 {
                     "label": "USGS",
-                    "url": "https://www.usgs.gov/special-topics/water-science-school/science/conductivity-electrical-conductance-and-water#overview"
+                    "link": "https://www.usgs.gov/special-topics/water-science-school/science/conductivity-electrical-conductance-and-water#overview"
                 },
                 {
                     "label": "EPA",
-                    "url": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-conductivity"
+                    "link": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-conductivity"
                 }
             ]
         }
@@ -77,11 +77,11 @@
             "ref": [
                 {
                     "label": "USGS",
-                    "url": "https://www.usgs.gov/special-topics/water-science-school/science/saline-water-and-salinity#overview"
+                    "link": "https://www.usgs.gov/special-topics/water-science-school/science/saline-water-and-salinity#overview"
                 },
                 {
                     "label": "EPA",
-                    "url": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-salinity"
+                    "link": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-salinity"
                 }
             ]
         }

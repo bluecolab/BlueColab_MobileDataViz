@@ -6,11 +6,12 @@ import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 
+import CustomDropdown from '@/components/CustomDropdown';
+import MonthlyDataGraph from '@/components/visualizations/MonthlyDataGraph';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import useGetMetadata from '@/hooks/useGetMetadata';
 
 // import { WQIGauge, DataGraph, CustomDropdown } from '@components';
-import CustomDropdown from '@/components/CustomDropdown';
 
 const getDaysInMonth = (month: number, year: number) => {
     // Create a moment object for the first day of the given month and year
@@ -174,7 +175,7 @@ export default function HistoricData() {
                         // onSnapToItem={index => setCurrentIndex(index)}
                         renderItem={({ item }) => (
                             <View style={{ width }}>
-                                <DataGraph
+                                <MonthlyDataGraph
                                     loading={loading}
                                     yAxisLabel={item.yAxisLabel}
                                     data={data}
@@ -201,7 +202,8 @@ export default function HistoricData() {
                     />
 
                     {(selectedLocationTemp ?? defaultLocation) === 'Choate Pond' ? (
-                        <WQIGauge data={data} loading={loading} />
+                        // <WQIGauge data={data} loading={loading} />
+                        <></>
                     ) : (
                         <></>
                     )}

@@ -95,7 +95,7 @@ export default function HomeScreen() {
                             imageSource={require('@/assets/homescreen/IMG_9274.jpg')} // image source als identify URl all u gotta do is "http//something.com" for local images use {require("./something")}
                             title="Historic Data"
                             buttonText={`${lastMonth} Data`}
-                            route="../home/blog"
+                            route="../home/historicData"
                             isMain
                         />
                     </View>
