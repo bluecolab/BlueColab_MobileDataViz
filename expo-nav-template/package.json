@@ -1,0 +1,80 @@
+{
+  "name": "aquawatchmobile",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "scripts": {
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "start": "expo start",
+    "prebuild": "expo prebuild",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
+    "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
+    "web": "expo start --web"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+          "react-native-element-dropdown",
+          "moment",
+          "react-native-orientation-locker",
+          "moment",
+          "react-native-navigation-bar",
+          "react-navigation",
+          "react-navigation-stack",
+          "tailwindcss",
+          "luxon",
+          "react-native-vector-icons"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^14.0.0",
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@react-navigation/native": "^7.0.3",
+    "axios": "^1.9.0",
+    "expo": "~53.0.8",
+    "expo-constants": "~17.1.4",
+    "expo-linking": "~7.1.4",
+    "expo-router": "~5.0.6",
+    "expo-status-bar": "~2.2.3",
+    "expo-system-ui": "~5.0.6",
+    "expo-web-browser": "~14.1.6",
+    "luxon": "^3.6.1",
+    "nativewind": "latest",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.2",
+    "react-native-element-dropdown": "^2.12.4",
+    "react-native-gesture-handler": "~2.24.0",
+    "react-native-picker-select": "^9.3.1",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-reanimated-carousel": "^4.0.2",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.10.0",
+    "react-native-vector-icons": "^10.2.0",
+    "react-native-web": "^0.20.0",
+    "expo-linear-gradient": "~14.1.4",
+    "react-native-webview": "13.13.5",
+    "expo-location": "~18.1.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/luxon": "^3.6.2",
+    "@types/react": "~19.0.10",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "eslint": "^8.57.0",
+    "eslint-config-universe": "^12.0.1",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "tailwindcss": "^3.4.0",
+    "typescript": "~5.8.3"
+  },
+  "eslintConfig": {
+    "extends": "universe/native",
+    "root": true
+  },
+  "private": false
+}
