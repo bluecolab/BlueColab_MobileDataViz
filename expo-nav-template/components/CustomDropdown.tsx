@@ -69,7 +69,7 @@ export default function CustomDropdown({
                 labelField="label"
                 valueField="value"
                 placeholder={!isFocus ? 'Select item' : '...'}
-                value={value}
+                value={value.toString()}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={(item) => {

@@ -7,9 +7,10 @@ import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 import CustomDropdown from '@/components/CustomDropdown';
-import MonthlyDataGraph from '@/components/visualizations/MonthlyDataGraph';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import useGetMetadata from '@/hooks/useGetMetadata';
+import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
+import { WQICard } from '@/components/visualizations/WQI/WQICard';
 
 // import { WQIGauge, DataGraph, CustomDropdown } from '@components';
 
@@ -163,7 +164,7 @@ export default function HistoricData() {
             <View className="bg-defaultbackground dark:bg-defaultdarkbackground ">
                 <RenderTab />
 
-                <ScrollView contentContainerStyle={{ paddingBottom: 300 }}>
+                <ScrollView contentContainerStyle={{ paddingBottom: 200 }}>
                     <Carousel
                         ref={ref}
                         loop
@@ -175,7 +176,7 @@ export default function HistoricData() {
                         // onSnapToItem={index => setCurrentIndex(index)}
                         renderItem={({ item }) => (
                             <View style={{ width }}>
-                                <MonthlyDataGraph
+                                <MonthlyDataCard
                                     loading={loading}
                                     yAxisLabel={item.yAxisLabel}
                                     data={data}
@@ -184,6 +185,7 @@ export default function HistoricData() {
                                     defaultTempUnit={defaultTempUnit}
                                     unitMap={unitMap}
                                     alternateName={item.alternateName ?? 'none'}
+                                    selectedMonth={monthOptions.find(option => option.value === selectedMonth.toString())?.label || "oh no"}
                                 />
                             </View>
                         )}
@@ -202,8 +204,7 @@ export default function HistoricData() {
                     />
 
                     {(selectedLocationTemp ?? defaultLocation) === 'Choate Pond' ? (
-                        // <WQIGauge data={data} loading={loading} />
-                        <></>
+                        <WQICard data={data} loading={loading} />
                     ) : (
                         <></>
                     )}

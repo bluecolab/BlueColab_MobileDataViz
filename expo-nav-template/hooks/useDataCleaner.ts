@@ -12,6 +12,7 @@ export default function useDataCleaner() {
                 overallMax: 0,
                 overallAvg: 0,
                 tickValues: [],
+                error: data?.error
             };
         }
         interface GroupedData {
@@ -31,16 +32,9 @@ export default function useDataCleaner() {
             return acc;
         }, {});
 
-        interface DailySummaryType {
-            day: Date;
-            avg: number | undefined;
-            min: number | undefined;
-            max: number | undefined;
-        }
-
         const dailySummary = Object.keys(groupedData).map(
             (date): DailySummaryType => ({
-                day: new Date(date),
+                day: (new Date(date)).getDate(),
                 avg: groupedData[date].reduce((sum, v) => sum + v, 0) / groupedData[date].length,
                 min: Math.min(...groupedData[date]),
                 max: Math.max(...groupedData[date]),
@@ -75,7 +69,83 @@ export default function useDataCleaner() {
             overallAvg,
             tickValues,
         };
+
     };
 
-    return { clean };
+    type SensorData = {
+        Cond: number;
+        DOpct: number;
+        Sal: number;
+        Temp: number;
+        Turb: number;
+        pH: number;
+    };
+
+    type SensorAverages = {
+        Cond: number;
+        DOpct: number;
+        Sal: number;
+        Temp: number;
+        Turb: number;
+        pH: number;
+    };
+
+    const averageSensors = (data: SensorData[]): SensorAverages =>
+        data.reduce<SensorAverages>(
+            (acc, { Cond, DOpct, Sal, Temp, Turb, pH }) => {
+                acc.Cond += Cond;
+                acc.DOpct += DOpct;
+                acc.Sal += Sal;
+                acc.Temp += Temp;
+                acc.Turb += Turb;
+                acc.pH += pH;
+                return acc;
+            },
+            { Cond: 0, DOpct: 0, Sal: 0, Temp: 0, Turb: 0, pH: 0 } // Initial accumulator
+        );
+
+    const calculateWQI = (data: SensorData[], loading: boolean): number => {
+        let score = 0;
+
+        if (!loading && data?.length >= 1) {
+            const const_dopct = 0.34;
+            const const_ph = 0.22;
+            const const_temp = 0.2;
+            const const_cond = 0.08;
+            const const_turb = 0.16;
+
+            // Get averaged sensor data
+            const sensorAverages = averageSensors(data);
+
+            // Normalize sensor values
+            Object.keys(sensorAverages).forEach((sensor) => {
+                sensorAverages[sensor as keyof SensorAverages] /= data.length;
+            });
+
+            // Apply weights
+            const result = {
+                DOpct: sensorAverages.DOpct * const_dopct,
+                pH: sensorAverages.pH * const_ph,
+                Temp: sensorAverages.Temp * const_temp,
+                Cond: sensorAverages.Cond * const_cond,
+                Turb: sensorAverages.Turb * const_turb,
+            };
+
+            // Compute final score
+            score = Math.round(Object.values(result).reduce((acc, value) => acc + value, 0));
+        }
+
+        return score;
+    };
+
+
+    return { clean, calculateWQI };
+}
+
+export interface DailySummaryType {
+    [key: string]: unknown;
+    day: number;
+    avg: number | undefined;
+    min: number | undefined;
+    max: number | undefined;
 }

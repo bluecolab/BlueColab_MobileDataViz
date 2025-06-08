@@ -1,0 +1,93 @@
+import { View, Text } from "react-native";
+import { AreaRange, CartesianChart, Line } from "victory-native";
+import { DailySummaryType } from "@/hooks/useDataCleaner";
+import roboto from '@/assets/fonts/roboto.ttf';
+import { useFont } from "@shopify/react-native-skia";
+
+
+const getOrdinalSuffix = (num: number): string => {
+  const lastDigit = num % 10;
+  const lastTwoDigits = num % 100;
+
+  if ([11, 12, 13].includes(lastTwoDigits)) {
+    return `${num}th`; // Special case for 11th, 12th, and 13th
+  }
+
+  const suffixMap: Record<number, string> = {
+    1: "st",
+    2: "nd",
+    3: "rd",
+  };
+
+  return `${num}${suffixMap[lastDigit] || "th"}`;
+};
+
+
+interface MonthlyDataCardFrontProp {
+    dailySummary: DailySummaryType[];
+    error: string,
+    month: string
+}
+
+export function MonthlyDataCardFront({
+    dailySummary,
+    error,
+    month
+}: MonthlyDataCardFrontProp
+) {
+    const font = useFont(roboto, 12);
+
+    if (dailySummary.length == 0 || error) {
+        <View className="h-full rounded-3xl bg-white px-2 dark:bg-gray-700">
+            <Text>Oops there was an error!</Text>
+        </View>
+    }
+
+    return (
+        <View className="h-full rounded-3xl bg-white px-2 dark:bg-gray-700">
+            {/* Bottom-Centered Text */}
+            <Text className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center">
+                {month}
+            </Text>
+            <CartesianChart
+                data={dailySummary}
+                xKey="day"
+                yKeys={["avg", "min", "max"]}
+                xAxis={{
+                    font,
+                    tickCount: 5,
+                    lineWidth: 0,
+                    formatXLabel: (label: any) => { return getOrdinalSuffix(label) } 
+                }}
+                yAxis={[
+                    {
+                        font,
+                    },
+                ]}
+                frame={
+                    {
+                        lineWidth:  {top: 0, bottom: 2, left: 2, right: 0}
+                    }
+                }
+                padding={{ left: 0, bottom: 20, top: 5, right: 5 }}
+            >
+                {({ points }) => (
+                    <>
+                        <AreaRange
+                            upperPoints={points.max}
+                            lowerPoints={points.min}
+                            color="rgba(100, 100, 255, 0.2)"
+                            animate={{ type: "timing" }}
+                        />
+                        <Line
+                            points={points.avg}
+                            color="blue"
+                            strokeWidth={2}
+                            animate={{ type: "timing" }}
+                        />
+                    </>
+                )}
+            </CartesianChart>
+        </View>
+    )
+}

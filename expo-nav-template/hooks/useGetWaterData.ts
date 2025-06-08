@@ -117,6 +117,7 @@ export default function useGetWaterData() {
 
             if (!paramName) return; // Skip unneeded parameters
 
+            // Extracts array containing all values for selected parameter
             const valuesList =
                 series.values[0].value.length > 0
                     ? series.values[0].value
@@ -126,7 +127,7 @@ export default function useGetWaterData() {
                 const timestamp = entry.dateTime;
                 const value = parseFloat(entry.value);
 
-                let existingEntry = parsedData.find((data) => data.timestamp === timestamp);
+                let existingEntry = parsedData.find((data) => data.timestamp === timestamp)
 
                 if (!existingEntry) {
                     existingEntry = {
@@ -135,6 +136,7 @@ export default function useGetWaterData() {
                     if (paramName in existingEntry) {
                         existingEntry[paramName as ParameterName] = value;
                     }
+                    parsedData.push(existingEntry);
                 }
                 existingEntry[paramName as ParameterName] = value;
             });
@@ -156,7 +158,7 @@ export default function useGetWaterData() {
         let query = '';
         switch (defaultLocation) {
             case 'Choate Pond':
-                baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Ada/';
+                baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Alan/';
                 query = isCurrentData
                     ? 'delta?days=1'
                     : `range?stream=false&start_date=${year}-${month.toString().padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month.toString().padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00`;
@@ -175,7 +177,7 @@ export default function useGetWaterData() {
                     : `?sites=${stationIds[defaultLocation] ?? '01376269'}&startDT=${year}-${month}-${start_day}&endDT=${year}-${month}-${end_day}&format=json&parameterCd=00010,00301,00300,90860,00095,63680,00400`;
                 break;
             default:
-                baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Ada/';
+                baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Alan/';
                 query = isCurrentData
                     ? 'delta?days=1'
                     : `range?stream=false&start_date=${year}-${month.toString().padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month.toString().padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00`;
