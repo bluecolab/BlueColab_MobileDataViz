@@ -36,7 +36,7 @@ const GraphDataContext = createContext({
     setSelectedLocationTemp: (newValue: string | undefined) => {},
 } as GraphDataContextType);
 
-const GraphDataProvider = ({ children }: { children: React.ReactNode }) => {
+export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
     const { fetchData } = useGetWaterData();
 
     const [data, setData] = useState();
@@ -152,7 +152,5 @@ const GraphDataProvider = ({ children }: { children: React.ReactNode }) => {
         </GraphDataContext.Provider>
     );
 };
-
-export default GraphDataProvider;
 
 export const useGraphData = () => useContext(GraphDataContext);

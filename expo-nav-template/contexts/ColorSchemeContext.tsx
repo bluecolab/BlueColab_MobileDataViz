@@ -9,7 +9,7 @@ const ColorSchemeContext = createContext({
     changeColor: (newColorScheme: ColorScheme) => {},
 });
 
-function ColorSchemeProvider({ children }: { children: React.ReactNode }) {
+export default function ColorSchemeProvider({ children }: { children: React.ReactNode }) {
     console.log(Appearance.getColorScheme());
     const { setColorScheme } = useColorScheme();
     const [isDark, setIsDark] = useState<boolean>(Appearance.getColorScheme() === 'dark');
@@ -77,8 +77,6 @@ function ColorSchemeProvider({ children }: { children: React.ReactNode }) {
         </ColorSchemeContext.Provider>
     );
 }
-
-export default ColorSchemeProvider;
 
 export const useIsDark = () => useContext(ColorSchemeContext);
 

@@ -146,68 +146,14 @@ function MonthlyDataGraph({
                             }}>
                             <View className="h-full rounded-3xl bg-white px-2 dark:bg-gray-700">
                                 {loading ? (
-                                    <EmptyGraph />
+                                    <>Eggs</>
                                 ) : data?.error ? (
-                                    <EmptyGraph text={data?.error} />
+                                    <>Eggs</>
                                 ) : !Array.isArray(data) ? (
-                                    <EmptyGraph text="No data :(" />
+                                    <>Eggs</>
                                 ) : chartData.length ? (
-                                    <VictoryChart
-                                        padding={{ left: 60, top: 20, right: 50, bottom: 50 }}>
-                                        <VictoryAxis
-                                            label="Time"
-                                            tickValues={tickValues}
-                                            tickFormat={(t) =>
-                                                `${t ? t.getMonth() + 1 : ''}/${t ? t.getDate() : ''}`
-                                            }
-                                            style={{
-                                                axis: { stroke: isDark ? '#fff' : '#000' },
-                                                axisLabel: { fill: isDark ? '#fff' : '#000' },
-                                                tickLabels: {
-                                                    fontSize: 12,
-                                                    padding: 5,
-                                                    fill: isDark ? '#fff' : '#000',
-                                                },
-                                            }}
-                                        />
-                                        <VictoryAxis
-                                            dependentAxis
-                                            label={yAxisLabel}
-                                            style={{
-                                                axis: { stroke: isDark ? '#fff' : '#000' },
-                                                axisLabel: { fill: isDark ? '#fff' : '#000' },
-                                                tickLabels: { fill: isDark ? '#fff' : '#000' },
-                                            }}
-                                            axisLabelComponent={
-                                                <VictoryLabel dy={-20} angle={270} />
-                                            }
-                                        />
-                                        <VictoryArea
-                                            data={chartData}
-                                            x="day"
-                                            y0="y0"
-                                            y="y"
-                                            style={{
-                                                data: {
-                                                    fill: isDark
-                                                        ? 'rgba(73, 146, 255, 0.95)'
-                                                        : 'rgba(0, 100, 255, 0.4)',
-                                                },
-                                            }}
-                                        />
-                                        <VictoryLine
-                                            data={chartData}
-                                            x="day"
-                                            y="avg"
-                                            style={{
-                                                data: {
-                                                    stroke: isDark
-                                                        ? 'rgb(0, 0, 138)'
-                                                        : 'rgb(0, 0, 255)',
-                                                },
-                                            }}
-                                        />
-                                    </VictoryChart>
+                                    
+                                    <Text></Text>
                                 ) : (
                                     <EmptyGraph text="No data for parameter at this month." />
                                 )}

@@ -18,7 +18,7 @@ const CurrentDataContext = createContext({
     loadingCurrent: false,
 } as CurrentDataContextType);
 
-const CurrentDataProvider = ({ children }: { children: React.ReactNode }) => {
+export default function CurrentDataProvider({ children }: { children: React.ReactNode }) {
     const { defaultLocation, defaultTempUnit } = useGraphData();
     const { fetchData } = useGetWaterData();
 
@@ -53,7 +53,5 @@ const CurrentDataProvider = ({ children }: { children: React.ReactNode }) => {
         </CurrentDataContext.Provider>
     );
 };
-
-export default CurrentDataProvider;
 
 export const useCurrentData = () => useContext(CurrentDataContext);
