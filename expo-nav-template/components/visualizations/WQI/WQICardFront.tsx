@@ -1,8 +1,7 @@
 import { View, Text } from "react-native";
 import { PolarChart, Pie } from "victory-native";
 import useDataCleaner from "@/hooks/useDataCleaner";
-// import { Pie, PolarChart } from "victory-native";
-
+import { useIsDark } from "@/contexts/ColorSchemeContext";
 
 const getColor = (percentage: number) =>
   percentage >= 0 && percentage < 25 ? "darkred" :
@@ -19,6 +18,7 @@ interface WQICardFront {
 
 export default function WQICardFront({data, loading} : WQICardFront) {
   const {  calculateWQI } = useDataCleaner();
+  const { isDark } = useIsDark();
 
 
   const percentage = calculateWQI(data, loading);
@@ -38,7 +38,7 @@ export default function WQICardFront({data, loading} : WQICardFront) {
   return (
     <View style={{ height: 200 }}>
       <View className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Text className="text-3xl font-bold text-black">{percentage}%</Text>
+        <Text className="text-3xl font-bold text-black dark:text-white">{percentage}%</Text>
       </View>
 
       <PolarChart
@@ -55,7 +55,7 @@ export default function WQICardFront({data, loading} : WQICardFront) {
               <Pie.SliceAngularInset
                 angularInset={{
                   angularStrokeWidth: 5,
-                  angularStrokeColor: "white", // TODO: Fix to Background color for the gaps
+                  angularStrokeColor: isDark ? "#374151":  "white", // TODO: Fix to Background color for the gaps
                 }}
               />
       

@@ -1,6 +1,7 @@
 // app/(tabs)/home/wildlife.tsx
 import { Stack } from 'expo-router';
 import { View, Text, FlatList, Image, StyleSheet, Dimensions } from 'react-native';
+import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -10,6 +11,7 @@ const deviceWidth = Dimensions.get('window').width;
  * @description The wildlife screen of the app. It contains a list of wildlife data.
  */
 export default function Wildlife() {
+    const { isDark } = useIsDark();
     const choateWildlifeData = [
         {
             animalName: 'Largemouth Bass',
@@ -34,6 +36,10 @@ export default function Wildlife() {
             <Stack.Screen
                 options={{
                     headerTitle: 'Wildlife',
+                    headerStyle: {
+                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                    },
+                    headerTintColor: isDark ? 'white' : 'black'
                 }}
             />
             <View style={styles.wildLifeContainer}>

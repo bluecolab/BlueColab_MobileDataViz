@@ -73,6 +73,11 @@ export default function HomeScreen() {
             <Stack.Screen
                 options={{
                     headerTitle: 'Home',
+                    headerStyle: {
+                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                    },
+                    headerTintColor: isDark ? 'white' : 'black',
+                    headerTitleStyle: { fontSize: 20, fontWeight: 'bold' }, 
                 }}
             />
             <View className="h-full bg-defaultbackground dark:bg-defaultdarkbackground">

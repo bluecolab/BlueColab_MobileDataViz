@@ -1,17 +1,23 @@
 // /app/(tabs)/home/story.tsx
 import { Stack } from 'expo-router';
 import { View, Text, ScrollView, Image } from 'react-native';
+import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 /**
  * @returns {JSX.Element}
  * @description This component displays the story of Blue CoLab, including its mission and approach to water contamination risks.
  */
 export default function Story() {
+    const { isDark } = useIsDark();
     return (
         <>
             <Stack.Screen
                 options={{
                     headerTitle: 'Our Story',
+                    headerStyle: {
+                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                    },
+                    headerTintColor: isDark ? 'white' : 'black'
                 }}
             />
             <ScrollView className="bg-gray-100 p-5 dark:bg-gray-900">

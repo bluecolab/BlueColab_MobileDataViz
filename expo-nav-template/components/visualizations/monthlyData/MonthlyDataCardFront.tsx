@@ -3,6 +3,8 @@ import { AreaRange, CartesianChart, Line } from "victory-native";
 import { DailySummaryType } from "@/hooks/useDataCleaner";
 import roboto from '@/assets/fonts/roboto.ttf';
 import { useFont } from "@shopify/react-native-skia";
+import { useEffect, useState } from "react";
+import { useIsDark } from "@/contexts/ColorSchemeContext";
 
 
 const getOrdinalSuffix = (num: number): string => {
@@ -35,7 +37,19 @@ export function MonthlyDataCardFront({
     month
 }: MonthlyDataCardFrontProp
 ) {
+    const { isDark } = useIsDark();
     const font = useFont(roboto, 12);
+    const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+    useEffect(() => {
+        if (font) {
+            setIsFontLoaded(true);
+        }
+    }, [font]);
+
+    if (!isFontLoaded) {
+        return <Text>Loading...</Text>; // Show a placeholder until the font is ready
+    }
 
     if (dailySummary.length == 0 || error) {
         <View className="h-full rounded-3xl bg-white px-2 dark:bg-gray-700">
@@ -46,7 +60,7 @@ export function MonthlyDataCardFront({
     return (
         <View className="h-full rounded-3xl bg-white px-2 dark:bg-gray-700">
             {/* Bottom-Centered Text */}
-            <Text className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center">
+            <Text className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center dark:text-white">
                 {month}
             </Text>
             <CartesianChart
@@ -57,16 +71,19 @@ export function MonthlyDataCardFront({
                     font,
                     tickCount: 5,
                     lineWidth: 0,
-                    formatXLabel: (label: any) => { return getOrdinalSuffix(label) } 
+                    formatXLabel: (label: any) => { return getOrdinalSuffix(label) },
+                    labelColor: isDark ? 'white' : '#000000'
                 }}
                 yAxis={[
                     {
+                        labelColor: isDark ? 'white' : '#000000',
                         font,
                     },
                 ]}
                 frame={
                     {
-                        lineWidth:  {top: 0, bottom: 2, left: 2, right: 0}
+                        lineColor: isDark ? 'white' : '#000000',
+                        lineWidth:  {top: 0, bottom: 4, left: 4, right: 0}
                     }
                 }
                 padding={{ left: 0, bottom: 20, top: 5, right: 5 }}

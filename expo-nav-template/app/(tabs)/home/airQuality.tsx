@@ -14,6 +14,7 @@ import {
     DimensionValue,
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 // AQIBar Component
 const AQIBar: React.FC<{ aqiGrade: number }> = ({ aqiGrade }) => {
@@ -210,6 +211,7 @@ const getCoordinatesFromCity = async (city: string) => {
 };
 
 const AirQuality = () => {
+    const { isDark } = useIsDark();
     const [airQualityData, setAirQualityData] = useState({
         list: [
             {
@@ -309,6 +311,10 @@ const AirQuality = () => {
             <Stack.Screen
                 options={{
                     headerTitle: 'Air Quality',
+                    headerStyle: {
+                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                    },
+                    headerTintColor: isDark ? 'white' : 'black'
                 }}
             />
             <ScrollView

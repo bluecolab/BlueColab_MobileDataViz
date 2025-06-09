@@ -1,35 +1,50 @@
-import { Tabs } from 'expo-router';
+import { router, Tabs } from 'expo-router';
 import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
 import { TabBarIcon } from '../../components/TabBarIcon';
+import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 /**
  * @returns {JSX.Element}
  * @description The tab layout of the app. Here we define the tabs and their options.
  */
 export default function TabLayout() {
+    const { isDark } = useIsDark();
+
     return (
         <Tabs
             screenOptions={{
-                tabBarActiveTintColor: 'black',
-            }}>
+                tabBarStyle: {
+                    backgroundColor: isDark ? '#2e2e3b' : 'white',
+                },
+                tabBarActiveTintColor: isDark ? 'white' : 'black',
+                tabBarInactiveTintColor: isDark ? '#a1a1a1' : 'gray',
+            }}
+        >
             <Tabs.Screen
                 name="index"
                 options={{
                     href: null,
                 }}
             />
-            <Tabs.Screen name="home" options={{ title: 'Home', headerShown: false }} />
+
+            <Tabs.Screen name="home"
+                options={{
+                    headerShown: false,
+                    title: 'Settings',
+                    tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+                }} />
             {/* we set headerShown false as stacks handle their own headers */}
             <Tabs.Screen
                 name="currentData"
-                options={{
-                    tabBarButton: (props) => (
-                        <TouchableOpacity
-                            {...(props as TouchableOpacityProps)}
+                  options={{
+                    tabBarLabel: () => null, // Hides only this tab’s label
+                    // title: 'Current Data',
+                    tabBarIcon: ({ color }) =>  <TouchableOpacity
+                            onPress={() => router.push('/currentData')} // Navigate to the desired screen
                             style={{
                                 position: 'absolute',
-                                top: -30,
+                                top: -40,
                                 left: '50%',
                                 marginLeft: -30,
                                 width: 60,
@@ -40,20 +55,15 @@ export default function TabLayout() {
                                 alignItems: 'center',
                                 elevation: 6,
                             }}>
-                            {/* <Image
-                source={waterDropIcon}
-                style={{ width: 30, height: 30 }}
-                resizeMode="contain"
-              /> */}
-                        </TouchableOpacity>
-                    ),
-                }}
+                            <TabBarIcon name="tint" color={color} />
+                        </TouchableOpacity>,
+                }} 
             />
             <Tabs.Screen
                 name="settings"
                 options={{
                     title: 'Settings',
-                    tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                    tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />,
                 }}
             />
         </Tabs>
