@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "AquaWatch Mobile",
-    "slug": "AquaWatch Mobile",
+    "slug": "AquaWatch_Mobile",
     "version": "1.0.0",
     "scheme": "expo-nav-template",
     "web": {
