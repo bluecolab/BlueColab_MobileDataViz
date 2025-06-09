@@ -12,7 +12,7 @@ interface WQICardProps {
     size?: number
 }
 
-export function WQICard({ loading, data, size = 200 }: WQICardProps) {
+export function WQICard({ loading, data}: WQICardProps) {
     const { width } = Dimensions.get('window');
     const containerWidth = width * 0.95;
     const { isDark } = useIsDark();
