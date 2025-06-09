@@ -1,18 +1,14 @@
 import { Stack } from 'expo-router';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
-import { useCurrentData } from '@/contexts/CurrentDataContext';
-import {
-    View,
-    Text,
-    ScrollView,
-} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
+
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { Widget } from '@/components/visualizations/Widget';
+import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useCurrentData } from '@/contexts/CurrentDataContext';
 
 export default function CurrentData() {
     const { isDark } = useIsDark();
-    const { data, defaultLocation, defaultTempUnit } =
-        useCurrentData();
+    const { data, defaultLocation, defaultTempUnit } = useCurrentData();
 
     // grab the latest sample
     const last = data[data.length - 1];
@@ -20,9 +16,7 @@ export default function CurrentData() {
     // convert temperature if needed
     const temp = last.Temp;
     const waterTemp =
-        (defaultTempUnit?.trim() ?? 'Fahrenheit') === 'Fahrenheit'
-            ? temp * (9 / 5) + 32
-            : temp;
+        (defaultTempUnit?.trim() ?? 'Fahrenheit') === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp;
 
     // sensor values
     const cond = last.Cond;
@@ -39,10 +33,10 @@ export default function CurrentData() {
                     headerStyle: {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
-                    headerTintColor: isDark ? 'white' : 'black'
+                    headerTintColor: isDark ? 'white' : 'black',
                 }}
             />
-            <ScrollView className="bg-defaultbackground dark:bg-defaultdarkbackground h-full">
+            <ScrollView className="h-full bg-defaultbackground dark:bg-defaultdarkbackground">
                 {/* — Title — */}
                 <View>
                     <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
@@ -52,10 +46,7 @@ export default function CurrentData() {
 
                 {/* — Your 6 Widgets — */}
                 <View className="flex flex-row flex-wrap">
-                    <Widget
-                        name="Water Temperature"
-                        value={waterTemp?.toFixed(2) ?? 'NA'}
-                    />
+                    <Widget name="Water Temperature" value={waterTemp?.toFixed(2) ?? 'NA'} />
                     <Widget name="Conductivity" value={cond?.toFixed(2) ?? 'NA'} />
                     <Widget name="Salinity" value={sal?.toFixed(2) ?? 'NA'} />
                     <Widget name="pH" value={pH?.toFixed(2) ?? 'NA'} />
@@ -64,17 +55,16 @@ export default function CurrentData() {
                 </View>
 
                 {/* — Current‐Data WQI Gauge — */}
-                <View className="mt-6 px-4 items-center">
+                <View className="mt-6 items-center px-4">
                     <WQICard
                         loading={false}
-                        data={[last]}   // run WQI on the latest point
+                        data={[last]} // run WQI on the latest point
                     />
                 </View>
-                <View className='pb-[25]'>
-                <Text>Test</Text>
-            </View>
+                <View className="pb-[25]">
+                    <Text>Test</Text>
+                </View>
             </ScrollView>
-            
         </>
     );
 }

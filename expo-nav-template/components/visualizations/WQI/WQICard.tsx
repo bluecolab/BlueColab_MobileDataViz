@@ -2,17 +2,18 @@ import { FontAwesome } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react';
 import { View, Text, Animated, Dimensions, TouchableOpacity } from 'react-native';
 
-import { useIsDark } from '@/contexts/ColorSchemeContext';
-import WQICardFront from './WQICardFront';
 import { WQICardBack } from './WQICardBack';
+import WQICardFront from './WQICardFront';
+
+import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 interface WQICardProps {
-    loading: boolean,
-    data: any,
-    size?: number
+    loading: boolean;
+    data: any;
+    size?: number;
 }
 
-export function WQICard({ loading, data}: WQICardProps) {
+export function WQICard({ loading, data }: WQICardProps) {
     const { width } = Dimensions.get('window');
     const containerWidth = width * 0.95;
     const { isDark } = useIsDark();
@@ -69,9 +70,9 @@ export function WQICard({ loading, data}: WQICardProps) {
                                 backfaceVisibility: 'hidden',
                                 transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }],
                             }}>
-                             <View className="flex-1 items-center justify-center  rounded-3xl bg-white p-default dark:bg-gray-700 ">
-                                <View className='h-[300] w-[300] mt-[100]'>
-                                    <WQICardFront data={data} loading={loading}/>
+                            <View className="flex-1 items-center justify-center  rounded-3xl bg-white p-default dark:bg-gray-700 ">
+                                <View className="mt-[100] h-[300] w-[300]">
+                                    <WQICardFront data={data} loading={loading} />
                                 </View>
                             </View>
                         </Animated.View>
@@ -89,11 +90,11 @@ export function WQICard({ loading, data}: WQICardProps) {
                                 transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
                             }}
                             pointerEvents={flipped ? 'auto' : 'none'}>
-                                <WQICardBack />
+                            <WQICardBack />
                         </Animated.View>
                     </View>
                 </View>
             </View>
         </View>
     );
-};
+}

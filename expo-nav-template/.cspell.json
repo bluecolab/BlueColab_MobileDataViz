@@ -1,7 +1,5 @@
 {
-    "ignorePaths": [
-        "node_modules/*"
-    ],
+    "ignorePaths": ["node_modules/*"],
     "ignoreWords": [
         "okaykenji",
         "Nunito",
@@ -98,6 +96,7 @@
         "elegans",
         "erectus",
         "Lithobates",
+        "locationparam",
         "lungless",
         "Malaclemys",
         "Megaptera",
@@ -116,6 +115,7 @@
         "sipedon",
         "sponsa",
         "Trachemys",
+        "variableparam",
         "vison"
     ]
 }

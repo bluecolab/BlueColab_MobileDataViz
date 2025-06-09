@@ -1,7 +1,8 @@
 import { router, Tabs } from 'expo-router';
-import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import { TabBarIcon } from '../../components/TabBarIcon';
+
 import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 /**
@@ -19,8 +20,7 @@ export default function TabLayout() {
                 },
                 tabBarActiveTintColor: isDark ? 'white' : 'black',
                 tabBarInactiveTintColor: isDark ? '#a1a1a1' : 'gray',
-            }}
-        >
+            }}>
             <Tabs.Screen
                 name="index"
                 options={{
@@ -28,19 +28,22 @@ export default function TabLayout() {
                 }}
             />
 
-            <Tabs.Screen name="home"
+            <Tabs.Screen
+                name="home"
                 options={{
                     headerShown: false,
                     title: 'Settings',
                     tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-                }} />
+                }}
+            />
             {/* we set headerShown false as stacks handle their own headers */}
             <Tabs.Screen
                 name="currentData"
-                  options={{
+                options={{
                     tabBarLabel: () => null, // Hides only this tab’s label
                     // title: 'Current Data',
-                    tabBarIcon: ({ color }) =>  <TouchableOpacity
+                    tabBarIcon: ({ color }) => (
+                        <TouchableOpacity
                             onPress={() => router.push('/currentData')} // Navigate to the desired screen
                             style={{
                                 position: 'absolute',
@@ -56,8 +59,9 @@ export default function TabLayout() {
                                 elevation: 6,
                             }}>
                             <TabBarIcon name="tint" color={color} />
-                        </TouchableOpacity>,
-                }} 
+                        </TouchableOpacity>
+                    ),
+                }}
             />
             <Tabs.Screen
                 name="settings"

@@ -1,6 +1,7 @@
 // app/(tabs)/home/wildlife.tsx
 import { Stack } from 'expo-router';
 import { View, Text, FlatList, Image, StyleSheet, Dimensions } from 'react-native';
+
 import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 const deviceHeight = Dimensions.get('window').height;
@@ -39,7 +40,7 @@ export default function Wildlife() {
                     headerStyle: {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
-                    headerTintColor: isDark ? 'white' : 'black'
+                    headerTintColor: isDark ? 'white' : 'black',
                 }}
             />
             <View style={styles.wildLifeContainer}>

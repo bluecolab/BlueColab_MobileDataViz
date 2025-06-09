@@ -19,7 +19,7 @@ export default function Blog() {
                     headerStyle: {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
-                    headerTintColor: isDark ? 'white' : 'black'
+                    headerTintColor: isDark ? 'white' : 'black',
                 }}
             />
             <View style={{ flex: 1 }}>

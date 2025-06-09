@@ -127,7 +127,7 @@ export default function useGetWaterData() {
                 const timestamp = entry.dateTime;
                 const value = parseFloat(entry.value);
 
-                let existingEntry = parsedData.find((data) => data.timestamp === timestamp)
+                let existingEntry = parsedData.find((data) => data.timestamp === timestamp);
 
                 if (!existingEntry) {
                     existingEntry = {

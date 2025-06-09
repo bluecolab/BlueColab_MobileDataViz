@@ -7,11 +7,11 @@ import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 import CustomDropdown from '@/components/CustomDropdown';
+import { WQICard } from '@/components/visualizations/WQI/WQICard';
+import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
+import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import useGetMetadata from '@/hooks/useGetMetadata';
-import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
-import { WQICard } from '@/components/visualizations/WQI/WQICard';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 // import { WQIGauge, DataGraph, CustomDropdown } from '@components';
 
@@ -164,7 +164,7 @@ export default function HistoricData() {
                     headerStyle: {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
-                     headerTintColor: isDark ? 'white' : 'black'
+                    headerTintColor: isDark ? 'white' : 'black',
                 }}
             />
             <View className="bg-defaultbackground dark:bg-defaultdarkbackground ">
@@ -191,7 +191,11 @@ export default function HistoricData() {
                                     defaultTempUnit={defaultTempUnit}
                                     unitMap={unitMap}
                                     alternateName={item.alternateName ?? 'none'}
-                                    selectedMonth={monthOptions.find(option => option.value === selectedMonth.toString())?.label || "oh no"}
+                                    selectedMonth={
+                                        monthOptions.find(
+                                            (option) => option.value === selectedMonth.toString()
+                                        )?.label || 'oh no'
+                                    }
                                 />
                             </View>
                         )}
@@ -204,7 +208,7 @@ export default function HistoricData() {
                         progress={progress}
                         data={parameterInfo}
                         dotStyle={{ backgroundColor: isDark ? '#f1f1f1' : '#262626' }}
-                        activeDotStyle={{ backgroundColor:  isDark ? '#444' : '#f1f1f1' }}
+                        activeDotStyle={{ backgroundColor: isDark ? '#444' : '#f1f1f1' }}
                         containerStyle={{ gap: 5, marginBottom: 10 }}
                         onPress={onPressPagination}
                     />

@@ -52,6 +52,6 @@ export default function CurrentDataProvider({ children }: { children: React.Reac
             {children}
         </CurrentDataContext.Provider>
     );
-};
+}
 
 export const useCurrentData = () => useContext(CurrentDataContext);

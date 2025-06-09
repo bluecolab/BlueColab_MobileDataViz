@@ -151,6 +151,6 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             {children}
         </GraphDataContext.Provider>
     );
-};
+}
 
 export const useGraphData = () => useContext(GraphDataContext);

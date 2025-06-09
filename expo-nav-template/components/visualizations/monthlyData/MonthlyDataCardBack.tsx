@@ -1,6 +1,7 @@
-import { ScrollView, Text, View } from "react-native";
-import { useIsDark } from "@/contexts/ColorSchemeContext";
-import LinkComp from "@/components/LinkComp";
+import { ScrollView, Text, View } from 'react-native';
+
+import LinkComp from '@/components/LinkComp';
+import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 interface PercentageDotLineProps {
     percentage: number;
@@ -21,14 +22,12 @@ const PercentageDotLine: React.FC<PercentageDotLineProps> = ({ percentage }) => 
     );
 };
 
-
-
 interface MonthlyDataCardBackProps {
-    overallMin: number,
-    overallMax: number,
-    overallAvg: number,
-    yAxisLabel: string
-    meta: any
+    overallMin: number;
+    overallMax: number;
+    overallAvg: number;
+    yAxisLabel: string;
+    meta: any;
 }
 
 export function MonthlyDataCardBack({
@@ -36,7 +35,7 @@ export function MonthlyDataCardBack({
     overallMax,
     overallAvg,
     yAxisLabel,
-    meta
+    meta,
 }: MonthlyDataCardBackProps) {
     const { isDark } = useIsDark();
 
@@ -52,9 +51,7 @@ export function MonthlyDataCardBack({
                 }}
             />
 
-            <Text className="text-center text-lg font-semibold dark:text-white">
-                Quick Summary
-            </Text>
+            <Text className="text-center text-lg font-semibold dark:text-white">Quick Summary</Text>
             <View className="w-full flex-row items-center justify-center ">
                 <View className="flex-1">
                     <Text className="text-center text-3xl font-bold dark:text-white">
@@ -81,10 +78,7 @@ export function MonthlyDataCardBack({
             </Text>
 
             <PercentageDotLine
-                percentage={
-                    ((overallAvg - overallMin) / (overallMax - overallMin)) *
-                    100
-                }
+                percentage={((overallAvg - overallMin) / (overallMax - overallMin)) * 100}
             />
 
             <View
@@ -95,24 +89,16 @@ export function MonthlyDataCardBack({
                 }}
             />
 
-            <Text className="text-lg font-semibold dark:text-white">
-                What is {yAxisLabel}?
-            </Text>
-            <Text className="text-md dark:text-gray-300">
-                {meta.description}
-            </Text>
-            <Text className="mt-4 text-lg font-semibold dark:text-white">
-                Why does it matter?
-            </Text>
+            <Text className="text-lg font-semibold dark:text-white">What is {yAxisLabel}?</Text>
+            <Text className="text-md dark:text-gray-300">{meta.description}</Text>
+            <Text className="mt-4 text-lg font-semibold dark:text-white">Why does it matter?</Text>
             <Text className="text-md dark:text-gray-300">{meta?.reason}</Text>
-            <Text className="pt-4 text-lg font-semibold dark:text-white">
-                References
-            </Text>
+            <Text className="pt-4 text-lg font-semibold dark:text-white">References</Text>
             {meta.ref &&
                 meta.ref.map((ref: any, index: number) => (
                     <LinkComp key={index} label={ref.label} url={ref.url} />
                 ))}
             <Text />
         </ScrollView>
-    )
+    );
 }

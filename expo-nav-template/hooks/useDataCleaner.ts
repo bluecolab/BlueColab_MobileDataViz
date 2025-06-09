@@ -12,7 +12,7 @@ export default function useDataCleaner() {
                 overallMax: 0,
                 overallAvg: 0,
                 tickValues: [],
-                error: data?.error
+                error: data?.error,
             };
         }
         interface GroupedData {
@@ -34,7 +34,7 @@ export default function useDataCleaner() {
 
         const dailySummary = Object.keys(groupedData).map(
             (date): DailySummaryType => ({
-                day: (new Date(date)).getDate(),
+                day: new Date(date).getDate(),
                 avg: groupedData[date].reduce((sum, v) => sum + v, 0) / groupedData[date].length,
                 min: Math.min(...groupedData[date]),
                 max: Math.max(...groupedData[date]),
@@ -69,7 +69,6 @@ export default function useDataCleaner() {
             overallAvg,
             tickValues,
         };
-
     };
 
     type SensorData = {
@@ -137,7 +136,6 @@ export default function useDataCleaner() {
 
         return score;
     };
-
 
     return { clean, calculateWQI };
 }

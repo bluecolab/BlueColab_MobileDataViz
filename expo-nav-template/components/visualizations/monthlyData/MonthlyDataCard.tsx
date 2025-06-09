@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
-import { Animated, Dimensions, View, Text, TouchableOpacity } from "react-native";
-import { useIsDark } from "@/contexts/ColorSchemeContext";
-import { FontAwesome } from "@expo/vector-icons";
-import useDataCleaner from "@/hooks/useDataCleaner";
-import { MonthlyDataCardBack } from "./MonthlyDataCardBack";
-import { MonthlyDataCardFront } from "./MonthlyDataCardFront";
+import { FontAwesome } from '@expo/vector-icons';
+import { useRef, useState } from 'react';
+import { Animated, Dimensions, View, Text, TouchableOpacity } from 'react-native';
+
+import { MonthlyDataCardBack } from './MonthlyDataCardBack';
+import { MonthlyDataCardFront } from './MonthlyDataCardFront';
+
+import { useIsDark } from '@/contexts/ColorSchemeContext';
+import useDataCleaner from '@/hooks/useDataCleaner';
 
 interface MonthlyDataCardProps {
     loading: boolean;
@@ -22,7 +24,7 @@ interface MonthlyDataCardProps {
     defaultTempUnit: string | undefined;
     unitMap: Record<string, string | null>;
     alternateName?: string;
-    selectedMonth: string
+    selectedMonth: string;
 }
 
 export function MonthlyDataCard({
@@ -34,15 +36,15 @@ export function MonthlyDataCard({
     defaultTempUnit,
     unitMap,
     alternateName,
-    selectedMonth
-}: MonthlyDataCardProps ) {
+    selectedMonth,
+}: MonthlyDataCardProps) {
     const finalUnitToUse = unitMap[unit] === null ? alternateName : unit;
 
     const { clean } = useDataCleaner();
-    const dataSummary = clean(data, loading, unit, defaultTempUnit );
+    const dataSummary = clean(data, loading, unit, defaultTempUnit);
 
-    const { width } = Dimensions.get('window'); 
-    
+    const { width } = Dimensions.get('window');
+
     const containerWidth = width * 0.95;
     const { isDark } = useIsDark();
     const flipAnimation = useRef(new Animated.Value(0)).current;
@@ -79,7 +81,7 @@ export function MonthlyDataCard({
                                       ? defaultTempUnit?.trim() === 'Fahrenheit'
                                           ? '°F'
                                           : unitMap[finalUnitToUse]
-                                      : unitMap[finalUnitToUse ?? "Temp"]
+                                      : unitMap[finalUnitToUse ?? 'Temp']
                               }`
                             : ''}
                     </Text>
@@ -107,11 +109,11 @@ export function MonthlyDataCard({
                                 backfaceVisibility: 'hidden',
                                 transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }],
                             }}>
-                                <MonthlyDataCardFront 
-                                    dailySummary={dataSummary.dailySummary} 
-                                    error={dataSummary.error}
-                                    month={selectedMonth}
-                                />                            
+                            <MonthlyDataCardFront
+                                dailySummary={dataSummary.dailySummary}
+                                error={dataSummary.error}
+                                month={selectedMonth}
+                            />
                         </Animated.View>
 
                         {/* Back View - Information Card */}
@@ -127,12 +129,13 @@ export function MonthlyDataCard({
                                 transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
                             }}
                             pointerEvents={flipped ? 'auto' : 'none'}>
-                                <MonthlyDataCardBack 
-                                    overallMin={dataSummary.overallMin} 
-                                    overallMax={dataSummary.overallMax}
-                                    overallAvg={dataSummary.overallAvg}
-                                    yAxisLabel={yAxisLabel}
-                                    meta={meta} />
+                            <MonthlyDataCardBack
+                                overallMin={dataSummary.overallMin}
+                                overallMax={dataSummary.overallMax}
+                                overallAvg={dataSummary.overallAvg}
+                                yAxisLabel={yAxisLabel}
+                                meta={meta}
+                            />
                         </Animated.View>
                     </View>
                 </View>

@@ -1,6 +1,7 @@
 // /app/(tabs)/home/story.tsx
 import { Stack } from 'expo-router';
 import { View, Text, ScrollView, Image } from 'react-native';
+
 import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 /**
@@ -17,7 +18,7 @@ export default function Story() {
                     headerStyle: {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
-                    headerTintColor: isDark ? 'white' : 'black'
+                    headerTintColor: isDark ? 'white' : 'black',
                 }}
             />
             <ScrollView className="bg-gray-100 p-5 dark:bg-gray-900">

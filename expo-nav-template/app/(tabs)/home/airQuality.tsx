@@ -14,6 +14,7 @@ import {
     DimensionValue,
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+
 import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 // AQIBar Component
@@ -314,7 +315,7 @@ const AirQuality = () => {
                     headerStyle: {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
-                    headerTintColor: isDark ? 'white' : 'black'
+                    headerTintColor: isDark ? 'white' : 'black',
                 }}
             />
             <ScrollView
