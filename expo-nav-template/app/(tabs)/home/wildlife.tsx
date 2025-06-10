@@ -1,11 +1,40 @@
 // app/(tabs)/home/wildlife.tsx
 import { Stack } from 'expo-router';
-import { View, Text, FlatList, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, FlatList, Image, Dimensions, StyleSheet } from 'react-native';
+import { DateTime } from 'luxon';
+
+// Render wildlife section with FlatList
+import type { RefObject, Dispatch, SetStateAction } from 'react';
 
 import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useRef, useState } from 'react';
+import useAnimalFacts, { AnimalFact } from '@/hooks/useAnimalFacts';
 
-const deviceHeight = Dimensions.get('window').height;
-const deviceWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get('window').width;
+
+// Function to check the current season
+const getCurrentSeason = () => {
+    const month = DateTime.now().month;
+
+    if ([12, 1, 2, 3, 4, 5, 6, 7, 8].includes(month)) return 'winter';
+    return 'summer';
+};
+
+// Process wildlife data to include seasonal facts
+const processWildlifeData = (baseData: AnimalFact[], currentSeason: 'winter' | 'summer') => {
+    return baseData.map((animal, index) => {
+        const funFact =
+            animal.seasonalFacts && animal.seasonalFacts[currentSeason]
+                ? animal.seasonalFacts[currentSeason]
+                : animal.defaultFact;
+
+        return {
+            ...animal,
+            funFact,
+            id: `${animal.animalName.toLowerCase().replace(/\s/g, '-')}-${index}`, // Add unique ID for FlatList
+        };
+    });
+};
 
 /**
  * @returns {JSX.Element}
@@ -13,24 +42,144 @@ const deviceWidth = Dimensions.get('window').width;
  */
 export default function Wildlife() {
     const { isDark } = useIsDark();
-    const choateWildlifeData = [
-        {
-            animalName: 'Largemouth Bass',
-            scientificName: 'Micropterus Salmoides',
-            funFact:
-                'The largemouth bass is an ambush predator and often consumes prey in a single strike.',
-            imageUri:
-                'https://images.unsplash.com/photo-1601248981942-89b99a5b7427?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    const currentSeason = getCurrentSeason();
+    const { choateWildlifeBase, hudsonWildlifeBase } = useAnimalFacts();
+
+    // State to track the current carousel indices
+    const [choateActiveIndex, setChoateActiveIndex] = useState(0);
+    const [hudsonActiveIndex, setHudsonActiveIndex] = useState(0);
+
+    // Refs for FlatLists to programmatically scroll
+    const choateListRef = useRef<FlatList<AnimalFact>>(null);
+    const hudsonListRef = useRef<FlatList<AnimalFact>>(null);
+
+    const choateWildlifeData = processWildlifeData(choateWildlifeBase, currentSeason);
+    const hudsonWildlifeData = processWildlifeData(hudsonWildlifeBase, currentSeason);
+
+    // Render item for FlatList
+    const renderWildlifeItem = ({ item }: { item: AnimalFact }) => (
+        <View style={styles.cardContainer}>
+            <View style={styles.imageContainer}>
+                <Image source={{ uri: item.imageUri }} style={styles.image} />
+            </View>
+            <View style={styles.cardContent}>
+                <Text style={styles.animalName}>{item.animalName}</Text>
+                <Text style={styles.scientificName}>{item.scientificName}</Text>
+                <Text style={styles.factText}>{item.seasonalFacts[currentSeason]}</Text>
+            </View>
+        </View>
+    );
+
+    const renderWildlifeSection = (
+        data: AnimalFact[],
+        activeIndex: number,
+        setActiveIndex: Dispatch<SetStateAction<number>>,
+        listRef: RefObject<FlatList<AnimalFact> | null>
+    ) => {
+        return (
+            <View>
+                <FlatList
+                    ref={listRef}
+                    data={data}
+                    renderItem={renderWildlifeItem}
+                    keyExtractor={(item, index) =>
+                        `${item.animalName.toLowerCase().replace(/\s/g, '-')}-${index}`
+                    }
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled
+                    snapToInterval={windowWidth * 0.85 + windowWidth * 0.075} // Card width + margin
+                    decelerationRate="fast"
+                    onMomentumScrollEnd={(event) => {
+                        const position = event.nativeEvent.contentOffset.x;
+                        const index = Math.round(
+                            position / (windowWidth * 0.85 + (windowWidth * 0.075) / 2)
+                        );
+                        setActiveIndex(index);
+                    }}
+                    contentContainerStyle={{ paddingHorizontal: (windowWidth * 0.075) / 4 }}
+                    initialScrollIndex={activeIndex}
+                    getItemLayout={(_, index) => ({
+                        length: windowWidth * 0.85 + (windowWidth * 0.075) / 2,
+                        offset: (windowWidth * 0.85 + (windowWidth * 0.075) / 2) * index,
+                        index,
+                    })}
+                />
+            </View>
+        );
+    };
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: isDark ? '#1a202c' : 'rgb(220, 220, 220)',
+            paddingBottom: 40,
         },
-        {
-            animalName: 'Snapping Turtle',
-            scientificName: 'Chelydra Serpentina',
-            funFact: 'Snapping turtles are capable of living over 100 years.',
-            imageUri:
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Common_Snapping_Turtle_Close_Up.jpg/1280px-Common_Snapping_Turtle_Close_Up.jpg',
+
+        sectionHeader: {
+            fontSize: 30,
+            fontWeight: 'bold',
+            color: isDark ? '#fff' : '#333',
+            textAlign: 'center',
+            marginTop: 20,
+            marginBottom: 5,
         },
-        // Add more wildlife data as needed...
-    ];
+        cardContainer: {
+            width: windowWidth * 0.85,
+            marginHorizontal: (windowWidth * 0.075) / 2,
+            marginVertical: 12,
+            borderRadius: 12,
+            backgroundColor: isDark ? '#374151' : '#fff',
+        },
+        imageContainer: {
+            width: '100%',
+            height: 200, // Fixed height for images
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
+            overflow: 'hidden',
+        },
+        image: {
+            width: '100%',
+            height: '100%',
+            resizeMode: 'cover',
+        },
+        cardContent: {
+            padding: 15,
+        },
+        animalName: {
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: isDark ? '#fff' : '#333',
+            marginBottom: 5,
+        },
+        scientificName: {
+            fontSize: 16,
+            fontStyle: 'italic',
+            color: isDark ? '#fff' : '#666',
+            marginBottom: 12,
+        },
+        factText: {
+            fontSize: 16,
+            color: isDark ? '#fff' : '#333',
+            lineHeight: 22,
+        },
+
+        paginationDot: {
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            marginHorizontal: 5,
+        },
+        activeDot: {
+            backgroundColor: '#007AFF',
+        },
+        inactiveDot: {
+            backgroundColor: '#ccc',
+        },
+        contentContainer: {
+            paddingBottom: 60,
+        },
+    });
 
     return (
         <>
@@ -43,73 +192,32 @@ export default function Wildlife() {
                     headerTintColor: isDark ? 'white' : 'black',
                 }}
             />
-            <View style={styles.wildLifeContainer}>
-                <Text style={styles.paragraphTextWildlife}>Wildlife in Choate Pond</Text>
-
+            <View>
                 <FlatList
-                    data={choateWildlifeData}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <View>
-                            <Image source={{ uri: item.imageUri }} style={styles.smallImage} />
-                            <Text style={styles.animalName}>{item.animalName}</Text>
-                            <Text style={styles.scientificName}>{item.scientificName}</Text>
-                            <Text style={styles.funFact}>{item.funFact}</Text>
-                        </View>
-                    )}
+                    data={[{ key: 'choate' }, { key: 'hudson' }]}
+                    renderItem={({ item }) => {
+                        if (item.key === 'choate') {
+                            return renderWildlifeSection(
+                                choateWildlifeData,
+                                choateActiveIndex,
+                                setChoateActiveIndex,
+                                choateListRef
+                            );
+                        } else {
+                            return renderWildlifeSection(
+                                hudsonWildlifeData,
+                                hudsonActiveIndex,
+                                setHudsonActiveIndex,
+                                hudsonListRef
+                            );
+                        }
+                    }}
+                    keyExtractor={(item) => item.key}
+                    contentContainerStyle={styles.contentContainer}
+                    scrollEnabled={true}
+                    showsVerticalScrollIndicator={true}
                 />
             </View>
         </>
     );
 }
-const styles = StyleSheet.create({
-    //wildlife screen background
-    wildLifeContainer: {
-        flex: 1,
-        backgroundColor: '#2B2D35',
-        alignItems: 'center',
-        width: deviceWidth,
-        marginTop: deviceHeight / 200,
-        marginBottom: deviceHeight / 200,
-        color: 'white',
-    },
-    //header for the wildlife page
-    paragraphTextWildlife: {
-        color: 'white',
-        fontSize: deviceHeight / 25,
-        marginTop: deviceHeight / 100,
-        marginBottom: deviceHeight / 100,
-        marginLeft: deviceWidth / 15,
-        marginRight: deviceWidth / 15,
-        textAlign: 'center',
-    },
-    //image on wildlife page
-    smallImage: {
-        width: 350,
-        height: 250,
-        borderRadius: 10,
-        margin: 10,
-    },
-    //animal name on wildlife page
-    animalName: {
-        color: 'white',
-        textAlign: 'center',
-        // fontStyle: 'strong',
-    },
-    //scientific name on wildlife page
-    scientificName: {
-        marginTop: 2,
-        color: 'white',
-        textAlign: 'center',
-    },
-    //fun fact for wildlife page
-    funFact: {
-        marginTop: 2,
-        color: 'white',
-        textAlign: 'center',
-        width: 350,
-    },
-});

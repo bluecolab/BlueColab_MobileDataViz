@@ -13,6 +13,23 @@ export default function CurrentData() {
     // grab the latest sample
     const last = data[data.length - 1];
 
+    if (!last) {
+        return (
+            <>
+                <Stack.Screen
+                    options={{
+                        headerTitle: 'Current Data',
+                        headerStyle: {
+                            backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        },
+                        headerTintColor: isDark ? 'white' : 'black',
+                    }}
+                />
+                <Text>Loading</Text>
+            </>
+        );
+    }
+
     // convert temperature if needed
     const temp = last.Temp;
     const waterTemp =
