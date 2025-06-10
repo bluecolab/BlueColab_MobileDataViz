@@ -1,3 +1,7 @@
+/* eslint-disable react/no-unstable-nested-components */
+// ^ This comment is necessary to avoid warnings about unstable nested components in Expo Router
+// particularly likes like this: tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+
 import { router, Tabs } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 
@@ -66,6 +70,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="settings"
                 options={{
+                    headerShown: false,
                     title: 'Settings',
                     tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />,
                 }}

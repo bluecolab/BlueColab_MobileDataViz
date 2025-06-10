@@ -48,7 +48,7 @@ export function MonthlyDataCardFront({ dailySummary, error, month }: MonthlyData
     if (dailySummary.length === 0 || error) {
         return (
             <View className="h-full rounded-3xl bg-white px-2 dark:bg-gray-700">
-                <Text>Oops there was an error!</Text>
+                <Text>Oops there was an error! (or just loading idk)</Text>
             </View>
         );
     }
