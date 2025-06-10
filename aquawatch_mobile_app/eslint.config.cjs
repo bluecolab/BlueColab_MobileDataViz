@@ -1,11 +1,11 @@
-import pluginImport from 'eslint-plugin-import';
-import path from 'path';
-import tsParser from '@typescript-eslint/parser';
-import pluginReact from 'eslint-plugin-react';
-import pluginReactHooks from 'eslint-plugin-react-hooks';
-import tseslint from '@typescript-eslint/eslint-plugin';
+const pluginImport = require('eslint-plugin-import');
+const path = require('path');
+const tsParser = require('@typescript-eslint/parser');
+const pluginReact = require('eslint-plugin-react');
+const pluginReactHooks = require('eslint-plugin-react-hooks');
+const tseslint = require('@typescript-eslint/eslint-plugin');
 
-export default [
+module.exports = [
     {
         files: [
             'app/**/*.{js,ts,jsx,tsx}',
@@ -56,4 +56,4 @@ export default [
             //   '@typescript-eslint/explicit-function-return-type': 'warn',
         },
     },
-];
+]
