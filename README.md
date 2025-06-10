@@ -1,6 +1,6 @@
 # AquaWatch Mobile App
 <div align="center">
-<img src="./aquawatch_mobile_app/assets/Blue-CoLab-logo-brighter-1000.png" height="250px" style="padding:10px;">
+<img src="./aquawatch_mobile_app/assets/splash.png" height="250px" style="padding:10px;">
  
 <br>
 
