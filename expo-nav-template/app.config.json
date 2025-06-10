@@ -16,6 +16,18 @@
                 {
                     "locationAlwaysAndWhenInUsePermission": "Allow AquaWatch Mobile to use your location."
                 }
+            ],
+            [
+                "expo-splash-screen",
+                {
+                    "backgroundColor": "#232323",
+                    "image": "./assets/splash.png",
+                    "dark": {
+                        "image": "./assets/splash.png",
+                        "backgroundColor": "#000000"
+                    },
+                    "imageWidth": 200
+                }
             ]
         ],
         "experiments": {
@@ -30,7 +42,9 @@
             "resizeMode": "contain",
             "backgroundColor": "#ffffff"
         },
-        "assetBundlePatterns": ["**/*"],
+        "assetBundlePatterns": [
+            "**/*"
+        ],
         "ios": {
             "supportsTablet": true
         },
