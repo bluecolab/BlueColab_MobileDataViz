@@ -21,10 +21,8 @@ const SettingsDropdown: React.FC<SettingsDropdownProps> = ({ label, options, val
     }, [value]);
 
     return (
-        <View className="flex-row items-center justify-between my-1">
-            <Text className="text-lg dark:text-white text-black">
-                {label}
-            </Text>
+        <View className="my-1 flex-row items-center justify-between">
+            <Text className="text-lg text-black dark:text-white">{label}</Text>
 
             <Dropdown
                 style={{
@@ -38,13 +36,16 @@ const SettingsDropdown: React.FC<SettingsDropdownProps> = ({ label, options, val
                 renderItem={(item, selected) => (
                     <View
                         style={{
-                            backgroundColor: selected ? (isDark ? '#777' : '#d0d0d0') : isDark ? '#555' : 'white', // Improve background handling
+                            backgroundColor: selected
+                                ? isDark
+                                    ? '#777'
+                                    : '#d0d0d0'
+                                : isDark
+                                  ? '#555'
+                                  : 'white', // Improve background handling
                             padding: 10,
-                        }}
-                    >
-                        <Text style={{ color: isDark ? 'white' : 'black' }}>
-                            {item.label}
-                        </Text>
+                        }}>
+                        <Text style={{ color: isDark ? 'white' : 'black' }}>{item.label}</Text>
                     </View>
                 )}
                 itemTextStyle={{
@@ -66,14 +67,12 @@ const SettingsDropdown: React.FC<SettingsDropdownProps> = ({ label, options, val
                 value={value}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
-                onChange={item => {
+                onChange={(item) => {
                     onSelect(item.value);
                     setIsFocus(false);
                 }}
             />
-
         </View>
-
     );
 };
 
