@@ -336,13 +336,6 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                     <Item
-                        name="react-dom"
-                        label="React DOM"
-                        link="https://github.com/facebook/react"
-                        team={[]}
-                        isLinkedin={false}
-                    />
-                    <Item
                         name="react-native"
                         label="React Native"
                         link="https://github.com/facebook/react-native"
@@ -360,13 +353,6 @@ export default function Attributions() {
                         name="react-native-gesture-handler"
                         label="React Native Gesture Handler"
                         link="https://github.com/software-mansion/react-native-gesture-handler"
-                        team={[]}
-                        isLinkedin={false}
-                    />
-                    <Item
-                        name="react-native-gifted-charts"
-                        label="Gifted Charts"
-                        link="https://github.com/Abhinandan-Kushwaha/react-native-gifted-charts"
                         team={[]}
                         isLinkedin={false}
                     />
@@ -402,27 +388,6 @@ export default function Attributions() {
                         name="react-native-screens"
                         label="React Native Screens"
                         link="https://github.com/software-mansion/react-native-screens"
-                        team={[]}
-                        isLinkedin={false}
-                    />
-                    <Item
-                        name="react-native-svg"
-                        label="React Native SVG"
-                        link="https://github.com/react-native-svg/react-native-svg"
-                        team={[]}
-                        isLinkedin={false}
-                    />
-                    <Item
-                        name="react-native-vector-icons"
-                        label="React Native Vector Icons"
-                        link="https://github.com/oblador/react-native-vector-icons"
-                        team={[]}
-                        isLinkedin={false}
-                    />
-                    <Item
-                        name="react-native-web"
-                        label="React Native Web"
-                        link="https://github.com/necolas/react-native-web"
                         team={[]}
                         isLinkedin={false}
                     />

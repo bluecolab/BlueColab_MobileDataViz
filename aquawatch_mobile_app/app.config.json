@@ -28,7 +28,8 @@
                     },
                     "imageWidth": 200
                 }
-            ]
+            ],
+            "expo-web-browser"
         ],
         "experiments": {
             "typedRoutes": true,
@@ -42,7 +43,9 @@
             "resizeMode": "contain",
             "backgroundColor": "#ffffff"
         },
-        "assetBundlePatterns": ["**/*"],
+        "assetBundlePatterns": [
+            "**/*"
+        ],
         "ios": {
             "supportsTablet": true
         },
