@@ -1,7 +1,5 @@
 {
-    "ignorePaths": [
-        "node_modules/*"
-    ],
+    "ignorePaths": ["node_modules/*"],
     "ignoreWords": [
         "okaykenji",
         "Nunito",
@@ -84,4 +82,40 @@
         "sidewaystitle",
         "luxon"
     ],
+    "words": [
+        "Acipenser",
+        "Alosa",
+        "Ardea",
+        "auratus",
+        "brumation",
+        "Callinectes",
+        "Carassius",
+        "catesbeianus",
+        "cinereus",
+        "clamitans",
+        "elegans",
+        "erectus",
+        "Lithobates",
+        "locationparam",
+        "lungless",
+        "Malaclemys",
+        "Megaptera",
+        "Neovison",
+        "Nerodia",
+        "novaeangliae",
+        "Orconectes",
+        "oxyrinchus",
+        "Plethodon",
+        "Rana",
+        "rostrata",
+        "rusticus",
+        "sapidissima",
+        "sapidus",
+        "scripta",
+        "sipedon",
+        "sponsa",
+        "Trachemys",
+        "variableparam",
+        "vison"
+    ]
 }
