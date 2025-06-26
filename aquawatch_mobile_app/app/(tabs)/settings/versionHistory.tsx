@@ -209,8 +209,8 @@ export default function VersionHistory() {
                         v1.7-v1.8.1 - Typescript Time
                     </Text>
                     <LinkComp
-                        url="https://github.com/bluecolab/BlueColab_MobileDataViz/tree/d9400afbd9a0c376073d65ff3232474f096d9d82"
-                        label="Last commit: d9400af"
+                        url="https://github.com/bluecolab/BlueColab_MobileDataViz/tree/61ac084ff497719c7a8c68007292ed2dc50b39b"
+                        label="Last commit: 61ac084"
                     />
                     <Text className="text-sm text-gray-500 dark:text-gray-400">June 25, 2025</Text>
 
