@@ -190,13 +190,13 @@ export default function VersionHistory() {
                 </View>
 
                 <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                    <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+                        v1.6 - What's in your water?
+                    </Text>
                     <LinkComp
                         url="https://github.com/bluecolab/BlueColab_MobileDataViz/tree/d9400afbd9a0c376073d65ff3232474f096d9d82"
                         label="Last commit: d9400af"
                     />
-                    <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
-                        v1.6 - What's in your water?
-                    </Text>
                     <Text className="text-sm text-gray-500 dark:text-gray-400">May 9, 2025</Text>
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">
@@ -206,12 +206,17 @@ export default function VersionHistory() {
 
                 <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
-                        v1.7 - Typescript Time
+                        v1.7-v1.8.1 - Typescript Time
                     </Text>
-                    <Text className="text-sm text-gray-500 dark:text-gray-400">June 9, 2025</Text>
+                    <LinkComp
+                        url="https://github.com/bluecolab/BlueColab_MobileDataViz/tree/d9400afbd9a0c376073d65ff3232474f096d9d82"
+                        label="Last commit: d9400af"
+                    />
+                    <Text className="text-sm text-gray-500 dark:text-gray-400">June 25, 2025</Text>
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">
                         - App fully moved to Typescript - minor visual changes
+                        - Why is it 1.8 also? Because I can't count.
                     </Text>
                 </View>
 
