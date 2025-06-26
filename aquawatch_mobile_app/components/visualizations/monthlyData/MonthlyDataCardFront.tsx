@@ -88,7 +88,7 @@ export function MonthlyDataCardFront({ dailySummary, error, month }: MonthlyData
                         <AreaRange
                             upperPoints={points.max}
                             lowerPoints={points.min}
-                            color="rgba(100, 100, 255, 0.2)"
+                            color={isDark ? "rgba(73, 146, 255, 0.95)" : "rgba(0, 100, 255, 0.4)"}
                             animate={{ type: 'timing' }}
                         />
                         <Line
