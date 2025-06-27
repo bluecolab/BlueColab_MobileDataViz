@@ -215,8 +215,8 @@ export default function VersionHistory() {
                     <Text className="text-sm text-gray-500 dark:text-gray-400">June 25, 2025</Text>
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">
-                        - App fully moved to Typescript - minor visual changes
-                        - Why is it 1.8 also? Because I can't count.
+                        - App fully moved to Typescript - minor visual changes - Why is it 1.8 also?
+                        Because I can't count.
                     </Text>
                 </View>
 
