@@ -65,7 +65,7 @@ export default function HistoricData() {
         });
     };
 
-    const monthOptions = [
+    const fullMonthOptions  = [
         { label: 'January', value: '1' },
         { label: 'February', value: '2' },
         { label: 'March', value: '3' },
@@ -79,7 +79,13 @@ export default function HistoricData() {
         { label: 'November', value: '11' },
         { label: 'December', value: '12' },
     ];
+// Filter the month options based on the current year and month
+//If the selected year is the current year, only show months up to the current month (inclusive). Otherwise, show all 12 months.
+   const monthOptions = selectedYear === currentYear
+    ? fullMonthOptions.filter((_, i) => i < currentMonth)
+    : fullMonthOptions;
 
+        
     const yearOptions = [] as {
         label: string;
         value: string;
