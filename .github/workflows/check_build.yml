@@ -34,15 +34,20 @@ jobs:
               run: |
                   npx expo-doctor
 
-            - name: Lint Check
+            - name: Lint Check via Expo
               working-directory: "./aquawatch_mobile_app"
               run: |
-                  npx expo lint || echo "Linting found issues, but continuing..."
+                  npx expo lint
+
+            - name: Lint Check via Eslint & Prettier
+              working-directory: "./aquawatch_mobile_app"
+              run: |
+                  npm run lint
 
             - name: npm Audit
               working-directory: "./aquawatch_mobile_app"
               run: |
-                  npm audit --audit-level=low || echo "npm audit found vulnerabilities, but continuing..."
+                  npm audit --audit-level=low
 
             - name: Spell check
               working-directory: "./aquawatch_mobile_app"

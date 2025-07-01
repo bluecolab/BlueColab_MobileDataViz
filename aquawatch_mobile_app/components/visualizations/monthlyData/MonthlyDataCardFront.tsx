@@ -56,7 +56,11 @@ export function MonthlyDataCardFront({ dailySummary, error, month }: MonthlyData
     return (
         <View className="h-full rounded-3xl bg-white px-2 dark:bg-gray-700">
             {/* Bottom-Centered Text */}
-            <Text className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black dark:text-white" key="month-label"> {/* Fix CssInterop upgrade. Key helps React track this element during re-renders. */}
+            <Text
+                className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black dark:text-white"
+                key="month-label">
+                {' '}
+                {/* Fix CssInterop upgrade. Key helps React track this element during re-renders. */}
                 {month}
             </Text>
             <CartesianChart
@@ -88,7 +92,7 @@ export function MonthlyDataCardFront({ dailySummary, error, month }: MonthlyData
                         <AreaRange
                             upperPoints={points.max}
                             lowerPoints={points.min}
-                            color={isDark ? "rgba(73, 146, 255, 0.95)" : "rgba(0, 100, 255, 0.4)"}
+                            color={isDark ? 'rgba(73, 146, 255, 0.95)' : 'rgba(0, 100, 255, 0.4)'}
                             animate={{ type: 'timing' }}
                         />
                         <Line
