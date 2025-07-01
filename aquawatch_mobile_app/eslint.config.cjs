@@ -37,6 +37,10 @@ module.exports = [
             },
         },
         rules: {
+            // General formatting
+            'no-trailing-spaces': 'warning',
+            indent: ['warning', 4],
+
             // Imports
             'import/no-unresolved': 'error',
             'import/namespace': 'error',
@@ -56,4 +60,4 @@ module.exports = [
             //   '@typescript-eslint/explicit-function-return-type': 'warn',
         },
     },
-]
+];
