@@ -44,45 +44,54 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    needs: pr-branch-check
+    needs: setup
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - name: Install dependencies
-        working-directory: ./aquawatch_mobile_app
-        run: npm install
+      - name: Restore node_modules from cache
+        uses: actions/cache@v3
+        with:
+          path: ./aquawatch_mobile_app/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('aquawatch_mobile_app/package-lock.json') }}
       - name: Lint Check
         working-directory: ./aquawatch_mobile_app
         run: npx expo lint
 
   audit:
     runs-on: ubuntu-latest
-    needs: pr-branch-check
+    needs: setup
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - name: Install dependencies
-        working-directory: ./aquawatch_mobile_app
-        run: npm install
+      - name: Restore node_modules from cache
+        uses: actions/cache@v3
+        with:
+          path: ./aquawatch_mobile_app/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('aquawatch_mobile_app/package-lock.json') }}
       - name: npm Audit
         working-directory: ./aquawatch_mobile_app
         run: npm audit --audit-level=low
 
   spellcheck:
     runs-on: ubuntu-latest
-    needs: pr-branch-check
+    needs: setup
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+      - name: Restore node_modules from cache
+        uses: actions/cache@v3
+        with:
+          path: ./aquawatch_mobile_app/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('aquawatch_mobile_app/package-lock.json') }}
       - name: Install cspell
         working-directory: ./aquawatch_mobile_app
         run: npm install -g cspell
@@ -92,16 +101,18 @@ jobs:
 
   expo-doctor:
     runs-on: ubuntu-latest
-    needs: pr-branch-check
+    needs: setup
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - name: Install dependencies
-        working-directory: ./aquawatch_mobile_app
-        run: npm install
+      - name: Restore node_modules from cache
+        uses: actions/cache@v3
+        with:
+          path: ./aquawatch_mobile_app/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('aquawatch_mobile_app/package-lock.json') }}
       - name: Expo Doctor Check
         working-directory: ./aquawatch_mobile_app
         run: npx expo-doctor

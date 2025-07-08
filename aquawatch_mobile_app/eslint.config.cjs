@@ -38,8 +38,7 @@ module.exports = [
         },
         rules: {
             // General formatting
-            'no-trailing-spaces': 'warning',
-            indent: ['warning', 4],
+            'no-trailing-spaces': 'warn',
 
             // Imports
             'import/no-unresolved': 'error',
