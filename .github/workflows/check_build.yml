@@ -2,49 +2,57 @@ name: Frontend Build Check
 run-name: ${{ github.actor }} Build Check
 
 on:
-    pull_request:
-        branches:
-            - main
-        paths:
-            - "aquawatch_mobile_app/**"
-    workflow_dispatch: # Manual trigger
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "aquawatch_mobile_app/**"
+  workflow_dispatch: # Manual trigger
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: 🏗 Setup repo
-              uses: actions/checkout@v3
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if PR is from app-build-branch
+        run: |
+          echo "PR is from branch ${{ github.head_ref }} to ${{ github.base_ref }}"
+          if [ "${{ github.head_ref }}" = "app-build-branch" ]; then
+          echo "PRs from app-build-branch are not allowed."
+          exit 1
+          fi
 
-            - name: 🏗 Setup Node
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 18.x
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
 
-            - name: Install cspell
-              working-directory: ./aquawatch_mobile_app
-              run: npm install -g cspell
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
 
-            - name: Install dependencies
-              working-directory: ./aquawatch_mobile_app
-              run: npm install
+      - name: Install cspell
+        working-directory: ./aquawatch_mobile_app
+        run: npm install -g cspell
 
-            - name: Expo Doctor Check
-              working-directory: "./aquawatch_mobile_app"
-              run: |
-                  npx expo-doctor
+      - name: Install dependencies
+        working-directory: ./aquawatch_mobile_app
+        run: npm install
 
-            - name: Lint Check
-              working-directory: "./aquawatch_mobile_app"
-              run: |
-                  npx expo lint || echo "Linting found issues, but continuing..."
+      - name: Expo Doctor Check
+        working-directory: "./aquawatch_mobile_app"
+        run: |
+          npx expo-doctor
 
-            - name: npm Audit
-              working-directory: "./aquawatch_mobile_app"
-              run: |
-                  npm audit --audit-level=low || echo "npm audit found vulnerabilities, but continuing..."
+      - name: Lint Check
+        working-directory: "./aquawatch_mobile_app"
+        run: |
+          npx expo lint || echo "Linting found issues, but continuing..."
 
-            - name: Spell check
-              working-directory: "./aquawatch_mobile_app"
-              run: |
-                  npx cspell .
+      - name: npm Audit
+        working-directory: "./aquawatch_mobile_app"
+        run: |
+          npm audit --audit-level=low || echo "npm audit found vulnerabilities, but continuing..."
+
+      - name: Spell check
+        working-directory: "./aquawatch_mobile_app"
+        run: |
+          npx cspell .
