@@ -58,7 +58,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('aquawatch_mobile_app/package-lock.json') }}
       - name: Lint Check
         working-directory: ./aquawatch_mobile_app
-        run: npx expo lint
+        run: npm run lint
 
   audit:
     runs-on: ubuntu-latest
