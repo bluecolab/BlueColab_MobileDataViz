@@ -7,52 +7,101 @@ on:
       - main
     paths:
       - "aquawatch_mobile_app/**"
-  workflow_dispatch: # Manual trigger
+  workflow_dispatch:
 
 jobs:
-  build:
+  pr-branch-check:
     runs-on: ubuntu-latest
     steps:
       - name: Fail if PR is from app-build-branch
         run: |
           echo "PR is from branch ${{ github.head_ref }} to ${{ github.base_ref }}"
           if [ "${{ github.head_ref }}" = "app-build-branch" ]; then
-          echo "PRs from app-build-branch are not allowed."
-          exit 1
+            echo "PRs from app-build-branch are not allowed."
+            exit 1
           fi
 
-      - name: 🏗 Setup repo
-        uses: actions/checkout@v3
-
-      - name: 🏗 Setup Node
+  setup:
+    runs-on: ubuntu-latest
+    needs: pr-branch-check
+    outputs:
+      cache-hit: ${{ steps.cache.outputs.cache-hit }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-
-      - name: Install cspell
-        working-directory: ./aquawatch_mobile_app
-        run: npm install -g cspell
-
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./aquawatch_mobile_app/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('aquawatch_mobile_app/package-lock.json') }}
       - name: Install dependencies
         working-directory: ./aquawatch_mobile_app
         run: npm install
 
-      - name: Expo Doctor Check
-        working-directory: "./aquawatch_mobile_app"
-        run: |
-          npx expo-doctor
-
+  lint:
+    runs-on: ubuntu-latest
+    needs: pr-branch-check
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        working-directory: ./aquawatch_mobile_app
+        run: npm install
       - name: Lint Check
-        working-directory: "./aquawatch_mobile_app"
-        run: |
-          npx expo lint || echo "Linting found issues, but continuing..."
+        working-directory: ./aquawatch_mobile_app
+        run: npx expo lint
 
+  audit:
+    runs-on: ubuntu-latest
+    needs: pr-branch-check
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        working-directory: ./aquawatch_mobile_app
+        run: npm install
       - name: npm Audit
-        working-directory: "./aquawatch_mobile_app"
-        run: |
-          npm audit --audit-level=low || echo "npm audit found vulnerabilities, but continuing..."
+        working-directory: ./aquawatch_mobile_app
+        run: npm audit --audit-level=low
 
+  spellcheck:
+    runs-on: ubuntu-latest
+    needs: pr-branch-check
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install cspell
+        working-directory: ./aquawatch_mobile_app
+        run: npm install -g cspell
       - name: Spell check
-        working-directory: "./aquawatch_mobile_app"
-        run: |
-          npx cspell .
+        working-directory: ./aquawatch_mobile_app
+        run: npx cspell .
+
+  expo-doctor:
+    runs-on: ubuntu-latest
+    needs: pr-branch-check
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        working-directory: ./aquawatch_mobile_app
+        run: npm install
+      - name: Expo Doctor Check
+        working-directory: ./aquawatch_mobile_app
+        run: npx expo-doctor
