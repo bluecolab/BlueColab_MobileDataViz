@@ -7,10 +7,10 @@ This folder contains the various files related to the application.
 - [git](https://git-scm.com/) - version control. For installing git, please see the [git website](https://git-scm.com/).
 - [npm](https://www.npmjs.com/) - package manager. For installing npm, please see [npm docs](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 - Testing:
-    - _Option A_ (slower, more storage): [Android Studio](https://developer.android.com/studio) or Test Flight (Apple) - local testing. For installing please see respective websites.
+    - _Option A_: [Android Studio](https://developer.android.com/studio) or Test Flight (Apple) - local testing. For installing please see respective websites.
         - Create a device emulator:
             - [Android Emulator](https://developer.android.com/codelabs/basic-android-kotlin-compose-emulator#2). Please verify you install the latest API Level.
-    - _Option B_ (faster, requires phone): [Expo Go](https://expo.dev/go) - on device testing. Download from the app store.
+    - _Option B_: [Expo Go](https://expo.dev/go) - on device testing. Download from the app store.
 - All other prerequisites will be downloaded from the `package.json`. To install them see 'Getting Started'.
 
 ## Recommended Software
@@ -33,7 +33,7 @@ This folder contains the various files related to the application.
     ```bash
     git clone https://github.com/bluecolab/BlueColab_MobileDataViz.git
     ```
-3. Navigate in your terminal to the aquawatch_mobile_app directory:
+3. Navigate in your terminal to the `aquawatch_mobile_app directory`:
     ```bash
     cd /BlueColab_MobileDataViz/aquawatch_mobile_app/
     ```
@@ -46,7 +46,7 @@ This folder contains the various files related to the application.
 
 1. If you haven't. start a device emulator on your computer. The instructions to start one can be found [here](https://developer.android.com/codelabs/basic-android-kotlin-compose-emulator#2).
 2. Open a terminal window.
-3. Make sure you are in the aquawatch_mobile_app directory.
+3. Make sure you are in the `aquawatch_mobile_app directory`.
 4. In the terminal start the app by running:
     ```bash
     npx expo start
@@ -59,7 +59,7 @@ This folder contains the various files related to the application.
 1. Make sure your computer and phone are on the _same_ WiFi network.
 2. Make sure you have 'Expo Go' App downloaded on your phone.
 3. Open a terminal window.
-4. Make sure you are in the aquawatch_mobile_app directory.
+4. Make sure you are in the `aquawatch_mobile_app directory`.
 5. In the terminal start the app by running:
     ```bash
     npx expo start
