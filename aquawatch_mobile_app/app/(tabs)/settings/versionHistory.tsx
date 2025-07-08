@@ -200,23 +200,72 @@ export default function VersionHistory() {
                     <Text className="text-sm text-gray-500 dark:text-gray-400">May 9, 2025</Text>
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">
-                        - Current data page fully implemented
+                        - Current data page fully implemented - Expo 53 Migration
                     </Text>
                 </View>
 
                 <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
-                        v1.7-v1.8.1 - Typescript Time
+                        v1.7 - Typescript Time
                     </Text>
                     <LinkComp
-                        url="https://github.com/bluecolab/BlueColab_MobileDataViz/tree/61ac084ff497719c7a8c68007292ed2dc50b39b"
-                        label="Last commit: 61ac084"
+                        url="https://github.com/bluecolab/BlueColab_MobileDataViz/commit/1206598a1e115f7451ebaf204d08b1cc3defd982"
+                        label="Last commit: 1206598"
                     />
-                    <Text className="text-sm text-gray-500 dark:text-gray-400">June 25, 2025</Text>
+                    <Text className="text-sm text-gray-500 dark:text-gray-400">June 10, 2025</Text>
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">
-                        - App fully moved to Typescript - minor visual changes - Why is it 1.8 also?
-                        Because I can't count.
+                        - App fully moved to Typescript - minor visual changes
+                    </Text>
+                </View>
+
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                    <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+                        v1.8 - Summer 2025 Updates
+                    </Text>
+                    <LinkComp
+                        url="https://github.com/bluecolab/BlueColab_MobileDataViz/commit/a1417574a6406abd97e40569f2f5aa4260a78849"
+                        label="Last commit: a141757"
+                    />
+                    <Text className="text-sm text-gray-500 dark:text-gray-400">July 2, 2025</Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">
+                        - v1.8.0 - No changes, just a version bump for summer changes
+                    </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.1:</Text>
+
+                    <Text className="ml-3">
+                        - Expo 53 Migration Patches (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/124"
+                            label="#124"
+                        />
+                        by Victor Lima)
+                    </Text>
+                    <Text className="ml-3">
+                        - Fix CssInterop upgrade warning (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/122"
+                            label="#122"
+                        />
+                        by Victor Lima){' '}
+                    </Text>
+                    <Text className="ml-3">
+                        - Fix dark mode support missing in graphs (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/119"
+                            label="#119"
+                        />
+                        by Kenji)
+                    </Text>
+                    <Text className="ml-3">
+                        - Package updates and security updates (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/111"
+                            label="#111"
+                        />
+                        by Kenji)
                     </Text>
                 </View>
 

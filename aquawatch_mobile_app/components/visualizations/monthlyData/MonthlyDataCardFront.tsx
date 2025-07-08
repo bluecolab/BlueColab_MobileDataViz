@@ -59,8 +59,7 @@ export function MonthlyDataCardFront({ dailySummary, error, month }: MonthlyData
             <Text
                 className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black dark:text-white"
                 key="month-label">
-                {' '}
-                {/* Fix CssInterop upgrade. Key helps React track this element during re-renders. */}
+                {/* Key needed to disable CssInterop errors */}
                 {month}
             </Text>
             <CartesianChart

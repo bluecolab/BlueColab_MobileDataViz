@@ -37,6 +37,9 @@ module.exports = [
             },
         },
         rules: {
+            // General formatting
+            'no-trailing-spaces': 'warn',
+
             // Imports
             'import/no-unresolved': 'error',
             'import/namespace': 'error',
@@ -54,4 +57,4 @@ module.exports = [
             '@typescript-eslint/no-unused-vars': 'error',
         },
     },
-]
+];
