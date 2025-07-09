@@ -200,8 +200,7 @@ export default function VersionHistory() {
                     <Text className="text-sm text-gray-500 dark:text-gray-400">May 9, 2025</Text>
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">
-                        - Current data page fully implemented
-                        - Expo 53 Migration
+                        - Current data page fully implemented - Expo 53 Migration
                     </Text>
                 </View>
 
@@ -234,18 +233,55 @@ export default function VersionHistory() {
                         - v1.8.0 - No changes, just a version bump for summer changes
                     </Text>
 
-                    <Text className="mt-2 text-gray-700 dark:text-gray-300">
-                        - v1.8.1:
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.1:</Text>
+
+                    <Text className="ml-3">
+                        - Expo 53 Migration Patches (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/124"
+                            label="#124"
+                        />
+                        by Victor Lima)
+                    </Text>
+                    <Text className="ml-3">
+                        - Fix CssInterop upgrade warning (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/122"
+                            label="#122"
+                        />
+                        by Victor Lima){' '}
+                    </Text>
+                    <Text className="ml-3">
+                        - Fix dark mode support missing in graphs (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/119"
+                            label="#119"
+                        />
+                        by Kenji)
+                    </Text>
+                    <Text className="ml-3">
+                        - Package updates and security updates (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/111"
+                            label="#111"
+                        />
+                        by Kenji)
                     </Text>
 
-                    <Text className="ml-3">- Expo 53 Migration Patches (<LinkComp url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/124" label="#124" /> by Victor Lima)</Text>
-                    <Text className="ml-3">- Fix CssInterop upgrade warning (<LinkComp url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/122" label="#122" /> by Victor Lima) </Text>
-                    <Text className="ml-3">- Fix dark mode support missing in graphs (<LinkComp url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/119" label="#119" /> by Kenji)</Text>
-                    <Text className="ml-3">- Package updates and security updates (<LinkComp url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/111" label="#111" /> by Kenji)</Text>
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.2:</Text>
+
+                    <Text className="ml-3">
+                        - Fixed month selection issues (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/141"
+                            label="#141"
+                        />
+                        by Victor Lima)
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>
-            </ScrollView >
+            </ScrollView>
         </>
     );
 }

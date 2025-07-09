@@ -2,7 +2,7 @@
     "expo": {
         "name": "AquaWatch Mobile",
         "slug": "AquaWatch_Mobile",
-        "version": "1.8.1",
+        "version": "1.8.2",
         "scheme": "expo-nav-template",
         "web": {
             "bundler": "metro",
@@ -43,9 +43,7 @@
             "resizeMode": "contain",
             "backgroundColor": "#ffffff"
         },
-        "assetBundlePatterns": [
-            "**/*"
-        ],
+        "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true
         },

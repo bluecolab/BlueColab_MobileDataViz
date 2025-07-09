@@ -65,29 +65,34 @@ export default function HistoricData() {
         });
     };
 
-    const monthOptions = [
-        { label: 'January', value: '1' },
-        { label: 'February', value: '2' },
-        { label: 'March', value: '3' },
-        { label: 'April', value: '4' },
-        { label: 'May', value: '5' },
-        { label: 'June', value: '6' },
-        { label: 'July', value: '7' },
-        { label: 'August', value: '8' },
-        { label: 'September', value: '9' },
-        { label: 'October', value: '10' },
-        { label: 'November', value: '11' },
-        { label: 'December', value: '12' },
-    ];
+    // Filters down to not show future months
+    const monthOptions = React.useMemo(() => {
+        const fullMonthOptions = [
+            { label: 'January', value: '1' },
+            { label: 'February', value: '2' },
+            { label: 'March', value: '3' },
+            { label: 'April', value: '4' },
+            { label: 'May', value: '5' },
+            { label: 'June', value: '6' },
+            { label: 'July', value: '7' },
+            { label: 'August', value: '8' },
+            { label: 'September', value: '9' },
+            { label: 'October', value: '10' },
+            { label: 'November', value: '11' },
+            { label: 'December', value: '12' },
+        ];
+        return selectedYear === currentYear
+            ? fullMonthOptions.filter((_, i) => i < currentMonth)
+            : fullMonthOptions;
+    }, [currentMonth, currentYear, selectedYear]);
 
-    const yearOptions = [] as {
-        label: string;
-        value: string;
-    }[];
-
-    for (let year = currentYear; year >= 2020; year--) {
-        yearOptions.push({ label: `${year}`, value: `${year}` });
-    }
+    const yearOptions = React.useMemo(() => {
+        const options: { label: string; value: string }[] = [];
+        for (let year = currentYear; year >= 2020; year--) {
+            options.push({ label: `${year}`, value: `${year}` });
+        }
+        return options;
+    }, [currentYear]);
 
     const defaultLocationValue =
         locationOptions.find((option) => option.label === (selectedLocationTemp ?? defaultLocation))
@@ -95,24 +100,33 @@ export default function HistoricData() {
 
     const [selectedLocation, setSelectedLocation] = useState(defaultLocationValue);
 
-    const onMonthSelect = (value: string) => {
-        setSelectedMonth(Number.parseInt(value, 10));
-        setMonth(Number.parseInt(value, 10));
-        setEndDay(getDaysInMonth(Number.parseInt(value, 10), selectedYear));
-    };
+    const onMonthSelect = useCallback(
+        (value: string) => {
+            setSelectedMonth(Number.parseInt(value, 10));
+            setMonth(Number.parseInt(value, 10));
+            setEndDay(getDaysInMonth(Number.parseInt(value, 10), selectedYear));
+        },
+        [selectedYear, setMonth, setEndDay]
+    );
 
-    const onYearSelect = (value: string) => {
-        setSelectedYear(Number.parseInt(value, 10));
-        setYear(Number.parseInt(value, 10));
-        setEndDay(getDaysInMonth(selectedMonth, Number.parseInt(value, 10)));
-    };
+    const onYearSelect = useCallback(
+        (value: string) => {
+            setSelectedYear(Number.parseInt(value, 10));
+            setYear(Number.parseInt(value, 10));
+            setEndDay(getDaysInMonth(selectedMonth, Number.parseInt(value, 10)));
+        },
+        [selectedMonth, setYear, setEndDay]
+    );
 
-    const onLocationSelect = (value: string) => {
-        setSelectedLocation(value);
-        const defaultLocationLabel =
-            locationOptions.find((option) => option.value === value)?.label || '';
-        setSelectedLocationTemp(defaultLocationLabel);
-    };
+    const onLocationSelect = useCallback(
+        (value: string) => {
+            setSelectedLocation(value);
+            const defaultLocationLabel =
+                locationOptions.find((option) => option.value === value)?.label || '';
+            setSelectedLocationTemp(defaultLocationLabel);
+        },
+        [locationOptions, setSelectedLocationTemp]
+    );
 
     useEffect(() => {
         const defaultLocationValue =
@@ -120,7 +134,7 @@ export default function HistoricData() {
                 (option) => option.label === (selectedLocationTemp ?? defaultLocation)
             )?.value || '';
         setSelectedLocation(defaultLocationValue);
-    }, [defaultLocation, locationOptions]);
+    }, [defaultLocation, locationOptions, selectedLocationTemp]);
 
     const RenderTab = useCallback(
         () => (
@@ -153,7 +167,17 @@ export default function HistoricData() {
                 </View>
             </View>
         ),
-        [selectedLocation]
+        [
+            locationOptions,
+            monthOptions,
+            onLocationSelect,
+            onMonthSelect,
+            onYearSelect,
+            selectedLocation,
+            selectedMonth,
+            selectedYear,
+            yearOptions,
+        ]
     );
 
     return (

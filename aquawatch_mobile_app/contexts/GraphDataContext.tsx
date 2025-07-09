@@ -26,14 +26,14 @@ const GraphDataContext = createContext({
     defaultLocation: undefined as string | undefined,
     defaultTempUnit: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
-    changeLocation: (newLocation: string) => {},
-    setLoading: (newValue: boolean) => {},
-    setYear: (newValue: number | undefined) => {},
-    setMonth: (newValue: number | undefined) => {},
-    setEndDay: (newValue: number | undefined) => {},
-    setDefaultLocation: (newValue: string | undefined) => {},
-    changeUnit: (newUnit: string) => {},
-    setSelectedLocationTemp: (newValue: string | undefined) => {},
+    changeLocation: () => {},
+    setLoading: () => {},
+    setYear: () => {},
+    setMonth: () => {},
+    setEndDay: () => {},
+    setDefaultLocation: () => {},
+    changeUnit: () => {},
+    setSelectedLocationTemp: () => {},
 } as GraphDataContextType);
 
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
@@ -90,7 +90,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 setLoading
             );
         }
-    }, [year, month, start_day, end_day, defaultLocation, selectedLocation]);
+    }, [year, month, start_day, end_day, defaultLocation, selectedLocation, fetchData]);
 
     useEffect(() => {
         const getStoredDefaultLocation = async () => {

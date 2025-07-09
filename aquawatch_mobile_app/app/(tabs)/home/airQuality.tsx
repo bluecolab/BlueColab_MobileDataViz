@@ -235,11 +235,7 @@ const AirQuality = () => {
     const [title, setTitle] = useState('Air Quality Data');
     const [searchQuery, setSearchQuery] = useState('');
 
-    useEffect(() => {
-        fetchAirQualityData();
-    }, [location]);
-
-    const fetchAirQualityData = async () => {
+    const fetchAirQualityData = React.useCallback(async () => {
         setLoading(true); // Show loading indicator
         setRefreshing(true);
         try {
@@ -253,7 +249,11 @@ const AirQuality = () => {
             setRefreshing(false);
             setLoading(false); // Hide loading indicator
         }
-    };
+    }, [location.latitude, location.longitude]);
+
+    useEffect(() => {
+        fetchAirQualityData();
+    }, [fetchAirQualityData]);
 
     const getCurrentLocation = async () => {
         setLoading(true);
