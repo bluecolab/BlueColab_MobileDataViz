@@ -267,6 +267,17 @@ export default function VersionHistory() {
                         />
                         by Kenji)
                     </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.2:</Text>
+
+                    <Text className="ml-3">
+                        - Fixed month selection issues (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/141"
+                            label="#141"
+                        />
+                        by Victor Lima)
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>
