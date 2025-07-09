@@ -48,7 +48,7 @@ export default function WQICardFront({ data, loading }: WQICardFrontProps) {
 
             <PolarChart data={DATA} labelKey="label" valueKey="value" colorKey="color">
                 <Pie.Chart innerRadius="50%" startAngle={270}>
-                    {({ slice }) => (
+                    {() => (
                         <Pie.Slice>
                             <Pie.SliceAngularInset
                                 angularInset={{

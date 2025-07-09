@@ -3,10 +3,14 @@ import { useColorScheme } from 'nativewind';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Appearance } from 'react-native';
 
-const ColorSchemeContext = createContext({
+const ColorSchemeContext = createContext<{
+    isDark: boolean;
+    colorSchemeSys: string;
+    changeColor: (newColorScheme: ColorScheme) => void;
+}>({
     isDark: false,
     colorSchemeSys: 'system',
-    changeColor: (newColorScheme: ColorScheme) => {},
+    changeColor: () => {},
 });
 
 export default function ColorSchemeProvider({ children }: { children: React.ReactNode }) {
@@ -64,7 +68,7 @@ export default function ColorSchemeProvider({ children }: { children: React.Reac
         return () => {
             subscription.remove();
         };
-    }, []);
+    }, [colorSchemeSys, setColorScheme]);
 
     return (
         <ColorSchemeContext.Provider
