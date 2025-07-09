@@ -65,28 +65,26 @@ export default function HistoricData() {
         });
     };
 
-
-// Filters down to not show future months
-   const monthOptions = React.useMemo(() => {
-     const fullMonthOptions  = [
-        { label: 'January', value: '1' },
-        { label: 'February', value: '2' },
-        { label: 'March', value: '3' },
-        { label: 'April', value: '4' },
-        { label: 'May', value: '5' },
-        { label: 'June', value: '6' },
-        { label: 'July', value: '7' },
-        { label: 'August', value: '8' },
-        { label: 'September', value: '9' },
-        { label: 'October', value: '10' },
-        { label: 'November', value: '11' },
-        { label: 'December', value: '12' },
-    ];
-    return  selectedYear === currentYear
-    ? fullMonthOptions.filter((_, i) => i < currentMonth)
-    : fullMonthOptions;
-   }, [currentMonth, currentYear, selectedYear]);
-
+    // Filters down to not show future months
+    const monthOptions = React.useMemo(() => {
+        const fullMonthOptions = [
+            { label: 'January', value: '1' },
+            { label: 'February', value: '2' },
+            { label: 'March', value: '3' },
+            { label: 'April', value: '4' },
+            { label: 'May', value: '5' },
+            { label: 'June', value: '6' },
+            { label: 'July', value: '7' },
+            { label: 'August', value: '8' },
+            { label: 'September', value: '9' },
+            { label: 'October', value: '10' },
+            { label: 'November', value: '11' },
+            { label: 'December', value: '12' },
+        ];
+        return selectedYear === currentYear
+            ? fullMonthOptions.filter((_, i) => i < currentMonth)
+            : fullMonthOptions;
+    }, [currentMonth, currentYear, selectedYear]);
 
     const yearOptions = React.useMemo(() => {
         const options: { label: string; value: string }[] = [];
