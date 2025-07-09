@@ -65,8 +65,9 @@ export default function HistoricData() {
         });
     };
 
-    const monthOptions = React.useMemo(
-        () => [
+    // Filters down to not show future months
+    const monthOptions = React.useMemo(() => {
+        const fullMonthOptions = [
             { label: 'January', value: '1' },
             { label: 'February', value: '2' },
             { label: 'March', value: '3' },
@@ -79,9 +80,11 @@ export default function HistoricData() {
             { label: 'October', value: '10' },
             { label: 'November', value: '11' },
             { label: 'December', value: '12' },
-        ],
-        []
-    );
+        ];
+        return selectedYear === currentYear
+            ? fullMonthOptions.filter((_, i) => i < currentMonth)
+            : fullMonthOptions;
+    }, [currentMonth, currentYear, selectedYear]);
 
     const yearOptions = React.useMemo(() => {
         const options: { label: string; value: string }[] = [];
