@@ -240,7 +240,7 @@ export default function VersionHistory() {
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/124"
                             label="#124"
-                        />{' '}
+                        />
                         by Victor Lima)
                     </Text>
                     <Text className="ml-3">
@@ -248,7 +248,7 @@ export default function VersionHistory() {
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/122"
                             label="#122"
-                        />{' '}
+                        />
                         by Victor Lima){' '}
                     </Text>
                     <Text className="ml-3">
@@ -256,7 +256,7 @@ export default function VersionHistory() {
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/119"
                             label="#119"
-                        />{' '}
+                        />
                         by Kenji)
                     </Text>
                     <Text className="ml-3">
@@ -264,7 +264,7 @@ export default function VersionHistory() {
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/111"
                             label="#111"
-                        />{' '}
+                        />
                         by Kenji)
                     </Text>
                 </View>

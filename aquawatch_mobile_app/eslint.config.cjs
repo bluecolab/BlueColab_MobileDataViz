@@ -43,20 +43,18 @@ module.exports = [
             // Imports
             'import/no-unresolved': 'error',
             'import/namespace': 'error',
-            'import/no-duplicates': 'warn',
+            'import/no-duplicates': 'error',
 
             // React
-            'react/jsx-key': 'warn',
-            'react/no-unstable-nested-components': 'warn',
+            'react/jsx-key': 'error',
+            'react/no-unstable-nested-components': 'error',
 
             // React Hooks
             'react-hooks/rules-of-hooks': 'error',
-            'react-hooks/exhaustive-deps': 'warn',
+            'react-hooks/exhaustive-deps': 'error',
 
             // TypeScript rules
-            '@typescript-eslint/no-unused-vars': 'warn',
-            //   '@typescript-eslint/no-floating-promises': 'error',
-            //   '@typescript-eslint/explicit-function-return-type': 'warn',
+            '@typescript-eslint/no-unused-vars': 'error',
         },
     },
 ];

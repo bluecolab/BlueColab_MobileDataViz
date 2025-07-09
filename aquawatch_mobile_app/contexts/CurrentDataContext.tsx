@@ -44,7 +44,7 @@ export default function CurrentDataProvider({ children }: { children: React.Reac
         if (defaultLocation) fetchData(defaultLocation, true, 0, 0, 0, 0, setData, setLoading);
 
         return () => clearInterval(intervalId);
-    }, [defaultLocation, defaultTempUnit]);
+    }, [defaultLocation, defaultTempUnit, fetchData]);
 
     return (
         <CurrentDataContext.Provider
