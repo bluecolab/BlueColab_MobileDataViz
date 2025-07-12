@@ -1,6 +1,7 @@
 ---
 name: Story Template
 title: AWM-## - 
+about: Template for stories
 labels: ''
 assignees: ''
 body:
