@@ -1,6 +1,6 @@
 {
   "name": "aquawatchmobile",
-  "version": "1.0.0",
+  "version": "1.8.2",
   "main": "expo-router/entry",
   "scripts": {
     "android": "expo start --android",
@@ -9,7 +9,8 @@
     "start": "expo start",
     "prebuild": "expo prebuild",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" --max-warnings=0 && prettier -c \"**/*.{js,jsx,ts,tsx}\"",
-    "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx}\" --write"
+    "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx}\" --write",
+    "test": "npm run lint && npx expo-doctor && npx cspell . && npm audit --audit-level=low"
   },
   "expo": {
     "doctor": {
@@ -71,6 +72,7 @@
     "@types/react": "~19.0.10",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
+    "cspell": "^9.1.3",
     "eslint": "^9.29.0",
     "eslint-config-expo": "~9.2.0",
     "eslint-import-resolver-typescript": "^4.4.3",
