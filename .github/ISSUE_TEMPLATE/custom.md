@@ -1,6 +1,6 @@
 ---
 name: Story Template
-description: Template for stories
+about: Template for stories
 title: "AWM-## - "
 labels: []
 assignees: []
