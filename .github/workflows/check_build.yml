@@ -92,9 +92,6 @@ jobs:
         with:
           path: ./aquawatch_mobile_app/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('aquawatch_mobile_app/package-lock.json') }}
-      - name: Install cspell
-        working-directory: ./aquawatch_mobile_app
-        run: npm install -g cspell
       - name: Spell check
         working-directory: ./aquawatch_mobile_app
         run: npx cspell .
