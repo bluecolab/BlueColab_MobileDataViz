@@ -1,4 +1,4 @@
----
+
 name: Story Template
 about: Template for stories
 title: "AWM-## - "
@@ -22,6 +22,6 @@ body:
       placeholder: "- Do XYZ\n- Setup authentication"
     validations:
       required: false
----
+
 
 
