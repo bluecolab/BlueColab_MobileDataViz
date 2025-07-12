@@ -19,7 +19,7 @@ body:
     attributes:
       label: Tasks
       description: "List of tasks"
-      placeholder: "- Do XYZ\n- Setup authentication"
+      placeholder: "- Do XYZ\n- Do ABC"
     validations:
       required: false
 
