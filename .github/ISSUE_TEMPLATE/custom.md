@@ -1,26 +1,27 @@
 ---
 name: Story Template
-title: AWM-## - 
-about: Template for stories
-labels: ''
-assignees: ''
+description: Template for stories
+title: "AWM-## - "
+labels: []
+assignees: []
 body:
-- type: input
-  id: story
-  attributes:
-    label: Story
-    description: "Story:"
-    placeholder: "As a user..., or As a developer...etc"
-  validations:
-    required: false
-- type: input
-  id: task
-  attributes:
-    label: Task
-    description: "Tasks:"
-    placeholder: "- Do XYZ"
-  validations:
-    required: false
+  - type: input
+    id: story
+    attributes:
+      label: Story
+      description: "Story: As a user..., or As a developer...etc"
+      placeholder: "As a user..., or As a developer..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: task
+    attributes:
+      label: Tasks
+      description: "List of tasks"
+      placeholder: "- Do XYZ\n- Setup authentication"
+    validations:
+      required: false
 ---
 
 
