@@ -23,6 +23,7 @@ export default function HomeScreenCard({
 
     // Determine if imageSource is a URI or a local image
     const image = typeof imageSource === 'string' ? { uri: imageSource } : imageSource;
+
     return (
         <TouchableOpacity onPress={() => router.push({ pathname: route as any })}>
             <View
