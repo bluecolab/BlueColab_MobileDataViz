@@ -40,12 +40,11 @@ export default function TabLayout() {
                     tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
                 }}
             />
-            {/* we set headerShown false as stacks handle their own headers */}
+            {/* set headerShown false to allow stacks to handle their own headers */}
             <Tabs.Screen
                 name="currentData"
                 options={{
                     tabBarLabel: () => null, // Hides only this tab’s label
-                    // title: 'Current Data',
                     tabBarIcon: ({ color }) => (
                         <TouchableOpacity
                             onPress={() => router.push('/currentData')} // Navigate to the desired screen

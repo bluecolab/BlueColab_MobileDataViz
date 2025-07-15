@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from '@/app/(tabs)/home/index';
 import CurrentDataProvider from '@/contexts/CurrentDataContext';
+import ColorSchemeProvider, { useIsDark } from '@/contexts/ColorSchemeContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,8 +16,6 @@ jest.mock('@/assets/homescreen/turtle.jpg', () => 2);
 jest.mock('@/assets/homescreen/sky.jpg', () => 3);
 jest.mock('@/assets/homescreen/waterSplash2.jpg', () => 4);
 jest.mock('@/assets/homescreen/IMG_9274.jpg', () => 5);
-
-// Mock HomeScreenCard and QuickCurrentData for isolation
 jest.mock('@/components/HomeScreenCard', () => {
     const { Text } = require('react-native');
     return (props: any) => (
@@ -37,11 +36,9 @@ jest.mock('@/contexts/CurrentDataContext', () => {
         default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
     };
 });
-
 jest.mock('@/contexts/ColorSchemeContext', () => ({
     useIsDark: jest.fn(),
 }));
-
 jest.mock('@/contexts/ColorSchemeContext', () => {
     return {
         __esModule: true,
@@ -49,7 +46,6 @@ jest.mock('@/contexts/ColorSchemeContext', () => {
         default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
     };
 });
-
 let stackScreenOptions: any = null;
 jest.mock('expo-router', () => ({
     Stack: {
@@ -59,8 +55,6 @@ jest.mock('expo-router', () => ({
         },
     },
 }));
-
-import ColorSchemeProvider, { useIsDark } from '@/contexts/ColorSchemeContext';
 
 describe('<HomeScreen />', () => {
     it('renders without crashing', () => {
@@ -139,7 +133,7 @@ describe('<HomeScreen />', () => {
 
 describe('Color Scheme Context', () => {
     beforeEach(() => {
-        stackScreenOptions = null; // Reset before each test
+        stackScreenOptions = null;
     });
 
     it('sets dark header styles when isDark is true', () => {
