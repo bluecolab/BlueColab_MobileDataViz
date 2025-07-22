@@ -1,5 +1,5 @@
 {
-    "ignorePaths": ["node_modules/*"],
+    "ignorePaths": ["node_modules/*", "dist/*", "build/*", "coverage/*", "android/*", "ios/*", ".expo/*", ".vscode/*"],
     "ignoreWords": [
         "okaykenji",
         "Nunito",

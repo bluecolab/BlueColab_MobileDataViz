@@ -1,8 +1,8 @@
 diff --git a/node_modules/victory-native/package.json b/node_modules/victory-native/package.json
-index 931697d..af0fe96 100644
+index 994c7c1..98748aa 100644
 --- a/node_modules/victory-native/package.json
 +++ b/node_modules/victory-native/package.json
-@@ -13,13 +13,11 @@
+@@ -14,13 +14,11 @@
    "types": "dist/index.d.ts",
    "main": "dist/index.js",
    "exports": {
