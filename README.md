@@ -14,6 +14,10 @@
 <a href="https://eslint.org/">
   <img src="https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint">
 </a>
+<a href="https://prettier.io/">
+  <img src="https://img.shields.io/badge/prettier-%23F7B93E.svg?style=for-the-badge&logo=prettier&logoColor=black"
+  alt="Prettier">
+</a>
 <a href="https://react.dev/">
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
 </a>

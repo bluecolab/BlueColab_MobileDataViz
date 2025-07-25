@@ -224,8 +224,8 @@ export default function VersionHistory() {
                         v1.8 - Summer 2025 Updates
                     </Text>
                     <LinkComp
-                        url="https://github.com/bluecolab/BlueColab_MobileDataViz/commit/a1417574a6406abd97e40569f2f5aa4260a78849"
-                        label="Last commit: a141757"
+                        url="https://github.com/bluecolab/BlueColab_MobileDataViz/commit/1803c37de666c070d39cd5bf3103a3c30011e083"
+                        label="Last commit: 1803c37"
                     />
                     <Text className="text-sm text-gray-500 dark:text-gray-400">July 2, 2025</Text>
 
@@ -240,7 +240,7 @@ export default function VersionHistory() {
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/124"
                             label="#124"
-                        />
+                        />{' '}
                         by Victor Lima)
                     </Text>
                     <Text className="ml-3">
@@ -248,15 +248,15 @@ export default function VersionHistory() {
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/122"
                             label="#122"
-                        />
-                        by Victor Lima){' '}
+                        />{' '}
+                        by Victor Lima)
                     </Text>
                     <Text className="ml-3">
                         - Fix dark mode support missing in graphs (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/119"
                             label="#119"
-                        />
+                        />{' '}
                         by Kenji)
                     </Text>
                     <Text className="ml-3">
@@ -264,7 +264,7 @@ export default function VersionHistory() {
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/111"
                             label="#111"
-                        />
+                        />{' '}
                         by Kenji)
                     </Text>
 
@@ -275,8 +275,33 @@ export default function VersionHistory() {
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/141"
                             label="#141"
-                        />
+                        />{' '}
                         by Victor Lima)
+                    </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.3:</Text>
+
+                    <Text className="ml-3">
+                        - Fix axis not showing in first render of graphs (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/164"
+                            label="#164"
+                        />{' '}
+                        by Kenji)
+                    </Text>
+
+                    <Text className="ml-3">
+                        - Security fixes (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/161"
+                            label="#161"
+                        />{' '}
+                        by dependabot &amp;
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/163"
+                            label="#163"
+                        />{' '}
+                        by Kenji )
                     </Text>
                 </View>
 

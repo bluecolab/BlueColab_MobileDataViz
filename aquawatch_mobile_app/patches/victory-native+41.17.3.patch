@@ -1,5 +1,5 @@
 diff --git a/node_modules/victory-native/package.json b/node_modules/victory-native/package.json
-index 931697d..af0fe96 100644
+index 931697d..1abffd1 100644
 --- a/node_modules/victory-native/package.json
 +++ b/node_modules/victory-native/package.json
 @@ -13,13 +13,11 @@
