@@ -7,6 +7,22 @@ const tseslint = require('@typescript-eslint/eslint-plugin');
 
 module.exports = [
     {
+        ignores: [
+            'coverage/**/*',
+            'dist/**/*',
+            'node_modules/**/*',
+            'build/**/*',
+            'android/**/*',
+            'ios/**/*',
+            '.expo/**/*',
+            '.vscode/**/*',
+            'patches/**/*',
+            'scripts/**/*',
+            'assets/**/*',
+            'public/**/*',
+        ],
+    },
+    {
         files: [
             'app/**/*.{js,ts,jsx,tsx}',
             'components/**/*.{js,ts,jsx,tsx}',
