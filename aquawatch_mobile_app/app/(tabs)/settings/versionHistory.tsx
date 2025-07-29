@@ -303,6 +303,26 @@ export default function VersionHistory() {
                         />{' '}
                         by Kenji )
                     </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.4:</Text>
+
+                    <Text className="ml-3">
+                        - Fix compatibility issues causing app crash (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/167"
+                            label="#167"
+                        />{' '}
+                        by Kenji)
+                    </Text>
+
+                    <Text className="ml-3">
+                        - Security fixes (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/168"
+                            label="#168"
+                        />{' '}
+                        by dependabot)
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>
