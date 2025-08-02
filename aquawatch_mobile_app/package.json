@@ -1,6 +1,6 @@
 {
   "name": "aquawatchmobile",
-  "version": "1.8.4",
+  "version": "1.8.5",
   "main": "expo-router/entry",
   "scripts": {
     "android": "expo start --android",
@@ -64,7 +64,8 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-webview": "13.13.5",
-    "victory-native": "^41.17.3"
+    "victory-native": "^41.17.3",
+    "@react-native-picker/picker": "2.11.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

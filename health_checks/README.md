@@ -1,5 +1,7 @@
 # Health Checks
 
+## Health-check-hudson
+
 A simple Python Script that will test all the Hudson River locations we use. The script should generate a PDF for each location with information on health of each station and their data.
 
 Error conditions:
@@ -11,3 +13,11 @@ Actions needed:
 
 - Wait for USGS to fix the station (ignore the problem and let app error handling to take care of it)
 - Remove the location from the app
+
+## Logcat Error Parser
+
+A Python script that when inputted [logcat](https://developer.android.com/studio/debug/logcat) files, it will produce a JSON file that only shows the "ERROR" messages.
+
+### How to get logcat logs?
+
+See the [wiki](https://github.com/bluecolab/BlueColab_MobileDataViz/wiki/Debugging-Tips-and-Tricks). Put the logcat file in the /logcat-error-parser/input directory.

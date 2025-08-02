@@ -323,6 +323,17 @@ export default function VersionHistory() {
                         />{' '}
                         by dependabot)
                     </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.5:</Text>
+
+                    <Text className="ml-3">
+                        - Fix app crashing in Air Quality Screen (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/179"
+                            label="#179"
+                        />{' '}
+                        by Kenji)
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>
