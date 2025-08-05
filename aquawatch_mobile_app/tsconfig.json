@@ -9,6 +9,12 @@
         }
     },
     "include": [
+        "app/**/*",
+        "components/**/*",
+        "contexts/**/*",
+        "hooks/**/*",
+        "types/**/*",
+        "utils/**/*",
         "**/*.ts",
         "**/*.tsx",
         ".expo/types/**/*.ts",
