@@ -5,7 +5,7 @@ import { AreaRange, CartesianChart, Line } from 'victory-native';
 
 import roboto from '@/assets/fonts/roboto.ttf';
 import { useIsDark } from '@/contexts/ColorSchemeContext';
-import { DailySummaryType } from '@/hooks/useDataCleaner';
+import { DailySummaryType } from '@/utils/dataUtils';
 
 const getOrdinalSuffix = (num: number): string => {
     const lastDigit = num % 10;

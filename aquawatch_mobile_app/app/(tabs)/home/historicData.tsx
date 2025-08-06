@@ -11,7 +11,7 @@ import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
 import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
-import useGetMetadata from '@/hooks/useGetMetadata';
+import getMetadata from '@/utils/getMetadata';
 
 // import { WQIGauge, DataGraph, CustomDropdown } from '@components';
 
@@ -33,7 +33,7 @@ export default function HistoricData() {
         selectedLocationTemp,
         setSelectedLocationTemp,
     } = useGraphData();
-    const { parameterInfo, locationOptions, units } = useGetMetadata();
+    const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useIsDark();
     const unitMap =
         units[(selectedLocationTemp ?? defaultLocation ?? 'Choate Pond') as keyof typeof units];

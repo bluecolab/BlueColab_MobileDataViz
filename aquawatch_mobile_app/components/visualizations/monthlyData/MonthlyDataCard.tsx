@@ -6,7 +6,7 @@ import { MonthlyDataCardBack } from './MonthlyDataCardBack';
 import { MonthlyDataCardFront } from './MonthlyDataCardFront';
 
 import { useIsDark } from '@/contexts/ColorSchemeContext';
-import useDataCleaner from '@/hooks/useDataCleaner';
+import dataUtils from '@/utils/dataUtils';
 
 interface MonthlyDataCardProps {
     loading: boolean;
@@ -40,8 +40,8 @@ export function MonthlyDataCard({
 }: MonthlyDataCardProps) {
     const finalUnitToUse = unitMap[unit] === null ? alternateName : unit;
 
-    const { clean } = useDataCleaner();
-    const dataSummary = clean(data, loading, unit, defaultTempUnit);
+    const { generateDataSummary } = dataUtils();
+    const dataSummary = generateDataSummary(data, loading, unit, defaultTempUnit);
 
     const { width } = Dimensions.get('window');
 

@@ -1,5 +1,7 @@
-export default function useDataCleaner() {
-    const clean = (
+import { SensorData } from '@/types/water.interface';
+
+export default function dataUtils() {
+    const generateDataSummary = (
         data: any,
         loading: boolean,
         finalUnitToUse?: string,
@@ -71,26 +73,8 @@ export default function useDataCleaner() {
         };
     };
 
-    type SensorData = {
-        Cond: number;
-        DOpct: number;
-        Sal: number;
-        Temp: number;
-        Turb: number;
-        pH: number;
-    };
-
-    type SensorAverages = {
-        Cond: number;
-        DOpct: number;
-        Sal: number;
-        Temp: number;
-        Turb: number;
-        pH: number;
-    };
-
-    const averageSensors = (data: SensorData[]): SensorAverages =>
-        data.reduce<SensorAverages>(
+    const averageSensors = (data: SensorData[]): SensorData =>
+        data.reduce<SensorData>(
             (acc, { Cond, DOpct, Sal, Temp, Turb, pH }) => {
                 acc.Cond += Cond;
                 acc.DOpct += DOpct;
@@ -106,7 +90,7 @@ export default function useDataCleaner() {
     const calculateWQI = (data: SensorData[], loading: boolean): number => {
         let score = 0;
 
-        if (!loading && data?.length >= 1) {
+        if (!loading && data.length >= 1) {
             const const_dopct = 0.34;
             const const_ph = 0.22;
             const const_temp = 0.2;
@@ -118,7 +102,7 @@ export default function useDataCleaner() {
 
             // Normalize sensor values
             Object.keys(sensorAverages).forEach((sensor) => {
-                sensorAverages[sensor as keyof SensorAverages] /= data.length;
+                sensorAverages[sensor as keyof SensorData] /= data.length;
             });
 
             // Apply weights
@@ -137,7 +121,7 @@ export default function useDataCleaner() {
         return score;
     };
 
-    return { clean, calculateWQI };
+    return { generateDataSummary, calculateWQI };
 }
 
 export interface DailySummaryType {

@@ -10,10 +10,11 @@ import { useIsDark } from '@/contexts/ColorSchemeContext';
 interface WQICardProps {
     loading: boolean;
     data: any;
+    wqi?: number | string;
     size?: number;
 }
 
-export function WQICard({ loading, data }: WQICardProps) {
+export function WQICard({ loading, data, wqi }: WQICardProps) {
     const { width } = Dimensions.get('window');
     const containerWidth = width * 0.95;
     const { isDark } = useIsDark();
@@ -72,7 +73,7 @@ export function WQICard({ loading, data }: WQICardProps) {
                             }}>
                             <View className="flex-1 items-center justify-center  rounded-3xl bg-white p-default dark:bg-gray-700 ">
                                 <View className="mt-[100] h-[300] w-[300]">
-                                    <WQICardFront data={data} loading={loading} />
+                                    <WQICardFront data={data} loading={loading} wqi={wqi} />
                                 </View>
                             </View>
                         </Animated.View>

@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import { PolarChart, Pie } from 'victory-native';
 
 import { useIsDark } from '@/contexts/ColorSchemeContext';
-import useDataCleaner from '@/hooks/useDataCleaner';
+import dataUtils from '@/utils/dataUtils';
 
 const getColor = (percentage: number) =>
     percentage >= 0 && percentage < 25
@@ -20,13 +20,14 @@ const getColor = (percentage: number) =>
 interface WQICardFrontProps {
     data: any;
     loading: boolean;
+    wqi?: number | string;
 }
 
-export default function WQICardFront({ data, loading }: WQICardFrontProps) {
-    const { calculateWQI } = useDataCleaner();
+export default function WQICardFront({ data, loading, wqi }: WQICardFrontProps) {
+    const { calculateWQI } = dataUtils();
     const { isDark } = useIsDark();
 
-    const percentage = calculateWQI(data, loading);
+    const percentage = wqi ? Number.parseFloat(wqi.toString()) : calculateWQI(data, loading);
 
     const DATA = [
         {

@@ -2,14 +2,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DateTime } from 'luxon';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
-import useGetWaterData from '../hooks/useGetWaterData';
+import useGetWaterData from '@/hooks/useGetWaterData';
+import { CleanedWaterData } from '@/types/water.interface';
 
 interface GraphDataContextType {
-    data: any[] | undefined;
+    data: CleanedWaterData[] | undefined;
+    error: { message: string } | undefined;
     loading: boolean;
-    defaultLocation?: string;
-    defaultTempUnit?: string;
-    selectedLocationTemp?: string;
+    defaultLocation: string | undefined;
+    defaultTempUnit: string | undefined;
+    selectedLocationTemp: string | undefined;
     changeLocation: (newLocation: string) => void;
     setLoading: (newValue: boolean) => void;
     setYear: (newValue: number | undefined) => void;
@@ -22,6 +24,7 @@ interface GraphDataContextType {
 
 const GraphDataContext = createContext({
     data: undefined,
+    error: undefined,
     loading: false,
     defaultLocation: undefined as string | undefined,
     defaultTempUnit: undefined as string | undefined,
@@ -39,7 +42,8 @@ const GraphDataContext = createContext({
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
     const { fetchData } = useGetWaterData();
 
-    const [data, setData] = useState();
+    const [data, setData] = useState<CleanedWaterData[] | undefined>([]);
+    const [error, setError] = useState<{ message: string } | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(true);
 
     const [year, setYear] = useState<number>();
@@ -77,7 +81,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
 
     useEffect(() => {
         setLoading(true);
-        setData(undefined);
+        setData([]);
         if (year && month && start_day && end_day && defaultLocation) {
             fetchData(
                 selectedLocation ?? defaultLocation,
@@ -87,7 +91,8 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 start_day,
                 end_day,
                 setData,
-                setLoading
+                setLoading,
+                setError
             );
         }
     }, [year, month, start_day, end_day, defaultLocation, selectedLocation, fetchData]);
@@ -135,6 +140,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         <GraphDataContext.Provider
             value={{
                 data,
+                error,
                 loading,
                 defaultLocation,
                 defaultTempUnit,

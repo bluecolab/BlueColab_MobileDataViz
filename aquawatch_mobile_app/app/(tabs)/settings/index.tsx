@@ -2,7 +2,7 @@ import { router, Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import SettingsDropdown from '@/components/SettingsDropdown';
-import useGetMetadata from '@/hooks/useGetMetadata';
+import getMetadata from '@/utils/getMetadata';
 import { FontAwesome } from '@expo/vector-icons';
 
 import { ColorScheme, useIsDark } from '@/contexts/ColorSchemeContext';
@@ -10,7 +10,7 @@ import { useGraphData } from '@/contexts/GraphDataContext';
 export default function Index() {
     const { changeLocation, changeUnit, defaultLocation, defaultTempUnit } = useGraphData();
     const { isDark, colorSchemeSys, changeColor } = useIsDark();
-    const { locationOptions } = useGetMetadata();
+    const { locationOptions } = getMetadata();
 
     const [selectedLocation, setSelectedLocation] = useState(
         `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation?.toLowerCase()) + 1}`

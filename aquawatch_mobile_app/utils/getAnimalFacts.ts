@@ -10,7 +10,7 @@ export type AnimalFact = {
     seasonalFacts: SeasonalFacts;
 };
 
-export default function useAnimalFacts() {
+export default function getAnimalFacts() {
     const choateWildlifeBase: AnimalFact[] = [
         {
             animalName: 'Largemouth bass',

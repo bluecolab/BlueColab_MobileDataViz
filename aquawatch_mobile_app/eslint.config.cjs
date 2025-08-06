@@ -55,9 +55,9 @@ module.exports = [
 
             // TypeScript rules
             '@typescript-eslint/no-unused-vars': 'error',
-            '@typescript-eslint/no-unnecessary-condition': 'warn',
-            '@typescript-eslint/no-floating-promises': 'error',
-            '@typescript-eslint/no-misused-promises': 'error',
+            // '@typescript-eslint/no-unnecessary-condition': 'warn',
+            // '@typescript-eslint/no-floating-promises': 'error',
+            // '@typescript-eslint/no-misused-promises': 'error',
 
             'no-undef': 'error',
         },

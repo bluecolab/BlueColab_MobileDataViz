@@ -8,7 +8,7 @@ import type { RefObject, Dispatch, SetStateAction } from 'react';
 
 import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { useRef, useState } from 'react';
-import useAnimalFacts, { AnimalFact } from '@/hooks/useAnimalFacts';
+import getAnimalFacts, { AnimalFact } from '@/utils/getAnimalFacts';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -43,7 +43,7 @@ const processWildlifeData = (baseData: AnimalFact[], currentSeason: 'winter' | '
 export default function Wildlife() {
     const { isDark } = useIsDark();
     const currentSeason = getCurrentSeason();
-    const { choateWildlifeBase, hudsonWildlifeBase } = useAnimalFacts();
+    const { choateWildlifeBase, hudsonWildlifeBase } = getAnimalFacts();
 
     // State to track the current carousel indices
     const [choateActiveIndex, setChoateActiveIndex] = useState(0);
