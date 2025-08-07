@@ -63,7 +63,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 console.log(e);
             }
         };
-        setStoredTempUnit(newUnit);
+        void setStoredTempUnit(newUnit);
         setDefaultTempUnit(newUnit);
     };
 
@@ -75,7 +75,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 console.log(e);
             }
         };
-        setStoredLocation(newLocation);
+        void setStoredLocation(newLocation);
         setDefaultLocation(newLocation);
     };
 
@@ -126,8 +126,8 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             }
         };
 
-        getStoredDefaultLocation();
-        getStoredDefaultTempUnit();
+        void getStoredDefaultLocation();
+        void getStoredDefaultTempUnit();
 
         const lastMonth = DateTime.now().minus({ months: 1 });
         setYear(lastMonth.year);

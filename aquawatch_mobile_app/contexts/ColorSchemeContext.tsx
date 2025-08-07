@@ -27,7 +27,7 @@ export default function ColorSchemeProvider({ children }: { children: React.Reac
                 console.log(e);
             }
         };
-        setStoredAppearance(newColorScheme);
+        void setStoredAppearance(newColorScheme);
         setColorSchemeSys(newColorScheme);
         setIsDark(
             newColorScheme === 'system'
@@ -59,7 +59,7 @@ export default function ColorSchemeProvider({ children }: { children: React.Reac
                 console.error(e);
             }
         };
-        getStoredAppearance();
+        void getStoredAppearance();
 
         const subscription = Appearance.addChangeListener(({ colorScheme }) => {
             if (colorSchemeSys === 'system') setIsDark(colorScheme === 'dark');

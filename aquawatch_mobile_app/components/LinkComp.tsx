@@ -12,5 +12,5 @@ export default function LinkComp({ label, url }: { label: string; url: string })
 }
 
 export const handleLinkPress = (url: string) => {
-    Linking.openURL(url);
+    void Linking.openURL(url);
 };
