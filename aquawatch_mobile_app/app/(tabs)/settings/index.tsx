@@ -1,12 +1,13 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import SettingsDropdown from '@/components/SettingsDropdown';
-import getMetadata from '@/utils/getMetadata';
-import { FontAwesome } from '@expo/vector-icons';
 
+import SettingsDropdown from '@/components/SettingsDropdown';
 import { ColorScheme, useIsDark } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
+import getMetadata from '@/utils/getMetadata';
+
 export default function Index() {
     const { changeLocation, changeUnit, defaultLocation, defaultTempUnit } = useGraphData();
     const { isDark, colorSchemeSys, changeColor } = useIsDark();

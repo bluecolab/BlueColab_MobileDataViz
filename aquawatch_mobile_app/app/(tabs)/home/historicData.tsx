@@ -7,8 +7,8 @@ import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 import CustomDropdown from '@/components/CustomDropdown';
-import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
+import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';

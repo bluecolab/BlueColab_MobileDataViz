@@ -1,7 +1,8 @@
-import { CleanedWaterData, CurrentData } from '@/types/water.interface';
-import getMetadata from './getMetadata';
-import dataUtils from './dataUtils';
 import { config } from '@/hooks/useConfig';
+import { CleanedWaterData, CurrentData } from '@/types/water.interface';
+
+import dataUtils from './dataUtils';
+import getMetadata from './getMetadata';
 
 const currentDataErrorObject: CurrentData = {
     timestamp: 'Loading...',

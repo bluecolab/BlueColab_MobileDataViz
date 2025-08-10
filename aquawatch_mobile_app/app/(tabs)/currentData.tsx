@@ -1,8 +1,8 @@
 import { Stack } from 'expo-router';
 import { View, Text, ScrollView } from 'react-native';
 
-import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { Widget } from '@/components/visualizations/Widget';
+import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { extractLastData } from '@/utils/extractLastData';
@@ -51,7 +51,7 @@ export default function CurrentData() {
                     />
                 </View>
                 <View className="pb-[25]">
-                    <Text>Test</Text>
+                    <Text></Text>
                 </View>
             </ScrollView>
         </>

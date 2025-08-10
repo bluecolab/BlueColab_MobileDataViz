@@ -59,6 +59,15 @@ module.exports = [
             '@typescript-eslint/no-floating-promises': 'error',
             '@typescript-eslint/no-misused-promises': 'error',
 
+            'import/order': [
+                'warn',
+                {
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+                    alphabetize: { order: 'asc', caseInsensitive: true },
+                    'newlines-between': 'always',
+                },
+            ],
+
             'no-undef': 'error',
         },
     },

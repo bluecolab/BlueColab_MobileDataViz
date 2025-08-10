@@ -2,10 +2,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react';
 import { View, Text, Animated, Dimensions, TouchableOpacity } from 'react-native';
 
+import { useIsDark } from '@/contexts/ColorSchemeContext';
+
 import { WQICardBack } from './WQICardBack';
 import WQICardFront from './WQICardFront';
-
-import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 interface WQICardProps {
     loading: boolean;

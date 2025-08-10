@@ -1,8 +1,9 @@
-import { handleLinkPress } from '@/components/LinkComp';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { Text, ScrollView, View } from 'react-native';
+
+import { handleLinkPress } from '@/components/LinkComp';
+import { useIsDark } from '@/contexts/ColorSchemeContext';
 
 interface LinkCompProps {
     url: string;

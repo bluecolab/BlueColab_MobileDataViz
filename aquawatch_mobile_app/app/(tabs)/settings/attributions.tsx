@@ -1,8 +1,10 @@
-import { handleLinkPress } from '@/components/LinkComp';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
+
+import { handleLinkPress } from '@/components/LinkComp';
+import { useIsDark } from '@/contexts/ColorSchemeContext';
+
 const LinkedIn_logo_initials = require('@/assets/icons/LinkedIn_logo_initials.png');
 
 interface LinkCompProps {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
+
 import { ColorScheme, useIsDark } from '@/contexts/ColorSchemeContext';
 
 interface SettingsDropdownProps {

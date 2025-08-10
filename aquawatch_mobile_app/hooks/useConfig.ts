@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+
 import { Config } from '@/types/config.interface';
 
 export const config = {

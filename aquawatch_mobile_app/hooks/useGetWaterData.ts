@@ -1,7 +1,7 @@
 import axios, { isAxiosError } from 'axios';
-
-import getMetadata from '@/utils/getMetadata';
 import { useCallback, useMemo } from 'react';
+
+import { config, useAPIConfig } from '@/hooks/useConfig';
 import {
     CleanedWaterData,
     WaterServicesData,
@@ -9,7 +9,7 @@ import {
     TimeSeries,
     BlueCoLabData,
 } from '@/types/water.interface';
-import { config, useAPIConfig } from '@/hooks/useConfig';
+import getMetadata from '@/utils/getMetadata';
 
 export default function useGetWaterData() {
     const { usgsParameterMappings, stationIds } = getMetadata();

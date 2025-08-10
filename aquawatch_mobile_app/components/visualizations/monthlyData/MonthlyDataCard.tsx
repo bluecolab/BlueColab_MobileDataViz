@@ -2,11 +2,11 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useRef, useState } from 'react';
 import { Animated, Dimensions, View, Text, TouchableOpacity } from 'react-native';
 
-import { MonthlyDataCardBack } from './MonthlyDataCardBack';
-import { MonthlyDataCardFront } from './MonthlyDataCardFront';
-
 import { useIsDark } from '@/contexts/ColorSchemeContext';
 import dataUtils from '@/utils/dataUtils';
+
+import { MonthlyDataCardBack } from './MonthlyDataCardBack';
+import { MonthlyDataCardFront } from './MonthlyDataCardFront';
 
 interface MonthlyDataCardProps {
     loading: boolean;

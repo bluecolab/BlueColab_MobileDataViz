@@ -1,15 +1,13 @@
 // app/(tabs)/home/wildlife.tsx
 import { Stack } from 'expo-router';
-import { View, Text, FlatList, Image, Dimensions, StyleSheet } from 'react-native';
 import { DateTime } from 'luxon';
-
-// Render wildlife section with FlatList
 import type { RefObject, Dispatch, SetStateAction } from 'react';
+import { useRef, useState } from 'react';
+import { View, Text, FlatList, Image, Dimensions, StyleSheet } from 'react-native';
 
 import { useIsDark } from '@/contexts/ColorSchemeContext';
-import { useRef, useState } from 'react';
-import getAnimalFacts from '@/utils/getAnimalFacts';
 import { AnimalFact } from '@/types/animal.interfaces';
+import getAnimalFacts from '@/utils/getAnimalFacts';
 
 const windowWidth = Dimensions.get('window').width;
 

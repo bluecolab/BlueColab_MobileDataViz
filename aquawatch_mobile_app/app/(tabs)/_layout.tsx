@@ -5,9 +5,9 @@
 import { router, Tabs } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 
-import { TabBarIcon } from '../../components/TabBarIcon';
-
 import { useIsDark } from '@/contexts/ColorSchemeContext';
+
+import { TabBarIcon } from '../../components/TabBarIcon';
 
 /**
  * @returns {JSX.Element}
