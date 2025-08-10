@@ -3,14 +3,12 @@ import { Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { ColorScheme, useIsDark } from '@/contexts/ColorSchemeContext';
 
-type Option = { label: string; value: string | number };
-
-type SettingsDropdownProps = {
+interface SettingsDropdownProps {
     label: string;
-    options: Option[];
+    options: { label: string; value: string | number }[];
     value: string | number;
     onSelect: (value: string | ColorScheme) => void;
-};
+}
 
 const SettingsDropdown: React.FC<SettingsDropdownProps> = ({ label, options, value, onSelect }) => {
     const { isDark } = useIsDark();

@@ -1,14 +1,4 @@
-export type SeasonalFacts = {
-    [season: string]: string;
-};
-
-export type AnimalFact = {
-    animalName: string;
-    scientificName: string;
-    defaultFact: string;
-    imageUri: string;
-    seasonalFacts: SeasonalFacts;
-};
+import { AnimalFact } from '@/types/animal.interfaces';
 
 export default function getAnimalFacts() {
     const choateWildlifeBase: AnimalFact[] = [

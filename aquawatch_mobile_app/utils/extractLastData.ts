@@ -1,6 +1,7 @@
 import { CleanedWaterData, CurrentData } from '@/types/water.interface';
 import getMetadata from './getMetadata';
 import dataUtils from './dataUtils';
+import { config } from '@/hooks/useConfig';
 
 const currentDataErrorObject: CurrentData = {
     timestamp: 'Loading...',
@@ -27,7 +28,10 @@ export const extractLastData = (
     const { units } = getMetadata();
     const { calculateWQI } = dataUtils();
 
-    if (defaultLocation && !Object.prototype.hasOwnProperty.call(units, defaultLocation)) {
+    if (
+        (defaultLocation && !Object.prototype.hasOwnProperty.call(units, defaultLocation)) ||
+        !defaultLocation
+    ) {
         return currentDataErrorObject;
     }
 
@@ -56,19 +60,23 @@ export const extractLastData = (
           ? ((lastDataPoint.Temp * 9) / 5 + 32).toFixed(2)
           : lastDataPoint.Temp.toFixed(2);
 
-    const waterQualityIndex = calculateWQI(
-        [
-            {
-                Cond: lastDataPoint.Cond ?? 0,
-                DOpct: lastDataPoint.DOpct ?? 0,
-                Sal: lastDataPoint.Sal ?? 0,
-                Temp: lastDataPoint.Temp ?? 0,
-                Turb: lastDataPoint.Turb ?? 0,
-                pH: lastDataPoint.pH ?? 0,
-            },
-        ],
-        false
-    );
+    const waterQualityIndex: number = config.BLUE_COLAB_API_CONFIG.validMatches.includes(
+        defaultLocation
+    )
+        ? calculateWQI(
+              [
+                  {
+                      Cond: lastDataPoint.Cond ?? 0,
+                      DOpct: lastDataPoint.DOpct ?? 0,
+                      Sal: lastDataPoint.Sal ?? 0,
+                      Temp: lastDataPoint.Temp ?? 0,
+                      Turb: lastDataPoint.Turb ?? 0,
+                      pH: lastDataPoint.pH ?? 0,
+                  },
+              ],
+              false
+          )
+        : -1;
 
     return {
         timestamp: lastDataPoint.timestamp || 'Loading...',

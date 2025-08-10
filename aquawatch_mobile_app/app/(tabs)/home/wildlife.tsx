@@ -8,7 +8,8 @@ import type { RefObject, Dispatch, SetStateAction } from 'react';
 
 import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { useRef, useState } from 'react';
-import getAnimalFacts, { AnimalFact } from '@/utils/getAnimalFacts';
+import getAnimalFacts from '@/utils/getAnimalFacts';
+import { AnimalFact } from '@/types/animal.interfaces';
 
 const windowWidth = Dimensions.get('window').width;
 
