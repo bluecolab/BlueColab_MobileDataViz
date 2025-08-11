@@ -9,9 +9,15 @@ import { extractLastData } from '@/utils/extractLastData';
 
 export default function CurrentData() {
     const { isDark } = useColorScheme();
-    const { data, defaultLocation, defaultTempUnit, loadingCurrent } = useCurrentData();
+    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
 
-    const lastDataPoint = extractLastData(data, defaultLocation, defaultTempUnit, loadingCurrent);
+    const lastDataPoint = extractLastData(
+        data,
+        defaultLocation,
+        defaultTempUnit,
+        loadingCurrent,
+        error
+    );
 
     return (
         <>
@@ -32,7 +38,15 @@ export default function CurrentData() {
                     </Text>
                 </View>
 
-                {/* — Your 6 Widgets — */}
+                {error && (
+                    <View>
+                        <Text className="text-center text-xl font-bold dark:text-white">
+                            {error.message}
+                        </Text>
+                    </View>
+                )}
+
+                {/* — The 6 Widgets — */}
                 <View className="flex flex-row flex-wrap">
                     <Widget name="Water Temperature" value={lastDataPoint.temp} />
                     <Widget name="Conductivity" value={lastDataPoint.cond} />
@@ -44,11 +58,7 @@ export default function CurrentData() {
 
                 {/* — Current‐Data WQI Gauge — */}
                 <View className="mt-6 items-center px-4">
-                    <WQICard
-                        loading={false}
-                        data={[]} // run WQI on the latest point
-                        wqi={lastDataPoint.wqi}
-                    />
+                    <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
                 </View>
                 <View className="pb-[25]">
                     <Text></Text>
