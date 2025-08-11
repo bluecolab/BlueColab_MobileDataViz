@@ -1,4 +1,5 @@
 import { config } from '@/hooks/useConfig';
+import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData, CurrentData } from '@/types/water.interface';
 
 import dataUtils from './dataUtils';
@@ -24,14 +25,16 @@ export const extractLastData = (
     data: CleanedWaterData[] | undefined,
     defaultLocation: string | undefined,
     defaultTempUnit: string | undefined,
-    loading: boolean
+    loading: boolean,
+    error: ErrorType | undefined
 ): CurrentData => {
     const { units } = getMetadata();
     const { calculateWQI } = dataUtils();
 
     if (
         (defaultLocation && !Object.prototype.hasOwnProperty.call(units, defaultLocation)) ||
-        !defaultLocation
+        !defaultLocation ||
+        error
     ) {
         return currentDataErrorObject;
     }

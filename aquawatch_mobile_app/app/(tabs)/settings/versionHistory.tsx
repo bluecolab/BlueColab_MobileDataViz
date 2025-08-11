@@ -3,7 +3,7 @@ import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
 import { handleLinkPress } from '@/components/LinkComp';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 interface LinkCompProps {
     url: string;
@@ -20,7 +20,7 @@ const LinkComp = ({ url, label }: LinkCompProps) => (
 );
 
 export default function VersionHistory() {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     return (
         <>
             <Stack.Screen

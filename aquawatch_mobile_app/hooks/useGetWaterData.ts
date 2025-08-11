@@ -1,4 +1,5 @@
 import axios, { isAxiosError } from 'axios';
+import { useNetworkState } from 'expo-network';
 import { useCallback, useMemo } from 'react';
 
 import { config, useAPIConfig } from '@/hooks/useConfig';
@@ -15,6 +16,8 @@ export default function useGetWaterData() {
     const { usgsParameterMappings, stationIds } = getMetadata();
     const { BLUE_COLAB_API_CONFIG } = config;
     const { getAPIUrl } = useAPIConfig();
+
+    const networkState = useNetworkState();
 
     const USGSParameterMappingsEnum = useMemo(
         () =>
@@ -85,7 +88,7 @@ export default function useGetWaterData() {
             end_day: number,
             setData: (data: CleanedWaterData[]) => void,
             setLoading: (loading: boolean) => void,
-            setError: (error: { message: string }) => void
+            setError: (error: { message: string; code?: number }) => void
         ) => {
             const url = getAPIUrl(
                 defaultLocation,
@@ -98,6 +101,13 @@ export default function useGetWaterData() {
             );
 
             console.log('Awaiting', url);
+
+            if (networkState.isInternetReachable === false) {
+                setError({
+                    message: 'Error: No internet connection',
+                });
+                return;
+            }
 
             axios
                 .get(url)
@@ -117,7 +127,8 @@ export default function useGetWaterData() {
                         if (error.response) {
                             if (error.response.data.status === 404)
                                 setError({
-                                    message: 'Error: No data available for the selected range.',
+                                    message: 'Error: No data available for the selected range',
+                                    code: 404,
                                 });
                             else
                                 setError({
@@ -147,6 +158,7 @@ export default function useGetWaterData() {
             cleanChoatePondData,
             cleanHudsonRiverData,
             getAPIUrl,
+            networkState.isInternetReachable,
             stationIds,
         ]
     );

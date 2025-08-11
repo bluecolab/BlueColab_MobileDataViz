@@ -9,7 +9,7 @@ import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 import CustomDropdown from '@/components/CustomDropdown';
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
 
@@ -32,9 +32,10 @@ export default function HistoricData() {
         defaultTempUnit,
         selectedLocationTemp,
         setSelectedLocationTemp,
+        error,
     } = useGraphData();
     const { parameterInfo, locationOptions, units } = getMetadata();
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const unitMap =
         units[(selectedLocationTemp ?? defaultLocation ?? 'Choate Pond') as keyof typeof units];
 
@@ -203,13 +204,13 @@ export default function HistoricData() {
                         height={370}
                         data={parameterInfo}
                         scrollAnimationDuration={500}
-                        // onSnapToItem={index => setCurrentIndex(index)}
                         renderItem={({ item }) => (
                             <View style={{ width }}>
                                 <MonthlyDataCard
                                     loading={loading}
                                     yAxisLabel={item.yAxisLabel}
                                     data={data}
+                                    error={error}
                                     unit={item.unit}
                                     meta={item.meta}
                                     defaultTempUnit={defaultTempUnit}

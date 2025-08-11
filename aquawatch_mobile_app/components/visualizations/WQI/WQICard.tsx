@@ -2,14 +2,15 @@ import { FontAwesome } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react';
 import { View, Text, Animated, Dimensions, TouchableOpacity } from 'react-native';
 
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { CleanedWaterData } from '@/types/water.interface';
 
 import { WQICardBack } from './WQICardBack';
 import WQICardFront from './WQICardFront';
 
 interface WQICardProps {
     loading: boolean;
-    data: any;
+    data: CleanedWaterData[] | undefined;
     wqi?: number | string;
     size?: number;
 }
@@ -17,7 +18,7 @@ interface WQICardProps {
 export function WQICard({ loading, data, wqi }: WQICardProps) {
     const { width } = Dimensions.get('window');
     const containerWidth = width * 0.95;
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const flipAnimation = useRef(new Animated.Value(0)).current;
     const [flipped, setFlipped] = useState(false);
 

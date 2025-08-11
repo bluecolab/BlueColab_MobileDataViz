@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 // AQIBar Component
 const AQIBar: React.FC<{ aqiGrade: number }> = ({ aqiGrade }) => {
@@ -212,7 +212,7 @@ const getCoordinatesFromCity = async (city: string) => {
 };
 
 const AirQuality = () => {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const [airQualityData, setAirQualityData] = useState({
         list: [
             {

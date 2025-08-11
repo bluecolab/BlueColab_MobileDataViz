@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
 
 import { handleLinkPress } from '@/components/LinkComp';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 const LinkedIn_logo_initials = require('@/assets/icons/LinkedIn_logo_initials.png');
 
@@ -42,7 +42,7 @@ const Item = ({ name, label, link, team, isLinkedin }: ItemProps) => (
 );
 
 export default function Attributions() {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const TEAM = [
         {
             name: 'Alex Chen',

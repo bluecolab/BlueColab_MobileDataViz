@@ -1,20 +1,19 @@
-import { SensorData } from '@/types/water.interface';
+import { CleanedWaterData, SensorData } from '@/types/water.interface';
 
 export default function dataUtils() {
     const generateDataSummary = (
-        data: any,
+        data: CleanedWaterData[] | undefined,
         loading: boolean,
         finalUnitToUse?: string,
         defaultTempUnit?: string
     ) => {
-        if (!Array.isArray(data) && loading) {
+        if (!data || loading || (!Array.isArray(data) && loading)) {
             return {
                 dailySummary: [],
-                overallMin: 0,
-                overallMax: 0,
-                overallAvg: 0,
+                overallMin: 'N/A' as 'N/A',
+                overallMax: 'N/A' as 'N/A',
+                overallAvg: 'N/A' as 'N/A',
                 tickValues: [],
-                error: data?.error,
             };
         }
         interface GroupedData {
@@ -63,6 +62,20 @@ export default function dataUtils() {
         const tickValues = dailySummary
             .map(({ day }, index) => (index % 5 === 0 ? day : null))
             .filter(Boolean);
+
+        const allUndefined = dailySummary.every(
+            (entry) => entry.avg === undefined && entry.min === undefined && entry.max === undefined
+        );
+
+        if (allUndefined) {
+            return {
+                dailySummary: [],
+                overallMin: 'N/A' as 'N/A',
+                overallMax: 'N/A' as 'N/A',
+                overallAvg: 'N/A' as 'N/A',
+                tickValues: [],
+            };
+        }
 
         return {
             dailySummary,

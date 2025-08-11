@@ -35,6 +35,7 @@ export default function CurrentDataProvider({ children }: { children: React.Reac
             const currentMinute = currentTime.minute;
 
             if (defaultLocation && [0, 15, 30, 45].includes(currentMinute)) {
+                setData([]);
                 fetchData(defaultLocation, true, 0, 0, 0, 0, setData, setLoading, setError);
             }
         };
@@ -44,8 +45,10 @@ export default function CurrentDataProvider({ children }: { children: React.Reac
         }, 60000);
 
         setLoading(true);
-        if (defaultLocation)
+        if (defaultLocation) {
+            setData([]);
             fetchData(defaultLocation, true, 0, 0, 0, 0, setData, setLoading, setError);
+        }
 
         return () => clearInterval(intervalId);
     }, [defaultLocation, defaultTempUnit, fetchData]);

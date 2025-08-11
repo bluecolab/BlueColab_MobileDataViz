@@ -1,55 +1,50 @@
-import { useFont } from '@shopify/react-native-skia';
-import { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { AreaRange, CartesianChart, Line } from 'victory-native';
 
-import roboto from '@/assets/fonts/roboto.ttf';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { ErrorType } from '@/types/error.interface';
 import { DailySummaryType } from '@/utils/dataUtils';
+import { getOrdinalSuffix } from '@/utils/getOrdinalSuffix';
 
-const getOrdinalSuffix = (num: number): string => {
-    const lastDigit = num % 10;
-    const lastTwoDigits = num % 100;
-
-    if ([11, 12, 13].includes(lastTwoDigits)) {
-        return `${num}th`; // Special case for 11th, 12th, and 13th
-    }
-
-    const suffixMap: Record<number, string> = {
-        1: 'st',
-        2: 'nd',
-        3: 'rd',
-    };
-
-    return `${num}${suffixMap[lastDigit] || 'th'}`;
-};
+import { EmptyGraph } from '../EmptyGraph';
 
 interface MonthlyDataCardFrontProp {
+    loading: boolean;
     dailySummary: DailySummaryType[];
-    error: string;
+    error: ErrorType | undefined;
     month: string;
 }
 
-export function MonthlyDataCardFront({ dailySummary, error, month }: MonthlyDataCardFrontProp) {
-    const { isDark } = useIsDark();
-    const font = useFont(roboto, 12);
-    const [isFontLoaded, setIsFontLoaded] = useState(false);
+export function MonthlyDataCardFront({
+    loading,
+    dailySummary,
+    error,
+    month,
+}: MonthlyDataCardFrontProp) {
+    const { isDark, loading: fontLoading, font } = useColorScheme();
 
-    useEffect(() => {
-        if (font) {
-            setIsFontLoaded(true);
-        }
-    }, [font]);
-
-    if (!isFontLoaded) {
-        return <Text>Loading...</Text>; // Show a placeholder until the font is ready
+    if (fontLoading) {
+        return <></>;
     }
 
-    if (dailySummary.length === 0 || error) {
+    if (loading) {
         return (
-            <View className="h-full rounded-3xl bg-white px-2 dark:bg-gray-700">
-                <Text>Oops there was an error! (or just loading idk)</Text>
-            </View>
+            <EmptyGraph
+                error={{
+                    message: 'Loading...',
+                    code: 0,
+                }}
+            />
+        );
+    } else if (error) {
+        return <EmptyGraph error={error} />;
+    } else if (dailySummary.length === 0) {
+        return (
+            <EmptyGraph
+                error={{
+                    message: 'No data available',
+                }}
+            />
         );
     }
 

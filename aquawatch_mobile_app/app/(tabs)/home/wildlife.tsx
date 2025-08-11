@@ -5,7 +5,7 @@ import type { RefObject, Dispatch, SetStateAction } from 'react';
 import { useRef, useState } from 'react';
 import { View, Text, FlatList, Image, Dimensions, StyleSheet } from 'react-native';
 
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { AnimalFact } from '@/types/animal.interfaces';
 import getAnimalFacts from '@/utils/getAnimalFacts';
 
@@ -40,7 +40,7 @@ const processWildlifeData = (baseData: AnimalFact[], currentSeason: 'winter' | '
  * @description The wildlife screen of the app. It contains a list of wildlife data.
  */
 export default function Wildlife() {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const currentSeason = getCurrentSeason();
     const { choateWildlifeBase, hudsonWildlifeBase } = getAnimalFacts();
 

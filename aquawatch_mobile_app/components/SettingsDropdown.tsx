@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
-import { ColorScheme, useIsDark } from '@/contexts/ColorSchemeContext';
+import { ColorScheme, useColorScheme } from '@/contexts/ColorSchemeContext';
 
 interface SettingsDropdownProps {
     label: string;
@@ -12,7 +12,7 @@ interface SettingsDropdownProps {
 }
 
 const SettingsDropdown: React.FC<SettingsDropdownProps> = ({ label, options, value, onSelect }) => {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const [isFocus, setIsFocus] = useState(false);
 
     useEffect(() => {

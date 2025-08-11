@@ -3,14 +3,14 @@ import { Stack } from 'expo-router';
 import { View } from 'react-native';
 
 import CustomWebView from '@/components/CustomWebView';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 /**
  * @returns {JSX.Element}
  * @description The blog screen of the app. It loads a web page in a custom WebView component.
  */
 export default function Blog() {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     return (
         <>
             <Stack.Screen

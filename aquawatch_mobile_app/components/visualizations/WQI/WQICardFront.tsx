@@ -1,7 +1,8 @@
 import { View, Text } from 'react-native';
 import { PolarChart, Pie } from 'victory-native';
 
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { CleanedWaterData } from '@/types/water.interface';
 import dataUtils from '@/utils/dataUtils';
 
 const getColor = (percentage: number) =>
@@ -18,16 +19,21 @@ const getColor = (percentage: number) =>
                 : 'red'; // Default color
 
 interface WQICardFrontProps {
-    data: any;
+    data: CleanedWaterData[] | undefined;
     loading: boolean;
     wqi?: number | string;
 }
 
 export default function WQICardFront({ data, loading, wqi }: WQICardFrontProps) {
     const { calculateWQI } = dataUtils();
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
 
-    const percentage = wqi ? Number.parseFloat(wqi.toString()) : calculateWQI(data, loading);
+    const filteredData = (data as CleanedWaterData[]).filter(
+        (item) => item.Cond !== undefined
+    ) as any;
+    const percentage = wqi
+        ? Number.parseFloat(wqi.toString())
+        : calculateWQI(filteredData, loading);
 
     const DATA = [
         {

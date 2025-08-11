@@ -1,23 +1,32 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useColorScheme } from 'nativewind';
+import { SkFont, useFont } from '@shopify/react-native-skia';
+import { useColorScheme as useNativeWindColorScheme } from 'nativewind';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Appearance } from 'react-native';
 
+import roboto from '@/assets/fonts/roboto.ttf';
+
 const ColorSchemeContext = createContext<{
     isDark: boolean;
+    font?: SkFont | null;
+    loading: boolean;
     colorSchemeSys: string;
     changeColor: (newColorScheme: ColorScheme) => void;
 }>({
     isDark: false,
+    font: null,
+    loading: true,
     colorSchemeSys: 'system',
     changeColor: () => {},
 });
 
 export default function ColorSchemeProvider({ children }: { children: React.ReactNode }) {
-    console.log(Appearance.getColorScheme());
-    const { setColorScheme } = useColorScheme();
+    const { setColorScheme } = useNativeWindColorScheme();
     const [isDark, setIsDark] = useState<boolean>(Appearance.getColorScheme() === 'dark');
+    const [loading, setLoading] = useState<boolean>(true);
     const [colorSchemeSys, setColorSchemeSys] = useState<string>('system');
+
+    const font = useFont(roboto, 12);
 
     const changeColor = (newColorScheme: ColorScheme) => {
         const setStoredAppearance = async (value: ColorScheme) => {
@@ -65,15 +74,21 @@ export default function ColorSchemeProvider({ children }: { children: React.Reac
             if (colorSchemeSys === 'system') setIsDark(colorScheme === 'dark');
         });
 
+        if (font) {
+            setLoading(false);
+        }
+
         return () => {
             subscription.remove();
         };
-    }, [colorSchemeSys, setColorScheme]);
+    }, [colorSchemeSys, font, setColorScheme]);
 
     return (
         <ColorSchemeContext.Provider
             value={{
                 isDark,
+                font,
+                loading,
                 colorSchemeSys,
                 changeColor,
             }}>
@@ -82,7 +97,7 @@ export default function ColorSchemeProvider({ children }: { children: React.Reac
     );
 }
 
-export const useIsDark = () => useContext(ColorSchemeContext);
+export const useColorScheme = () => useContext(ColorSchemeContext);
 
 export enum ColorScheme {
     light = 'light',

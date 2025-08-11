@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
+import { config } from '@/hooks/useConfig';
 import { extractLastData } from '@/utils/extractLastData';
 
 const screenWidth = Dimensions.get('window').width;
@@ -53,7 +54,6 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
                 const diffInSeconds = currentTime.diff(timestampDateTime, 'seconds');
                 setMinutes(diffInSeconds.seconds);
             } else {
-                console.error('Invalid timestamp', timestamp);
                 setMinutes(-999999);
             }
         }, 1000);
@@ -79,15 +79,25 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
  */
 export default function QuickCurrentData() {
     // All data is received from the context provider
-    const { data, defaultLocation, defaultTempUnit, loadingCurrent } = useCurrentData();
+    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
 
-    const lastDataPoint = extractLastData(data, defaultLocation, defaultTempUnit, loadingCurrent);
+    if (!defaultLocation) {
+        return <></>;
+    }
+
+    const lastDataPoint = extractLastData(
+        data,
+        defaultLocation,
+        defaultTempUnit,
+        loadingCurrent,
+        error
+    );
 
     return (
         <TouchableOpacity onPress={() => router.push('/(tabs)/currentData')}>
             <View className="px-4 pt-4">
                 <LinearGradient
-                    colors={['#00104d', '#3fb8ab']}
+                    colors={error ? ['#ff2929', '#ffa8a8'] : ['#00104d', '#3fb8ab']}
                     start={{ x: 0, y: 1 }}
                     end={{ x: 0, y: 0 }}
                     style={{
@@ -100,6 +110,14 @@ export default function QuickCurrentData() {
                             Live Data Quick Look
                         </Text>
                     </View>
+
+                    {error && (
+                        <View>
+                            <Text className="text-center text-xl font-bold text-white">
+                                {error.message}
+                            </Text>
+                        </View>
+                    )}
 
                     <View className="flex flex-row flex-wrap items-center justify-center gap-4 pt-4">
                         <ParamView
@@ -128,7 +146,7 @@ export default function QuickCurrentData() {
                             name="Salinity"
                             unit={lastDataPoint.salUnit}
                         />
-                        {defaultLocation === 'Choate Pond' ? (
+                        {config.BLUE_COLAB_API_CONFIG.validMatches.includes(defaultLocation) ? (
                             <ParamView param={lastDataPoint.wqi} name="WQI" />
                         ) : (
                             <></>

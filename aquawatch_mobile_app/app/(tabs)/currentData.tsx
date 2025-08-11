@@ -3,12 +3,12 @@ import { View, Text, ScrollView } from 'react-native';
 
 import { Widget } from '@/components/visualizations/Widget';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { extractLastData } from '@/utils/extractLastData';
 
 export default function CurrentData() {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const { data, defaultLocation, defaultTempUnit, loadingCurrent } = useCurrentData();
 
     const lastDataPoint = extractLastData(data, defaultLocation, defaultTempUnit, loadingCurrent);
