@@ -1,8 +1,10 @@
-import { handleLinkPress } from '@/components/LinkComp';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
+
+import { handleLinkPress } from '@/components/LinkComp';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
+
 const LinkedIn_logo_initials = require('@/assets/icons/LinkedIn_logo_initials.png');
 
 interface LinkCompProps {
@@ -40,7 +42,7 @@ const Item = ({ name, label, link, team, isLinkedin }: ItemProps) => (
 );
 
 export default function Attributions() {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const TEAM = [
         {
             name: 'Alex Chen',
@@ -413,7 +415,16 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                 </View>
-
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-gray-700">
+                    <Text className="text-xl font-bold text-black dark:text-white">Assets:</Text>
+                    <Item
+                        name="Max Okhrimenko"
+                        label="Water Animation (Loading Animation)"
+                        link="https://lottiefiles.com/free-animation/water-animation-bknTaRaHON"
+                        team={[]}
+                        isLinkedin={false}
+                    />
+                </View>
                 <View className="pb-[90] "></View>
             </ScrollView>
         </>

@@ -1,93 +1,23 @@
 import axios, { isAxiosError } from 'axios';
-
-import useGetMetadata from '@/hooks/useGetMetadata';
+import { useNetworkState } from 'expo-network';
 import { useCallback, useMemo } from 'react';
 
+import { config, useAPIConfig } from '@/hooks/useConfig';
+import {
+    CleanedWaterData,
+    WaterServicesData,
+    ParameterName,
+    TimeSeries,
+    BlueCoLabData,
+} from '@/types/water.interface';
+import getMetadata from '@/utils/getMetadata';
+
 export default function useGetWaterData() {
-    const { usgsParameterMappings, stationIds } = useGetMetadata();
-    interface TimeSeries {
-        sourceInfo: {
-            siteName: string;
-            siteCode: {
-                value: string;
-                network: string;
-                agencyCode: string;
-            }[];
-            timeZoneInfo: {
-                defaultTimeZone: {
-                    zoneOffset: string;
-                    zoneAbbreviation: string;
-                };
-                daylightTimeZone: {
-                    zoneOffset: string;
-                    zoneAbbreviation: string;
-                };
-                siteUsesDaylightTime: boolean;
-            };
-            geoLocation: {
-                geogLocation: {
-                    srs: string;
-                    latitude: number;
-                    longitude: number;
-                };
-                localSiteXY: {
-                    x: string;
-                    y: string;
-                }[];
-            };
-            note: [];
-            siteType: [];
-            siteProperty: {
-                value: string;
-                name: string;
-            }[];
-        };
-        variable: {
-            variableCode: {
-                value: string;
-                name: string;
-            }[];
-            variableName: string;
-            variableDescription: string;
-            valueType: string;
-            unit: {
-                unitCode: string;
-            };
-            note: [];
-            noDataValue: number;
-            variableProperty: [];
-            oid: string;
-        };
-        values: {
-            value: {
-                dateTime: string;
-                value: string;
-            }[];
-        }[];
-        name: string;
-    }
-    interface CleanWaterRiverDataProps {
-        declaredType: string;
-        globalScope: boolean;
-        name: string;
-        scope: string;
-        typeSubstituted: boolean;
-        value: {
-            queryInfo: {
-                queryURL: string;
-                criteria: {
-                    locationparam: string;
-                    variableparam: string;
-                    parameter: [];
-                };
-                note: {
-                    value: string;
-                    title: string;
-                }[];
-            };
-            timeSeries: TimeSeries[];
-        };
-    }
+    const { usgsParameterMappings, stationIds } = getMetadata();
+    const { BLUE_COLAB_API_CONFIG } = config;
+    const { getAPIUrl } = useAPIConfig();
+
+    const networkState = useNetworkState();
 
     const USGSParameterMappingsEnum = useMemo(
         () =>
@@ -98,24 +28,13 @@ export default function useGetWaterData() {
     );
 
     const cleanHudsonRiverData = useCallback(
-        (rawData: CleanWaterRiverDataProps) => {
+        (rawData: WaterServicesData) => {
             if (!rawData?.value?.timeSeries) {
                 console.error('Invalid data format');
                 return [];
             }
 
-            const parsedData: {
-                timestamp: string;
-                Cond?: number;
-                DO?: number;
-                DOpct?: number;
-                pH?: number;
-                Temp?: number;
-                Turb?: number;
-                Sal?: number;
-            }[] = [];
-
-            type ParameterName = 'Cond' | 'DO' | 'DOpct' | 'pH' | 'Temp' | 'Turb' | 'Sal';
+            const parsedData: CleanedWaterData[] = [];
 
             rawData.value.timeSeries.forEach((series: TimeSeries) => {
                 const paramCode = series.variable.variableCode[0].value;
@@ -152,6 +71,13 @@ export default function useGetWaterData() {
         [USGSParameterMappingsEnum]
     );
 
+    const cleanChoatePondData = useCallback((rawData: BlueCoLabData[]) => {
+        return rawData.map((item: BlueCoLabData) => {
+            const { sensors, timestamp } = item;
+            return { timestamp, ...sensors } as CleanedWaterData;
+        });
+    }, []);
+
     const fetchData = useCallback(
         (
             defaultLocation: string,
@@ -160,61 +86,36 @@ export default function useGetWaterData() {
             month: number,
             start_day: number,
             end_day: number,
-            setData: (data: any) => void,
-            setLoading: (loading: boolean) => void
+            setData: (data: CleanedWaterData[]) => void,
+            setLoading: (loading: boolean) => void,
+            setError: (error: { message: string; code?: number }) => void
         ) => {
-            let baseURL = '';
-            let query = '';
-            switch (defaultLocation) {
-                case 'Choate Pond':
-                    baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Alan/';
-                    query = isCurrentData
-                        ? 'delta?days=1'
-                        : `range?stream=false&start_date=${year}-${month.toString().padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month.toString().padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00`;
-                    break;
-                case 'New York City':
-                case 'Piermont':
-                case 'West Point':
-                case 'Poughkeepsie':
-                case 'Albany':
-                case 'Cohoes':
-                case 'Gowanda':
-                case 'Bronx River':
-                    baseURL = 'https://waterservices.usgs.gov/nwis/iv/';
-                    query = isCurrentData
-                        ? `?sites=${stationIds[defaultLocation] ?? '01376269'}&period=P2D&format=json&parameterCd=00010,00301,00300,90860,00095,63680,00400`
-                        : `?sites=${stationIds[defaultLocation] ?? '01376269'}&startDT=${year}-${month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}&endDT=${year}-${month.toString().padStart(2, '0')}-${end_day.toString().padStart(2, '0')}&format=json&parameterCd=00010,00301,00300,90860,00095,63680,00400`;
-                    break;
-                default:
-                    baseURL = 'https://colabprod01.pace.edu/api/influx/sensordata/Alan/';
-                    query = isCurrentData
-                        ? 'delta?days=1'
-                        : `range?stream=false&start_date=${year}-${month.toString().padStart(2, '0')}-${start_day}T00%3A00%3A00%2B00%3A00&stop_date=${year}-${month.toString().padStart(2, '0')}-${end_day}T23%3A59%3A59%2B00%3A00`;
-                    break;
+            const url = getAPIUrl(
+                defaultLocation,
+                isCurrentData,
+                year,
+                month,
+                start_day,
+                end_day,
+                stationIds
+            );
+
+            console.log('Awaiting', url);
+
+            if (networkState.isInternetReachable === false) {
+                setError({
+                    message: 'Error: No internet connection',
+                });
+                return;
             }
 
             axios
-                .get(baseURL + query)
+                .get(url)
                 .then((response) => {
                     const apiData = response.data;
-                    console.log(baseURL + query, response.status);
-                    if (defaultLocation === 'Choate Pond') {
-                        const cleanedData = apiData.map(
-                            (item: {
-                                sensors: {
-                                    Cond: number;
-                                    Sal: number;
-                                    Turb: number;
-                                    DO: number;
-                                    DOpct: number;
-                                    pH: number;
-                                    Temp: number;
-                                };
-                            }) => {
-                                const { sensors, ...rest } = item;
-                                return { ...rest, ...sensors };
-                            }
-                        );
+                    console.log(url, response.status);
+                    if (BLUE_COLAB_API_CONFIG.validMatches.includes(defaultLocation)) {
+                        const cleanedData = cleanChoatePondData(apiData);
                         setData(cleanedData);
                     } else {
                         const cleanedData = cleanHudsonRiverData(apiData);
@@ -224,29 +125,43 @@ export default function useGetWaterData() {
                 .catch((error) => {
                     if (isAxiosError(error)) {
                         if (error.response) {
-                            console.error(`Response error: ${error.response.status}`);
                             if (error.response.data.status === 404)
-                                setData({ error: 'No data available for the selected range.' });
-                            else setData({ error: `HTTP Error: ${error.response.status}` });
-                            console.error(error.response.headers); // Server response headers
+                                setError({
+                                    message:
+                                        'Error: No data available, select a different date range',
+                                    code: 404,
+                                });
+                            else
+                                setError({
+                                    message: `Error: HTTP Error: ${error.response.status}`,
+                                });
                         } else if (error.request) {
-                            console.error('Request error: No response received');
-                            console.error(error.request);
-                            setData({ error: 'No response from server, check WiFi connection' });
+                            setError({
+                                message: 'Error: No response from server, check WiFi connection',
+                            });
                         } else {
-                            console.error(`General Axios error: ${error.message}`);
-                            setData({ error: `Error: ${error.message}` });
+                            setError({
+                                message: `Error: A unknown error occurred, try restarting the app.`,
+                            });
                         }
+                        console.error('Axios error: ', error);
                     } else {
                         console.error('Non-Axios error: ', error);
-                        setData({ error: 'Unknown error occurred' });
+                        setError({ message: 'Unknown error occurred' });
                     }
                 })
                 .finally(() => {
                     setLoading(false);
                 });
         },
-        [stationIds, cleanHudsonRiverData]
+        [
+            BLUE_COLAB_API_CONFIG.validMatches,
+            cleanChoatePondData,
+            cleanHudsonRiverData,
+            getAPIUrl,
+            networkState.isInternetReachable,
+            stationIds,
+        ]
     );
 
     return {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 export default function CustomDropdown({
     label,
@@ -15,7 +15,7 @@ export default function CustomDropdown({
     value: string | number;
     onSelect: (value: string) => void;
 }) {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const [isFocus, setIsFocus] = useState(false);
 
     useEffect(() => {

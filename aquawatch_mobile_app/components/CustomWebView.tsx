@@ -16,7 +16,7 @@ const handleNavigation = (event: WebViewNavigation) => {
     if (allowedDomains.some((domain) => urlDomain.endsWith(domain))) {
         return true;
     } else {
-        Linking.openURL(url);
+        void Linking.openURL(url);
         return false;
     }
 };

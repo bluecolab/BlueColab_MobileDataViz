@@ -4,7 +4,7 @@ import stationIds from './jsons/stationIds.json';
 import units from './jsons/units.json';
 import usgsParameterMappings from './jsons/usgsParameterMapping.json';
 
-export default function useGetMetadata() {
+export default function getMetadata() {
     return {
         parameterInfo,
         stationIds,

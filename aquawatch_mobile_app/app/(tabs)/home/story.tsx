@@ -2,14 +2,14 @@
 import { Stack } from 'expo-router';
 import { View, Text, ScrollView, Image } from 'react-native';
 
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 /**
  * @returns {JSX.Element}
  * @description This component displays the story of Blue CoLab, including its mission and approach to water contamination risks.
  */
 export default function Story() {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     return (
         <>
             <Stack.Screen

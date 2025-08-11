@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 // AQIBar Component
 const AQIBar: React.FC<{ aqiGrade: number }> = ({ aqiGrade }) => {
@@ -212,7 +212,7 @@ const getCoordinatesFromCity = async (city: string) => {
 };
 
 const AirQuality = () => {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const [airQualityData, setAirQualityData] = useState({
         list: [
             {
@@ -252,7 +252,7 @@ const AirQuality = () => {
     }, [location.latitude, location.longitude]);
 
     useEffect(() => {
-        fetchAirQualityData();
+        void fetchAirQualityData();
     }, [fetchAirQualityData]);
 
     const getCurrentLocation = async () => {
@@ -275,7 +275,7 @@ const AirQuality = () => {
             const { latitude, longitude } = location.coords;
             setLocation({ latitude, longitude });
             setTitle('Current Location AQI Data'); // Change title when location is fetched
-            fetchAirQualityData(); // Trigger fetching air quality data
+            await fetchAirQualityData(); // Trigger fetching air quality data
         } catch (error) {
             Alert.alert('Error', 'Could not fetch location. Please try again.');
             console.error('Error getting location:', error);
@@ -289,7 +289,7 @@ const AirQuality = () => {
 
         if (value === 'currentLocation') {
             setTitle('Current Location AQI Data');
-            getCurrentLocation(); // get current location
+            void getCurrentLocation(); // get current location
         } else if (value === 'paceUniversity') {
             setTitle('Pace University AQI Data');
             setLocation({ latitude: 41.12838, longitude: -73.808189 });
@@ -321,7 +321,12 @@ const AirQuality = () => {
             <ScrollView
                 contentContainerStyle={styles.airQualityContainer}
                 refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={fetchAirQualityData} />
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={() => {
+                            void fetchAirQualityData();
+                        }}
+                    />
                 }>
                 {/* Display dynamic title */}
                 <Text style={styles.currentLocationTitle}>{title}</Text>
@@ -333,7 +338,9 @@ const AirQuality = () => {
                     placeholderTextColor="#ccc"
                     value={searchQuery}
                     onChangeText={setSearchQuery}
-                    onSubmitEditing={handleSearch}
+                    onSubmitEditing={() => {
+                        void handleSearch();
+                    }}
                 />
 
                 {/* Dropdown menu for selecting the location option */}
