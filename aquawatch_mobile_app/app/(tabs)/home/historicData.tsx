@@ -7,11 +7,11 @@ import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 import CustomDropdown from '@/components/CustomDropdown';
-import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { WQICard } from '@/components/visualizations/WQI/WQICard';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
-import useGetMetadata from '@/hooks/useGetMetadata';
+import getMetadata from '@/utils/getMetadata';
 
 // import { WQIGauge, DataGraph, CustomDropdown } from '@components';
 
@@ -32,9 +32,10 @@ export default function HistoricData() {
         defaultTempUnit,
         selectedLocationTemp,
         setSelectedLocationTemp,
+        error,
     } = useGraphData();
-    const { parameterInfo, locationOptions, units } = useGetMetadata();
-    const { isDark } = useIsDark();
+    const { parameterInfo, locationOptions, units } = getMetadata();
+    const { isDark } = useColorScheme();
     const unitMap =
         units[(selectedLocationTemp ?? defaultLocation ?? 'Choate Pond') as keyof typeof units];
 
@@ -203,13 +204,13 @@ export default function HistoricData() {
                         height={370}
                         data={parameterInfo}
                         scrollAnimationDuration={500}
-                        // onSnapToItem={index => setCurrentIndex(index)}
                         renderItem={({ item }) => (
                             <View style={{ width }}>
                                 <MonthlyDataCard
                                     loading={loading}
                                     yAxisLabel={item.yAxisLabel}
                                     data={data}
+                                    error={error}
                                     unit={item.unit}
                                     meta={item.meta}
                                     defaultTempUnit={defaultTempUnit}

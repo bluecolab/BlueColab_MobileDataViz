@@ -1,46 +1,23 @@
 import { Stack } from 'expo-router';
 import { View, Text, ScrollView } from 'react-native';
 
-import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { Widget } from '@/components/visualizations/Widget';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { WQICard } from '@/components/visualizations/WQI/WQICard';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
+import { extractLastData } from '@/utils/extractLastData';
 
 export default function CurrentData() {
-    const { isDark } = useIsDark();
-    const { data, defaultLocation, defaultTempUnit } = useCurrentData();
+    const { isDark } = useColorScheme();
+    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
 
-    // grab the latest sample
-    const last = data[data.length - 1];
-
-    if (!last) {
-        return (
-            <>
-                <Stack.Screen
-                    options={{
-                        headerTitle: 'Current Data',
-                        headerStyle: {
-                            backgroundColor: isDark ? '#2e2e3b' : 'white',
-                        },
-                        headerTintColor: isDark ? 'white' : 'black',
-                    }}
-                />
-                <Text>Loading</Text>
-            </>
-        );
-    }
-
-    // convert temperature if needed
-    const temp = last.Temp;
-    const waterTemp =
-        (defaultTempUnit?.trim() ?? 'Fahrenheit') === 'Fahrenheit' ? temp * (9 / 5) + 32 : temp;
-
-    // sensor values
-    const cond = last.Cond;
-    const sal = last.Sal;
-    const pH = last.pH;
-    const turb = last.Turb;
-    const dOpct = last.DOpct;
+    const lastDataPoint = extractLastData(
+        data,
+        defaultLocation,
+        defaultTempUnit,
+        loadingCurrent,
+        error
+    );
 
     return (
         <>
@@ -61,25 +38,30 @@ export default function CurrentData() {
                     </Text>
                 </View>
 
-                {/* — Your 6 Widgets — */}
+                {error && (
+                    <View>
+                        <Text className="text-center text-xl font-bold dark:text-white">
+                            {error.message}
+                        </Text>
+                    </View>
+                )}
+
+                {/* — The 6 Widgets — */}
                 <View className="flex flex-row flex-wrap">
-                    <Widget name="Water Temperature" value={waterTemp?.toFixed(2) ?? 'NA'} />
-                    <Widget name="Conductivity" value={cond?.toFixed(2) ?? 'NA'} />
-                    <Widget name="Salinity" value={sal?.toFixed(2) ?? 'NA'} />
-                    <Widget name="pH" value={pH?.toFixed(2) ?? 'NA'} />
-                    <Widget name="Turbidity" value={turb?.toFixed(2) ?? 'NA'} />
-                    <Widget name="Oxygen" value={dOpct?.toFixed(2) ?? 'NA'} />
+                    <Widget name="Water Temperature" value={lastDataPoint.temp} />
+                    <Widget name="Conductivity" value={lastDataPoint.cond} />
+                    <Widget name="Salinity" value={lastDataPoint.sal} />
+                    <Widget name="pH" value={lastDataPoint.pH} />
+                    <Widget name="Turbidity" value={lastDataPoint.turb} />
+                    <Widget name="Oxygen" value={lastDataPoint.do} />
                 </View>
 
                 {/* — Current‐Data WQI Gauge — */}
                 <View className="mt-6 items-center px-4">
-                    <WQICard
-                        loading={false}
-                        data={[last]} // run WQI on the latest point
-                    />
+                    <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
                 </View>
                 <View className="pb-[25]">
-                    <Text>Test</Text>
+                    <Text></Text>
                 </View>
             </ScrollView>
         </>

@@ -6,7 +6,7 @@ import { ScrollView, View, FlatList, Text } from 'react-native';
 
 import HomeScreenCard from '@/components/HomeScreenCard';
 import QuickCurrentData from '@/components/visualizations/QuickCurrentData';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 
 const homeScreenFlatListData = [
@@ -42,7 +42,7 @@ const homeScreenFlatListData = [
  */
 export default function HomeScreen() {
     const { defaultLocation } = useCurrentData();
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
 
     const lastMonth = DateTime.now().minus({ months: 1 }).toFormat('MMMM yyyy');
 

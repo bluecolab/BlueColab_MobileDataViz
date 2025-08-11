@@ -6,7 +6,8 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
-import useGetMetadata from '@/hooks/useGetMetadata';
+import { config } from '@/hooks/useConfig';
+import { extractLastData } from '@/utils/extractLastData';
 
 const screenWidth = Dimensions.get('window').width;
 const itemWidth = (screenWidth - 100) / 2; // Adjust 32px for padding/margins
@@ -31,6 +32,7 @@ const ParamView = ({ param, name, unit }: ParamViewProps) => {
                 {String(param)} {unit ? String(unit) : ''}
             </Text>
             {name === 'WQI' && <Text className="text-base text-white">/100</Text>}
+            <Text className="text-center text-lg  text-white">{name}</Text>
         </View>
     );
 };
@@ -52,7 +54,6 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
                 const diffInSeconds = currentTime.diff(timestampDateTime, 'seconds');
                 setMinutes(diffInSeconds.seconds);
             } else {
-                console.error('Invalid timestamp', timestamp);
                 setMinutes(-999999);
             }
         }, 1000);
@@ -78,43 +79,25 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
  */
 export default function QuickCurrentData() {
     // All data is received from the context provider
-    const { data, defaultLocation, defaultTempUnit } = useCurrentData();
-    const { units } = useGetMetadata();
+    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
 
-    // For current data, the API returns last 2 days of data
-    // We only want the last data point for the quick view
-    const last = data[data.length - 1];
+    if (!defaultLocation) {
+        return <></>;
+    }
 
-    // We extract the data from the last data point
-    // TODO: Add better handling when 'last' is undefined or if individual parameters are undefined
-    const dopct = last?.DOpct?.toFixed(2) ?? last?.DO?.toFixed(2) ?? 'NA';
-    const ph = last?.pH?.toFixed(2) ?? 'NA';
-    const temp = last?.Temp ?? 'NA';
-    const convertedTemp =
-        temp === 'NA'
-            ? 'NA'
-            : (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') === 'Fahrenheit'
-              ? (temp * (9 / 5) + 32)?.toFixed(2)
-              : temp;
-    const cond = last?.Cond?.toFixed(2) ?? 'NA';
-    const turb = last?.Turb?.toFixed(2) ?? 'NA';
-    const sal = last?.Sal?.toFixed(2) ?? 'NA';
-    const timestamp = last?.timestamp ?? 'Loading';
-
-    // WQI Calculation
-    const const_dopct = !isNaN(dopct) ? 0.34 * dopct : 0;
-    const const_ph = !isNaN(ph) ? 0.22 * ph : 0;
-    const const_temp = !isNaN(temp) ? 0.2 * temp : 0;
-    const const_cond = !isNaN(cond) ? 0.08 * cond : 0;
-    const const_turb = !isNaN(turb) ? 0.16 * turb : 0;
-    const wqi = const_dopct + const_ph + const_temp + const_cond + const_turb;
-    const unitMap = units[defaultLocation as 'Choate Pond'];
+    const lastDataPoint = extractLastData(
+        data,
+        defaultLocation,
+        defaultTempUnit,
+        loadingCurrent,
+        error
+    );
 
     return (
         <TouchableOpacity onPress={() => router.push('/(tabs)/currentData')}>
             <View className="px-4 pt-4">
                 <LinearGradient
-                    colors={['#00104d', '#3fb8ab']}
+                    colors={error ? ['#ff2929', '#ffa8a8'] : ['#00104d', '#3fb8ab']}
                     start={{ x: 0, y: 1 }}
                     end={{ x: 0, y: 0 }}
                     style={{
@@ -128,48 +111,49 @@ export default function QuickCurrentData() {
                         </Text>
                     </View>
 
+                    {error && (
+                        <View>
+                            <Text className="text-center text-xl font-bold text-white">
+                                {error.message}
+                            </Text>
+                        </View>
+                    )}
+
                     <View className="flex flex-row flex-wrap items-center justify-center gap-4 pt-4">
                         <ParamView
-                            param={convertedTemp}
+                            param={lastDataPoint.temp}
                             name="Temperature"
-                            unit={
-                                (defaultTempUnit ? defaultTempUnit.trim() : 'Fahrenheit') ===
-                                'Fahrenheit'
-                                    ? '°F'
-                                    : unitMap
-                                      ? unitMap['Temp']
-                                      : ''
-                            }
+                            unit={lastDataPoint.tempUnit}
                         />
-                        <ParamView param={ph} name="pH" unit={unitMap ? unitMap['pH'] : ''} />
+                        <ParamView param={lastDataPoint.pH} name="pH" unit={''} />
                         <ParamView
-                            param={dopct}
+                            param={lastDataPoint.do}
                             name="Dissolved O2"
-                            unit={unitMap ? (unitMap['DOpct'] ?? unitMap['DO']) : ''}
+                            unit={lastDataPoint.doUnit}
                         />
                         <ParamView
-                            param={turb}
+                            param={lastDataPoint.turb}
                             name="Turbidity"
-                            unit={unitMap ? unitMap['Turb'] : ''}
+                            unit={lastDataPoint.turbUnit}
                         />
                         <ParamView
-                            param={cond}
+                            param={lastDataPoint.cond}
                             name="Conductivity"
-                            unit={unitMap ? unitMap['Cond'] : ''}
+                            unit={lastDataPoint.condUnit}
                         />
                         <ParamView
-                            param={sal}
+                            param={lastDataPoint.sal}
                             name="Salinity"
-                            unit={unitMap ? unitMap['Sal'] : ''}
+                            unit={lastDataPoint.salUnit}
                         />
-                        {defaultLocation === 'Choate Pond' ? (
-                            <ParamView param={!isNaN(wqi) ? wqi?.toFixed(2) : 'NA'} name="WQI" />
+                        {config.BLUE_COLAB_API_CONFIG.validMatches.includes(defaultLocation) ? (
+                            <ParamView param={lastDataPoint.wqi} name="WQI" />
                         ) : (
                             <></>
                         )}
                     </View>
 
-                    <Timer timestamp={timestamp} />
+                    <Timer timestamp={lastDataPoint.timestamp} />
                 </LinearGradient>
             </View>
         </TouchableOpacity>

@@ -43,6 +43,7 @@ const getStatusAndColor = (name: string, value: number) => {
     }
 };
 
+// TODO: Move these to a file
 // flip‐card descriptions
 const DESCRIPTIONS = {
     'Water Temperature':

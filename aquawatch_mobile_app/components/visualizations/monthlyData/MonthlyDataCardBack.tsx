@@ -1,7 +1,8 @@
+import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
 import LinkComp from '@/components/LinkComp';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 interface PercentageDotLineProps {
     percentage: number;
@@ -23,9 +24,9 @@ const PercentageDotLine: React.FC<PercentageDotLineProps> = ({ percentage }) => 
 };
 
 interface MonthlyDataCardBackProps {
-    overallMin: number;
-    overallMax: number;
-    overallAvg: number;
+    overallMin: number | 'N/A';
+    overallMax: number | 'N/A';
+    overallAvg: number | 'N/A';
     yAxisLabel: string;
     meta: any;
 }
@@ -37,7 +38,7 @@ export function MonthlyDataCardBack({
     yAxisLabel,
     meta,
 }: MonthlyDataCardBackProps) {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
 
     return (
         <ScrollView
@@ -55,19 +56,19 @@ export function MonthlyDataCardBack({
             <View className="w-full flex-row items-center justify-center ">
                 <View className="flex-1">
                     <Text className="text-center text-3xl font-bold dark:text-white">
-                        {overallMin.toFixed(1)}
+                        {overallMin === 'N/A' ? overallMin : overallMin.toFixed(1)}
                     </Text>
                     <Text className="text-center dark:text-white">Low</Text>
                 </View>
                 <View className="flex-1">
                     <Text className="text-center text-3xl font-bold dark:text-white">
-                        {overallAvg.toFixed(1)}
+                        {overallAvg === 'N/A' ? overallAvg : overallAvg.toFixed(1)}
                     </Text>
                     <Text className="text-center dark:text-white">Average</Text>
                 </View>
                 <View className="flex-1">
                     <Text className="text-center text-3xl font-bold dark:text-white">
-                        {overallMax.toFixed(1)}
+                        {overallMax === 'N/A' ? overallMax : overallMax.toFixed(1)}
                     </Text>
                     <Text className="text-center dark:text-white">High</Text>
                 </View>
@@ -77,9 +78,11 @@ export function MonthlyDataCardBack({
                 Skew of Average
             </Text>
 
-            <PercentageDotLine
-                percentage={((overallAvg - overallMin) / (overallMax - overallMin)) * 100}
-            />
+            {overallAvg !== 'N/A' && overallMin !== 'N/A' && overallMax !== 'N/A' && (
+                <PercentageDotLine
+                    percentage={((overallAvg - overallMin) / (overallMax - overallMin)) * 100}
+                />
+            )}
 
             <View
                 style={{

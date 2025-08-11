@@ -2,16 +2,19 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useRef, useState } from 'react';
 import { Animated, Dimensions, View, Text, TouchableOpacity } from 'react-native';
 
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { ErrorType } from '@/types/error.interface';
+import { CleanedWaterData } from '@/types/water.interface';
+import dataUtils from '@/utils/dataUtils';
+
 import { MonthlyDataCardBack } from './MonthlyDataCardBack';
 import { MonthlyDataCardFront } from './MonthlyDataCardFront';
-
-import { useIsDark } from '@/contexts/ColorSchemeContext';
-import useDataCleaner from '@/hooks/useDataCleaner';
 
 interface MonthlyDataCardProps {
     loading: boolean;
     yAxisLabel: string;
-    data: any;
+    data: CleanedWaterData[] | undefined;
+    error: ErrorType | undefined;
     unit: string;
     meta: {
         description: string;
@@ -31,6 +34,7 @@ export function MonthlyDataCard({
     loading,
     yAxisLabel,
     data,
+    error,
     unit,
     meta,
     defaultTempUnit,
@@ -40,13 +44,13 @@ export function MonthlyDataCard({
 }: MonthlyDataCardProps) {
     const finalUnitToUse = unitMap[unit] === null ? alternateName : unit;
 
-    const { clean } = useDataCleaner();
-    const dataSummary = clean(data, loading, unit, defaultTempUnit);
+    const { generateDataSummary } = dataUtils();
+    const dataSummary = generateDataSummary(data, loading, unit, defaultTempUnit);
 
     const { width } = Dimensions.get('window');
 
     const containerWidth = width * 0.95;
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     const flipAnimation = useRef(new Animated.Value(0)).current;
     const [flipped, setFlipped] = useState(false);
 
@@ -110,8 +114,9 @@ export function MonthlyDataCard({
                                 transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }],
                             }}>
                             <MonthlyDataCardFront
+                                loading={loading}
                                 dailySummary={dataSummary.dailySummary}
-                                error={dataSummary.error}
+                                error={error}
                                 month={selectedMonth}
                             />
                         </Animated.View>

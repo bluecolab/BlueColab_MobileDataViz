@@ -1,7 +1,8 @@
-import { handleLinkPress } from '@/components/LinkComp';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { Stack } from 'expo-router';
 import { ScrollView, Text, View } from 'react-native';
+
+import { handleLinkPress } from '@/components/LinkComp';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 interface LinkCompProps {
     url: string;
@@ -18,7 +19,7 @@ const LinkComp = ({ url, label }: LinkCompProps) => (
 );
 
 export default function Socials() {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
 
     return (
         <>

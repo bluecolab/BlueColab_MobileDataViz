@@ -1,8 +1,9 @@
-import { handleLinkPress } from '@/components/LinkComp';
-import { useIsDark } from '@/contexts/ColorSchemeContext';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
+
+import { handleLinkPress } from '@/components/LinkComp';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 interface LinkCompProps {
     url: string;
@@ -19,7 +20,7 @@ const LinkComp = ({ url, label }: LinkCompProps) => (
 );
 
 export default function VersionHistory() {
-    const { isDark } = useIsDark();
+    const { isDark } = useColorScheme();
     return (
         <>
             <Stack.Screen
@@ -331,6 +332,17 @@ export default function VersionHistory() {
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/179"
                             label="#179"
+                        />{' '}
+                        by Kenji)
+                    </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.6:</Text>
+
+                    <Text className="ml-3">
+                        - Improved state handling (loading indicator, clearer loading messages) (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/182"
+                            label="#182"
                         />{' '}
                         by Kenji)
                     </Text>

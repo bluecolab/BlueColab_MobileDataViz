@@ -1,18 +1,21 @@
 import { DateTime } from 'luxon';
-import { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 import { useGraphData } from '@/contexts/GraphDataContext';
 import useGetWaterData from '@/hooks/useGetWaterData';
+import { CleanedWaterData } from '@/types/water.interface';
 
 interface CurrentDataContextType {
-    data: any[];
-    defaultLocation?: string;
-    defaultTempUnit?: string;
-    loadingCurrent?: boolean;
+    data: CleanedWaterData[] | undefined;
+    error: { message: string } | undefined;
+    defaultLocation: string | undefined;
+    defaultTempUnit: string | undefined;
+    loadingCurrent: boolean;
 }
 
 const CurrentDataContext = createContext({
-    data: [] as any[],
+    data: undefined,
+    error: undefined,
     defaultLocation: undefined as string | undefined,
     defaultTempUnit: undefined as string | undefined,
     loadingCurrent: false,
@@ -22,9 +25,9 @@ export default function CurrentDataProvider({ children }: { children: React.Reac
     const { defaultLocation, defaultTempUnit } = useGraphData();
     const { fetchData } = useGetWaterData();
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<CleanedWaterData[] | undefined>([]);
+    const [error, setError] = useState<{ message: string } | undefined>(undefined);
     const [loadingCurrent, setLoading] = useState(true);
-    // const [error, setError] = useState(null);
 
     useEffect(() => {
         const checkTimeAndFetchData = () => {
@@ -32,7 +35,8 @@ export default function CurrentDataProvider({ children }: { children: React.Reac
             const currentMinute = currentTime.minute;
 
             if (defaultLocation && [0, 15, 30, 45].includes(currentMinute)) {
-                fetchData(defaultLocation, true, 0, 0, 0, 0, setData, setLoading);
+                setData([]);
+                fetchData(defaultLocation, true, 0, 0, 0, 0, setData, setLoading, setError);
             }
         };
 
@@ -41,14 +45,17 @@ export default function CurrentDataProvider({ children }: { children: React.Reac
         }, 60000);
 
         setLoading(true);
-        if (defaultLocation) fetchData(defaultLocation, true, 0, 0, 0, 0, setData, setLoading);
+        if (defaultLocation) {
+            setData([]);
+            fetchData(defaultLocation, true, 0, 0, 0, 0, setData, setLoading, setError);
+        }
 
         return () => clearInterval(intervalId);
     }, [defaultLocation, defaultTempUnit, fetchData]);
 
     return (
         <CurrentDataContext.Provider
-            value={{ data, defaultLocation, defaultTempUnit, loadingCurrent }}>
+            value={{ data, error, defaultLocation, defaultTempUnit, loadingCurrent }}>
             {children}
         </CurrentDataContext.Provider>
     );
