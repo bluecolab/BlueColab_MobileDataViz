@@ -415,7 +415,16 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                 </View>
-
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-gray-700">
+                    <Text className="text-xl font-bold text-black dark:text-white">Assets:</Text>
+                    <Item
+                        name="Max Okhrimenko"
+                        label="Water Animation (Loading Animation)"
+                        link="https://lottiefiles.com/free-animation/water-animation-bknTaRaHON"
+                        team={[]}
+                        isLinkedin={false}
+                    />
+                </View>
                 <View className="pb-[90] "></View>
             </ScrollView>
         </>
