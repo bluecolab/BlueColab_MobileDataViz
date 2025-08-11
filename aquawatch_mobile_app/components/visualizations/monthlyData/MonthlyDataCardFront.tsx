@@ -42,7 +42,7 @@ export function MonthlyDataCardFront({
         return (
             <EmptyGraph
                 error={{
-                    message: 'No data available',
+                    message: 'Error: No data available',
                 }}
             />
         );

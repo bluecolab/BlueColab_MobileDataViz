@@ -127,7 +127,8 @@ export default function useGetWaterData() {
                         if (error.response) {
                             if (error.response.data.status === 404)
                                 setError({
-                                    message: 'Error: No data available for the selected range',
+                                    message:
+                                        'Error: No data available, select a different date range',
                                     code: 404,
                                 });
                             else

@@ -26,9 +26,11 @@ export function EmptyGraph({ error }: { error: ErrorType }) {
     return (
         <View className="h-full rounded-3xl bg-white px-2 dark:bg-gray-700">
             <Text className="text-center text-black dark:text-white">{error.message}</Text>
-            <View className="pointer-events-none absolute inset-0 z-10 items-center justify-center">
-                <LottieTest />
-            </View>
+            {error.message === 'Loading...' && (
+                <View className="pointer-events-none absolute inset-0 z-10 items-center justify-center">
+                    <LottieTest />
+                </View>
+            )}
             <CartesianChart
                 data={dailySummary}
                 xKey="day"
