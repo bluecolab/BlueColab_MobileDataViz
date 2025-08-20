@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { getMinutes } from 'date-fns';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 import { useGraphData } from '@/contexts/GraphDataContext';
@@ -31,8 +31,7 @@ export default function CurrentDataProvider({ children }: { children: React.Reac
 
     useEffect(() => {
         const checkTimeAndFetchData = () => {
-            const currentTime = DateTime.now();
-            const currentMinute = currentTime.minute;
+            const currentMinute = getMinutes(new Date());
 
             if (defaultLocation && [0, 15, 30, 45].includes(currentMinute)) {
                 setData([]);

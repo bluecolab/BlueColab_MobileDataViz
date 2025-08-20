@@ -1,6 +1,6 @@
 // app/(tabs)/home/index.tsx
+import { subMonths, format } from 'date-fns';
 import { Stack } from 'expo-router';
-import { DateTime } from 'luxon';
 import React, { useCallback } from 'react';
 import { ScrollView, View, FlatList, Text } from 'react-native';
 
@@ -44,7 +44,7 @@ export default function HomeScreen() {
     const { defaultLocation } = useCurrentData();
     const { isDark } = useColorScheme();
 
-    const lastMonth = DateTime.now().minus({ months: 1 }).toFormat('MMMM yyyy');
+    const lastMonth = format(subMonths(new Date(), 1), 'MMMM yyyy');
 
     const renderItem = useCallback(
         ({

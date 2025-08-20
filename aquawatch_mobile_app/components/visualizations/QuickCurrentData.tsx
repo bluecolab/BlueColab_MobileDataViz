@@ -1,7 +1,7 @@
 // /components/QuickCurrentData.tsx
+import { differenceInSeconds } from 'date-fns';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { DateTime } from 'luxon';
 import React, { useState, useEffect } from 'react';
 import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
 
@@ -46,13 +46,12 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
     const [minutes, setMinutes] = useState<number>();
     useEffect(() => {
         const intervalId = setInterval(() => {
-            const currentTime = DateTime.now();
-            const timestampDateTime =
-                timestamp === 'Loading' ? DateTime.now() : DateTime.fromISO(timestamp);
+            const currentTime = new Date();
+            const timestampDateTime = timestamp === 'Loading' ? new Date() : new Date(timestamp);
 
-            if (timestampDateTime.isValid) {
-                const diffInSeconds = currentTime.diff(timestampDateTime, 'seconds');
-                setMinutes(diffInSeconds.seconds);
+            if (!isNaN(timestampDateTime.getTime())) {
+                const diffInSeconds = differenceInSeconds(currentTime, timestampDateTime);
+                setMinutes(diffInSeconds);
             } else {
                 setMinutes(-999999);
             }

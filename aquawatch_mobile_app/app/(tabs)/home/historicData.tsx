@@ -1,5 +1,5 @@
+import { getMonth, getYear, getDaysInMonth } from 'date-fns';
 import { Stack } from 'expo-router';
-import { DateTime } from 'luxon';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { View, ScrollView, Dimensions } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
@@ -13,12 +13,9 @@ import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
 
-// import { WQIGauge, DataGraph, CustomDropdown } from '@components';
-
-const getDaysInMonth = (month: number, year: number) => {
-    // Create a moment object for the first day of the given month and year
-    const date = DateTime.fromObject({ year, month });
-    return date.daysInMonth;
+const getDaysInMonthFn = (month: number, year: number) => {
+    const date = new Date(year, month - 1); // Month is 0-indexed in JavaScript
+    return getDaysInMonth(date);
 };
 
 export default function HistoricData() {
@@ -39,8 +36,9 @@ export default function HistoricData() {
     const unitMap =
         units[(selectedLocationTemp ?? defaultLocation ?? 'Choate Pond') as keyof typeof units];
 
-    const currentMonth = DateTime.now().month;
-    const currentYear = DateTime.now().year;
+    const now = new Date();
+    const currentMonth = getMonth(now) + 1; // `getMonth` is 0-indexed
+    const currentYear = getYear(now);
 
     const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
@@ -105,7 +103,7 @@ export default function HistoricData() {
         (value: string) => {
             setSelectedMonth(Number.parseInt(value, 10));
             setMonth(Number.parseInt(value, 10));
-            setEndDay(getDaysInMonth(Number.parseInt(value, 10), selectedYear));
+            setEndDay(getDaysInMonthFn(Number.parseInt(value, 10), selectedYear));
         },
         [selectedYear, setMonth, setEndDay]
     );
@@ -114,7 +112,7 @@ export default function HistoricData() {
         (value: string) => {
             setSelectedYear(Number.parseInt(value, 10));
             setYear(Number.parseInt(value, 10));
-            setEndDay(getDaysInMonth(selectedMonth, Number.parseInt(value, 10)));
+            setEndDay(getDaysInMonthFn(selectedMonth, Number.parseInt(value, 10)));
         },
         [selectedMonth, setYear, setEndDay]
     );

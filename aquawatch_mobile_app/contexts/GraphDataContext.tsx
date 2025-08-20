@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DateTime } from 'luxon';
+import { subMonths, getYear, getMonth, getDaysInMonth } from 'date-fns';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 import useGetWaterData from '@/hooks/useGetWaterData';
@@ -129,11 +129,11 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         void getStoredDefaultLocation();
         void getStoredDefaultTempUnit();
 
-        const lastMonth = DateTime.now().minus({ months: 1 });
-        setYear(lastMonth.year);
-        setMonth(lastMonth.month);
+        const lastMonth = subMonths(new Date(), 1);
+        setYear(getYear(lastMonth));
+        setMonth(getMonth(lastMonth) + 1); // `getMonth` is 0-indexed, so add 1
         setStartDay(1);
-        setEndDay(lastMonth.daysInMonth);
+        setEndDay(getDaysInMonth(lastMonth));
     }, []);
 
     return (
