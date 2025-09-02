@@ -35,9 +35,8 @@ const processWildlifeData = (baseData: AnimalFact[], currentSeason: 'winter' | '
     });
 };
 
-/**
+/** The wildlife screen of the app. It contains a list of wildlife data.
  * @returns {JSX.Element}
- * @description The wildlife screen of the app. It contains a list of wildlife data.
  */
 export default function Wildlife() {
     const { isDark } = useColorScheme();

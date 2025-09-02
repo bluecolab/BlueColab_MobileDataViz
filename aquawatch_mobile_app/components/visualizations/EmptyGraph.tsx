@@ -7,6 +7,12 @@ import { getOrdinalSuffix } from '@/utils/getOrdinalSuffix';
 
 import LottieTest from './LottieLoading';
 
+/**
+ * A component that displays an empty graph with a message. If error message is "Loading...", it shows a loading animation.
+ *
+ * @param error - The error object containing the error message.
+ * @returns {JSX.Element}
+ */
 export function EmptyGraph({ error }: { error: ErrorType }) {
     const { isDark, loading, font } = useColorScheme();
 

@@ -4,7 +4,7 @@ import { Stack } from 'expo-router';
 import React, { useCallback } from 'react';
 import { ScrollView, View, FlatList, Text } from 'react-native';
 
-import HomeScreenCard from '@/components/HomeScreenCard';
+import HomeScreenCard from '@/components/customCards/HomeScreenCard';
 import QuickCurrentData from '@/components/visualizations/QuickCurrentData';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
@@ -36,9 +36,8 @@ const homeScreenFlatListData = [
     },
 ];
 
-/**
+/** The home screen of the app. It contains the quick current data component.
  * @returns {JSX.Element}
- * @description The home screen of the app. It contains the quick current data component.
  */
 export default function HomeScreen() {
     const { defaultLocation } = useCurrentData();

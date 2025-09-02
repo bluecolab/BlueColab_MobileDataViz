@@ -4,9 +4,8 @@ import { View, Text, ScrollView, Image } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
-/**
+/**  This component displays the story of Blue CoLab, including its mission and approach to water contamination risks.
  * @returns {JSX.Element}
- * @description This component displays the story of Blue CoLab, including its mission and approach to water contamination risks.
  */
 export default function Story() {
     const { isDark } = useColorScheme();

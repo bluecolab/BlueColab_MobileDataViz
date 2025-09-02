@@ -2,6 +2,11 @@ import LottieView from 'lottie-react-native';
 import { useRef } from 'react';
 import { View } from 'react-native';
 
+/**
+ * A loading animation.
+ * Adapted from: https://lottiefiles.com/free-animation/water-animation-bknTaRaHON
+ * @returns {JSX.Element}
+ */
 export default function LottieLoading() {
     const animation = useRef<LottieView>(null);
 

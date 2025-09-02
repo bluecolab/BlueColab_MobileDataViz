@@ -2,7 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
-import FlipCard from '../FlipCard';
+import FlipCard from '@/components/customCards/FlipCard';
 
 // status & color logic
 const getStatusAndColor = (name: string, value: number) => {
@@ -71,17 +71,17 @@ export function Widget({ name, value }: WidgetProp) {
 
     const flipCardRef = useRef<{ flip: () => void }>(null);
 
+    const flipCard = () => flipCardRef.current?.flip();
+
     return (
         <View className="w-1/2 p-4">
-            <TouchableOpacity activeOpacity={0.9} onPress={() => flipCardRef.current?.flip()}>
+            <TouchableOpacity activeOpacity={0.9} onPress={flipCard}>
                 {/* FRONT */}
                 <FlipCard
                     ref={flipCardRef}
                     Front={
                         <View className="relative h-[150px] rounded-3xl bg-white p-6 dark:bg-gray-700">
-                            <TouchableOpacity
-                                onPress={() => flipCardRef.current?.flip()}
-                                className="absolute right-3 top-3">
+                            <TouchableOpacity onPress={flipCard} className="absolute right-3 top-3">
                                 <FontAwesome name="info-circle" size={20} color="gray" />
                             </TouchableOpacity>
 

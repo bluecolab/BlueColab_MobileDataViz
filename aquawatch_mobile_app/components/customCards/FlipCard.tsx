@@ -14,6 +14,25 @@ interface FlipCardProps {
     duration?: number;
 }
 
+/**
+ * A card component that can be flipped to reveal different content on each side.
+ *
+ * **Usage**:
+ *
+ * Declare this function and send it as the ref parameter. Call this function inside onPress or alike:
+ * ```
+ * const flipCard = () => flipCardRef.current?.flip();
+ *
+ * <TouchableOpacity onPress={flipCard}>
+ *    content
+ * </TouchableOpacity>
+ * ```
+ *
+ * @param Front - The front side of the card.
+ * @param Back - The back side of the card.
+ * @param ref - A ref to control the flip action from outside the component.
+ * @param duration - The duration of the flip animation in milliseconds.
+ */
 export default function FlipCard({ Front, Back, ref, duration = 500 }: FlipCardProps) {
     const isFlipped = useSharedValue(false);
 
