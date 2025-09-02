@@ -1,6 +1,8 @@
 import { FontAwesome } from '@expo/vector-icons';
-import React, { useRef, useState } from 'react';
-import { View, Text, ScrollView, Animated, TouchableOpacity } from 'react-native';
+import { useRef } from 'react';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+
+import FlipCard from '../FlipCard';
 
 // status & color logic
 const getStatusAndColor = (name: string, value: number) => {
@@ -58,7 +60,6 @@ const DESCRIPTIONS = {
 };
 type DescriptionKeys = keyof typeof DESCRIPTIONS;
 
-// your existing 6‐widget flip‐card
 interface WidgetProp {
     name: DescriptionKeys;
     value: number | string;
@@ -68,74 +69,48 @@ export function Widget({ name, value }: WidgetProp) {
     const numericValue = parseFloat(value.toString());
     const { label, color } = getStatusAndColor(name, numericValue);
 
-    const anim = useRef(new Animated.Value(0)).current;
-    const [flipped, setFlipped] = useState(false);
-
-    const frontRotate = anim.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '180deg'],
-    });
-    const backRotate = anim.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['180deg', '360deg'],
-    });
-
-    const doFlip = () => {
-        Animated.timing(anim, {
-            toValue: flipped ? 0 : 1,
-            duration: 300,
-            useNativeDriver: true,
-        }).start(() => setFlipped(!flipped));
-    };
+    const flipCardRef = useRef<{ flip: () => void }>(null);
 
     return (
         <View className="w-1/2 p-4">
-            <TouchableOpacity activeOpacity={0.9} onPress={doFlip}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => flipCardRef.current?.flip()}>
                 {/* FRONT */}
-                <Animated.View
-                    style={{
-                        backfaceVisibility: 'hidden',
-                        transform: [{ perspective: 1000 }, { rotateY: frontRotate }],
-                    }}>
-                    <View className="relative h-[120px] rounded-3xl bg-white p-6 dark:bg-gray-700">
-                        <TouchableOpacity onPress={doFlip} className="absolute right-3 top-3">
-                            <FontAwesome name="info-circle" size={20} color="gray" />
-                        </TouchableOpacity>
+                <FlipCard
+                    ref={flipCardRef}
+                    Front={
+                        <View className="relative h-[150px] rounded-3xl bg-white p-6 dark:bg-gray-700">
+                            <TouchableOpacity
+                                onPress={() => flipCardRef.current?.flip()}
+                                className="absolute right-3 top-3">
+                                <FontAwesome name="info-circle" size={20} color="gray" />
+                            </TouchableOpacity>
 
-                        {/* -13px aligns water temperature with others */}
-                        <Text
-                            className={`text-md text-center font-bold dark:text-white ${
-                                name === 'Water Temperature' ? 'mt-[-13px]' : ''
-                            }`}>
-                            {name}
-                        </Text>
-                        <View className="mt-4 items-center">
-                            <Text className="text-base dark:text-white">{value}</Text>
-                            <Text className={`text-sm italic ${color}`}>{label}</Text>
+                            {/* -13px aligns water temperature with others */}
+                            <Text
+                                className={`text-md text-center font-bold dark:text-white ${
+                                    name === 'Water Temperature' ? 'mt-[-13px]' : ''
+                                }`}>
+                                {name}
+                            </Text>
+                            <View className="mt-4 items-center">
+                                <Text className="text-base dark:text-white">{value}</Text>
+                                <Text className={`text-sm italic ${color}`}>{label}</Text>
+                            </View>
                         </View>
-                    </View>
-                </Animated.View>
-
-                {/* BACK */}
-                <Animated.View
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backfaceVisibility: 'hidden',
-                        transform: [{ perspective: 1000 }, { rotateY: backRotate }],
-                    }}>
-                    <ScrollView
-                        className="h-[120px] rounded-3xl bg-white  p-4 dark:bg-gray-700"
-                        contentContainerStyle={{ justifyContent: 'center' }}>
-                        <Text className="mb-1 text-center font-bold dark:text-white">{name}</Text>
-                        <Text className="text-center text-sm dark:text-white">
-                            {DESCRIPTIONS[name]}
-                        </Text>
-                    </ScrollView>
-                </Animated.View>
+                    }
+                    Back={
+                        <ScrollView
+                            className="h-[150px] rounded-3xl bg-white  p-4 dark:bg-gray-700"
+                            contentContainerStyle={{ justifyContent: 'center' }}>
+                            <Text className="mb-1 text-center font-bold dark:text-white">
+                                {name}
+                            </Text>
+                            <Text className="text-center text-sm dark:text-white">
+                                {DESCRIPTIONS[name]}
+                            </Text>
+                        </ScrollView>
+                    }
+                />
             </TouchableOpacity>
         </View>
     );
