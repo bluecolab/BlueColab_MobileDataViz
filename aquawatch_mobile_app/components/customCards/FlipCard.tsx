@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
+import type { ViewStyle } from 'react-native';
 import Animated, {
     interpolate,
     useAnimatedStyle,
@@ -7,11 +8,21 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 
+const defaultFrontStyles: ViewStyle = {
+    width: '100%',
+};
+
+const defaultBackStyles: ViewStyle = {
+    width: '100%',
+};
+
 interface FlipCardProps {
     Front: React.ReactNode;
     Back: React.ReactNode;
-    ref: React.Ref<{ flip: () => void }>;
+    flipCardRef: React.Ref<{ flip: () => void }>;
     duration?: number;
+    frontStyles?: ViewStyle;
+    backStyles?: ViewStyle;
 }
 
 /**
@@ -19,33 +30,45 @@ interface FlipCardProps {
  *
  * **Usage**:
  *
- * Declare this function and send it as the ref parameter. Call this function inside onPress or alike:
+ * Declare these lines and send it as the ref parameter. Call this function inside onPress or alike:
  * ```
+ * const flipCardRef = useRef<{ flip: () => void }>(null);
  * const flipCard = () => flipCardRef.current?.flip();
- *
+ * ...
  * <TouchableOpacity onPress={flipCard}>
- *    content
+ *    ...
  * </TouchableOpacity>
  * ```
  *
  * @param Front - The front side of the card.
  * @param Back - The back side of the card.
- * @param ref - A ref to control the flip action from outside the component.
+ * @param flipCardRef - A ref to control the flip action from outside the component.
  * @param duration - The duration of the flip animation in milliseconds.
+ * @param frontStyles - Custom styles for the front side of the card.
+ * @param backStyles - Custom styles for the back side of the card.
  */
-export default function FlipCard({ Front, Back, ref, duration = 500 }: FlipCardProps) {
+export default function FlipCard({
+    Front,
+    Back,
+    flipCardRef,
+    duration = 500,
+    frontStyles = defaultFrontStyles,
+    backStyles = defaultBackStyles,
+}: FlipCardProps) {
     const isFlipped = useSharedValue(false);
+    const [flipped, setFlipped] = useState(false);
 
     const handlePress = () => {
         isFlipped.value = !isFlipped.value;
+        setFlipped((prev) => !prev);
     };
 
     // Links flip ref to handlePress
-    (ref as React.RefObject<{ flip: () => void }>).current = {
+    (flipCardRef as React.RefObject<{ flip: () => void }>).current = {
         flip: handlePress,
     };
 
-    const regularCardAnimatedStyle = useAnimatedStyle(() => {
+    const frontCardAnimatedStyle = useAnimatedStyle(() => {
         const spinValue = interpolate(Number(isFlipped.value), [0, 1], [0, 180]);
         const rotateValue = withTiming(`${spinValue}deg`, { duration });
 
@@ -54,7 +77,7 @@ export default function FlipCard({ Front, Back, ref, duration = 500 }: FlipCardP
         };
     });
 
-    const flippedCardAnimatedStyle = useAnimatedStyle(() => {
+    const backCardAnimatedStyle = useAnimatedStyle(() => {
         const spinValue = interpolate(Number(isFlipped.value), [0, 1], [180, 360]);
         const rotateValue = withTiming(`${spinValue}deg`, { duration });
 
@@ -71,9 +94,9 @@ export default function FlipCard({ Front, Back, ref, duration = 500 }: FlipCardP
                         position: 'absolute',
                         zIndex: 1,
                         backfaceVisibility: 'hidden',
-                        width: '100%',
                     },
-                    regularCardAnimatedStyle,
+                    frontCardAnimatedStyle,
+                    frontStyles,
                 ]}>
                 {Front}
             </Animated.View>
@@ -82,10 +105,11 @@ export default function FlipCard({ Front, Back, ref, duration = 500 }: FlipCardP
                     {
                         zIndex: 2,
                         backfaceVisibility: 'hidden',
-                        width: '100%',
                     },
-                    flippedCardAnimatedStyle,
-                ]}>
+                    backCardAnimatedStyle,
+                    backStyles,
+                ]}
+                pointerEvents={flipped ? 'auto' : 'none'}>
                 {Back}
             </Animated.View>
         </View>

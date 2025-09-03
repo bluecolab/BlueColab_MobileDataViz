@@ -1,7 +1,8 @@
 import { FontAwesome } from '@expo/vector-icons';
-import React, { useRef, useState } from 'react';
-import { View, Text, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { useRef } from 'react';
+import { View, Text, Dimensions, TouchableOpacity } from 'react-native';
 
+import FlipCard from '@/components/customCards/FlipCard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { CleanedWaterData } from '@/types/water.interface';
 
@@ -19,26 +20,9 @@ export function WQICard({ loading, data, wqi }: WQICardProps) {
     const { width } = Dimensions.get('window');
     const containerWidth = width * 0.95;
     const { isDark } = useColorScheme();
-    const flipAnimation = useRef(new Animated.Value(0)).current;
-    const [flipped, setFlipped] = useState(false);
 
-    const startAnimation = () => {
-        Animated.timing(flipAnimation, {
-            toValue: flipped ? 0 : 1,
-            duration: 500,
-            useNativeDriver: true, // RotateY doesn't support native driver
-        }).start(() => setFlipped(!flipped));
-    };
-
-    const frontInterpolate = flipAnimation.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '180deg'],
-    });
-
-    const backInterpolate = flipAnimation.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['180deg', '360deg'],
-    });
+    const flipCardRef = useRef<{ flip: () => void }>(null);
+    const flipCard = () => flipCardRef.current?.flip();
 
     return (
         <View style={{ width, marginTop: 10 }}>
@@ -48,7 +32,7 @@ export function WQICard({ loading, data, wqi }: WQICardProps) {
                     <Text className="rounded-3xl bg-white p-1 text-center text-3xl font-bold dark:bg-gray-700 dark:text-white">
                         WQI
                     </Text>
-                    <TouchableOpacity className="absolute right-2 top-1" onPress={startAnimation}>
+                    <TouchableOpacity className="absolute right-2 top-1" onPress={flipCard}>
                         <FontAwesome
                             name="info-circle"
                             size={32}
@@ -61,39 +45,19 @@ export function WQICard({ loading, data, wqi }: WQICardProps) {
                 <View className="z-10 self-center">
                     <View className="h-[250]">
                         {/* Front View - Graph */}
-                        <Animated.View
-                            style={{
-                                marginTop: 5,
-                                height: '100%',
-                                width: containerWidth,
-                                position: 'absolute',
-                                justifyContent: 'center',
-                                alignSelf: 'center',
-                                backfaceVisibility: 'hidden',
-                                transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }],
-                            }}>
-                            <View className="flex-1 items-center justify-center  rounded-3xl bg-white p-default dark:bg-gray-700 ">
-                                <View className="mt-[100] h-[300] w-[300]">
-                                    <WQICardFront data={data} loading={loading} wqi={wqi} />
+                        <FlipCard
+                            Front={
+                                <View className="flex-1 items-center justify-center  rounded-3xl bg-white p-default dark:bg-gray-700 ">
+                                    <View className="mt-[100] h-[300] w-[300]">
+                                        <WQICardFront data={data} loading={loading} wqi={wqi} />
+                                    </View>
                                 </View>
-                            </View>
-                        </Animated.View>
-
-                        {/* Back View - Information Card */}
-                        <Animated.View
-                            style={{
-                                marginTop: 5,
-                                height: '100%',
-                                width: containerWidth,
-                                position: 'absolute',
-                                justifyContent: 'center',
-                                alignSelf: 'center',
-                                backfaceVisibility: 'hidden',
-                                transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
-                            }}
-                            pointerEvents={flipped ? 'auto' : 'none'}>
-                            <WQICardBack />
-                        </Animated.View>
+                            }
+                            Back={<WQICardBack />}
+                            flipCardRef={flipCardRef}
+                            frontStyles={{ marginTop: 5, width: containerWidth }}
+                            backStyles={{ marginTop: 5, width: containerWidth }}
+                        />
                     </View>
                 </View>
             </View>

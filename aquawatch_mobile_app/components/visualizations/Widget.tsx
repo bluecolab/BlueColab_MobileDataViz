@@ -78,7 +78,7 @@ export function Widget({ name, value }: WidgetProp) {
             <TouchableOpacity activeOpacity={0.9} onPress={flipCard}>
                 {/* FRONT */}
                 <FlipCard
-                    ref={flipCardRef}
+                    flipCardRef={flipCardRef}
                     Front={
                         <View className="relative h-[150px] rounded-3xl bg-white p-6 dark:bg-gray-700">
                             <TouchableOpacity onPress={flipCard} className="absolute right-3 top-3">

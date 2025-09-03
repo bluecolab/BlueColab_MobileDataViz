@@ -193,7 +193,7 @@ export default function HistoricData() {
             <View className="bg-defaultbackground dark:bg-defaultdarkbackground ">
                 <RenderTab />
 
-                <ScrollView contentContainerStyle={{ paddingBottom: 200 }}>
+                <ScrollView contentContainerStyle={{ paddingBottom: 400 }}>
                     <Carousel
                         ref={ref}
                         loop
