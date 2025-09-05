@@ -346,6 +346,17 @@ export default function VersionHistory() {
                         />{' '}
                         by Kenji)
                     </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.7:</Text>
+
+                    <Text className="ml-3">
+                        - Fix bug causing tab to display Home (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/200"
+                            label="#200"
+                        />{' '}
+                        by Kenji)
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>
