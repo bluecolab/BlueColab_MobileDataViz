@@ -43,17 +43,21 @@ export function WQICard({ loading, data, wqi }: WQICardProps) {
 
                 {/* Graph Container */}
                 <View className="z-10 self-center">
-                    <View className="h-[250]">
+                    <View>
                         {/* Front View - Graph */}
                         <FlipCard
                             Front={
                                 <View className="flex-1 items-center justify-center  rounded-3xl bg-white p-default dark:bg-gray-700 ">
-                                    <View className="mt-[100] h-[300] w-[300]">
+                                    <View className="h-[200] w-[300]">
                                         <WQICardFront data={data} loading={loading} wqi={wqi} />
                                     </View>
                                 </View>
                             }
-                            Back={<WQICardBack />}
+                            Back={
+                                <View className="h-[200]">
+                                    <WQICardBack />
+                                </View>
+                            }
                             flipCardRef={flipCardRef}
                             frontStyles={{ marginTop: 5, width: containerWidth }}
                             backStyles={{ marginTop: 5, width: containerWidth }}
