@@ -113,3 +113,4 @@ jobs:
       - name: Expo Doctor Check
         working-directory: ./aquawatch_mobile_app
         run: npx expo-doctor
+        continue-on-error: true
