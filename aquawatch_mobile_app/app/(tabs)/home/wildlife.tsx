@@ -1,6 +1,6 @@
 // app/(tabs)/home/wildlife.tsx
+import { getMonth } from 'date-fns';
 import { Stack } from 'expo-router';
-import { DateTime } from 'luxon';
 import type { RefObject, Dispatch, SetStateAction } from 'react';
 import { useRef, useState } from 'react';
 import { View, Text, FlatList, Image, Dimensions, StyleSheet } from 'react-native';
@@ -13,7 +13,7 @@ const windowWidth = Dimensions.get('window').width;
 
 // Function to check the current season
 const getCurrentSeason = () => {
-    const month = DateTime.now().month;
+    const month = getMonth(new Date()) + 1; // `getMonth` is 0-indexed
 
     if ([12, 1, 2, 3, 4, 5, 6, 7, 8].includes(month)) return 'winter';
     return 'summer';
@@ -35,9 +35,8 @@ const processWildlifeData = (baseData: AnimalFact[], currentSeason: 'winter' | '
     });
 };
 
-/**
+/** The wildlife screen of the app. It contains a list of wildlife data.
  * @returns {JSX.Element}
- * @description The wildlife screen of the app. It contains a list of wildlife data.
  */
 export default function Wildlife() {
     const { isDark } = useColorScheme();

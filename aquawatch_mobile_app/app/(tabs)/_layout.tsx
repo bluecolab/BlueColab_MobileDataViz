@@ -9,9 +9,8 @@ import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 import { TabBarIcon } from '../../components/TabBarIcon';
 
-/**
+/** The tab layout of the app. Here we define the tabs and their options.
  * @returns {JSX.Element}
- * @description The tab layout of the app. Here we define the tabs and their options.
  */
 export default function TabLayout() {
     const { isDark } = useColorScheme();

@@ -13,7 +13,7 @@ def find_error_log_levels(json_file_path):
     """
     try:
         # Open and load the JSON file
-        with open(json_file_path, 'r') as file:
+        with open(json_file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
 
         # Extract logcatMessages and filter logs with logLevel 'ERROR'

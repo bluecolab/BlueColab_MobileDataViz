@@ -1,7 +1,8 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { useRef, useState } from 'react';
-import { Animated, Dimensions, View, Text, TouchableOpacity } from 'react-native';
+import { useRef } from 'react';
+import { Dimensions, View, Text, TouchableOpacity } from 'react-native';
 
+import FlipCard from '@/components/customCards/FlipCard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
@@ -51,26 +52,9 @@ export function MonthlyDataCard({
 
     const containerWidth = width * 0.95;
     const { isDark } = useColorScheme();
-    const flipAnimation = useRef(new Animated.Value(0)).current;
-    const [flipped, setFlipped] = useState(false);
 
-    const startAnimation = () => {
-        Animated.timing(flipAnimation, {
-            toValue: flipped ? 0 : 1,
-            duration: 500,
-            useNativeDriver: true, // RotateY doesn't support native driver
-        }).start(() => setFlipped(!flipped));
-    };
-
-    const frontInterpolate = flipAnimation.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '180deg'],
-    });
-
-    const backInterpolate = flipAnimation.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['180deg', '360deg'],
-    });
+    const flipCardRef = useRef<{ flip: () => void }>(null);
+    const flipCard = () => flipCardRef.current?.flip();
 
     return (
         <View style={{ width, marginTop: 10 }}>
@@ -89,7 +73,7 @@ export function MonthlyDataCard({
                               }`
                             : ''}
                     </Text>
-                    <TouchableOpacity className="absolute right-2 top-1" onPress={startAnimation}>
+                    <TouchableOpacity className="absolute right-2 top-1" onPress={flipCard}>
                         <FontAwesome
                             name="info-circle"
                             size={32}
@@ -102,46 +86,28 @@ export function MonthlyDataCard({
                 <View className="z-10 w-[95%] self-center">
                     <View className="h-[300]">
                         {/* Front View - Graph */}
-                        <Animated.View
-                            style={{
-                                marginTop: 5,
-                                height: '100%',
-                                width: containerWidth,
-                                position: 'absolute',
-                                justifyContent: 'center',
-                                alignSelf: 'center',
-                                backfaceVisibility: 'hidden',
-                                transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }],
-                            }}>
-                            <MonthlyDataCardFront
-                                loading={loading}
-                                dailySummary={dataSummary.dailySummary}
-                                error={error}
-                                month={selectedMonth}
-                            />
-                        </Animated.View>
-
-                        {/* Back View - Information Card */}
-                        <Animated.View
-                            style={{
-                                marginTop: 5,
-                                height: '100%',
-                                width: containerWidth,
-                                position: 'absolute',
-                                justifyContent: 'center',
-                                alignSelf: 'center',
-                                backfaceVisibility: 'hidden',
-                                transform: [{ perspective: 1000 }, { rotateY: backInterpolate }],
-                            }}
-                            pointerEvents={flipped ? 'auto' : 'none'}>
-                            <MonthlyDataCardBack
-                                overallMin={dataSummary.overallMin}
-                                overallMax={dataSummary.overallMax}
-                                overallAvg={dataSummary.overallAvg}
-                                yAxisLabel={yAxisLabel}
-                                meta={meta}
-                            />
-                        </Animated.View>
+                        <FlipCard
+                            Front={
+                                <MonthlyDataCardFront
+                                    loading={loading}
+                                    dailySummary={dataSummary.dailySummary}
+                                    error={error}
+                                    month={selectedMonth}
+                                />
+                            }
+                            Back={
+                                <MonthlyDataCardBack
+                                    overallMin={dataSummary.overallMin}
+                                    overallMax={dataSummary.overallMax}
+                                    overallAvg={dataSummary.overallAvg}
+                                    yAxisLabel={yAxisLabel}
+                                    meta={meta}
+                                />
+                            }
+                            flipCardRef={flipCardRef}
+                            frontStyles={{ marginTop: 5, width: containerWidth, height: '100%' }}
+                            backStyles={{ marginTop: 5, width: containerWidth }}
+                        />
                     </View>
                 </View>
             </View>

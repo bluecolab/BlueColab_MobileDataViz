@@ -80,7 +80,7 @@ export const extractLastData = (
               ],
               false
           )
-        : -1;
+        : -9999;
 
     return {
         timestamp: lastDataPoint.timestamp || 'Loading...',
