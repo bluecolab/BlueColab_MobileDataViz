@@ -1,7 +1,16 @@
+import { FontAwesome } from '@expo/vector-icons';
+import { getMonth, getYear, getDaysInMonth } from 'date-fns';
 import { Stack } from 'expo-router';
-import { DateTime } from 'luxon';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { View, ScrollView, Dimensions } from 'react-native';
+import {
+    View,
+    ScrollView,
+    Dimensions,
+    Modal,
+    Text,
+    TouchableWithoutFeedback,
+    TouchableHighlight,
+} from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import type { ICarouselInstance } from 'react-native-reanimated-carousel';
@@ -13,12 +22,9 @@ import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
 
-// import { WQIGauge, DataGraph, CustomDropdown } from '@components';
-
-const getDaysInMonth = (month: number, year: number) => {
-    // Create a moment object for the first day of the given month and year
-    const date = DateTime.fromObject({ year, month });
-    return date.daysInMonth;
+const getDaysInMonthFn = (month: number, year: number) => {
+    const date = new Date(year, month - 1); // Month is 0-indexed in JavaScript
+    return getDaysInMonth(date);
 };
 
 export default function HistoricData() {
@@ -36,11 +42,14 @@ export default function HistoricData() {
     } = useGraphData();
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
+    const [modalOpen, setModalOpen] = useState(false);
+
     const unitMap =
         units[(selectedLocationTemp ?? defaultLocation ?? 'Choate Pond') as keyof typeof units];
 
-    const currentMonth = DateTime.now().month;
-    const currentYear = DateTime.now().year;
+    const now = new Date();
+    const currentMonth = getMonth(now) + 1; // `getMonth` is 0-indexed
+    const currentYear = getYear(now);
 
     const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
@@ -105,7 +114,7 @@ export default function HistoricData() {
         (value: string) => {
             setSelectedMonth(Number.parseInt(value, 10));
             setMonth(Number.parseInt(value, 10));
-            setEndDay(getDaysInMonth(Number.parseInt(value, 10), selectedYear));
+            setEndDay(getDaysInMonthFn(Number.parseInt(value, 10), selectedYear));
         },
         [selectedYear, setMonth, setEndDay]
     );
@@ -114,7 +123,7 @@ export default function HistoricData() {
         (value: string) => {
             setSelectedYear(Number.parseInt(value, 10));
             setYear(Number.parseInt(value, 10));
-            setEndDay(getDaysInMonth(selectedMonth, Number.parseInt(value, 10)));
+            setEndDay(getDaysInMonthFn(selectedMonth, Number.parseInt(value, 10)));
         },
         [selectedMonth, setYear, setEndDay]
     );
@@ -137,48 +146,17 @@ export default function HistoricData() {
         setSelectedLocation(defaultLocationValue);
     }, [defaultLocation, locationOptions, selectedLocationTemp]);
 
-    const RenderTab = useCallback(
+    const HeaderRightButton = React.useCallback(
         () => (
-            <View className="elevation-[20] z-10 w-full bg-white p-default dark:bg-gray-700">
-                <View className="w-full flex-row space-x-4">
-                    <View className="flex-[2]">
-                        <CustomDropdown
-                            label="Month"
-                            options={monthOptions}
-                            value={selectedMonth}
-                            onSelect={onMonthSelect}
-                        />
-                    </View>
-                    <View className="flex-[2]">
-                        <CustomDropdown
-                            label="Year"
-                            options={yearOptions}
-                            value={selectedYear}
-                            onSelect={onYearSelect}
-                        />
-                    </View>
-                </View>
-                <View>
-                    <CustomDropdown
-                        label="Location"
-                        options={locationOptions}
-                        value={selectedLocation}
-                        onSelect={onLocationSelect}
-                    />
-                </View>
-            </View>
+            <FontAwesome
+                name="cog"
+                size={24}
+                color={isDark ? 'white' : '#333'}
+                onPress={() => setModalOpen(!modalOpen)}
+                style={{ marginRight: 16 }}
+            />
         ),
-        [
-            locationOptions,
-            monthOptions,
-            onLocationSelect,
-            onMonthSelect,
-            onYearSelect,
-            selectedLocation,
-            selectedMonth,
-            selectedYear,
-            yearOptions,
-        ]
+        [modalOpen, isDark]
     );
 
     return (
@@ -190,12 +168,21 @@ export default function HistoricData() {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
+                    headerRight: HeaderRightButton,
                 }}
             />
             <View className="bg-defaultbackground dark:bg-defaultdarkbackground ">
-                <RenderTab />
+                <ScrollView contentContainerStyle={{ paddingBottom: 400 }}>
+                    <Text className="mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-white">
+                        {locationOptions.find((option) => option.value === selectedLocation)?.label}{' '}
+                        -{' '}
+                        {
+                            monthOptions.find((option) => option.value === selectedMonth.toString())
+                                ?.label
+                        }{' '}
+                        {selectedYear}
+                    </Text>
 
-                <ScrollView contentContainerStyle={{ paddingBottom: 200 }}>
                     <Carousel
                         ref={ref}
                         loop
@@ -244,6 +231,60 @@ export default function HistoricData() {
                         <></>
                     )}
                 </ScrollView>
+
+                <Modal
+                    animationType="slide"
+                    transparent
+                    visible={modalOpen}
+                    onRequestClose={() => setModalOpen(false)}>
+                    <TouchableWithoutFeedback onPress={() => setModalOpen(false)}>
+                        <View className="flex-1 justify-end bg-black/50">
+                            {/* Prevent closing when tapping inside the modal content */}
+                            <TouchableWithoutFeedback>
+                                <View className="h-[85vh] rounded-t-2xl bg-defaultbackground p-6 dark:bg-defaultdarkbackground">
+                                    <Text className="text-center text-lg font-bold dark:text-white">
+                                        Historic Data Settings
+                                    </Text>
+                                    {/* Add a close button */}
+                                    <TouchableHighlight
+                                        className="absolute right-4 top-4 rounded-full bg-gray-200 p-2 dark:bg-gray-700"
+                                        onPress={() => setModalOpen(false)}>
+                                        <Text className="text-lg font-bold">✕</Text>
+                                    </TouchableHighlight>
+                                    {/* Add more modal content here */}
+                                    <View className="elevation-[20] z-10 w-full bg-white p-default dark:bg-gray-700">
+                                        <View className="w-full flex-row space-x-4">
+                                            <View className="flex-[2]">
+                                                <CustomDropdown
+                                                    label="Month"
+                                                    options={monthOptions}
+                                                    value={selectedMonth.toString()}
+                                                    onSelect={onMonthSelect}
+                                                />
+                                            </View>
+                                            <View className="flex-[2]">
+                                                <CustomDropdown
+                                                    label="Year"
+                                                    options={yearOptions}
+                                                    value={selectedYear.toString()}
+                                                    onSelect={onYearSelect}
+                                                />
+                                            </View>
+                                        </View>
+                                        <View>
+                                            <CustomDropdown
+                                                label="Location"
+                                                options={locationOptions}
+                                                value={selectedLocation.toString()}
+                                                onSelect={onLocationSelect}
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
             </View>
         </>
     );

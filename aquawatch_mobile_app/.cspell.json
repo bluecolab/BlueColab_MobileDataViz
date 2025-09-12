@@ -94,7 +94,8 @@
         "datahub",
         "darkolivegreen",
         "sidewaystitle",
-        "luxon"
+        "luxon",
+        "worklets"
     ],
     "words": [
         "Acipenser",
@@ -108,6 +109,7 @@
         "cinereus",
         "clamitans",
         "elegans",
+        "ellipsize",
         "erectus",
         "Lithobates",
         "locationparam",
@@ -121,6 +123,7 @@
         "Orconectes",
         "oxyrinchus",
         "Plethodon",
+        "Pressable",
         "Rana",
         "rostrata",
         "rusticus",

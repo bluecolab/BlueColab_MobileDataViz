@@ -345,13 +345,6 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                     <Item
-                        name="react-native-element-dropdown"
-                        label="React Native Element Dropdown"
-                        link="https://github.com/sonaye/react-native-element-dropdown"
-                        team={[]}
-                        isLinkedin={false}
-                    />
-                    <Item
                         name="react-native-gesture-handler"
                         label="React Native Gesture Handler"
                         link="https://github.com/software-mansion/react-native-gesture-handler"

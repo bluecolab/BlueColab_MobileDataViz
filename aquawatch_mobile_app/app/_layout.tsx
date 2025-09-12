@@ -11,9 +11,8 @@ export const unstable_settings = {
     initialRouteName: '(tabs)',
 };
 
-/**
+/** The root layout of the app. It wraps the app in the necessary providers.
  * @returns {JSX.Element}
- * @description The root layout of the app. It wraps the app in the necessary providers.
  */
 export default function RootLayout() {
     return (

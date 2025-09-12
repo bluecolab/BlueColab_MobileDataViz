@@ -1,7 +1,7 @@
 // /components/QuickCurrentData.tsx
+import { differenceInSeconds } from 'date-fns';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { DateTime } from 'luxon';
 import React, { useState, useEffect } from 'react';
 import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
 
@@ -18,12 +18,11 @@ interface ParamViewProps {
     unit?: string;
 }
 
-/**
+/** The view for each individual parameter (i.e. the single grid item).
  * @param param - The actual value to display
  * @param name - The name of the parameter to display
  * @param unit - The unit of the parameter to display
  * @returns {JSX.Element}
- * @description The view for each individual parameter (i.e. the single grid item).
  */
 const ParamView = ({ param, name, unit }: ParamViewProps) => {
     return (
@@ -37,22 +36,20 @@ const ParamView = ({ param, name, unit }: ParamViewProps) => {
     );
 };
 
-/**
+/** The timer component that displays the time since the last data point was received.
  * @param timestamp - The timestamp for the data point
  * @returns {JSX.Element}
- * @description The timer component that displays the time since the last data point was received.
  */
 const Timer = ({ timestamp }: { timestamp: string }) => {
     const [minutes, setMinutes] = useState<number>();
     useEffect(() => {
         const intervalId = setInterval(() => {
-            const currentTime = DateTime.now();
-            const timestampDateTime =
-                timestamp === 'Loading' ? DateTime.now() : DateTime.fromISO(timestamp);
+            const currentTime = new Date();
+            const timestampDateTime = timestamp === 'Loading' ? new Date() : new Date(timestamp);
 
-            if (timestampDateTime.isValid) {
-                const diffInSeconds = currentTime.diff(timestampDateTime, 'seconds');
-                setMinutes(diffInSeconds.seconds);
+            if (!isNaN(timestampDateTime.getTime())) {
+                const diffInSeconds = differenceInSeconds(currentTime, timestampDateTime);
+                setMinutes(diffInSeconds);
             } else {
                 setMinutes(-999999);
             }
@@ -74,8 +71,8 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
 };
 
 /**
+ * The quick current data component. It displays the current data in a quick grid-view format.
  * @returns {JSX.Element}
- * @description The quick current data component. It displays the current data in a quick grid-view format.
  */
 export default function QuickCurrentData() {
     // All data is received from the context provider

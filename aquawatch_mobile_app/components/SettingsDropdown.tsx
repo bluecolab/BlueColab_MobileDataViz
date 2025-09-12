@@ -1,78 +1,150 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import { Picker } from '@react-native-picker/picker';
+import React, { useState } from 'react';
+import { View, Text, Modal, TouchableOpacity, Platform } from 'react-native';
 
-import { ColorScheme, useColorScheme } from '@/contexts/ColorSchemeContext';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
-interface SettingsDropdownProps {
+// ...existing imports...
+
+export default function SettingsDropdown({
+    label,
+    options,
+    value,
+    onSelect,
+}: {
     label: string;
-    options: { label: string; value: string | number }[];
+    options: { label: string; value: string }[];
     value: string | number;
-    onSelect: (value: string | ColorScheme) => void;
-}
-
-const SettingsDropdown: React.FC<SettingsDropdownProps> = ({ label, options, value, onSelect }) => {
+    onSelect: (value: string) => void;
+}) {
     const { isDark } = useColorScheme();
-    const [isFocus, setIsFocus] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
 
-    useEffect(() => {
-        setIsFocus(false); // Reset the focus when the value changes
-    }, [value]);
-
-    return (
-        <View className="my-1 flex-row items-center justify-between">
-            <Text className="text-lg text-black dark:text-white">{label}</Text>
-
-            <Dropdown
+    // iOS: Show a button, open Picker in a modal
+    if (Platform.OS === 'ios') {
+        return (
+            <View
                 style={{
-                    height: 30,
-                    width: 175,
-                    borderColor: isFocus ? 'blue' : 'gray',
-                    borderWidth: 0.5,
-                    paddingHorizontal: 8,
-                    backgroundColor: isDark ? '#333333' : 'white',
-                }}
-                renderItem={(item, selected) => (
-                    <View
+                    padding: 8,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                }}>
+                <Text
+                    style={{
+                        color: isDark ? 'white' : 'black',
+                        fontSize: 16,
+                        flexShrink: 1,
+                        marginRight: 8,
+                    }}
+                    numberOfLines={1}
+                    ellipsizeMode="tail">
+                    {label}
+                </Text>
+                <TouchableOpacity
+                    onPress={() => setModalVisible(true)}
+                    style={{
+                        backgroundColor: isDark ? '#333333' : 'white',
+                        paddingVertical: 8,
+                        paddingHorizontal: 16,
+                        borderRadius: 8,
+                        minWidth: 150, // Increased width
+                        maxWidth: 220, // Optional: set a max width
+                        alignItems: 'center',
+                    }}>
+                    <Text
                         style={{
-                            backgroundColor: selected
-                                ? isDark
-                                    ? '#777'
-                                    : '#d0d0d0'
-                                : isDark
-                                  ? '#555'
-                                  : 'white', // Improve background handling
-                            padding: 10,
-                        }}>
-                        <Text style={{ color: isDark ? 'white' : 'black' }}>{item.label}</Text>
-                    </View>
-                )}
-                itemTextStyle={{
+                            color: isDark ? 'white' : 'black',
+                            fontSize: 16,
+                        }}
+                        numberOfLines={1}
+                        ellipsizeMode="tail">
+                        {options.find((o) => o.value === value)?.label || label}
+                    </Text>
+                </TouchableOpacity>
+                <Modal
+                    visible={modalVisible}
+                    transparent
+                    animationType="slide"
+                    onRequestClose={() => setModalVisible(false)}>
+                    <TouchableOpacity
+                        style={{
+                            flex: 1,
+                            justifyContent: 'flex-end',
+                            backgroundColor: 'rgba(0,0,0,0.3)',
+                        }}
+                        activeOpacity={1}
+                        onPressOut={() => setModalVisible(false)}>
+                        <View
+                            style={{
+                                backgroundColor: isDark ? '#333333' : 'white',
+                                padding: 16,
+                            }}>
+                            <Picker
+                                selectedValue={value}
+                                onValueChange={(itemValue) => {
+                                    onSelect(String(itemValue));
+                                    setModalVisible(false);
+                                }}
+                                style={{
+                                    color: isDark ? 'white' : 'black',
+                                }}>
+                                {options.map((option) => (
+                                    <Picker.Item
+                                        key={option.value}
+                                        label={option.label}
+                                        value={option.value}
+                                        color={isDark ? 'white' : 'black'}
+                                    />
+                                ))}
+                            </Picker>
+                        </View>
+                    </TouchableOpacity>
+                </Modal>
+            </View>
+        );
+    }
+
+    // Android: Show Picker inline, label left, picker right
+    return (
+        <View
+            style={{
+                padding: 8,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+            }}>
+            <Text
+                style={{
                     color: isDark ? 'white' : 'black',
                     fontSize: 16,
+                    flexShrink: 1,
+                    marginRight: 8,
                 }}
-                placeholderStyle={{
-                    fontSize: 16,
-                    color: isDark ? 'white' : 'black',
-                }}
-                selectedTextStyle={{
-                    fontSize: 16,
-                    color: isDark ? 'white' : 'black',
-                }}
-                data={options}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? 'Select item' : '...'}
-                value={value}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={(item) => {
-                    onSelect(item.value);
-                    setIsFocus(false);
-                }}
-            />
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {label}
+            </Text>
+            <View style={{ minWidth: 150, maxWidth: 220, flex: 1 }}>
+                <Picker
+                    selectedValue={value}
+                    onValueChange={(itemValue) => onSelect(String(itemValue))}
+                    style={{
+                        backgroundColor: isDark ? '#333333' : 'white',
+                        color: isDark ? 'white' : 'black',
+                        height: 60,
+                        width: '100%',
+                    }}>
+                    {options.map((option) => (
+                        <Picker.Item
+                            key={option.value}
+                            label={option.label}
+                            value={option.value}
+                            color={isDark ? 'white' : 'black'}
+                        />
+                    ))}
+                </Picker>
+            </View>
         </View>
     );
-};
-
-export default SettingsDropdown;
+}

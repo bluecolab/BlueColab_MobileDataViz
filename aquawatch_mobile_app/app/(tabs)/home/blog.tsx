@@ -5,9 +5,8 @@ import { View } from 'react-native';
 import CustomWebView from '@/components/CustomWebView';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
-/**
+/** The blog screen of the app. It loads a web page in a custom WebView component.
  * @returns {JSX.Element}
- * @description The blog screen of the app. It loads a web page in a custom WebView component.
  */
 export default function Blog() {
     const { isDark } = useColorScheme();
