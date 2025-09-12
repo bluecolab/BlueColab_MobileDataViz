@@ -209,11 +209,12 @@ export default function VersionHistory() {
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.7 - Typescript Time
                     </Text>
+                    <Text className="text-sm text-gray-500 dark:text-gray-400">June 10, 2025</Text>
+
                     <LinkComp
                         url="https://github.com/bluecolab/BlueColab_MobileDataViz/commit/1206598a1e115f7451ebaf204d08b1cc3defd982"
                         label="Last commit: 1206598"
                     />
-                    <Text className="text-sm text-gray-500 dark:text-gray-400">June 10, 2025</Text>
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">
                         - App fully moved to Typescript - minor visual changes
@@ -224,19 +225,27 @@ export default function VersionHistory() {
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.8 - Summer 2025 Updates
                     </Text>
-                    <LinkComp
-                        url="https://github.com/bluecolab/BlueColab_MobileDataViz/commit/1803c37de666c070d39cd5bf3103a3c30011e083"
-                        label="Last commit: 1803c37"
-                    />
                     <Text className="text-sm text-gray-500 dark:text-gray-400">July 2, 2025</Text>
 
+                    <LinkComp
+                        url="https://github.com/bluecolab/BlueColab_MobileDataViz/tree/02d4c4b9ad218c3e9fbf39c174725e84b0a471ca"
+                        label="Last commit: 02d4c4b"
+                    />
+
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">
-                        - v1.8.0 - No changes, just a version bump for summer changes
+                        These releases mainly focused fixing bugs and improving error handling. Many
+                        non-user facing changes have been made as well.
+                    </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.0</Text>
+
+                    <Text className="ml-3 dark:text-gray-300">
+                        - No changes, just a version bump for summer changes
                     </Text>
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.1:</Text>
 
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Expo 53 Migration Patches (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/124"
@@ -244,7 +253,7 @@ export default function VersionHistory() {
                         />{' '}
                         by Victor Lima)
                     </Text>
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Fix CssInterop upgrade warning (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/122"
@@ -252,7 +261,7 @@ export default function VersionHistory() {
                         />{' '}
                         by Victor Lima)
                     </Text>
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Fix dark mode support missing in graphs (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/119"
@@ -260,7 +269,7 @@ export default function VersionHistory() {
                         />{' '}
                         by Kenji)
                     </Text>
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Package updates and security updates (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/111"
@@ -271,7 +280,7 @@ export default function VersionHistory() {
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.2:</Text>
 
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Fixed month selection issues (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/141"
@@ -282,7 +291,7 @@ export default function VersionHistory() {
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.3:</Text>
 
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Fix axis not showing in first render of graphs (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/164"
@@ -291,7 +300,7 @@ export default function VersionHistory() {
                         by Kenji)
                     </Text>
 
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Security fixes (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/161"
@@ -307,7 +316,7 @@ export default function VersionHistory() {
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.4:</Text>
 
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Fix compatibility issues causing app crash (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/167"
@@ -316,7 +325,7 @@ export default function VersionHistory() {
                         by Kenji)
                     </Text>
 
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Security fixes (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/168"
@@ -327,7 +336,7 @@ export default function VersionHistory() {
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.5:</Text>
 
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Fix app crashing in Air Quality Screen (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/179"
@@ -338,7 +347,7 @@ export default function VersionHistory() {
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.6:</Text>
 
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Improved state handling (loading indicator, clearer loading messages) (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/182"
@@ -349,7 +358,7 @@ export default function VersionHistory() {
 
                     <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.8.7:</Text>
 
-                    <Text className="ml-3">
+                    <Text className="ml-3 dark:text-gray-300">
                         - Fix bug causing tab to display Home (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/200"
@@ -359,6 +368,26 @@ export default function VersionHistory() {
                     </Text>
                 </View>
 
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                    <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+                        v1.9 - Fall 2025 Updates
+                    </Text>
+
+                    <Text className="text-sm text-gray-500 dark:text-gray-400">
+                        September 12, 2025
+                    </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.9.0:</Text>
+
+                    <Text className="ml-3 dark:text-gray-300">
+                        - Dropdowns/option selecting are redesigned and other internal updates (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/194"
+                            label="#194"
+                        />{' '}
+                        by Kenji)
+                    </Text>
+                </View>
                 <View className="pb-[90]"></View>
             </ScrollView>
         </>
