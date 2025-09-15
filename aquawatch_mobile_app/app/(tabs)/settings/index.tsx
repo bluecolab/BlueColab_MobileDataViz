@@ -9,7 +9,14 @@ import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
 
 export default function Index() {
-    const { changeLocation, changeUnit, changeUnitConversion, defaultLocation, defaultTempUnit, defaultUnitConversion } = useGraphData();
+    const {
+        changeLocation,
+        changeUnit,
+        changeUnitConversion,
+        defaultLocation,
+        defaultTempUnit,
+        defaultUnitConversion,
+    } = useGraphData();
     const { isDark, colorSchemeSys, changeColor } = useColorScheme();
     const { locationOptions } = getMetadata();
 

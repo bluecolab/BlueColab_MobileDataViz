@@ -56,7 +56,14 @@ export default function CurrentDataProvider({ children }: { children: React.Reac
 
     return (
         <CurrentDataContext.Provider
-            value={{ data, error, defaultLocation, defaultTempUnit, defaultUnitConversion, loadingCurrent }}>
+            value={{
+                data,
+                error,
+                defaultLocation,
+                defaultTempUnit,
+                defaultUnitConversion,
+                loadingCurrent,
+            }}>
             {children}
         </CurrentDataContext.Provider>
     );

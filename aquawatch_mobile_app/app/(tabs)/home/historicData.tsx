@@ -203,6 +203,7 @@ export default function HistoricData() {
                                     meta={item.meta}
                                     defaultTempUnit={defaultTempUnit}
                                     defaultUnitConversion={defaultUnitConversion}
+                                    defaultLocation={selectedLocationTemp ?? defaultLocation}
                                     unitMap={unitMap}
                                     alternateName={item.alternateName ?? 'none'}
                                     selectedMonth={

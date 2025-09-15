@@ -62,18 +62,60 @@ export const extractLastData = (
     const baseTemperature = lastDataPoint.Temp ?? null;
 
     // Apply conversions for display (but keep original values for WQI calculation)
-    const dissolvedOxygenConversion = baseDissolvedOxygen !== null ? 
-        convertParameter(baseDissolvedOxygen, 'DOpct', unitMap.DOpct || unitMap.DO || '', useConvertedUnits, useFahrenheit) : null;
-    const pHConversion = basePH !== null ? 
-        convertParameter(basePH, 'pH', '', useConvertedUnits, useFahrenheit) : null;
-    const conductivityConversion = baseConductivity !== null ? 
-        convertParameter(baseConductivity, 'Cond', unitMap.Cond || '', useConvertedUnits, useFahrenheit) : null;
-    const turbidityConversion = baseTurbidity !== null ? 
-        convertParameter(baseTurbidity, 'Turb', unitMap.Turb || '', useConvertedUnits, useFahrenheit) : null;
-    const salinityConversion = baseSalinity !== null ? 
-        convertParameter(baseSalinity, 'Sal', unitMap.Sal || '', useConvertedUnits, useFahrenheit) : null;
-    const temperatureConversion = baseTemperature !== null ? 
-        convertParameter(baseTemperature, 'Temp', unitMap.Temp || '', useConvertedUnits, useFahrenheit) : null;
+    const dissolvedOxygenConversion =
+        baseDissolvedOxygen !== null
+            ? convertParameter(
+                  baseDissolvedOxygen,
+                  'DOpct',
+                  unitMap.DOpct || unitMap.DO || '',
+                  useConvertedUnits,
+                  useFahrenheit
+              )
+            : null;
+    const pHConversion =
+        basePH !== null
+            ? convertParameter(basePH, 'pH', '', useConvertedUnits, useFahrenheit)
+            : null;
+    const conductivityConversion =
+        baseConductivity !== null
+            ? convertParameter(
+                  baseConductivity,
+                  'Cond',
+                  unitMap.Cond || '',
+                  useConvertedUnits,
+                  useFahrenheit
+              )
+            : null;
+    const turbidityConversion =
+        baseTurbidity !== null
+            ? convertParameter(
+                  baseTurbidity,
+                  'Turb',
+                  unitMap.Turb || '',
+                  useConvertedUnits,
+                  useFahrenheit
+              )
+            : null;
+    const salinityConversion =
+        baseSalinity !== null
+            ? convertParameter(
+                  baseSalinity,
+                  'Sal',
+                  unitMap.Sal || '',
+                  useConvertedUnits,
+                  useFahrenheit
+              )
+            : null;
+    const temperatureConversion =
+        baseTemperature !== null
+            ? convertParameter(
+                  baseTemperature,
+                  'Temp',
+                  unitMap.Temp || '',
+                  useConvertedUnits,
+                  useFahrenheit
+              )
+            : null;
 
     // Format display values
     const dissolvedOxygen = dissolvedOxygenConversion?.convertedValue.toFixed(2) ?? 'N/A';
@@ -107,7 +149,12 @@ export const extractLastData = (
         cond: conductivity,
         condUnit: getDisplayUnit('Cond', unitMap.Cond || '', useConvertedUnits, useFahrenheit),
         do: dissolvedOxygen,
-        doUnit: getDisplayUnit('DOpct', unitMap.DOpct || unitMap.DO || '', useConvertedUnits, useFahrenheit),
+        doUnit: getDisplayUnit(
+            'DOpct',
+            unitMap.DOpct || unitMap.DO || '',
+            useConvertedUnits,
+            useFahrenheit
+        ),
         pH: pH,
         temp: displayedTemperature,
         tempUnit: getDisplayUnit('Temp', unitMap.Temp || '', useConvertedUnits, useFahrenheit),

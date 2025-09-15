@@ -65,6 +65,7 @@ export const convertParameter = (
 
     switch (parameter) {
         case 'Sal':
+            // Only convert PSU to ppt, ppt stays as ppt
             if (originalUnit === 'PSU') {
                 convertedValue = convertPSUtoPPT(value);
                 convertedUnit = 'ppt';
@@ -72,6 +73,7 @@ export const convertParameter = (
             break;
 
         case 'Cond':
+            // Convert µS/cm to mS/cm for better readability
             if (originalUnit === 'µS/cm') {
                 convertedValue = convertConductivity(value);
                 convertedUnit = 'mS/cm';
@@ -79,6 +81,7 @@ export const convertParameter = (
             break;
 
         case 'Turb':
+            // Convert FNU to NTU for standardization
             if (originalUnit === 'FNU') {
                 convertedValue = convertFNUtoNTU(value);
                 convertedUnit = 'NTU';
@@ -86,6 +89,7 @@ export const convertParameter = (
             break;
 
         case 'Temp':
+            // Handle temperature conversion (existing logic)
             if (useFahrenheit && originalUnit === '°C') {
                 convertedValue = convertTemperature(value, true);
                 convertedUnit = '°F';
@@ -93,7 +97,7 @@ export const convertParameter = (
             break;
 
         default:
-            // No conversion needed for other parameters
+            // No conversion needed for other parameters (pH, DO, DOpct, etc.)
             break;
     }
 
@@ -121,12 +125,16 @@ export const getDisplayUnit = (
 
     switch (parameter) {
         case 'Sal':
+            // Only convert PSU to ppt, ppt stays as ppt
             return originalUnit === 'PSU' ? 'ppt' : originalUnit;
         case 'Cond':
+            // Convert µS/cm to mS/cm
             return originalUnit === 'µS/cm' ? 'mS/cm' : originalUnit;
         case 'Turb':
+            // Convert FNU to NTU
             return originalUnit === 'FNU' ? 'NTU' : originalUnit;
         case 'Temp':
+            // Handle temperature conversion
             if (useFahrenheit && originalUnit === '°C') {
                 return '°F';
             }
