@@ -91,7 +91,7 @@ export default function QuickCurrentData() {
     );
 
     return (
-        <TouchableOpacity onPress={() => router.push('/(tabs)/currentData')}>
+        <TouchableOpacity onPress={() => router.push('/currentData')}>
             <View className="px-4 pt-4">
                 <LinearGradient
                     colors={error ? ['#ff2929', '#ffa8a8'] : ['#00104d', '#3fb8ab']}
