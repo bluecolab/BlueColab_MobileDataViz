@@ -1,11 +1,13 @@
 import { CleanedWaterData, SensorData } from '@/types/water.interface';
+import { convertParameter } from '@/utils/unitConversions';
 
 export default function dataUtils() {
     const generateDataSummary = (
         data: CleanedWaterData[] | undefined,
         loading: boolean,
         finalUnitToUse?: string,
-        defaultTempUnit?: string
+        defaultTempUnit?: string,
+        defaultUnitConversion?: boolean
     ) => {
         if (!data || loading || (!Array.isArray(data) && loading)) {
             return {
@@ -21,13 +23,31 @@ export default function dataUtils() {
         }
 
         // Group the data by date for unit indicated by finalUnitToUse (i.e. the key is the date, the value is list of number
-        // values for that date) and convert the temperature to Fahrenheit if needed
+        // values for that date) and convert the temperature and other units if needed
         const groupedData: GroupedData = data.reduce((acc: GroupedData, item: any) => {
             const date = new Date(item.timestamp).toISOString().split('T')[0];
-            const value =
-                finalUnitToUse === 'Temp' && defaultTempUnit?.trim() === 'Fahrenheit'
-                    ? item[finalUnitToUse] * (9 / 5) + 32
-                    : item[finalUnitToUse ?? 'Temp'];
+            let value = item[finalUnitToUse ?? 'Temp'];
+            
+            // Apply unit conversions if enabled
+            if (defaultUnitConversion && finalUnitToUse) {
+                const useFahrenheit = defaultTempUnit?.trim().toLowerCase() === 'fahrenheit';
+                // Determine original unit - this is a simplified approach, in practice you'd need unit mapping
+                let originalUnit = '';
+                switch (finalUnitToUse) {
+                    case 'Temp': originalUnit = '°C'; break;
+                    case 'Sal': originalUnit = 'PSU'; break; // Assume PSU needs conversion
+                    case 'Cond': originalUnit = 'µS/cm'; break;
+                    case 'Turb': originalUnit = 'FNU'; break;
+                    default: originalUnit = ''; break;
+                }
+                
+                const conversion = convertParameter(value, finalUnitToUse, originalUnit, true, useFahrenheit);
+                value = conversion.convertedValue;
+            } else if (finalUnitToUse === 'Temp' && defaultTempUnit?.trim() === 'Fahrenheit') {
+                // Legacy temperature conversion for backwards compatibility
+                value = item[finalUnitToUse] * (9 / 5) + 32;
+            }
+            
             if (!acc[date]) acc[date] = [];
             acc[date].push(value);
             return acc;

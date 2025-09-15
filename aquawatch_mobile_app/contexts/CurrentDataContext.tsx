@@ -10,6 +10,7 @@ interface CurrentDataContextType {
     error: { message: string } | undefined;
     defaultLocation: string | undefined;
     defaultTempUnit: string | undefined;
+    defaultUnitConversion: boolean | undefined;
     loadingCurrent: boolean;
 }
 
@@ -18,11 +19,12 @@ const CurrentDataContext = createContext({
     error: undefined,
     defaultLocation: undefined as string | undefined,
     defaultTempUnit: undefined as string | undefined,
+    defaultUnitConversion: undefined as boolean | undefined,
     loadingCurrent: false,
 } as CurrentDataContextType);
 
 export default function CurrentDataProvider({ children }: { children: React.ReactNode }) {
-    const { defaultLocation, defaultTempUnit } = useGraphData();
+    const { defaultLocation, defaultTempUnit, defaultUnitConversion } = useGraphData();
     const { fetchData } = useGetWaterData();
 
     const [data, setData] = useState<CleanedWaterData[] | undefined>([]);
@@ -50,11 +52,11 @@ export default function CurrentDataProvider({ children }: { children: React.Reac
         }
 
         return () => clearInterval(intervalId);
-    }, [defaultLocation, defaultTempUnit, fetchData]);
+    }, [defaultLocation, defaultTempUnit, defaultUnitConversion, fetchData]);
 
     return (
         <CurrentDataContext.Provider
-            value={{ data, error, defaultLocation, defaultTempUnit, loadingCurrent }}>
+            value={{ data, error, defaultLocation, defaultTempUnit, defaultUnitConversion, loadingCurrent }}>
             {children}
         </CurrentDataContext.Provider>
     );

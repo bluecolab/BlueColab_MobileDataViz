@@ -26,6 +26,7 @@ interface MonthlyDataCardProps {
         }[];
     };
     defaultTempUnit: string | undefined;
+    defaultUnitConversion: boolean | undefined;
     unitMap: Record<string, string | null>;
     alternateName?: string;
     selectedMonth: string;
@@ -39,6 +40,7 @@ export function MonthlyDataCard({
     unit,
     meta,
     defaultTempUnit,
+    defaultUnitConversion,
     unitMap,
     alternateName,
     selectedMonth,
@@ -46,7 +48,7 @@ export function MonthlyDataCard({
     const finalUnitToUse = unitMap[unit] === null ? alternateName : unit;
 
     const { generateDataSummary } = dataUtils();
-    const dataSummary = generateDataSummary(data, loading, unit, defaultTempUnit);
+    const dataSummary = generateDataSummary(data, loading, unit, defaultTempUnit, defaultUnitConversion);
 
     const { width } = Dimensions.get('window');
 

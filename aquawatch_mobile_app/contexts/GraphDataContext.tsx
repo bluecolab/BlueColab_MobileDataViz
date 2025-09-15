@@ -11,6 +11,7 @@ interface GraphDataContextType {
     loading: boolean;
     defaultLocation: string | undefined;
     defaultTempUnit: string | undefined;
+    defaultUnitConversion: boolean | undefined;
     selectedLocationTemp: string | undefined;
     changeLocation: (newLocation: string) => void;
     setLoading: (newValue: boolean) => void;
@@ -19,6 +20,7 @@ interface GraphDataContextType {
     setEndDay: (newValue: number | undefined) => void;
     setDefaultLocation: (newValue: string | undefined) => void;
     changeUnit: (newUnit: string) => void;
+    changeUnitConversion: (useConvertedUnits: boolean) => void;
     setSelectedLocationTemp: (newValue: string | undefined) => void;
 }
 
@@ -28,6 +30,7 @@ const GraphDataContext = createContext({
     loading: false,
     defaultLocation: undefined as string | undefined,
     defaultTempUnit: undefined as string | undefined,
+    defaultUnitConversion: undefined as boolean | undefined,
     selectedLocationTemp: undefined as string | undefined,
     changeLocation: () => {},
     setLoading: () => {},
@@ -36,6 +39,7 @@ const GraphDataContext = createContext({
     setEndDay: () => {},
     setDefaultLocation: () => {},
     changeUnit: () => {},
+    changeUnitConversion: () => {},
     setSelectedLocationTemp: () => {},
 } as GraphDataContextType);
 
@@ -54,6 +58,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [defaultLocation, setDefaultLocation] = useState<string>(); // the saved location in settings
     const [selectedLocation, setSelectedLocation] = useState<string>(); // if the user changed location. this is updated
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
+    const [defaultUnitConversion, setDefaultUnitConversion] = useState<boolean>();
 
     const changeUnit = (newUnit: string) => {
         const setStoredTempUnit = async (value: string) => {
@@ -65,6 +70,18 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         };
         void setStoredTempUnit(newUnit);
         setDefaultTempUnit(newUnit);
+    };
+
+    const changeUnitConversion = (useConvertedUnits: boolean) => {
+        const setStoredUnitConversion = async (value: boolean) => {
+            try {
+                await AsyncStorage.setItem('default-unit-conversion', value.toString());
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        void setStoredUnitConversion(useConvertedUnits);
+        setDefaultUnitConversion(useConvertedUnits);
     };
 
     const changeLocation = (newLocation: string) => {
@@ -126,8 +143,23 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             }
         };
 
+        const getStoredDefaultUnitConversion = async () => {
+            try {
+                const value = await AsyncStorage.getItem('default-unit-conversion');
+                if (value !== null) {
+                    console.log(`Stored unit conversion value: ${value}`);
+                    setDefaultUnitConversion(value === 'true');
+                } else {
+                    setDefaultUnitConversion(false); // Default to original units
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
         void getStoredDefaultLocation();
         void getStoredDefaultTempUnit();
+        void getStoredDefaultUnitConversion();
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
@@ -144,6 +176,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 loading,
                 defaultLocation,
                 defaultTempUnit,
+                defaultUnitConversion,
                 selectedLocationTemp: selectedLocation,
                 changeLocation,
                 setLoading,
@@ -152,6 +185,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 setEndDay,
                 setDefaultLocation,
                 changeUnit,
+                changeUnitConversion,
                 setSelectedLocationTemp: setSelectedLocation,
             }}>
             {children}

@@ -9,12 +9,13 @@ import { extractLastData } from '@/utils/extractLastData';
 
 export default function CurrentData() {
     const { isDark } = useColorScheme();
-    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
+    const { data, defaultLocation, defaultTempUnit, defaultUnitConversion, loadingCurrent, error } = useCurrentData();
 
     const lastDataPoint = extractLastData(
         data,
         defaultLocation,
         defaultTempUnit,
+        defaultUnitConversion,
         loadingCurrent,
         error
     );

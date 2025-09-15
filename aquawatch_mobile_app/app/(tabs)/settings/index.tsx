@@ -9,7 +9,7 @@ import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
 
 export default function Index() {
-    const { changeLocation, changeUnit, defaultLocation, defaultTempUnit } = useGraphData();
+    const { changeLocation, changeUnit, changeUnitConversion, defaultLocation, defaultTempUnit, defaultUnitConversion } = useGraphData();
     const { isDark, colorSchemeSys, changeColor } = useColorScheme();
     const { locationOptions } = getMetadata();
 
@@ -37,6 +37,20 @@ export default function Index() {
         setSelectedTempUnit(value);
     };
 
+    const unitConversionOptions = [
+        { label: 'Original Units', value: '1' },
+        { label: 'Converted Units (ppt)', value: '2' },
+    ];
+    const [selectedUnitConversion, setSelectedUnitConversion] = useState(
+        defaultUnitConversion ? '2' : '1'
+    );
+
+    const onUnitConversionSelect = (value: string) => {
+        const useConvertedUnits = value === '2';
+        changeUnitConversion(useConvertedUnits);
+        setSelectedUnitConversion(value);
+    };
+
     const appearanceOptions = [
         { label: 'System', value: '1' },
         { label: 'Light', value: '2' },
@@ -57,6 +71,7 @@ export default function Index() {
     const resetToDefault = () => {
         onAppearanceSelect('1');
         onTempUnitSelect('1');
+        onUnitConversionSelect('1');
         onLocationSelect('1');
     };
 
@@ -99,6 +114,19 @@ export default function Index() {
                         options={tempUnitOptions}
                         value={selectedTempUnit}
                         onSelect={onTempUnitSelect}
+                    />
+                    <View
+                        style={{
+                            borderBottomWidth: 0.5,
+                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            marginVertical: 1,
+                        }}
+                    />
+                    <SettingsDropdown
+                        label="Unit System:"
+                        options={unitConversionOptions}
+                        value={selectedUnitConversion}
+                        onSelect={onUnitConversionSelect}
                     />
                     <View
                         style={{

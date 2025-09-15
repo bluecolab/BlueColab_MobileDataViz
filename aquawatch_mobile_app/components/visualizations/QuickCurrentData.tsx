@@ -76,7 +76,7 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
  */
 export default function QuickCurrentData() {
     // All data is received from the context provider
-    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
+    const { data, defaultLocation, defaultTempUnit, defaultUnitConversion, loadingCurrent, error } = useCurrentData();
 
     if (!defaultLocation) {
         return <></>;
@@ -86,6 +86,7 @@ export default function QuickCurrentData() {
         data,
         defaultLocation,
         defaultTempUnit,
+        defaultUnitConversion,
         loadingCurrent,
         error
     );
