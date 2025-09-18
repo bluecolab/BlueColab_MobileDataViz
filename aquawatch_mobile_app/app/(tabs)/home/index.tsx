@@ -87,7 +87,7 @@ export default function HomeScreen() {
                         paddingBottom: 90,
                     }}>
                     <Text className="ml-4 mt-4 text-4xl font-bold dark:text-white">
-                        {defaultLocation} Data!
+                        {defaultLocation?.name} Data!
                     </Text>
 
                     <View>

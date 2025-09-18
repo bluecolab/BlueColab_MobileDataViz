@@ -34,7 +34,7 @@ export default function CurrentData() {
                 {/* — Title — */}
                 <View>
                     <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
-                        {defaultLocation} Data
+                        {defaultLocation?.name} Data
                     </Text>
                 </View>
 
