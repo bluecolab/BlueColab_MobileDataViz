@@ -76,30 +76,24 @@ export function extractLastData(
     // Conversion logic based on the location's unit map (not hardcoded names)
     if (showConvertedUnits) {
         // Cond: µS/cm -> ppt
-        if (
-            unitMap.Cond === 'µS/cm' &&
-            lastDataPoint.Cond !== undefined &&
-            lastDataPoint.Cond !== null
-        ) {
-            conductivity = uscmToPpt(lastDataPoint.Cond).toFixed(3);
+        if (unitMap.Cond === 'µS/cm') {
+            if (lastDataPoint.Cond !== undefined && lastDataPoint.Cond !== null) {
+                conductivity = uscmToPpt(lastDataPoint.Cond).toFixed(3);
+            }
             condUnit = 'ppt';
         }
         // Turb: FNU -> NTU
-        if (
-            unitMap.Turb === 'FNU' &&
-            lastDataPoint.Turb !== undefined &&
-            lastDataPoint.Turb !== null
-        ) {
-            turbidity = fnuToNtu(lastDataPoint.Turb).toFixed(2);
+        if (unitMap.Turb === 'FNU') {
+            if (lastDataPoint.Turb !== undefined && lastDataPoint.Turb !== null) {
+                turbidity = fnuToNtu(lastDataPoint.Turb).toFixed(2);
+            }
             turbUnit = 'NTU';
         }
         // Sal: PSU -> ppt
-        if (
-            unitMap.Sal === 'PSU' &&
-            lastDataPoint.Sal !== undefined &&
-            lastDataPoint.Sal !== null
-        ) {
-            salinity = psuToPpt(lastDataPoint.Sal).toFixed(2);
+        if (unitMap.Sal === 'PSU') {
+            if (lastDataPoint.Sal !== undefined && lastDataPoint.Sal !== null) {
+                salinity = psuToPpt(lastDataPoint.Sal).toFixed(2);
+            }
             salUnit = 'ppt';
         }
     }

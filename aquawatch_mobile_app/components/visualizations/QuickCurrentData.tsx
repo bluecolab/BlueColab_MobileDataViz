@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
+import { useGraphData } from '@/contexts/GraphDataContext';
 import { config } from '@/hooks/useConfig';
 import { extractLastData } from '@/utils/extractLastData';
 
@@ -75,13 +76,12 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
  * @returns {JSX.Element}
  */
 // Removed duplicate export default function QuickCurrentData()
-export default function QuickCurrentData({
-    showConvertedUnits = false,
-}: {
-    showConvertedUnits?: boolean;
-}) {
+export default function QuickCurrentData({ showConvertedUnits }: { showConvertedUnits?: boolean }) {
     // All data is received from the context provider
     const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
+    // Read global toggle from GraphDataContext as the source of truth
+    const { showConvertedUnits: showConvertedUnitsGlobal } = useGraphData();
+    const effectiveShowConverted = showConvertedUnits ?? showConvertedUnitsGlobal;
 
     if (!defaultLocation) {
         return <></>;
@@ -93,7 +93,7 @@ export default function QuickCurrentData({
         defaultTempUnit,
         loadingCurrent,
         error,
-        showConvertedUnits
+        effectiveShowConverted
     );
 
     return (
