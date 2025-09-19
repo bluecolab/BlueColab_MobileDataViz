@@ -53,8 +53,6 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [start_day, setStartDay] = useState<number>();
     const [end_day, setEndDay] = useState<number>();
 
-    const closestStation = useGetClosestStation();
-
     const [defaultLocation, setDefaultLocation] = useState<LocationType>(); // the saved location in settings
     const [selectedLocation, setSelectedLocation] = useState<LocationType>(); // if the user changed location. this is updated
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
