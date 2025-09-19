@@ -45,7 +45,9 @@ export default function HistoricData() {
     const [modalOpen, setModalOpen] = useState(false);
 
     const unitMap =
-        units[(selectedLocationTemp ?? defaultLocation ?? 'Choate Pond') as keyof typeof units];
+        units[
+            (selectedLocationTemp ?? defaultLocation?.name ?? 'Choate Pond') as keyof typeof units
+        ];
 
     const now = new Date();
     const currentMonth = getMonth(now) + 1; // `getMonth` is 0-indexed
@@ -105,8 +107,9 @@ export default function HistoricData() {
     }, [currentYear]);
 
     const defaultLocationValue =
-        locationOptions.find((option) => option.label === (selectedLocationTemp ?? defaultLocation))
-            ?.value || '';
+        locationOptions.find(
+            (option) => option.label === (selectedLocationTemp ?? defaultLocation?.name)
+        )?.value || '';
 
     const [selectedLocation, setSelectedLocation] = useState(defaultLocationValue);
 
@@ -133,7 +136,7 @@ export default function HistoricData() {
             setSelectedLocation(value);
             const defaultLocationLabel =
                 locationOptions.find((option) => option.value === value)?.label || '';
-            setSelectedLocationTemp(defaultLocationLabel);
+            setSelectedLocationTemp({ name: defaultLocationLabel });
         },
         [locationOptions, setSelectedLocationTemp]
     );
@@ -141,7 +144,7 @@ export default function HistoricData() {
     useEffect(() => {
         const defaultLocationValue =
             locationOptions.find(
-                (option) => option.label === (selectedLocationTemp ?? defaultLocation)
+                (option) => option.label === (selectedLocationTemp ?? defaultLocation?.name)
             )?.value || '';
         setSelectedLocation(defaultLocationValue);
     }, [defaultLocation, locationOptions, selectedLocationTemp]);
@@ -225,7 +228,7 @@ export default function HistoricData() {
                         onPress={onPressPagination}
                     />
 
-                    {(selectedLocationTemp ?? defaultLocation) === 'Choate Pond' ? (
+                    {(selectedLocationTemp ?? defaultLocation?.name) === 'Choate Pond' ? (
                         <WQICard data={data} loading={loading} />
                     ) : (
                         <></>

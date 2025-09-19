@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SkFont, useFont } from '@shopify/react-native-skia';
 import { useColorScheme as useNativeWindColorScheme } from 'nativewind';
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Appearance } from 'react-native';
 
 import roboto from '@/assets/fonts/roboto.ttf';
@@ -20,7 +20,7 @@ const ColorSchemeContext = createContext<{
     changeColor: () => {},
 });
 
-export default function ColorSchemeProvider({ children }: { children: React.ReactNode }) {
+export default function ColorSchemeProvider({ children }: { children: ReactNode }) {
     const { setColorScheme } = useNativeWindColorScheme();
     const [isDark, setIsDark] = useState<boolean>(Appearance.getColorScheme() === 'dark');
     const [loading, setLoading] = useState<boolean>(true);

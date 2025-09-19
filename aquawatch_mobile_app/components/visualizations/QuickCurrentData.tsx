@@ -2,7 +2,7 @@
 import { differenceInSeconds } from 'date-fns';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
@@ -143,7 +143,9 @@ export default function QuickCurrentData() {
                             name="Salinity"
                             unit={lastDataPoint.salUnit}
                         />
-                        {config.BLUE_COLAB_API_CONFIG.validMatches.includes(defaultLocation) ? (
+                        {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                            (loc) => loc.name === defaultLocation.name
+                        ) ? (
                             <ParamView param={lastDataPoint.wqi} name="WQI" />
                         ) : (
                             <></>
