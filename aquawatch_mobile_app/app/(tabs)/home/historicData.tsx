@@ -40,12 +40,12 @@ export default function HistoricData() {
         selectedLocationTemp,
         setSelectedLocationTemp,
         error,
+        showConvertedUnits,
+        changeConvertedUnits,
     } = useGraphData();
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
     const [modalOpen, setModalOpen] = useState(false);
-    // Toggle for showing converted units (local to HistoricData)
-    const [showConvertedUnits, setShowConvertedUnits] = useState(false);
 
     const unitMap =
         units[(selectedLocationTemp ?? defaultLocation ?? 'Choate Pond') as keyof typeof units];
@@ -179,7 +179,7 @@ export default function HistoricData() {
                     <View className="flex-row items-center justify-end px-4 pt-4">
                         <Text className="mr-2 text-lg dark:text-white">Show Converted Units</Text>
                         <TouchableOpacity
-                            onPress={() => setShowConvertedUnits((prev) => !prev)}
+                            onPress={() => changeConvertedUnits(!showConvertedUnits)}
                             style={{
                                 backgroundColor: showConvertedUnits ? '#2563eb' : '#e5e7eb',
                                 borderRadius: 16,
@@ -278,7 +278,7 @@ export default function HistoricData() {
                                             </Text>
                                             <TouchableOpacity
                                                 onPress={() =>
-                                                    setShowConvertedUnits((prev) => !prev)
+                                                    changeConvertedUnits(!showConvertedUnits)
                                                 }
                                                 style={{
                                                     backgroundColor: showConvertedUnits

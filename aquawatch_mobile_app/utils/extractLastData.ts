@@ -41,7 +41,7 @@ export function extractLastData(
     defaultTempUnit: string | undefined,
     loading: boolean,
     error: ErrorType | undefined,
-    showConvertedUnits?: boolean // new toggle, optional
+    showConvertedUnits?: boolean
 ): CurrentData {
     const { units } = getMetadata();
     const { calculateWQI } = dataUtils();
@@ -121,18 +121,7 @@ export function extractLastData(
     let wqiTurb = lastDataPoint.Turb ?? 0;
     let wqiPh = lastDataPoint.pH ?? 0;
 
-    // If location is NOT Choate Pond and showConvertedUnits is true, use converted values for WQI when relevant
-    if (defaultLocation !== 'Choate Pond' && showConvertedUnits) {
-        if (unitMap.Cond === 'µS/cm' && typeof wqiCond === 'number') {
-            wqiCond = uscmToPpt(wqiCond);
-        }
-        if (unitMap.Turb === 'FNU' && typeof wqiTurb === 'number') {
-            wqiTurb = fnuToNtu(wqiTurb);
-        }
-        if (unitMap.Sal === 'PSU' && typeof wqiSal === 'number') {
-            wqiSal = psuToPpt(wqiSal);
-        }
-    }
+    // WQI uses original units for all locations. For Choate Pond this is required; for others we also keep originals.
 
     const waterQualityIndex: number = config.BLUE_COLAB_API_CONFIG.validMatches.includes(
         defaultLocation

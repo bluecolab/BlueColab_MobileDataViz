@@ -10,10 +10,14 @@ import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
 
 export default function Index() {
-    const { changeLocation, changeUnit, defaultLocation, defaultTempUnit } = useGraphData();
-
-    // Toggle for showing converted units
-    const [showConvertedUnits, setShowConvertedUnits] = useState(false);
+    const {
+        changeLocation,
+        changeUnit,
+        defaultLocation,
+        defaultTempUnit,
+        showConvertedUnits,
+        changeConvertedUnits,
+    } = useGraphData();
     const { isDark, colorSchemeSys, changeColor } = useColorScheme();
     const { locationOptions } = getMetadata();
 
@@ -62,6 +66,7 @@ export default function Index() {
         onAppearanceSelect('1');
         onTempUnitSelect('1');
         onLocationSelect('1');
+        changeConvertedUnits(false);
     };
 
     return (
@@ -101,7 +106,7 @@ export default function Index() {
                     <View className="flex-row items-center justify-between py-2">
                         <Text className="text-lg dark:text-white">Show Converted Units</Text>
                         <TouchableOpacity
-                            onPress={() => setShowConvertedUnits((prev) => !prev)}
+                            onPress={() => changeConvertedUnits(!showConvertedUnits)}
                             style={{
                                 backgroundColor: showConvertedUnits ? '#2563eb' : '#e5e7eb',
                                 borderRadius: 16,

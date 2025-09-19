@@ -12,6 +12,7 @@ interface GraphDataContextType {
     defaultLocation: string | undefined;
     defaultTempUnit: string | undefined;
     selectedLocationTemp: string | undefined;
+    showConvertedUnits: boolean;
     changeLocation: (newLocation: string) => void;
     setLoading: (newValue: boolean) => void;
     setYear: (newValue: number | undefined) => void;
@@ -20,6 +21,7 @@ interface GraphDataContextType {
     setDefaultLocation: (newValue: string | undefined) => void;
     changeUnit: (newUnit: string) => void;
     setSelectedLocationTemp: (newValue: string | undefined) => void;
+    changeConvertedUnits: (enabled: boolean) => void;
 }
 
 const GraphDataContext = createContext({
@@ -29,6 +31,7 @@ const GraphDataContext = createContext({
     defaultLocation: undefined as string | undefined,
     defaultTempUnit: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
+    showConvertedUnits: false,
     changeLocation: () => {},
     setLoading: () => {},
     setYear: () => {},
@@ -37,6 +40,7 @@ const GraphDataContext = createContext({
     setDefaultLocation: () => {},
     changeUnit: () => {},
     setSelectedLocationTemp: () => {},
+    changeConvertedUnits: () => {},
 } as GraphDataContextType);
 
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
@@ -54,6 +58,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [defaultLocation, setDefaultLocation] = useState<string>(); // the saved location in settings
     const [selectedLocation, setSelectedLocation] = useState<string>(); // if the user changed location. this is updated
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
+    const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
 
     const changeUnit = (newUnit: string) => {
         const setStoredTempUnit = async (value: string) => {
@@ -77,6 +82,18 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         };
         void setStoredLocation(newLocation);
         setDefaultLocation(newLocation);
+    };
+
+    const changeConvertedUnits = (enabled: boolean) => {
+        const setStoredConvertedUnits = async (value: boolean) => {
+            try {
+                await AsyncStorage.setItem('show-converted-units', JSON.stringify(value));
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        void setStoredConvertedUnits(enabled);
+        setShowConvertedUnits(enabled);
     };
 
     useEffect(() => {
@@ -126,8 +143,22 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             }
         };
 
+        const getStoredConvertedUnits = async () => {
+            try {
+                const value = await AsyncStorage.getItem('show-converted-units');
+                if (value !== null) {
+                    setShowConvertedUnits(JSON.parse(value));
+                } else {
+                    setShowConvertedUnits(false);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
         void getStoredDefaultLocation();
         void getStoredDefaultTempUnit();
+        void getStoredConvertedUnits();
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
@@ -145,6 +176,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 defaultLocation,
                 defaultTempUnit,
                 selectedLocationTemp: selectedLocation,
+                showConvertedUnits,
                 changeLocation,
                 setLoading,
                 setYear,
@@ -153,6 +185,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 setDefaultLocation,
                 changeUnit,
                 setSelectedLocationTemp: setSelectedLocation,
+                changeConvertedUnits,
             }}>
             {children}
         </GraphDataContext.Provider>
