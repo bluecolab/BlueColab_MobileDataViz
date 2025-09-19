@@ -1,5 +1,6 @@
 import { getMinutes } from 'date-fns';
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 
 import { useGraphData } from '@/contexts/GraphDataContext';
 import useGetWaterData from '@/hooks/useGetWaterData';
@@ -22,7 +23,7 @@ const CurrentDataContext = createContext({
     loadingCurrent: false,
 } as CurrentDataContextType);
 
-export default function CurrentDataProvider({ children }: { children: React.ReactNode }) {
+export default function CurrentDataProvider({ children }: { children: ReactNode }) {
     const { defaultLocation, defaultTempUnit } = useGraphData();
     const { fetchData } = useGetWaterData();
 

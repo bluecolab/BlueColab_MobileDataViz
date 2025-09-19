@@ -30,7 +30,6 @@ export default function useGetWaterData() {
 
     const cleanHudsonRiverData = useCallback(
         (rawData: WaterServicesData) => {
-            console.log(rawData);
             if (!rawData?.value?.timeSeries) {
                 console.error('Here Invalid data format');
                 return [];
@@ -115,6 +114,12 @@ export default function useGetWaterData() {
                 .get(url)
                 .then((response) => {
                     const apiData = response.data;
+                    console.log(
+                        BLUE_COLAB_API_CONFIG.validMatches.some(
+                            (loc) => loc.name === defaultLocation.name
+                        ),
+                        defaultLocation.name
+                    );
                     if (
                         BLUE_COLAB_API_CONFIG.validMatches.some(
                             (loc) => loc.name === defaultLocation.name

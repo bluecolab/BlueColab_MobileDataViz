@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { subMonths, getYear, getMonth, getDaysInMonth } from 'date-fns';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
+import useGetClosestStation from '@/hooks/useClosestStation';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
 import { CleanedWaterData } from '@/types/water.interface';
@@ -51,6 +52,8 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [month, setMonth] = useState<number>();
     const [start_day, setStartDay] = useState<number>();
     const [end_day, setEndDay] = useState<number>();
+
+    const closestStation = useGetClosestStation();
 
     const [defaultLocation, setDefaultLocation] = useState<LocationType>(); // the saved location in settings
     const [selectedLocation, setSelectedLocation] = useState<LocationType>(); // if the user changed location. this is updated

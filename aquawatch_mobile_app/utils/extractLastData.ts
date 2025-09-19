@@ -65,8 +65,8 @@ export const extractLastData = (
           ? ((lastDataPoint.Temp * 9) / 5 + 32).toFixed(2)
           : lastDataPoint.Temp.toFixed(2);
 
-    const waterQualityIndex: number = config.BLUE_COLAB_API_CONFIG.validMatches.includes(
-        defaultLocation
+    const waterQualityIndex: number = config.BLUE_COLAB_API_CONFIG.validMatches.some(
+        (loc) => loc.name === defaultLocation.name
     )
         ? calculateWQI(
               [

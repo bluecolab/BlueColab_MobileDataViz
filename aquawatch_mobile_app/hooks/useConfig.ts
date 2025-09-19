@@ -44,7 +44,6 @@ export const config = {
         //     'Bronx River',
         // ],
         validMatches: [
-            { name: 'Choate Pond', lat: 41.127494, long: -73.808235 },
             { name: 'Botanical Garden', lat: 40.86230556, long: -73.87438889 },
             { name: 'Albany', lat: 42.61952778, long: -73.7589167 },
             { name: 'Poughkeepsie', lat: 41.72058333, long: -73.93875 },
@@ -113,11 +112,17 @@ export const useAPIConfig = () => {
                 let baseURL = '';
                 let query = '';
 
-                if (config.BLUE_COLAB_API_CONFIG.validMatches.includes(defaultLocation)) {
+                if (
+                    config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                        (loc) => loc.name === defaultLocation.name
+                    )
+                ) {
                     baseURL = config.BLUE_COLAB_API_URL;
                     query = getBlueColabQuery(isCurrentData, year, month, start_day, end_day);
                 } else if (
-                    config.USGS_WATER_SERVICES_API_CONFIG.validMatches.includes(defaultLocation)
+                    config.USGS_WATER_SERVICES_API_CONFIG.validMatches.some(
+                        (loc) => loc.name === defaultLocation.name
+                    )
                 ) {
                     const stationId =
                         // Updated defaultLocation to defaultLocation.name
