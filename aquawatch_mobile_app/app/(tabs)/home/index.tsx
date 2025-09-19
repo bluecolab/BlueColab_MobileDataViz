@@ -8,7 +8,6 @@ import HomeScreenCard from '@/components/customCards/HomeScreenCard';
 import QuickCurrentData from '@/components/visualizations/QuickCurrentData';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
-import useGetClosestStation from '@/hooks/useClosestStation';
 
 const homeScreenFlatListData = [
     {
@@ -43,9 +42,6 @@ const homeScreenFlatListData = [
 export default function HomeScreen() {
     const { defaultLocation } = useCurrentData();
     const { isDark } = useColorScheme();
-    const { closestStation } = useGetClosestStation();
-
-    console.log(closestStation);
 
     const lastMonth = format(subMonths(new Date(), 1), 'MMMM yyyy');
 
