@@ -10,6 +10,7 @@ import {
     Text,
     TouchableWithoutFeedback,
     TouchableHighlight,
+    TouchableOpacity,
 } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
@@ -43,6 +44,8 @@ export default function HistoricData() {
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
     const [modalOpen, setModalOpen] = useState(false);
+    // Toggle for showing converted units (local to HistoricData)
+    const [showConvertedUnits, setShowConvertedUnits] = useState(false);
 
     const unitMap =
         units[(selectedLocationTemp ?? defaultLocation ?? 'Choate Pond') as keyof typeof units];
@@ -173,6 +176,21 @@ export default function HistoricData() {
             />
             <View className="bg-defaultbackground dark:bg-defaultdarkbackground ">
                 <ScrollView contentContainerStyle={{ paddingBottom: 400 }}>
+                    <View className="flex-row items-center justify-end px-4 pt-4">
+                        <Text className="mr-2 text-lg dark:text-white">Show Converted Units</Text>
+                        <TouchableOpacity
+                            onPress={() => setShowConvertedUnits((prev) => !prev)}
+                            style={{
+                                backgroundColor: showConvertedUnits ? '#2563eb' : '#e5e7eb',
+                                borderRadius: 16,
+                                paddingVertical: 6,
+                                paddingHorizontal: 16,
+                            }}>
+                            <Text style={{ color: showConvertedUnits ? 'white' : 'black' }}>
+                                {showConvertedUnits ? 'Converted' : 'Original'}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                     <Text className="mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-white">
                         {locationOptions.find((option) => option.value === selectedLocation)?.label}{' '}
                         -{' '}
@@ -208,6 +226,7 @@ export default function HistoricData() {
                                             (option) => option.value === selectedMonth.toString()
                                         )?.label || 'oh no'
                                     }
+                                    showConvertedUnits={showConvertedUnits}
                                 />
                             </View>
                         )}
@@ -253,6 +272,32 @@ export default function HistoricData() {
                                     </TouchableHighlight>
                                     {/* Add more modal content here */}
                                     <View className="elevation-[20] z-10 w-full bg-white p-default dark:bg-gray-700">
+                                        <View className="flex-row items-center justify-end pb-2">
+                                            <Text className="mr-2 text-lg dark:text-white">
+                                                Show Converted Units
+                                            </Text>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    setShowConvertedUnits((prev) => !prev)
+                                                }
+                                                style={{
+                                                    backgroundColor: showConvertedUnits
+                                                        ? '#2563eb'
+                                                        : '#e5e7eb',
+                                                    borderRadius: 16,
+                                                    paddingVertical: 6,
+                                                    paddingHorizontal: 16,
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: showConvertedUnits
+                                                            ? 'white'
+                                                            : 'black',
+                                                    }}>
+                                                    {showConvertedUnits ? 'Converted' : 'Original'}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
                                         <View className="w-full flex-row space-x-4">
                                             <View className="flex-[2]">
                                                 <CustomDropdown

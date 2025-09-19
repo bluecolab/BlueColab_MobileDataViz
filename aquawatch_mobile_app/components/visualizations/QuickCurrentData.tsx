@@ -74,7 +74,12 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
  * The quick current data component. It displays the current data in a quick grid-view format.
  * @returns {JSX.Element}
  */
-export default function QuickCurrentData() {
+// Removed duplicate export default function QuickCurrentData()
+export default function QuickCurrentData({
+    showConvertedUnits = false,
+}: {
+    showConvertedUnits?: boolean;
+}) {
     // All data is received from the context provider
     const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
 
@@ -87,7 +92,8 @@ export default function QuickCurrentData() {
         defaultLocation,
         defaultTempUnit,
         loadingCurrent,
-        error
+        error,
+        showConvertedUnits
     );
 
     return (

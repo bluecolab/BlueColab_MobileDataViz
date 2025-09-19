@@ -5,6 +5,20 @@ import { CleanedWaterData, CurrentData } from '@/types/water.interface';
 import dataUtils from './dataUtils';
 import getMetadata from './getMetadata';
 
+// Conversion helpers
+function uscmToPpt(uscm: number): number {
+    // µS/cm to ppt: multiply by 0.00055
+    return uscm * 0.00055;
+}
+function fnuToNtu(fnu: number): number {
+    // FNU to NTU: 1:1 for most practical purposes
+    return fnu;
+}
+function psuToPpt(psu: number): number {
+    // PSU to ppt: 1:1 for Hudson
+    return psu;
+}
+
 const currentDataErrorObject: CurrentData = {
     timestamp: 'Loading...',
     cond: 'N/A',
@@ -21,13 +35,14 @@ const currentDataErrorObject: CurrentData = {
     wqi: 'N/A',
 };
 
-export const extractLastData = (
+export function extractLastData(
     data: CleanedWaterData[] | undefined,
     defaultLocation: string | undefined,
     defaultTempUnit: string | undefined,
     loading: boolean,
-    error: ErrorType | undefined
-): CurrentData => {
+    error: ErrorType | undefined,
+    showConvertedUnits?: boolean // new toggle, optional
+): CurrentData {
     const { units } = getMetadata();
     const { calculateWQI } = dataUtils();
 
@@ -51,9 +66,43 @@ export const extractLastData = (
     const dissolvedOxygen =
         lastDataPoint.DOpct?.toFixed(2) ?? lastDataPoint.DO?.toFixed(2) ?? 'N/A';
     const pH = lastDataPoint.pH?.toFixed(2) ?? 'N/A';
-    const conductivity = lastDataPoint.Cond?.toFixed(2) ?? 'N/A';
-    const turbidity = lastDataPoint.Turb?.toFixed(2) ?? 'N/A';
-    const salinity = lastDataPoint.Sal?.toFixed(2) ?? 'N/A';
+    let conductivity = lastDataPoint.Cond?.toFixed(2) ?? 'N/A';
+    let turbidity = lastDataPoint.Turb?.toFixed(2) ?? 'N/A';
+    let salinity = lastDataPoint.Sal?.toFixed(2) ?? 'N/A';
+    let condUnit = unitMap.Cond || '';
+    let turbUnit = unitMap.Turb || '';
+    let salUnit = unitMap.Sal || '';
+
+    // Conversion logic based on the location's unit map (not hardcoded names)
+    if (showConvertedUnits) {
+        // Cond: µS/cm -> ppt
+        if (
+            unitMap.Cond === 'µS/cm' &&
+            lastDataPoint.Cond !== undefined &&
+            lastDataPoint.Cond !== null
+        ) {
+            conductivity = uscmToPpt(lastDataPoint.Cond).toFixed(3);
+            condUnit = 'ppt';
+        }
+        // Turb: FNU -> NTU
+        if (
+            unitMap.Turb === 'FNU' &&
+            lastDataPoint.Turb !== undefined &&
+            lastDataPoint.Turb !== null
+        ) {
+            turbidity = fnuToNtu(lastDataPoint.Turb).toFixed(2);
+            turbUnit = 'NTU';
+        }
+        // Sal: PSU -> ppt
+        if (
+            unitMap.Sal === 'PSU' &&
+            lastDataPoint.Sal !== undefined &&
+            lastDataPoint.Sal !== null
+        ) {
+            salinity = psuToPpt(lastDataPoint.Sal).toFixed(2);
+            salUnit = 'ppt';
+        }
+    }
 
     const shouldConvertTemp = defaultTempUnit
         ? defaultTempUnit.trim().toLowerCase() === 'fahrenheit'
@@ -64,18 +113,39 @@ export const extractLastData = (
           ? ((lastDataPoint.Temp * 9) / 5 + 32).toFixed(2)
           : lastDataPoint.Temp.toFixed(2);
 
+    // For Choate Pond, always use original units for WQI, regardless of toggle
+    let wqiCond = lastDataPoint.Cond ?? 0;
+    let wqiDOpct = lastDataPoint.DOpct ?? 0;
+    let wqiSal = lastDataPoint.Sal ?? 0;
+    let wqiTemp = lastDataPoint.Temp ?? 0;
+    let wqiTurb = lastDataPoint.Turb ?? 0;
+    let wqiPh = lastDataPoint.pH ?? 0;
+
+    // If location is NOT Choate Pond and showConvertedUnits is true, use converted values for WQI when relevant
+    if (defaultLocation !== 'Choate Pond' && showConvertedUnits) {
+        if (unitMap.Cond === 'µS/cm' && typeof wqiCond === 'number') {
+            wqiCond = uscmToPpt(wqiCond);
+        }
+        if (unitMap.Turb === 'FNU' && typeof wqiTurb === 'number') {
+            wqiTurb = fnuToNtu(wqiTurb);
+        }
+        if (unitMap.Sal === 'PSU' && typeof wqiSal === 'number') {
+            wqiSal = psuToPpt(wqiSal);
+        }
+    }
+
     const waterQualityIndex: number = config.BLUE_COLAB_API_CONFIG.validMatches.includes(
         defaultLocation
     )
         ? calculateWQI(
               [
                   {
-                      Cond: lastDataPoint.Cond ?? 0,
-                      DOpct: lastDataPoint.DOpct ?? 0,
-                      Sal: lastDataPoint.Sal ?? 0,
-                      Temp: lastDataPoint.Temp ?? 0,
-                      Turb: lastDataPoint.Turb ?? 0,
-                      pH: lastDataPoint.pH ?? 0,
+                      Cond: wqiCond,
+                      DOpct: wqiDOpct,
+                      Sal: wqiSal,
+                      Temp: wqiTemp,
+                      Turb: wqiTurb,
+                      pH: wqiPh,
                   },
               ],
               false
@@ -85,16 +155,16 @@ export const extractLastData = (
     return {
         timestamp: lastDataPoint.timestamp || 'Loading...',
         cond: conductivity,
-        condUnit: unitMap.Cond || '',
+        condUnit: condUnit,
         do: dissolvedOxygen,
         doUnit: unitMap.DOpct || unitMap.DO || '',
         pH: pH,
         temp: displayedTemperature,
         tempUnit: !unitMap.Temp ? '' : shouldConvertTemp ? '°F' : unitMap.Temp,
         turb: turbidity,
-        turbUnit: unitMap.Turb || '',
+        turbUnit: turbUnit,
         sal: salinity,
-        salUnit: unitMap.Sal || '',
+        salUnit: salUnit,
         wqi: waterQualityIndex,
     };
-};
+}

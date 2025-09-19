@@ -4,12 +4,16 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 import SettingsDropdown from '@/components/SettingsDropdown';
+import QuickCurrentData from '@/components/visualizations/QuickCurrentData';
 import { ColorScheme, useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
 
 export default function Index() {
     const { changeLocation, changeUnit, defaultLocation, defaultTempUnit } = useGraphData();
+
+    // Toggle for showing converted units
+    const [showConvertedUnits, setShowConvertedUnits] = useState(false);
     const { isDark, colorSchemeSys, changeColor } = useColorScheme();
     const { locationOptions } = getMetadata();
 
@@ -87,6 +91,28 @@ export default function Index() {
                         value={selectedLocation}
                         onSelect={onLocationSelect}
                     />
+                    <View
+                        style={{
+                            borderBottomWidth: 0.5,
+                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            marginVertical: 1,
+                        }}
+                    />
+                    <View className="flex-row items-center justify-between py-2">
+                        <Text className="text-lg dark:text-white">Show Converted Units</Text>
+                        <TouchableOpacity
+                            onPress={() => setShowConvertedUnits((prev) => !prev)}
+                            style={{
+                                backgroundColor: showConvertedUnits ? '#2563eb' : '#e5e7eb',
+                                borderRadius: 16,
+                                paddingVertical: 6,
+                                paddingHorizontal: 16,
+                            }}>
+                            <Text style={{ color: showConvertedUnits ? 'white' : 'black' }}>
+                                {showConvertedUnits ? 'Converted' : 'Original'}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                     <View
                         style={{
                             borderBottomWidth: 0.5,
@@ -206,6 +232,7 @@ export default function Index() {
                         }}
                     />
                 </View>
+                <QuickCurrentData showConvertedUnits={showConvertedUnits} />
             </ScrollView>
         </>
     );
