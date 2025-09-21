@@ -12,7 +12,7 @@ import getMetadata from '@/utils/getMetadata';
 export default function Index() {
     const {
         changeLocation,
-        changeUnit,
+        changeTemperatureUnit,
         defaultLocation,
         defaultTempUnit,
         showConvertedUnits,
@@ -41,7 +41,7 @@ export default function Index() {
 
     const onTempUnitSelect = (value: string) => {
         const newTempUnit = tempUnitOptions.find((option) => option.value === value)?.label || '';
-        changeUnit(newTempUnit);
+        changeTemperatureUnit(newTempUnit);
         setSelectedTempUnit(value);
     };
 

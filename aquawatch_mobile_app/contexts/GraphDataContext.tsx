@@ -20,7 +20,7 @@ interface GraphDataContextType {
     setMonth: (newValue: number | undefined) => void;
     setEndDay: (newValue: number | undefined) => void;
     setDefaultLocation: (newValue: LocationType | undefined) => void;
-    changeUnit: (newUnit: string) => void;
+    changeTemperatureUnit: (newUnit: string) => void;
     changeConvertedUnits: (enabled: boolean) => void;
     setSelectedLocationTemp: (newValue: LocationType | undefined) => void;
 }
@@ -39,7 +39,7 @@ const GraphDataContext = createContext({
     setMonth: () => {},
     setEndDay: () => {},
     setDefaultLocation: () => {},
-    changeUnit: () => {},
+    changeTemperatureUnit: () => {},
     setSelectedLocationTemp: () => {},
     changeConvertedUnits: () => {},
 } as GraphDataContextType);
@@ -61,7 +61,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
 
-    const changeUnit = (newUnit: string) => {
+    const changeTemperatureUnit = (newUnit: string) => {
         const setStoredTempUnit = async (value: string) => {
             try {
                 await AsyncStorage.setItem('default-temp-unit', value);
@@ -184,7 +184,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 setMonth,
                 setEndDay,
                 setDefaultLocation,
-                changeUnit,
+                changeTemperatureUnit,
                 setSelectedLocationTemp: setSelectedLocation,
                 changeConvertedUnits,
             }}>
