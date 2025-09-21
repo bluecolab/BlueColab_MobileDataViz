@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - "aquawatch_mobile_app/**"
+      - ".github/workflows/**"
   workflow_dispatch:
 
 jobs:
