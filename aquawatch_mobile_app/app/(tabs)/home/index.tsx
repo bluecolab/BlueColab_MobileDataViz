@@ -8,6 +8,7 @@ import HomeScreenCard from '@/components/customCards/HomeScreenCard';
 import QuickCurrentData from '@/components/visualizations/QuickCurrentData';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
+import { useGraphData } from '@/contexts/GraphDataContext';
 
 const homeScreenFlatListData = [
     {
@@ -41,6 +42,7 @@ const homeScreenFlatListData = [
  */
 export default function HomeScreen() {
     const { defaultLocation } = useCurrentData();
+    const { showConvertedUnits } = useGraphData();
     const { isDark } = useColorScheme();
 
     const lastMonth = format(subMonths(new Date(), 1), 'MMMM yyyy');
@@ -91,7 +93,7 @@ export default function HomeScreen() {
                     </Text>
 
                     <View>
-                        <QuickCurrentData />
+                        <QuickCurrentData showConvertedUnits={showConvertedUnits} />
                     </View>
 
                     <View className="px-4 pt-4">

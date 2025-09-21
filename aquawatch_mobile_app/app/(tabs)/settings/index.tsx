@@ -9,7 +9,14 @@ import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
 
 export default function Index() {
-    const { changeLocation, changeUnit, defaultLocation, defaultTempUnit } = useGraphData();
+    const {
+        changeLocation,
+        changeTemperatureUnit,
+        defaultLocation,
+        defaultTempUnit,
+        showConvertedUnits,
+        changeConvertedUnits,
+    } = useGraphData();
     const { isDark, colorSchemeSys, changeColor } = useColorScheme();
     const { locationOptions } = getMetadata();
 
@@ -33,7 +40,7 @@ export default function Index() {
 
     const onTempUnitSelect = (value: string) => {
         const newTempUnit = tempUnitOptions.find((option) => option.value === value)?.label || '';
-        changeUnit(newTempUnit);
+        changeTemperatureUnit(newTempUnit);
         setSelectedTempUnit(value);
     };
 
@@ -58,6 +65,7 @@ export default function Index() {
         onAppearanceSelect('1');
         onTempUnitSelect('1');
         onLocationSelect('1');
+        changeConvertedUnits(false);
     };
 
     return (
@@ -87,6 +95,28 @@ export default function Index() {
                         value={selectedLocation}
                         onSelect={onLocationSelect}
                     />
+                    <View
+                        style={{
+                            borderBottomWidth: 0.5,
+                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            marginVertical: 1,
+                        }}
+                    />
+                    <View className=" flex-row items-center justify-between py-2">
+                        <Text className="ml-2 text-lg dark:text-white">Show Converted Units</Text>
+                        <TouchableOpacity
+                            onPress={() => changeConvertedUnits(!showConvertedUnits)}
+                            style={{
+                                backgroundColor: showConvertedUnits ? '#2563eb' : '#e5e7eb',
+                                borderRadius: 16,
+                                paddingVertical: 6,
+                                paddingHorizontal: 16,
+                            }}>
+                            <Text style={{ color: showConvertedUnits ? 'white' : 'black' }}>
+                                {showConvertedUnits ? 'Converted' : 'Original'}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                     <View
                         style={{
                             borderBottomWidth: 0.5,

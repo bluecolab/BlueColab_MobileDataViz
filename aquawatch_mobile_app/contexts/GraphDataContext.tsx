@@ -13,13 +13,15 @@ interface GraphDataContextType {
     defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;
     selectedLocationTemp: string | undefined;
+    showConvertedUnits: boolean;
     changeLocation: (newLocation: LocationType) => void;
     setLoading: (newValue: boolean) => void;
     setYear: (newValue: number | undefined) => void;
     setMonth: (newValue: number | undefined) => void;
     setEndDay: (newValue: number | undefined) => void;
     setDefaultLocation: (newValue: LocationType | undefined) => void;
-    changeUnit: (newUnit: string) => void;
+    changeTemperatureUnit: (newUnit: string) => void;
+    changeConvertedUnits: (enabled: boolean) => void;
     setSelectedLocationTemp: (newValue: LocationType | undefined) => void;
 }
 
@@ -30,14 +32,16 @@ const GraphDataContext = createContext({
     defaultLocation: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
+    showConvertedUnits: false,
     changeLocation: () => {},
     setLoading: () => {},
     setYear: () => {},
     setMonth: () => {},
     setEndDay: () => {},
     setDefaultLocation: () => {},
-    changeUnit: () => {},
+    changeTemperatureUnit: () => {},
     setSelectedLocationTemp: () => {},
+    changeConvertedUnits: () => {},
 } as GraphDataContextType);
 
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
@@ -55,8 +59,9 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [defaultLocation, setDefaultLocation] = useState<LocationType>(); // the saved location in settings
     const [selectedLocation, setSelectedLocation] = useState<LocationType>(); // if the user changed location. this is updated
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
+    const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
 
-    const changeUnit = (newUnit: string) => {
+    const changeTemperatureUnit = (newUnit: string) => {
         const setStoredTempUnit = async (value: string) => {
             try {
                 await AsyncStorage.setItem('default-temp-unit', value);
@@ -78,6 +83,18 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         };
         void setStoredLocation(newLocation);
         setDefaultLocation(newLocation);
+    };
+
+    const changeConvertedUnits = (enabled: boolean) => {
+        const setStoredConvertedUnits = async (value: boolean) => {
+            try {
+                await AsyncStorage.setItem('show-converted-units', JSON.stringify(value));
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        void setStoredConvertedUnits(enabled);
+        setShowConvertedUnits(enabled);
     };
 
     useEffect(() => {
@@ -127,8 +144,22 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             }
         };
 
+        const getStoredConvertedUnits = async () => {
+            try {
+                const value = await AsyncStorage.getItem('show-converted-units');
+                if (value !== null) {
+                    setShowConvertedUnits(JSON.parse(value));
+                } else {
+                    setShowConvertedUnits(false);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
         void getStoredDefaultLocation();
         void getStoredDefaultTempUnit();
+        void getStoredConvertedUnits();
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
@@ -145,6 +176,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 loading,
                 defaultLocation,
                 defaultTempUnit,
+                showConvertedUnits,
                 selectedLocationTemp: selectedLocation?.name,
                 changeLocation,
                 setLoading,
@@ -152,8 +184,9 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 setMonth,
                 setEndDay,
                 setDefaultLocation,
-                changeUnit,
+                changeTemperatureUnit,
                 setSelectedLocationTemp: setSelectedLocation,
+                changeConvertedUnits,
             }}>
             {children}
         </GraphDataContext.Provider>

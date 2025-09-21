@@ -1,5 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Dimensions, View, Text, TouchableOpacity } from 'react-native';
 
 import FlipCard from '@/components/customCards/FlipCard';
@@ -29,6 +29,7 @@ interface MonthlyDataCardProps {
     unitMap: Record<string, string | null>;
     alternateName?: string;
     selectedMonth: string;
+    showConvertedUnits?: boolean;
 }
 
 export function MonthlyDataCard({
@@ -42,11 +43,46 @@ export function MonthlyDataCard({
     unitMap,
     alternateName,
     selectedMonth,
+    showConvertedUnits,
 }: MonthlyDataCardProps) {
     const finalUnitToUse = unitMap[unit] === null ? alternateName : unit;
-
     const { generateDataSummary } = dataUtils();
-    const dataSummary = generateDataSummary(data, loading, unit, defaultTempUnit);
+
+    // Conversion helpers for historical data
+    const uscmToPpt = (uscm: number) => uscm * 0.00055;
+    const fnuToNtu = (fnu: number) => fnu;
+    const psuToPpt = (psu: number) => psu;
+
+    // Apply conversions only to the active unit when toggled on
+    const convertedData = useMemo(() => {
+        if (!showConvertedUnits || !data) return data;
+
+        return data.map((item) => {
+            const next = { ...item };
+            switch (unit) {
+                case 'Cond':
+                    if (typeof item.Cond === 'number' && unitMap.Cond === 'µS/cm') {
+                        next.Cond = uscmToPpt(item.Cond);
+                    }
+                    break;
+                case 'Turb':
+                    if (typeof item.Turb === 'number' && unitMap.Turb === 'FNU') {
+                        next.Turb = fnuToNtu(item.Turb);
+                    }
+                    break;
+                case 'Sal':
+                    if (typeof item.Sal === 'number' && unitMap.Sal === 'PSU') {
+                        next.Sal = psuToPpt(item.Sal);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return next;
+        });
+    }, [showConvertedUnits, data, unit, unitMap]);
+
+    const dataSummary = generateDataSummary(convertedData, loading, unit, defaultTempUnit);
 
     const { width } = Dimensions.get('window');
 
@@ -64,13 +100,33 @@ export function MonthlyDataCard({
                     <Text className="rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-white">
                         {yAxisLabel}{' '}
                         {unitMap && finalUnitToUse !== 'pH'
-                            ? `- ${
-                                  finalUnitToUse === 'Temp'
-                                      ? defaultTempUnit?.trim() === 'Fahrenheit'
-                                          ? '°F'
-                                          : unitMap[finalUnitToUse]
-                                      : unitMap[finalUnitToUse ?? 'Temp']
-                              }`
+                            ? (() => {
+                                  if (finalUnitToUse === 'Temp') {
+                                      return `- ${
+                                          defaultTempUnit?.trim() === 'Fahrenheit'
+                                              ? '°F'
+                                              : unitMap[finalUnitToUse]
+                                      }`;
+                                  }
+
+                                  let displayUnit = unitMap[finalUnitToUse ?? 'Temp'];
+                                  if (showConvertedUnits) {
+                                      if (finalUnitToUse === 'Cond' && unitMap.Cond === 'µS/cm') {
+                                          displayUnit = 'ppt';
+                                      } else if (
+                                          finalUnitToUse === 'Turb' &&
+                                          unitMap.Turb === 'FNU'
+                                      ) {
+                                          displayUnit = 'NTU';
+                                      } else if (
+                                          finalUnitToUse === 'Sal' &&
+                                          unitMap.Sal === 'PSU'
+                                      ) {
+                                          displayUnit = 'ppt';
+                                      }
+                                  }
+                                  return `- ${displayUnit}`;
+                              })()
                             : ''}
                     </Text>
                     <TouchableOpacity className="absolute right-2 top-1" onPress={flipCard}>
