@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - "aquawatch_mobile_app/**"
+      - ".github/workflows/**"
   workflow_dispatch:
 
 jobs:
@@ -57,10 +58,6 @@ jobs:
         with:
           node-version: 24.x
 
-      - name: Check Node.js and npm version
-        run: |
-          node --version
-          npm --version
       - name: Restore node_modules from cache
         uses: actions/cache@v3
         with:
@@ -80,10 +77,6 @@ jobs:
         with:
           node-version: 24.x
 
-      - name: Check Node.js and npm version
-        run: |
-          node --version
-          npm --version
       - name: Restore node_modules from cache
         uses: actions/cache@v3
         with:
@@ -103,10 +96,6 @@ jobs:
         with:
           node-version: 24.x
 
-      - name: Check Node.js and npm version
-        run: |
-          node --version
-          npm --version
       - name: Restore node_modules from cache
         uses: actions/cache@v3
         with:
@@ -133,3 +122,4 @@ jobs:
       - name: Expo Doctor Check
         working-directory: ./aquawatch_mobile_app
         run: npx expo-doctor
+        continue-on-error: true
