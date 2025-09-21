@@ -3,6 +3,7 @@ import { useNetworkState } from 'expo-network';
 import { useCallback, useMemo } from 'react';
 
 import { config, useAPIConfig } from '@/hooks/useConfig';
+import { LocationType } from '@/types/config.interface';
 import {
     CleanedWaterData,
     WaterServicesData,
@@ -30,7 +31,7 @@ export default function useGetWaterData() {
     const cleanHudsonRiverData = useCallback(
         (rawData: WaterServicesData) => {
             if (!rawData?.value?.timeSeries) {
-                console.error('Invalid data format');
+                console.error('Here Invalid data format');
                 return [];
             }
 
@@ -80,7 +81,7 @@ export default function useGetWaterData() {
 
     const fetchData = useCallback(
         (
-            defaultLocation: string,
+            defaultLocation: LocationType,
             isCurrentData: boolean,
             year: number,
             month: number,
@@ -113,8 +114,17 @@ export default function useGetWaterData() {
                 .get(url)
                 .then((response) => {
                     const apiData = response.data;
-                    console.log(url, response.status);
-                    if (BLUE_COLAB_API_CONFIG.validMatches.includes(defaultLocation)) {
+                    console.log(
+                        BLUE_COLAB_API_CONFIG.validMatches.some(
+                            (loc) => loc.name === defaultLocation.name
+                        ),
+                        defaultLocation.name
+                    );
+                    if (
+                        BLUE_COLAB_API_CONFIG.validMatches.some(
+                            (loc) => loc.name === defaultLocation.name
+                        )
+                    ) {
                         const cleanedData = cleanChoatePondData(apiData);
                         setData(cleanedData);
                     } else {

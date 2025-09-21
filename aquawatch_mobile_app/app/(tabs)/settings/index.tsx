@@ -22,12 +22,12 @@ export default function Index() {
     const { locationOptions } = getMetadata();
 
     const [selectedLocation, setSelectedLocation] = useState(
-        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation?.toLowerCase()) + 1}`
+        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation?.name?.toLowerCase()) + 1}`
     );
 
     const onLocationSelect = (value: string) => {
         const newLocation = locationOptions.find((option) => option.value === value)?.label || '';
-        changeLocation(newLocation);
+        changeLocation({ name: newLocation });
         setSelectedLocation(value);
     };
 
