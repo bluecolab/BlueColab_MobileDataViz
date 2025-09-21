@@ -108,26 +108,18 @@ export function extractLastData(
           ? ((lastDataPoint.Temp * 9) / 5 + 32).toFixed(2)
           : lastDataPoint.Temp.toFixed(2);
 
-    // For Choate Pond, always use original units for WQI, regardless of toggle
-    let wqiCond = lastDataPoint.Cond ?? 0;
-    let wqiDOpct = lastDataPoint.DOpct ?? 0;
-    let wqiSal = lastDataPoint.Sal ?? 0;
-    let wqiTemp = lastDataPoint.Temp ?? 0;
-    let wqiTurb = lastDataPoint.Turb ?? 0;
-    let wqiPh = lastDataPoint.pH ?? 0;
-
     const waterQualityIndex: number = config.BLUE_COLAB_API_CONFIG.validMatches.some(
         (loc) => loc.name === defaultLocation.name
     )
         ? calculateWQI(
               [
                   {
-                      Cond: wqiCond,
-                      DOpct: wqiDOpct,
-                      Sal: wqiSal,
-                      Temp: wqiTemp,
-                      Turb: wqiTurb,
-                      pH: wqiPh,
+                      Cond: lastDataPoint.Cond ?? 0,
+                      DOpct: lastDataPoint.DOpct ?? 0,
+                      Sal: lastDataPoint.Sal ?? 0,
+                      Temp: lastDataPoint.Temp ?? 0,
+                      Turb: lastDataPoint.Turb ?? 0,
+                      pH: lastDataPoint.pH ?? 0,
                   },
               ],
               false
