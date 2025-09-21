@@ -10,6 +10,7 @@ import {
     Text,
     TouchableWithoutFeedback,
     TouchableHighlight,
+    TouchableOpacity,
 } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
@@ -39,13 +40,17 @@ export default function HistoricData() {
         selectedLocationTemp,
         setSelectedLocationTemp,
         error,
+        showConvertedUnits,
+        changeConvertedUnits,
     } = useGraphData();
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
     const [modalOpen, setModalOpen] = useState(false);
 
     const unitMap =
-        units[(selectedLocationTemp ?? defaultLocation ?? 'Choate Pond') as keyof typeof units];
+        units[
+            (selectedLocationTemp ?? defaultLocation?.name ?? 'Choate Pond') as keyof typeof units
+        ];
 
     const now = new Date();
     const currentMonth = getMonth(now) + 1; // `getMonth` is 0-indexed
@@ -105,8 +110,9 @@ export default function HistoricData() {
     }, [currentYear]);
 
     const defaultLocationValue =
-        locationOptions.find((option) => option.label === (selectedLocationTemp ?? defaultLocation))
-            ?.value || '';
+        locationOptions.find(
+            (option) => option.label === (selectedLocationTemp ?? defaultLocation?.name)
+        )?.value || '';
 
     const [selectedLocation, setSelectedLocation] = useState(defaultLocationValue);
 
@@ -133,7 +139,7 @@ export default function HistoricData() {
             setSelectedLocation(value);
             const defaultLocationLabel =
                 locationOptions.find((option) => option.value === value)?.label || '';
-            setSelectedLocationTemp(defaultLocationLabel);
+            setSelectedLocationTemp({ name: defaultLocationLabel });
         },
         [locationOptions, setSelectedLocationTemp]
     );
@@ -141,7 +147,7 @@ export default function HistoricData() {
     useEffect(() => {
         const defaultLocationValue =
             locationOptions.find(
-                (option) => option.label === (selectedLocationTemp ?? defaultLocation)
+                (option) => option.label === (selectedLocationTemp ?? defaultLocation?.name)
             )?.value || '';
         setSelectedLocation(defaultLocationValue);
     }, [defaultLocation, locationOptions, selectedLocationTemp]);
@@ -208,6 +214,7 @@ export default function HistoricData() {
                                             (option) => option.value === selectedMonth.toString()
                                         )?.label || 'oh no'
                                     }
+                                    showConvertedUnits={showConvertedUnits}
                                 />
                             </View>
                         )}
@@ -225,7 +232,7 @@ export default function HistoricData() {
                         onPress={onPressPagination}
                     />
 
-                    {(selectedLocationTemp ?? defaultLocation) === 'Choate Pond' ? (
+                    {(selectedLocationTemp ?? defaultLocation?.name) === 'Choate Pond' ? (
                         <WQICard data={data} loading={loading} />
                     ) : (
                         <></>
@@ -253,6 +260,32 @@ export default function HistoricData() {
                                     </TouchableHighlight>
                                     {/* Add more modal content here */}
                                     <View className="elevation-[20] z-10 w-full bg-white p-default dark:bg-gray-700">
+                                        <View className="flex-row items-center justify-end pb-2">
+                                            <Text className="mr-2 text-lg dark:text-white">
+                                                Show Converted Units
+                                            </Text>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    changeConvertedUnits(!showConvertedUnits)
+                                                }
+                                                style={{
+                                                    backgroundColor: showConvertedUnits
+                                                        ? '#2563eb'
+                                                        : '#e5e7eb',
+                                                    borderRadius: 16,
+                                                    paddingVertical: 6,
+                                                    paddingHorizontal: 16,
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: showConvertedUnits
+                                                            ? 'white'
+                                                            : 'black',
+                                                    }}>
+                                                    {showConvertedUnits ? 'Converted' : 'Original'}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
                                         <View className="w-full flex-row space-x-4">
                                             <View className="flex-[2]">
                                                 <CustomDropdown
