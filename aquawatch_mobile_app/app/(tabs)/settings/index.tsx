@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 import SettingsDropdown from '@/components/SettingsDropdown';
-import QuickCurrentData from '@/components/visualizations/QuickCurrentData';
 import { ColorScheme, useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
@@ -103,8 +102,8 @@ export default function Index() {
                             marginVertical: 1,
                         }}
                     />
-                    <View className="flex-row items-center justify-between py-2">
-                        <Text className="text-lg dark:text-white">Show Converted Units</Text>
+                    <View className=" flex-row items-center justify-between py-2">
+                        <Text className="ml-2 text-lg dark:text-white">Show Converted Units</Text>
                         <TouchableOpacity
                             onPress={() => changeConvertedUnits(!showConvertedUnits)}
                             style={{
@@ -237,7 +236,6 @@ export default function Index() {
                         }}
                     />
                 </View>
-                <QuickCurrentData showConvertedUnits={showConvertedUnits} />
             </ScrollView>
         </>
     );

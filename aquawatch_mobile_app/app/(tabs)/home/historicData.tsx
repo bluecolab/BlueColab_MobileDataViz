@@ -179,21 +179,6 @@ export default function HistoricData() {
             />
             <View className="bg-defaultbackground dark:bg-defaultdarkbackground ">
                 <ScrollView contentContainerStyle={{ paddingBottom: 400 }}>
-                    <View className="flex-row items-center justify-end px-4 pt-4">
-                        <Text className="mr-2 text-lg dark:text-white">Show Converted Units</Text>
-                        <TouchableOpacity
-                            onPress={() => changeConvertedUnits(!showConvertedUnits)}
-                            style={{
-                                backgroundColor: showConvertedUnits ? '#2563eb' : '#e5e7eb',
-                                borderRadius: 16,
-                                paddingVertical: 6,
-                                paddingHorizontal: 16,
-                            }}>
-                            <Text style={{ color: showConvertedUnits ? 'white' : 'black' }}>
-                                {showConvertedUnits ? 'Converted' : 'Original'}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
                     <Text className="mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-white">
                         {locationOptions.find((option) => option.value === selectedLocation)?.label}{' '}
                         -{' '}

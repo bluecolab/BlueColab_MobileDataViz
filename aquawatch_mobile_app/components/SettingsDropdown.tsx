@@ -50,12 +50,12 @@ export default function SettingsDropdown({
                         borderRadius: 8,
                         minWidth: 150, // Increased width
                         maxWidth: 220, // Optional: set a max width
-                        alignItems: 'center',
                     }}>
                     <Text
                         style={{
                             color: isDark ? 'white' : 'black',
                             fontSize: 16,
+                            textAlign: 'right',
                         }}
                         numberOfLines={1}
                         ellipsizeMode="tail">
