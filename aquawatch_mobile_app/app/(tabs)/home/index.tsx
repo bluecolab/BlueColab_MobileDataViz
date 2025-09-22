@@ -86,7 +86,6 @@ export default function HomeScreen() {
                     contentContainerStyle={{
                         flexGrow: 1,
                         justifyContent: 'flex-start',
-                        paddingBottom: 90,
                     }}>
                     <Text className="ml-4 mt-4 text-4xl font-bold dark:text-white">
                         {defaultLocation?.name} Data!
@@ -117,6 +116,10 @@ export default function HomeScreen() {
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={renderItem}
                         />
+                    </View>
+
+                    <View className="pb-[30]">
+                        <Text></Text>
                     </View>
                 </ScrollView>
             </View>
