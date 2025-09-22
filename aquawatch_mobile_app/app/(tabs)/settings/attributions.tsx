@@ -132,6 +132,69 @@ export default function Attributions() {
 
             <ScrollView className="bg-defaultbackground dark:bg-defaultdarkbackground">
                 <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-gray-700">
+                    <Text className="text-xl font-bold text-black dark:text-white">
+                        Main Sponsors:
+                    </Text>
+
+                    <View className="mb-6 mt-4 flex-row justify-around">
+                        <View className="items-center">
+                            <Image
+                                source={{
+                                    uri: 'https://bluecolab.pace.edu/files/2022/02/Cronin-portrait-500-216x216.jpg',
+                                }}
+                                className="mb-2 h-32 w-32 rounded-lg"
+                                resizeMode="cover"
+                            />
+                            <Text className="text-gray-500">Sponsor Logo</Text>
+                            <Text className="text-lg text-black dark:text-white">John Cronin</Text>
+                            <Text
+                                onPress={() =>
+                                    handleLinkPress('https://bluecolab.pace.edu/johncronin/')
+                                }
+                                className="text-blue-400 underline">
+                                <Image
+                                    source={{
+                                        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0UStDAmcksopxrQAg28I5_x7Xouw77rwdFw&s',
+                                    }}
+                                    style={{ width: 15, height: 15 }}
+                                />
+                                <Text>https://bluecolab.pace.edu/johncronin/</Text>
+                            </Text>
+                        </View>
+
+                        <View className="items-center">
+                            <Image
+                                source={{
+                                    uri: 'https://media.licdn.com/dms/image/v2/D4D03AQG9-uMYZyRJ4Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1707151456684?e=1761177600&v=beta&t=VBfn4c6KnjUWmUZYimM3EsZsl4yZG2CQ8MSuGl79JLY',
+                                }}
+                                className="mb-2 h-32 w-32 rounded-lg"
+                                resizeMode="cover"
+                            />
+                            <Text className="text-lg text-black dark:text-white">
+                                Leanne Keeley
+                            </Text>
+                            <Text
+                                onPress={() =>
+                                    handleLinkPress(
+                                        'https://www.linkedin.com/in/leanne-keeley-6856904b/'
+                                    )
+                                }
+                                className="text-blue-400 underline">
+                                <Image
+                                    source={LinkedIn_logo_initials}
+                                    style={{ width: 15, height: 15 }}
+                                />
+                                <Text>in/leanne-keeley-6856904b/</Text>
+                            </Text>
+                        </View>
+                    </View>
+
+                    <Text className="text-lg text-black dark:text-white">
+                        Our main sponsors who made this project possible.
+                    </Text>
+                </View>
+
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-gray-700">
                     <Text className="text-xl font-bold text-black dark:text-white">Core Team:</Text>
                     {TEAM.map((item, index) => {
                         return (
@@ -157,6 +220,38 @@ export default function Attributions() {
                     <Text className="text-lg text-black dark:text-white">
                         We would like to give the following attributions:
                     </Text>
+
+                    <Item
+                        name={'Justin Brandon'}
+                        label={'in/juabrandon/'}
+                        link={'https://www.linkedin.com/in/juabrandon/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
+
+                    <Item
+                        name={'Sasha Breygina'}
+                        label={'in/sasha-breygina-831984118/'}
+                        link={'https://www.linkedin.com/in/sasha-breygina-831984118/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
+
+                    <Item
+                        name={'Leanna Machado'}
+                        label={'in/leanna-machado/'}
+                        link={'https://www.linkedin.com/in/leanna-machado/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
+
+                    <Item
+                        name={'Jasmin Juliano'}
+                        label={'in/jasmin-juliano-2001r/'}
+                        link={'https://www.linkedin.com/in/jasmin-juliano-2001r/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
 
                     <Item
                         name={'George Moses'}
@@ -418,7 +513,6 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                 </View>
-                <View className="pb-[90] "></View>
             </ScrollView>
         </>
     );
