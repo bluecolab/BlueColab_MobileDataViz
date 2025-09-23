@@ -14,12 +14,17 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: 🏗 Setup repo
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: 🏗 Setup Node
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
-                node-version: 18.x
+                node-version: 24.x
+
+            - name: Check Node.js and npm version
+              run: |
+                node --version
+                npm --version
 
             - name: 🏗 Setup EAS
               run: npm install -g eas-cli

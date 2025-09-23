@@ -10,7 +10,7 @@
     "prebuild": "expo prebuild",
     "lint": "tsc --noEmit && eslint \"**/*.{js,jsx,ts,tsx}\" --max-warnings=0 && prettier -c \"**/*.{js,jsx,ts,tsx}\"",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx}\" --write",
-    "test": "npm run lint && npx expo-doctor && npx cspell . && npm audit --audit-level=low"
+    "test": "npm run lint && npx cspell . && npm audit --audit-level=low && npx expo-doctor"
   },
   "expo": {
     "doctor": {
