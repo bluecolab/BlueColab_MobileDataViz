@@ -1,5 +1,8 @@
 name: Frontend Build Check
-run-name: ${{ github.actor }} Build Check
+run-name: Build Check
+
+permissions:
+  contents: read
 
 on:
   pull_request:
@@ -29,6 +32,9 @@ jobs:
       cache-hit: ${{ steps.cache.outputs.cache-hit }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -38,15 +44,21 @@ jobs:
         run: |
           node --version
           npm --version
+
+      - name: Validate package-lock.json
+        working-directory: ./aquawatch_mobile_app
+        run: node scripts/check-package-lock.js
+
       - name: Cache node_modules
         id: cache
         uses: actions/cache@v3
         with:
           path: ./aquawatch_mobile_app/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('aquawatch_mobile_app/package-lock.json') }}
+
       - name: Install dependencies
         working-directory: ./aquawatch_mobile_app
-        run: npm install
+        run: npm ci
 
   lint:
     runs-on: ubuntu-latest
