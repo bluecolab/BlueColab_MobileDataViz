@@ -65,17 +65,20 @@ const fetchPackageMetadata = (() => {
 })();
 
 const fetchMainBranchPackageLock = () => {
+    const defaultBranch = 'origin/main'; // Explicitly use 'origin/main'
     return new Promise((resolve, reject) => {
         const { exec } = require('child_process');
-        exec('git show main:aquawatch_mobile_app/package-lock.json', (err, stdout, stderr) => {
+        exec(`git show ${defaultBranch}:package-lock.json`, (err, stdout, stderr) => {
             if (err) {
-                reject(`Failed to fetch package-lock.json from main: ${stderr}`);
+                reject(`Failed to fetch package-lock.json from ${defaultBranch}: ${stderr}`);
             } else {
                 try {
                     const mainPackageLock = JSON.parse(stdout);
                     resolve(mainPackageLock);
                 } catch (parseErr) {
-                    reject(`Failed to parse package-lock.json from main: ${parseErr.message}`);
+                    reject(
+                        `Failed to parse package-lock.json from ${defaultBranch}: ${parseErr.message}`
+                    );
                 }
             }
         });
