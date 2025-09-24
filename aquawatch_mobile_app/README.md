@@ -5,7 +5,7 @@ This folder contains the various files related to the application.
 ## Required Software
 
 - [git](https://git-scm.com/) - version control. For installing git, please see the [git website](https://git-scm.com/).
-- [npm](https://www.npmjs.com/) - package manager. For installing npm, please see [npm docs](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+- [npm](https://www.npmjs.com/) - package manager. For installing npm, please see [NodeJS Download](https://nodejs.org/en/download). Please scroll down. Once node is downloaded, npm is also.
 - Testing:
     - _Option A_: [Android Studio](https://developer.android.com/studio) or Test Flight (Apple) - local testing. For installing please see respective websites.
         - Create a device emulator:
@@ -41,6 +41,10 @@ This folder contains the various files related to the application.
     ```bash
     npm ci
     ```
+
+> [!TIP]
+> If you get errors from npm command, try restarting your computer.
+> Also, do not use PowerShell as a terminal. Instead use the terminal git bash. See [VS Code docs](https://code.visualstudio.com/docs/terminal/basics#_terminal-shells) on how.
 
 ## Running locally on computer via Expo Go
 
@@ -105,7 +109,8 @@ aquawatch_mobile_app - Parent folder, for all sob-directories and config files
 ├───contexts - For all of the custom contexts (a way to share data between all pages and components)
 ├───hooks - For all of the custom hooks (reusable logic for state, data fetching, etc.)
 ├───patches - For patches needed to fix broken npm packages
-└───types - For all custom TypeScript type definitions
+├───types - For all custom TypeScript type definitions
+└───utils - For all helper functions
 ```
 
 Each of the above directories may be organized even further, grouped by similar functionality.
