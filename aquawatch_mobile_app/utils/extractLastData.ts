@@ -1,6 +1,5 @@
 import { config } from '@/hooks/useConfig';
 import { LocationType } from '@/types/config.interface';
-import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData, CurrentData } from '@/types/water.interface';
 
 import dataUtils from './dataUtils';
@@ -27,7 +26,7 @@ export const extractLastData = (
     defaultLocation: LocationType | undefined,
     defaultTempUnit: string | undefined,
     loading: boolean,
-    error: ErrorType | undefined
+    error: Error | null
 ): CurrentData => {
     const { units } = getMetadata();
     const { calculateWQI } = dataUtils();
