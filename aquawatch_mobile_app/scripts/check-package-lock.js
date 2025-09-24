@@ -1,6 +1,6 @@
 const fs = require('fs');
 const https = require('https');
-const { exec } = require('child_process');
+const { exec, execSync } = require('child_process');
 
 const DAYS = 3;
 
@@ -81,6 +81,14 @@ const fetchMainBranchPackageLock = () => {
         });
     });
 };
+
+// List all branches to verify availability
+try {
+    const branches = execSync('git branch -a', { encoding: 'utf-8' });
+    console.log('Available branches:\n', branches);
+} catch (error) {
+    console.error('Failed to list branches:', error.message);
+}
 
 // Function to check package publish dates
 const checkPackagePublishDates = async () => {
