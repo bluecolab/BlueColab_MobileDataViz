@@ -42,12 +42,17 @@ jobs:
           node --version
           npm --version
 
+      - name: Validate package-lock.json
+        working-directory: ./aquawatch_mobile_app
+        run: node scripts/check-package-lock.js
+
       - name: Cache node_modules
         id: cache
         uses: actions/cache@v3
         with:
           path: ./aquawatch_mobile_app/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('aquawatch_mobile_app/package-lock.json') }}
+
       - name: Install dependencies
         working-directory: ./aquawatch_mobile_app
         run: npm ci

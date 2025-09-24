@@ -1,5 +1,8 @@
 const fs = require('fs');
 const https = require('https');
+const { exec } = require('child_process');
+
+const DAYS = 3;
 
 // Load package-lock.json
 const packageLockPath = 'package-lock.json';
@@ -7,7 +10,7 @@ const packageLock = JSON.parse(fs.readFileSync(packageLockPath, 'utf-8'));
 
 // Get the current date and calculate the cutoff (24 hours ago)
 const now = new Date();
-const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+const oneDayAgo = new Date(now.getTime() - DAYS * 24 * 60 * 60 * 1000);
 
 const cleanPackageName = (pkgName) => {
     // Remove everything before and including the last occurrence of "node_modules/"
@@ -81,12 +84,12 @@ const fetchMainBranchPackageLock = () => {
 
 // Function to check package publish dates
 const checkPackagePublishDates = async () => {
-    const mainPackageLock = await fetchMainBranchPackageLock().catch((err) => {
+    const mainBranchPackageLock = await fetchMainBranchPackageLock().catch((err) => {
         console.error(err);
         process.exit(1);
     });
 
-    const mainPackages = mainPackageLock.packages || {};
+    const mainBranchPackages = mainBranchPackageLock.packages || {};
     const currentPackages = packageLock.packages || {};
     let hasRecentPackage = false;
 
@@ -94,11 +97,16 @@ const checkPackagePublishDates = async () => {
         const cleanName = cleanPackageName(pkgName);
 
         // Skip packages that exist in the main branch with the same version
-        if (mainPackages[pkgName] && mainPackages[pkgName].version === pkgData.version) {
+        if (
+            mainBranchPackages[pkgName] &&
+            mainBranchPackages[pkgName].version === pkgData.version
+        ) {
             continue;
         }
 
-        console.log(`Checking package: ${cleanName}`);
+        console.log(`The following packages were not found in main:`);
+
+        console.log(`Checking package: \x1b[34m${cleanName}@${pkgData.version}\x1b[0m:`);
 
         if (pkgData.resolved && pkgData.version) {
             try {
@@ -110,27 +118,73 @@ const checkPackagePublishDates = async () => {
                 // Check if the package was published within the last 24 hours
                 if (publishDate > oneDayAgo) {
                     console.error(
-                        `Package "${cleanName}@${installedVersion}" was published recently on ${publishDate.toISOString()}.`
+                        `\tPackage was \x1b[31mpublished less than ${DAYS} day ago\x1b[0m on ${publishDate.toISOString()}.`
                     );
                     hasRecentPackage = true;
+                } else {
+                    console.log(
+                        `\tPackage is \x1b[32molder than ${DAYS} day\x1b[0m (published on ${publishDate.toISOString()}, ${Math.floor((Date.now() - publishDate.getTime()) / 1000 / 60 / 60 / 24)} days ago).`
+                    );
                 }
             } catch (err) {
                 console.error(err);
             }
         } else {
             console.warn(
-                `Package "${pkgName}" with clean name "${cleanName}" does not have a resolved URL or version.`
+                `Package "${pkgName}@${pkgData.version}" with clean name "${cleanName}" does not have a resolved URL or version.`
             );
         }
     }
 
     if (hasRecentPackage) {
-        console.error('Build failed: One or more packages were published less than 1 day ago.');
+        console.error(
+            `\x1b[31mCausing build failure\x1b[0m: One or more packages were published less than ${DAYS} day ago.`
+        );
         process.exit(1); // Fail the build
     } else {
-        console.log('All packages are older than 1 day. Build can proceed.');
+        console.log(`All packages are older than ${DAYS} day. Build can proceed.`);
     }
 };
 
-// Run the check
-checkPackagePublishDates();
+const runNpmAudit = () => {
+    return new Promise((resolve, reject) => {
+        exec('npm audit --json', (err, stdout, stderr) => {
+            if (err) {
+                // npm audit exits with non-zero code if vulnerabilities are found
+                try {
+                    const auditReport = JSON.parse(stdout);
+                    const criticalVulnerabilities = auditReport.metadata.vulnerabilities.critical;
+
+                    if (criticalVulnerabilities > 0) {
+                        console.error(
+                            `\x1b[31mCritical vulnerabilities found: ${criticalVulnerabilities}\x1b[0m`
+                        );
+                        console.error('Please address these vulnerabilities before proceeding.');
+                        process.exit(1); // Fail the script
+                    } else {
+                        console.log('\x1b[32mNo critical vulnerabilities found.\x1b[0m');
+                        resolve();
+                    }
+                } catch (parseError) {
+                    reject(`Failed to parse npm audit output: ${parseError.message}`);
+                }
+            } else {
+                console.log('\x1b[32mNo vulnerabilities found.\x1b[0m');
+                resolve();
+            }
+        });
+    });
+};
+
+// Run the checks
+const main = async () => {
+    try {
+        await runNpmAudit();
+        await checkPackagePublishDates(); // Existing function
+    } catch (error) {
+        console.error(`\x1b[31m${error}\x1b[0m`);
+        process.exit(1);
+    }
+};
+
+main();

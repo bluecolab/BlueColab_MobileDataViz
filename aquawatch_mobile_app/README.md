@@ -39,7 +39,7 @@ This folder contains the various files related to the application.
     ```
 4. Install the dependencies by running:
     ```bash
-    npm i
+    npm ci
     ```
 
 ## Running locally on computer via Expo Go
