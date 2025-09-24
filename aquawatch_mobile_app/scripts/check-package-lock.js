@@ -91,14 +91,6 @@ const fetchMainBranchPackageLock = () => {
     });
 };
 
-// List all branches to verify availability
-try {
-    const branches = execSync('git branch -a', { encoding: 'utf-8' });
-    console.log('Available branches:\n', branches);
-} catch (error) {
-    console.error('Failed to list branches:', error.message);
-}
-
 // Function to check package publish dates
 const checkPackagePublishDates = async () => {
     const mainBranchPackageLock = await fetchMainBranchPackageLock().catch((err) => {
@@ -110,6 +102,7 @@ const checkPackagePublishDates = async () => {
     const currentPackages = packageLock.packages || {};
     let hasRecentPackage = false;
 
+    console.log(`The following packages were not found in main:`);
     for (const [pkgName, pkgData] of Object.entries(currentPackages)) {
         const cleanName = cleanPackageName(pkgName);
 
@@ -120,8 +113,6 @@ const checkPackagePublishDates = async () => {
         ) {
             continue;
         }
-
-        console.log(`The following packages were not found in main:`);
 
         console.log(`Checking package: \x1b[34m${cleanName}@${pkgData.version}\x1b[0m:`);
 
