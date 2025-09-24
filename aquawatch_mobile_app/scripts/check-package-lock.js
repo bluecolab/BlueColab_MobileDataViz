@@ -1,8 +1,11 @@
+// Script to check package-lock.json for recently published packages and run npm audit for critical vulnerabilities
+// Cover cases where we download packages after vulnerable versions have been released but before taken down
+
 const fs = require('fs');
 const https = require('https');
 const { exec, execSync } = require('child_process');
 
-const DAYS = 3;
+const DAYS = 1;
 
 // Load package-lock.json
 const packageLockPath = 'package-lock.json';
