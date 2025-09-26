@@ -103,7 +103,7 @@ export default function Index() {
                         }}
                     />
                     <View className=" flex-row items-center justify-between py-2">
-                        <Text className="ml-2 text-lg dark:text-white">Show Converted Units</Text>
+                        <Text className="ml-2 text-lg dark:text-white">Show Converted Units:</Text>
                         <TouchableOpacity
                             onPress={() => changeConvertedUnits(!showConvertedUnits)}
                             style={{
@@ -125,7 +125,7 @@ export default function Index() {
                         }}
                     />
                     <SettingsDropdown
-                        label="Unit:"
+                        label="Temperature:"
                         options={tempUnitOptions}
                         value={selectedTempUnit}
                         onSelect={onTempUnitSelect}
