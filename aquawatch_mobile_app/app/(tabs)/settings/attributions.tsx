@@ -128,6 +128,7 @@ export default function Attributions() {
             linkedin: 'https://www.linkedin.com/in/KoJesko/',
             team: ['App Team 67'],
         },
+
         {
             name: 'Tyler Yeung',
             label: 'in/tyleryeung/',
