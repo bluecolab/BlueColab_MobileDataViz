@@ -138,30 +138,32 @@ export default function Attributions() {
 
                     <View className="mb-6 mt-4 flex-row flex-wrap justify-around md:justify-between">
                         <View className="w-full items-center md:w-1/2 lg:w-1/3">
-                        <View className="items-center">
-                            <Image
-                                source={{
-                                    uri: 'https://bluecolab.pace.edu/files/2022/02/Cronin-portrait-500-216x216.jpg',
-                                }}
-                                className="mb-2 h-32 w-32 rounded-lg"
-                                resizeMode="cover"
-                            />
-                            <Text className="text-lg text-black dark:text-white">John Cronin</Text>
-                            <Text
-                                onPress={() =>
-                                    handleLinkPress('https://bluecolab.pace.edu/johncronin/')
-                                }
-                                className="text-blue-400 underline">
+                            <View className="items-center">
                                 <Image
                                     source={{
-                                        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0UStDAmcksopxrQAg28I5_x7Xouw77rwdFw&s',
+                                        uri: 'https://bluecolab.pace.edu/files/2022/02/Cronin-portrait-500-216x216.jpg',
                                     }}
-                                    style={{ width: 15, height: 15 }}
+                                    className="mb-2 h-32 w-32 rounded-lg"
+                                    resizeMode="cover"
                                 />
-                                <Text>John Cronin</Text>
-                            </Text>
+                                <Text className="text-lg text-black dark:text-white">
+                                    John Cronin
+                                </Text>
+                                <Text
+                                    onPress={() =>
+                                        handleLinkPress('https://bluecolab.pace.edu/johncronin/')
+                                    }
+                                    className="text-blue-400 underline">
+                                    <Image
+                                        source={{
+                                            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0UStDAmcksopxrQAg28I5_x7Xouw77rwdFw&s',
+                                        }}
+                                        style={{ width: 15, height: 15 }}
+                                    />
+                                    <Text>John Cronin</Text>
+                                </Text>
+                            </View>
                         </View>
-
                         <View className="items-center">
                             <Image
                                 source={{
