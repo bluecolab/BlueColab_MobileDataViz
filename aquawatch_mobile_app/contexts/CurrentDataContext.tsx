@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 
@@ -5,7 +6,6 @@ import { useGraphData } from '@/contexts/GraphDataContext';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
 import { CleanedWaterData } from '@/types/water.interface';
-import { useQuery } from '@tanstack/react-query';
 
 interface CurrentDataContextType {
     data: CleanedWaterData[] | undefined;
@@ -34,7 +34,7 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
         isLoading: loadingCurrent, // Alias isLoading to match your existing context
     } = useQuery({
         // 1. Query Key: Uniquely identifies this data.
-        // It automatically refetches when `defaultLocation` changes.
+        // It automatically re-fetches when `defaultLocation` changes.
         queryKey: ['currentWaterData', defaultLocation],
 
         // 2. Query Function: Must be a function that returns a promise.
