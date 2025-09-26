@@ -7,6 +7,11 @@ on:
       - main
     paths:
       - "aquawatch_mobile_app/**"
+  push:
+    branches:
+      - main
+    paths:
+      - "aquawatch_mobile_app/**"
   workflow_dispatch:
 
 jobs:
@@ -32,6 +37,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+      - name: Validate package-lock.json
+        working-directory: ./aquawatch_mobile_app
+        run: node scripts/check-package-lock.js
       - name: Cache node_modules
         id: cache
         uses: actions/cache@v3
