@@ -145,7 +145,6 @@ export default function Attributions() {
                                 className="mb-2 h-32 w-32 rounded-lg"
                                 resizeMode="cover"
                             />
-                            <Text className="text-gray-500">Sponsor Logo</Text>
                             <Text className="text-lg text-black dark:text-white">John Cronin</Text>
                             <Text
                                 onPress={() =>
@@ -184,7 +183,7 @@ export default function Attributions() {
                                     source={LinkedIn_logo_initials}
                                     style={{ width: 15, height: 15 }}
                                 />
-                                <Text>in/leanne-keeley-6856904b/</Text>
+                                <Text>LinkedIn</Text>
                             </Text>
                         </View>
                     </View>
