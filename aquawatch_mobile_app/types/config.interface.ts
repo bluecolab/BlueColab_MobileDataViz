@@ -4,7 +4,7 @@ export interface Config {
         defaultMeasurement: string;
         currentDataQuery: string;
         rangeDataQuery: (year: number, month: number, start_day: number, end_day: number) => string;
-        validMatches: string[];
+        validMatches: LocationType[];
     };
     USGS_WATER_SERVICES_API_URL: string;
     USGS_WATER_SERVICES_API_CONFIG: {
@@ -19,7 +19,9 @@ export interface Config {
             start_day: number,
             end_day: number
         ) => string;
-        validMatches: string[];
+        validMatches: LocationType[];
     };
     OPEN_WEATHER_API_URL: string;
 }
+
+export type LocationType = { name: string; lat?: number; long?: number };

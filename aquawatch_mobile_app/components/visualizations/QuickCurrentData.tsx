@@ -2,10 +2,11 @@
 import { differenceInSeconds } from 'date-fns';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
+import { useGraphData } from '@/contexts/GraphDataContext';
 import { config } from '@/hooks/useConfig';
 import { extractLastData } from '@/utils/extractLastData';
 
@@ -74,9 +75,13 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
  * The quick current data component. It displays the current data in a quick grid-view format.
  * @returns {JSX.Element}
  */
-export default function QuickCurrentData() {
+// Removed duplicate export default function QuickCurrentData()
+export default function QuickCurrentData({ showConvertedUnits }: { showConvertedUnits?: boolean }) {
     // All data is received from the context provider
     const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
+    // Read global toggle from GraphDataContext as the source of truth
+    const { showConvertedUnits: showConvertedUnitsGlobal } = useGraphData();
+    const effectiveShowConverted = showConvertedUnits ?? showConvertedUnitsGlobal;
 
     if (!defaultLocation) {
         return <></>;
@@ -87,7 +92,8 @@ export default function QuickCurrentData() {
         defaultLocation,
         defaultTempUnit,
         loadingCurrent,
-        error
+        error,
+        effectiveShowConverted
     );
 
     return (
@@ -143,7 +149,9 @@ export default function QuickCurrentData() {
                             name="Salinity"
                             unit={lastDataPoint.salUnit}
                         />
-                        {config.BLUE_COLAB_API_CONFIG.validMatches.includes(defaultLocation) ? (
+                        {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                            (loc) => loc.name === defaultLocation.name
+                        ) ? (
                             <ParamView param={lastDataPoint.wqi} name="WQI" />
                         ) : (
                             <></>

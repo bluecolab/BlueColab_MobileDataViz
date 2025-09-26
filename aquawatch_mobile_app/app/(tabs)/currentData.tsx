@@ -5,18 +5,22 @@ import { Widget } from '@/components/visualizations/Widget';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
+import { useGraphData } from '@/contexts/GraphDataContext';
 import { extractLastData } from '@/utils/extractLastData';
 
 export default function CurrentData() {
     const { isDark } = useColorScheme();
     const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
 
+    const { showConvertedUnits: showConvertedUnitsGlobal } = useGraphData();
+
     const lastDataPoint = extractLastData(
         data,
         defaultLocation,
         defaultTempUnit,
         loadingCurrent,
-        error
+        error,
+        showConvertedUnitsGlobal
     );
 
     return (
@@ -34,7 +38,7 @@ export default function CurrentData() {
                 {/* — Title — */}
                 <View>
                     <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
-                        {defaultLocation} Data
+                        {defaultLocation?.name} Data
                     </Text>
                 </View>
 
