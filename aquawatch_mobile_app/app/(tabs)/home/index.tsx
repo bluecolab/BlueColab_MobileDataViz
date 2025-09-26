@@ -10,33 +10,6 @@ import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 
-// const homeScreenFlatListData = [
-//     {
-//         imageSource: require('@/assets/homescreen/PXL_20221014_204618892.jpg'),
-//         title: 'Discover',
-//         buttonText: 'Blue CoLab Mission',
-//         route: '/home/story',
-//     },
-//     {
-//         imageSource: require('@/assets/homescreen/turtle.jpg'),
-//         title: 'Discover Wildlife',
-//         buttonText: 'Choate Pond Wildlife',
-//         route: '/home/wildlife',
-//     },
-//     {
-//         imageSource: require('@/assets/homescreen/sky.jpg'),
-//         title: 'Look!',
-//         buttonText: 'Air Quality Index...',
-//         route: '/home/airQuality',
-//     },
-//     {
-//         imageSource: require('@/assets/homescreen/waterSplash2.jpg'),
-//         title: 'Read Blogs',
-//         buttonText: 'Blue CoLab Blogs',
-//         route: '/home/blog',
-//     },
-// ];
-
 const homeScreenFlatListData = [
     {
         imageSource: require('@/assets/homescreen/PXL_20221014_204618892.jpg'),
