@@ -83,7 +83,6 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         enabled: !!(activeLocation && year && month && startDay && endDay),
     });
 
-    const changeUnit = (newUnit: string) => {
     const changeTemperatureUnit = (newUnit: string) => {
         const setStoredTempUnit = async (value: string) => {
             try {
