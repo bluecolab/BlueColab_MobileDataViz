@@ -18,12 +18,6 @@ const homeScreenFlatListData = [
         route: '/home/story',
     },
     {
-        imageSource: require('@/assets/homescreen/turtle.jpg'),
-        title: 'Discover Wildlife',
-        buttonText: 'Choate Pond Wildlife',
-        route: '/home/wildlife',
-    },
-    {
         imageSource: require('@/assets/homescreen/sky.jpg'),
         title: 'Look!',
         buttonText: 'Air Quality Index...',
