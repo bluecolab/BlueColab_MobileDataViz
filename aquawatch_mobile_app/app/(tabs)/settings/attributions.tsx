@@ -158,7 +158,7 @@ export default function Attributions() {
                                     }}
                                     style={{ width: 15, height: 15 }}
                                 />
-                                <Text>https://bluecolab.pace.edu/johncronin/</Text>
+                                <Text>John Cronin</Text>
                             </Text>
                         </View>
 
@@ -247,7 +247,7 @@ export default function Attributions() {
 
                     <Item
                         name={'Jasmin Juliano'}
-                        label={'in/jasmin-juliano-2001r/'}
+                        label={'in/jasmine-juliano-2001r/'}
                         link={'https://www.linkedin.com/in/jasmin-juliano-2001r/'}
                         team={[]}
                         isLinkedin={true}
@@ -270,7 +270,8 @@ export default function Attributions() {
                     />
 
                     <Text className="pl-3 text-lg text-black dark:text-white">
-                        They helped provide WQI calculations used by this application.
+                        They helped provide WQI calculations and pond health ranges used by this
+                        application.
                     </Text>
 
                     <Text className="text-lg text-black dark:text-white">
