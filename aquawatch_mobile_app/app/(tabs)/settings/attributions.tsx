@@ -136,7 +136,8 @@ export default function Attributions() {
                         Main Sponsors:
                     </Text>
 
-                    <View className="mb-6 mt-4 flex-row justify-around">
+                    <View className="mb-6 mt-4 flex-row flex-wrap justify-around md:justify-between">
+                        <View className="w-full items-center md:w-1/2 lg:w-1/3">
                         <View className="items-center">
                             <Image
                                 source={{
