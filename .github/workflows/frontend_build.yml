@@ -28,7 +28,9 @@ jobs:
 
       - name: 🏗 Setup EAS
         run: npm install -g eas-cli
-
+      - name: Validate package-lock.json
+        working-directory: ./aquawatch_mobile_app
+        run: node scripts/check-package-lock.js
       - name: Install dependencies
         working-directory: ./aquawatch_mobile_app
         run: npm ci
