@@ -78,6 +78,8 @@ The members of the team include:
 - Nicholas Davila ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/nicholas--davila](https://www.linkedin.com/in/nicholas--davila/)) of Blue Shield
 - Noor Ul Huda ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/noorulhuda92](https://www.linkedin.com/in/noorulhuda92/)) of Blue CoLab
 - Lizi Imedashvilli ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/lizi-imedashvili-2b3a6b249](https://www.linkedin.com/in/lizi-imedashvili-2b3a6b249/)) of Data Divas
+- Vansh Kanojia ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)vansh-kanojia](https://www.linkedin.com/in/vansh-kanojia/)) of App Team 67
+- Ari Kotler ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)in/KoJesko](https://www.linkedin.com/in/KoJesko/)) of App Team 67
 - Ardin Kraja ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/ardin-kraja-19ab61230](https://www.linkedin.com/in/ardin-kraja-19ab61230/)) of Blue Jelly
 - Victor Lima ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/victor--lima](https://www.linkedin.com/in/victor--lima/)) of Data Divas
 - Charles Metayer ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/charles-metayer-jr-9a983b267](https://www.linkedin.com/in/charles-metayer-jr-9a983b267/)) of Blue Shield
@@ -86,6 +88,7 @@ The members of the team include:
 - Kenji Okura ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/kenji-okura](https://www.linkedin.com/in/kenji-okura/)) of Blue Jelly
 - Michael Rourke ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/michael-rourke-532b32225](https://www.linkedin.com/in/michael-rourke-532b32225/)) of Blue Shield
 - Erin Sorbella ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/erin-sorbella-40936b241](https://www.linkedin.com/in/erin-sorbella-40936b241/)) of Blue Jelly
+- Tyler Yeung ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/tyleryeung](https://www.linkedin.com/in/tyleryeung/)) of App Team 67
 
 ### Screenshots
 
