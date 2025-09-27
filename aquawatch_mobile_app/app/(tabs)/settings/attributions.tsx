@@ -66,7 +66,7 @@ export default function Attributions() {
             name: 'Lizi Imedashvilli',
             label: 'in/lizi-imedashvili-2b3a6b249/',
             linkedin: 'https://www.linkedin.com/in/lizi-imedashvili-2b3a6b249/',
-            team: ['Data Divas', 'Tic-Tac-Toe'],
+            team: ['Data Divas', 'Tic-Tac-Toe', 'App Team 67'],
         },
         {
             name: 'Ardin Kraja',
@@ -79,6 +79,12 @@ export default function Attributions() {
             label: 'in/victor--lima',
             linkedin: 'https://www.linkedin.com/in/victor--lima',
             team: ['Data Divas'],
+        },
+        {
+            name: 'Vansh Kanojia',
+            label: 'in/vansh-kanojia/',
+            linkedin: 'https://www.linkedin.com/in/vansh-kanojia/',
+            team: ['App Team 67'],
         },
         {
             name: 'Meryl Mizell',
@@ -100,9 +106,9 @@ export default function Attributions() {
         },
         {
             name: 'Kenji Okura',
-            label: 'https://www.linkedin.com/in/kenji-okura/',
-            linkedin: 'in/kenji-okura/',
-            team: ['Blue Jelly', 'Data Divas', 'Tic-Tac-Toe'],
+            label: 'in/kenji-okura/',
+            linkedin: 'https://www.linkedin.com/in/kenji-okura/',
+            team: ['Blue Jelly', 'Data Divas', 'Tic-Tac-Toe', 'App Team 67'],
         },
         {
             name: 'Michael Rourke',
@@ -115,6 +121,19 @@ export default function Attributions() {
             label: 'in/erin-sorbella-40936b241',
             linkedin: 'https://www.linkedin.com/in/erin-sorbella-40936b241',
             team: ['Blue Jelly'],
+        },
+        {
+            name: 'Ari Kotler',
+            label: 'in/KoJesko/',
+            linkedin: 'https://www.linkedin.com/in/KoJesko/',
+            team: ['App Team 67'],
+        },
+
+        {
+            name: 'Tyler Yeung',
+            label: 'in/tyleryeung/',
+            linkedin: 'https://www.linkedin.com/in/tyleryeung/',
+            team: ['App Team 67'],
         },
     ];
 
@@ -177,16 +196,16 @@ export default function Attributions() {
                             </Text>
                             <Text
                                 onPress={() =>
-                                    handleLinkPress(
-                                        'https://www.linkedin.com/in/leanne-keeley-6856904b/'
-                                    )
+                                    handleLinkPress('https://www.pace.edu/profile/leanne-keeley')
                                 }
                                 className="text-blue-400 underline">
                                 <Image
-                                    source={LinkedIn_logo_initials}
+                                    source={{
+                                        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0UStDAmcksopxrQAg28I5_x7Xouw77rwdFw&s',
+                                    }}
                                     style={{ width: 15, height: 15 }}
                                 />
-                                <Text>LinkedIn</Text>
+                                <Text>Leanne Keeley</Text>
                             </Text>
                         </View>
                     </View>
@@ -210,7 +229,6 @@ export default function Attributions() {
                             />
                         );
                     })}
-
                     <Text className="pl-3 text-lg text-black dark:text-white">
                         They are the team members who officially worked on this app.
                     </Text>
@@ -222,38 +240,6 @@ export default function Attributions() {
                     <Text className="text-lg text-black dark:text-white">
                         We would like to give the following attributions:
                     </Text>
-
-                    <Item
-                        name={'Justin Brandon'}
-                        label={'in/juabrandon/'}
-                        link={'https://www.linkedin.com/in/juabrandon/'}
-                        team={[]}
-                        isLinkedin={true}
-                    />
-
-                    <Item
-                        name={'Sasha Breygina'}
-                        label={'in/sasha-breygina-831984118/'}
-                        link={'https://www.linkedin.com/in/sasha-breygina-831984118/'}
-                        team={[]}
-                        isLinkedin={true}
-                    />
-
-                    <Item
-                        name={'Leanna Machado'}
-                        label={'in/leanna-machado/'}
-                        link={'https://www.linkedin.com/in/leanna-machado/'}
-                        team={[]}
-                        isLinkedin={true}
-                    />
-
-                    <Item
-                        name={'Jasmin Juliano'}
-                        label={'in/jasmine-juliano-2001r/'}
-                        link={'https://www.linkedin.com/in/jasmin-juliano-2001r/'}
-                        team={[]}
-                        isLinkedin={true}
-                    />
 
                     <Item
                         name={'George Moses'}
@@ -272,8 +258,7 @@ export default function Attributions() {
                     />
 
                     <Text className="pl-3 text-lg text-black dark:text-white">
-                        They helped provide WQI calculations and pond health ranges used by this
-                        application.
+                        They helped provide WQI calculations used by this application.
                     </Text>
 
                     <Text className="text-lg text-black dark:text-white">
@@ -516,6 +501,7 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                 </View>
+                <View className="pb-[90] "></View>
             </ScrollView>
         </>
     );
