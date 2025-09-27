@@ -93,7 +93,7 @@ The members of the team include:
 ### Screenshots
 
 <div align="center">
-<img src="./screenshots/home.png" height="250px" />
-<img src="./screenshots/data.png" height="250px"  />
-<img src="./screenshots/settings.png" height="250px" />
+<img src="./screenshots/Screenshot_20250926_142031.png" height="250px" />
+<img src="./screenshots/Screenshot_20250926_142015.png" height="250px"  />
+<img src="./screenshots/Screenshot_20250926_142257.png" height="250px" />
 </div>
