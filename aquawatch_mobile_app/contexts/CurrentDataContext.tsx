@@ -1,14 +1,16 @@
 import { getMinutes } from 'date-fns';
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 
 import { useGraphData } from '@/contexts/GraphDataContext';
 import useGetWaterData from '@/hooks/useGetWaterData';
+import { LocationType } from '@/types/config.interface';
 import { CleanedWaterData } from '@/types/water.interface';
 
 interface CurrentDataContextType {
     data: CleanedWaterData[] | undefined;
     error: { message: string } | undefined;
-    defaultLocation: string | undefined;
+    defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;
     loadingCurrent: boolean;
 }
@@ -16,12 +18,12 @@ interface CurrentDataContextType {
 const CurrentDataContext = createContext({
     data: undefined,
     error: undefined,
-    defaultLocation: undefined as string | undefined,
+    defaultLocation: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
     loadingCurrent: false,
 } as CurrentDataContextType);
 
-export default function CurrentDataProvider({ children }: { children: React.ReactNode }) {
+export default function CurrentDataProvider({ children }: { children: ReactNode }) {
     const { defaultLocation, defaultTempUnit } = useGraphData();
     const { fetchData } = useGetWaterData();
 

@@ -66,7 +66,7 @@ export default function Attributions() {
             name: 'Lizi Imedashvilli',
             label: 'in/lizi-imedashvili-2b3a6b249/',
             linkedin: 'https://www.linkedin.com/in/lizi-imedashvili-2b3a6b249/',
-            team: ['Data Divas', 'Tic-Tac-Toe'],
+            team: ['Data Divas', 'Tic-Tac-Toe', 'App Team 67'],
         },
         {
             name: 'Ardin Kraja',
@@ -79,6 +79,12 @@ export default function Attributions() {
             label: 'in/victor--lima',
             linkedin: 'https://www.linkedin.com/in/victor--lima',
             team: ['Data Divas'],
+        },
+        {
+            name: 'Vansh Kanojia',
+            label: 'in/vansh-kanojia/',
+            linkedin: 'https://www.linkedin.com/in/vansh-kanojia/',
+            team: ['App Team 67'],
         },
         {
             name: 'Meryl Mizell',
@@ -100,9 +106,9 @@ export default function Attributions() {
         },
         {
             name: 'Kenji Okura',
-            label: 'https://www.linkedin.com/in/kenji-okura/',
-            linkedin: 'in/kenji-okura/',
-            team: ['Blue Jelly', 'Data Divas', 'Tic-Tac-Toe'],
+            label: 'in/kenji-okura/',
+            linkedin: 'https://www.linkedin.com/in/kenji-okura/',
+            team: ['Blue Jelly', 'Data Divas', 'Tic-Tac-Toe', 'App Team 67'],
         },
         {
             name: 'Michael Rourke',
@@ -115,6 +121,19 @@ export default function Attributions() {
             label: 'in/erin-sorbella-40936b241',
             linkedin: 'https://www.linkedin.com/in/erin-sorbella-40936b241',
             team: ['Blue Jelly'],
+        },
+        {
+            name: 'Ari Kotler',
+            label: 'in/KoJesko/',
+            linkedin: 'https://www.linkedin.com/in/KoJesko/',
+            team: ['App Team 67'],
+        },
+
+        {
+            name: 'Tyler Yeung',
+            label: 'in/tyleryeung/',
+            linkedin: 'https://www.linkedin.com/in/tyleryeung/',
+            team: ['App Team 67'],
         },
     ];
 
@@ -132,6 +151,71 @@ export default function Attributions() {
 
             <ScrollView className="bg-defaultbackground dark:bg-defaultdarkbackground">
                 <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-gray-700">
+                    <Text className="text-xl font-bold text-black dark:text-white">
+                        Main Sponsors:
+                    </Text>
+
+                    <View className="mb-6 mt-4 flex-row flex-wrap justify-around md:justify-between">
+                        <View className="w-full items-center md:w-1/2 lg:w-1/3">
+                            <View className="items-center">
+                                <Image
+                                    source={{
+                                        uri: 'https://bluecolab.pace.edu/files/2022/02/Cronin-portrait-500-216x216.jpg',
+                                    }}
+                                    className="mb-2 h-32 w-32 rounded-lg"
+                                    resizeMode="cover"
+                                />
+                                <Text className="text-lg text-black dark:text-white">
+                                    John Cronin
+                                </Text>
+                                <Text
+                                    onPress={() =>
+                                        handleLinkPress('https://bluecolab.pace.edu/johncronin/')
+                                    }
+                                    className="text-blue-400 underline">
+                                    <Image
+                                        source={{
+                                            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0UStDAmcksopxrQAg28I5_x7Xouw77rwdFw&s',
+                                        }}
+                                        style={{ width: 15, height: 15 }}
+                                    />
+                                    <Text>John Cronin</Text>
+                                </Text>
+                            </View>
+                        </View>
+                        <View className="items-center">
+                            <Image
+                                source={{
+                                    uri: 'https://media.licdn.com/dms/image/v2/D4D03AQG9-uMYZyRJ4Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1707151456684?e=1761177600&v=beta&t=VBfn4c6KnjUWmUZYimM3EsZsl4yZG2CQ8MSuGl79JLY',
+                                }}
+                                className="mb-2 h-32 w-32 rounded-lg"
+                                resizeMode="cover"
+                            />
+                            <Text className="text-lg text-black dark:text-white">
+                                Leanne Keeley
+                            </Text>
+                            <Text
+                                onPress={() =>
+                                    handleLinkPress('https://www.pace.edu/profile/leanne-keeley')
+                                }
+                                className="text-blue-400 underline">
+                                <Image
+                                    source={{
+                                        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0UStDAmcksopxrQAg28I5_x7Xouw77rwdFw&s',
+                                    }}
+                                    style={{ width: 15, height: 15 }}
+                                />
+                                <Text>Leanne Keeley</Text>
+                            </Text>
+                        </View>
+                    </View>
+
+                    <Text className="text-lg text-black dark:text-white">
+                        Our main sponsors who made this project possible.
+                    </Text>
+                </View>
+
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-gray-700">
                     <Text className="text-xl font-bold text-black dark:text-white">Core Team:</Text>
                     {TEAM.map((item, index) => {
                         return (
@@ -145,7 +229,6 @@ export default function Attributions() {
                             />
                         );
                     })}
-
                     <Text className="pl-3 text-lg text-black dark:text-white">
                         They are the team members who officially worked on this app.
                     </Text>
@@ -157,6 +240,14 @@ export default function Attributions() {
                     <Text className="text-lg text-black dark:text-white">
                         We would like to give the following attributions:
                     </Text>
+
+                    <Item
+                        name={'Justin Brandon'}
+                        label={'in/juabrandon/'}
+                        link={'https://www.linkedin.com/in/juabrandon/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
 
                     <Item
                         name={'George Moses'}
@@ -174,8 +265,32 @@ export default function Attributions() {
                         isLinkedin={true}
                     />
 
+                    <Item
+                        name={'Leanna Machado'}
+                        label={'in/leanna-machado/'}
+                        link={'https://www.linkedin.com/in/leanna-machado/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
+
+                    <Item
+                        name={'Sasha Breygina'}
+                        label={'in/sasha-breygina-831984118/'}
+                        link={'https://www.linkedin.com/in/sasha-breygina-831984118/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
+
+                    <Item
+                        name={'Jasmin Juliano'}
+                        label={'in/jasmin-juliano-2001r/'}
+                        link={'https://www.linkedin.com/in/jasmin-juliano-2001r/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
+
                     <Text className="pl-3 text-lg text-black dark:text-white">
-                        They helped provide WQI calculations used by this application.
+                        They provided mentorship and guidance regarding water health.
                     </Text>
 
                     <Text className="text-lg text-black dark:text-white">

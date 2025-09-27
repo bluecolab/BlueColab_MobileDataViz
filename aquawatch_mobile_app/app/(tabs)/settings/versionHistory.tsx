@@ -387,7 +387,91 @@ export default function VersionHistory() {
                         />{' '}
                         by Kenji)
                     </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.9.1:</Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Update packages to latest, including nativewind (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/222"
+                            label="#222"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Upgrade Node Versions (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/224"
+                            label="#224"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Long lat closest location (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/225"
+                            label="#225"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Neutralize expo-doctor warnings: Reduce redundant logs (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/229"
+                            label="#229"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Unit Conversions (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/228"
+                            label="#228"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Move graph to its own component (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/232"
+                            label="#232"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Experimental changes to prevent supply chain attacks (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/233"
+                            label="#233"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - byewildlife:( (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/238"
+                            label="#238"
+                        />{' '}
+                        by @liziimedo)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Add validate-package-lock.json check to prod build (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/239"
+                            label="#239"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Update credits; screenshots (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/231"
+                            label="#231"
+                        />{' '}
+                        by @KoJesko)
+                    </Text>
                 </View>
+
                 <View className="pb-[90]"></View>
             </ScrollView>
         </>

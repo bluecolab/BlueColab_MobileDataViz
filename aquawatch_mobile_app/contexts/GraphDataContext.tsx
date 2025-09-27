@@ -3,40 +3,45 @@ import { subMonths, getYear, getMonth, getDaysInMonth } from 'date-fns';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 import useGetWaterData from '@/hooks/useGetWaterData';
+import { LocationType } from '@/types/config.interface';
 import { CleanedWaterData } from '@/types/water.interface';
 
 interface GraphDataContextType {
     data: CleanedWaterData[] | undefined;
     error: { message: string } | undefined;
     loading: boolean;
-    defaultLocation: string | undefined;
+    defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;
     selectedLocationTemp: string | undefined;
-    changeLocation: (newLocation: string) => void;
+    showConvertedUnits: boolean;
+    changeLocation: (newLocation: LocationType) => void;
     setLoading: (newValue: boolean) => void;
     setYear: (newValue: number | undefined) => void;
     setMonth: (newValue: number | undefined) => void;
     setEndDay: (newValue: number | undefined) => void;
-    setDefaultLocation: (newValue: string | undefined) => void;
-    changeUnit: (newUnit: string) => void;
-    setSelectedLocationTemp: (newValue: string | undefined) => void;
+    setDefaultLocation: (newValue: LocationType | undefined) => void;
+    changeTemperatureUnit: (newUnit: string) => void;
+    changeConvertedUnits: (enabled: boolean) => void;
+    setSelectedLocationTemp: (newValue: LocationType | undefined) => void;
 }
 
 const GraphDataContext = createContext({
     data: undefined,
     error: undefined,
     loading: false,
-    defaultLocation: undefined as string | undefined,
+    defaultLocation: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
+    showConvertedUnits: false,
     changeLocation: () => {},
     setLoading: () => {},
     setYear: () => {},
     setMonth: () => {},
     setEndDay: () => {},
     setDefaultLocation: () => {},
-    changeUnit: () => {},
+    changeTemperatureUnit: () => {},
     setSelectedLocationTemp: () => {},
+    changeConvertedUnits: () => {},
 } as GraphDataContextType);
 
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
@@ -51,11 +56,12 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [start_day, setStartDay] = useState<number>();
     const [end_day, setEndDay] = useState<number>();
 
-    const [defaultLocation, setDefaultLocation] = useState<string>(); // the saved location in settings
-    const [selectedLocation, setSelectedLocation] = useState<string>(); // if the user changed location. this is updated
+    const [defaultLocation, setDefaultLocation] = useState<LocationType>(); // the saved location in settings
+    const [selectedLocation, setSelectedLocation] = useState<LocationType>(); // if the user changed location. this is updated
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
+    const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
 
-    const changeUnit = (newUnit: string) => {
+    const changeTemperatureUnit = (newUnit: string) => {
         const setStoredTempUnit = async (value: string) => {
             try {
                 await AsyncStorage.setItem('default-temp-unit', value);
@@ -67,16 +73,28 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         setDefaultTempUnit(newUnit);
     };
 
-    const changeLocation = (newLocation: string) => {
-        const setStoredLocation = async (value: string) => {
+    const changeLocation = (newLocation: LocationType) => {
+        const setStoredLocation = async (value: LocationType) => {
             try {
-                await AsyncStorage.setItem('default-location', value);
+                await AsyncStorage.setItem('default-location', JSON.stringify(value));
             } catch (e) {
                 console.log(e);
             }
         };
         void setStoredLocation(newLocation);
         setDefaultLocation(newLocation);
+    };
+
+    const changeConvertedUnits = (enabled: boolean) => {
+        const setStoredConvertedUnits = async (value: boolean) => {
+            try {
+                await AsyncStorage.setItem('show-converted-units', JSON.stringify(value));
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        void setStoredConvertedUnits(enabled);
+        setShowConvertedUnits(enabled);
     };
 
     useEffect(() => {
@@ -103,9 +121,9 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 const value = await AsyncStorage.getItem('default-location');
                 if (value !== null) {
                     console.log(`Stored value: ${value}`);
-                    setDefaultLocation(value);
+                    setDefaultLocation(JSON.parse(value));
                 } else {
-                    setDefaultLocation('Choate Pond');
+                    setDefaultLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
                 }
             } catch (e) {
                 console.error(e);
@@ -126,8 +144,22 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             }
         };
 
+        const getStoredConvertedUnits = async () => {
+            try {
+                const value = await AsyncStorage.getItem('show-converted-units');
+                if (value !== null) {
+                    setShowConvertedUnits(JSON.parse(value));
+                } else {
+                    setShowConvertedUnits(false);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
         void getStoredDefaultLocation();
         void getStoredDefaultTempUnit();
+        void getStoredConvertedUnits();
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
@@ -144,15 +176,17 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 loading,
                 defaultLocation,
                 defaultTempUnit,
-                selectedLocationTemp: selectedLocation,
+                showConvertedUnits,
+                selectedLocationTemp: selectedLocation?.name,
                 changeLocation,
                 setLoading,
                 setYear,
                 setMonth,
                 setEndDay,
                 setDefaultLocation,
-                changeUnit,
+                changeTemperatureUnit,
                 setSelectedLocationTemp: setSelectedLocation,
+                changeConvertedUnits,
             }}>
             {children}
         </GraphDataContext.Provider>
