@@ -1,6 +1,6 @@
 // app/_layout.tsx
 import '../global.css';
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 
 import ColorSchemeProvider from '@/contexts/ColorSchemeContext';
@@ -11,19 +11,23 @@ export const unstable_settings = {
     initialRouteName: '(tabs)',
 };
 
+const queryClient = new QueryClient();
+
 /** The root layout of the app. It wraps the app in the necessary providers.
  * @returns {JSX.Element}
  */
 export default function RootLayout() {
     return (
-        <GraphDataProvider>
-            <CurrentDataProvider>
-                <ColorSchemeProvider>
-                    <Stack>
-                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                    </Stack>
-                </ColorSchemeProvider>
-            </CurrentDataProvider>
-        </GraphDataProvider>
+        <QueryClientProvider client={queryClient}>
+            <GraphDataProvider>
+                <CurrentDataProvider>
+                    <ColorSchemeProvider>
+                        <Stack>
+                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                        </Stack>
+                    </ColorSchemeProvider>
+                </CurrentDataProvider>
+            </GraphDataProvider>
+        </QueryClientProvider>
     );
 }
