@@ -242,6 +242,14 @@ export default function Attributions() {
                     </Text>
 
                     <Item
+                        name={'Justin Brandon'}
+                        label={'in/juabrandon/'}
+                        link={'https://www.linkedin.com/in/juabrandon/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
+
+                    <Item
                         name={'George Moses'}
                         label={'in/george-m-moses/'}
                         link={'https://www.linkedin.com/in/george-m-moses/'}
@@ -257,8 +265,32 @@ export default function Attributions() {
                         isLinkedin={true}
                     />
 
+                    <Item
+                        name={'Leanna Machado'}
+                        label={'in/leanna-machado/'}
+                        link={'https://www.linkedin.com/in/leanna-machado/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
+
+                    <Item
+                        name={'Sasha Breygina'}
+                        label={'in/sasha-breygina-831984118/'}
+                        link={'https://www.linkedin.com/in/sasha-breygina-831984118/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
+
+                    <Item
+                        name={'Jasmin Juliano'}
+                        label={'in/jasmin-juliano-2001r/'}
+                        link={'https://www.linkedin.com/in/jasmin-juliano-2001r/'}
+                        team={[]}
+                        isLinkedin={true}
+                    />
+
                     <Text className="pl-3 text-lg text-black dark:text-white">
-                        They helped provide WQI calculations used by this application.
+                        They provided mentorship and guidance regarding water health.
                     </Text>
 
                     <Text className="text-lg text-black dark:text-white">
