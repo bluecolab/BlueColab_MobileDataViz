@@ -18,12 +18,6 @@ const homeScreenFlatListData = [
         route: '/home/story',
     },
     {
-        imageSource: require('@/assets/homescreen/turtle.jpg'),
-        title: 'Discover Wildlife',
-        buttonText: 'Choate Pond Wildlife',
-        route: '/home/wildlife',
-    },
-    {
         imageSource: require('@/assets/homescreen/sky.jpg'),
         title: 'Look!',
         buttonText: 'Air Quality Index...',
@@ -98,7 +92,7 @@ export default function HomeScreen() {
 
                     <View className="px-4 pt-4">
                         <HomeScreenCard
-                            imageSource={require('@/assets/homescreen/IMG_9274.jpg')} // image source als identify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+                            imageSource={require('@/assets/homescreen/IMG_9274.png')} // image source als identify URl all u gotta do is "http//something.com" for local images use {require("./something")}
                             title="Historic Data"
                             buttonText={`${lastMonth} Data`}
                             route="../home/historicData"
