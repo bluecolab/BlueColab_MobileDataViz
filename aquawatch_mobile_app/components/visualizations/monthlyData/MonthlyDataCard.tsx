@@ -9,6 +9,32 @@ import dataUtils from '@/utils/dataUtils';
 import { MonthlyDataCardBack } from './MonthlyDataCardBack';
 import { MonthlyDataCardFront } from './MonthlyDataCardFront';
 
+const titleLabel = (
+    unitMap: Record<string, string | null>,
+    finalUnitToUse: string | undefined,
+    showConvertedUnits: boolean | undefined,
+    defaultTempUnit: string | undefined,
+    yAxisLabel: string
+): string => {
+    if (!unitMap || finalUnitToUse === 'pH') return `${yAxisLabel}`;
+
+    if (finalUnitToUse === 'Temp') {
+        return `${yAxisLabel} - ${defaultTempUnit?.trim() === 'Fahrenheit' ? '°F' : unitMap[finalUnitToUse]}`;
+    }
+
+    let displayUnit = unitMap[finalUnitToUse ?? 'Temp'];
+    if (showConvertedUnits) {
+        if (finalUnitToUse === 'Cond' && unitMap.Cond === 'µS/cm') {
+            displayUnit = 'ppt';
+        } else if (finalUnitToUse === 'Turb' && unitMap.Turb === 'FNU') {
+            displayUnit = 'NTU';
+        } else if (finalUnitToUse === 'Sal' && unitMap.Sal === 'PSU') {
+            displayUnit = 'ppt';
+        }
+    }
+    return `${yAxisLabel} - ${displayUnit}`;
+};
+
 interface MonthlyDataCardProps {
     loading: boolean;
     yAxisLabel: string;
@@ -80,30 +106,9 @@ export function MonthlyDataCard({
         });
     }, [showConvertedUnits, data, unit, unitMap]);
 
-    const titleLabel = (): string => {
-        if (!unitMap || finalUnitToUse === 'pH') return `${yAxisLabel}`;
-
-        if (finalUnitToUse === 'Temp') {
-            return `${yAxisLabel} - ${defaultTempUnit?.trim() === 'Fahrenheit' ? '°F' : unitMap[finalUnitToUse]}`;
-        }
-
-        let displayUnit = unitMap[finalUnitToUse ?? 'Temp'];
-        if (showConvertedUnits) {
-            if (finalUnitToUse === 'Cond' && unitMap.Cond === 'µS/cm') {
-                displayUnit = 'ppt';
-            } else if (finalUnitToUse === 'Turb' && unitMap.Turb === 'FNU') {
-                displayUnit = 'NTU';
-            } else if (finalUnitToUse === 'Sal' && unitMap.Sal === 'PSU') {
-                displayUnit = 'ppt';
-            }
-        }
-        return `${yAxisLabel} - ${displayUnit}`;
-    };
-
     const dataSummary = generateDataSummary(convertedData, loading, unit, defaultTempUnit);
 
     const { width } = Dimensions.get('window');
-
     const containerWidth = width * 0.95;
 
     const flipCardRef = useRef<{ flip: () => void }>(null);
@@ -123,7 +128,13 @@ export function MonthlyDataCard({
                                     dailySummary={dataSummary.dailySummary}
                                     error={error}
                                     month={selectedMonth}
-                                    title={titleLabel()}
+                                    title={titleLabel(
+                                        unitMap,
+                                        finalUnitToUse,
+                                        showConvertedUnits,
+                                        defaultTempUnit,
+                                        yAxisLabel
+                                    )}
                                 />
                             </Pressable>
                         }
@@ -136,7 +147,13 @@ export function MonthlyDataCard({
                                     yAxisLabel={yAxisLabel}
                                     meta={meta}
                                     flipCard={flipCard}
-                                    title={titleLabel()}
+                                    title={titleLabel(
+                                        unitMap,
+                                        finalUnitToUse,
+                                        showConvertedUnits,
+                                        defaultTempUnit,
+                                        yAxisLabel
+                                    )}
                                 />
                             </Pressable>
                         }

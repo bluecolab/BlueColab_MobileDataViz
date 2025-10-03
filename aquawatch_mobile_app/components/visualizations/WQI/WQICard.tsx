@@ -33,18 +33,12 @@ export function WQICard({ loading, data, wqi }: WQICardProps) {
                         <FlipCard
                             Front={
                                 <Pressable onPress={flipCard}>
-                                    <View className="flex-1 items-center justify-center  rounded-3xl bg-white p-default dark:bg-gray-700 ">
-                                        <View className="h-[250] w-[300]">
-                                            <WQICardFront data={data} loading={loading} wqi={wqi} />
-                                        </View>
-                                    </View>
+                                    <WQICardFront data={data} loading={loading} wqi={wqi} />
                                 </Pressable>
                             }
                             Back={
                                 <Pressable onPress={flipCard}>
-                                    <View className="h-[250]">
-                                        <WQICardBack flipCard={flipCard} />
-                                    </View>
+                                    <WQICardBack flipCard={flipCard} />
                                 </Pressable>
                             }
                             flipCardRef={flipCardRef}
