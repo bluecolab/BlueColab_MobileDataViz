@@ -64,7 +64,7 @@ export default function CurrentData() {
                 <View className="mt-6 items-center px-4">
                     <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
                 </View>
-                <View className="pb-[25]">
+                <View className="pb-[45]">
                     <Text></Text>
                 </View>
             </ScrollView>
