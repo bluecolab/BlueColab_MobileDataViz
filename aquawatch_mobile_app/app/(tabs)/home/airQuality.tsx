@@ -16,6 +16,7 @@ import {
 import RNPickerSelect from 'react-native-picker-select';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { config } from '@/hooks/useConfig';
 
 // AQIBar Component
 const AQIBar: React.FC<{ aqiGrade: number }> = ({ aqiGrade }) => {
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
 const getAirQuality = async (latitude: number, longitude: number) => {
     // TODO: Private API key
     const apiKey = '4fd184c24fcacbb3bdf4ffcfb79ed8b9';
-    const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+    const url = `${config.OPEN_WEATHER_API_URL}/data/2.5/air_pollution?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
 
     try {
         const response = await fetch(url);
