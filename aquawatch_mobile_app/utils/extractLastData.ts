@@ -1,6 +1,6 @@
 import { config } from '@/hooks/useConfig';
 import { LocationType } from '@/types/config.interface';
-import { CleanedWaterData, CurrentData } from '@/types/water.interface';
+import { CleanedWaterData, CurrentData, OdinData } from '@/types/water.interface';
 
 import dataUtils from './dataUtils';
 import getMetadata from './getMetadata';
@@ -37,6 +37,7 @@ const currentDataErrorObject: CurrentData = {
 
 export function extractLastData(
     data: CleanedWaterData[] | undefined,
+    airData: OdinData[] | undefined,
     defaultLocation: LocationType | undefined,
     defaultTempUnit: string | undefined,
     loading: boolean,
@@ -125,6 +126,30 @@ export function extractLastData(
           )
         : -9999;
 
+    let odinValues: Partial<CurrentData> = {};
+
+    if (airData && airData.length > 0) {
+        const lastAirDataPoint = airData[0]; // Assuming the latest is the first element
+
+        if (lastAirDataPoint.sensors) {
+            const shouldConvertAirTemp = defaultTempUnit?.trim().toLowerCase() === 'fahrenheit';
+            const airTempC = lastAirDataPoint.sensors.AirTemp;
+
+            // Handle air temp and its potential conversion to Fahrenheit
+            const displayedAirTemperature = !airTempC
+                ? 'N/A'
+                : shouldConvertAirTemp
+                  ? ((airTempC * 9) / 5 + 32).toFixed(2)
+                  : airTempC.toFixed(2);
+
+            odinValues = {
+                airTemp: displayedAirTemperature,
+                humidity: lastAirDataPoint.sensors.RelHumid?.toFixed(1) ?? 'N/A',
+                windSpeed: lastAirDataPoint.sensors.WindSpeed?.toFixed(1) ?? 'N/A',
+            };
+        }
+    }
+
     return {
         timestamp: lastDataPoint.timestamp || 'Loading...',
         cond: conductivity,
@@ -139,5 +164,6 @@ export function extractLastData(
         sal: salinity,
         salUnit: salUnit,
         wqi: waterQualityIndex,
+        ...odinValues,
     };
 }

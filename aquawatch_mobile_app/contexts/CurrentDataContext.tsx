@@ -3,12 +3,14 @@ import { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 
 import { useGraphData } from '@/contexts/GraphDataContext';
+import useGetOdinData from '@/hooks/useGetOdinData';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
-import { CleanedWaterData } from '@/types/water.interface';
+import { CleanedWaterData, OdinData } from '@/types/water.interface';
 
 interface CurrentDataContextType {
-    data: CleanedWaterData[] | undefined;
+    data: CleanedWaterData[] | undefined; // This stays the same
+    airData?: OdinData[] | undefined;
     error: Error | null;
     defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;
@@ -26,32 +28,39 @@ const CurrentDataContext = createContext({
 export default function CurrentDataProvider({ children }: { children: ReactNode }) {
     const { defaultLocation, defaultTempUnit } = useGraphData();
     const { fetchData } = useGetWaterData();
+    const { fetchOdinData } = useGetOdinData();
 
-    // The useQuery hook replaces useState, useEffect, and setInterval
     const {
-        data,
+        data: waterData, // Rename to avoid naming conflicts
         error,
-        isLoading: loadingCurrent, // Alias isLoading to match your existing context
+        isLoading: loadingCurrent,
     } = useQuery({
-        // 1. Query Key: Uniquely identifies this data.
-        // It automatically re-fetches when `defaultLocation` changes.
-        queryKey: ['currentWaterData', defaultLocation],
-
-        // 2. Query Function: Must be a function that returns a promise.
+        queryKey: ['waterData', defaultLocation], // Use a distinct key
         queryFn: () => fetchData(defaultLocation!, true, 0, 0, 0, 0),
-
-        // 3. Options
-        // The query will not run until `defaultLocation` exists.
         enabled: !!defaultLocation,
+        refetchInterval: 15 * 60 * 1000,
+    });
 
-        // Replaces your setInterval logic to refetch every 15 minutes.
-        // This is simpler and achieves the goal of keeping data fresh.
+    // -- QUERY 2: ONLY FETCHES AIR DATA FOR CHOATE POND --
+    // This provides the optional `airData`.
+    const { data: airData } = useQuery({
+        queryKey: ['airData', defaultLocation], // Use a distinct key
+        queryFn: () => fetchOdinData(),
+        // ✨ This is the key: the query only runs if the location is Choate Pond.
+        enabled: !!defaultLocation && defaultLocation.name === 'Choate Pond',
         refetchInterval: 15 * 60 * 1000,
     });
 
     return (
         <CurrentDataContext.Provider
-            value={{ data, error, defaultLocation, defaultTempUnit, loadingCurrent }}>
+            value={{
+                data: waterData,
+                airData: airData,
+                error,
+                defaultLocation,
+                defaultTempUnit,
+                loadingCurrent,
+            }}>
             {children}
         </CurrentDataContext.Provider>
     );
