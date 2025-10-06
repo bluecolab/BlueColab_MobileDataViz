@@ -1,0 +1,13 @@
+diff --git a/node_modules/@shopify/react-native-skia/lib/module/skia/web/JsiSkTypefaceFactory.js b/node_modules/@shopify/react-native-skia/lib/module/skia/web/JsiSkTypefaceFactory.js
+index 714f760..8a0fa31 100644
+--- a/node_modules/@shopify/react-native-skia/lib/module/skia/web/JsiSkTypefaceFactory.js
++++ b/node_modules/@shopify/react-native-skia/lib/module/skia/web/JsiSkTypefaceFactory.js
+@@ -5,6 +5,8 @@ export class JsiSkTypefaceFactory extends Host {
+     super(CanvasKit);
+   }
+   MakeFreeTypeFaceFromData(data) {
++    if (!this.CanvasKit)
++        return null;
+     const tf = this.CanvasKit.Typeface.MakeFreeTypeFaceFromData(JsiSkTypeface.fromValue(data));
+     if (tf === null) {
+       return null;
