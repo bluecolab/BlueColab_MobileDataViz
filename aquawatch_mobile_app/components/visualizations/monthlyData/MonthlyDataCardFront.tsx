@@ -1,5 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { ErrorType } from '@/types/error.interface';
@@ -8,6 +8,7 @@ import { DailySummaryType } from '@/utils/dataUtils';
 import { EmptyGraph } from '../EmptyGraph';
 
 import Graph from './Graph';
+import GraphVictory from './Graph-web';
 
 interface MonthlyDataCardFrontProp {
     loading: boolean;
@@ -26,7 +27,7 @@ export function MonthlyDataCardFront({
 }: MonthlyDataCardFrontProp) {
     const { isDark, loading: fontLoading, font } = useColorScheme();
 
-    if (fontLoading) {
+    if (fontLoading && !(Platform.OS === 'web')) {
         return <></>;
     }
 
@@ -73,7 +74,11 @@ export function MonthlyDataCardFront({
                 key="month-label">
                 {month}
             </Text>
-            <Graph dailySummary={dailySummary} isDark={isDark} font={font} />
+            {Platform.OS === 'web' ? (
+                <GraphVictory dailySummary={dailySummary} isDark={isDark} />
+            ) : (
+                <Graph dailySummary={dailySummary} isDark={isDark} font={font} />
+            )}
         </View>
     );
 }
