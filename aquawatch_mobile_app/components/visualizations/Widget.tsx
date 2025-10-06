@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Pressable } from 'react-native';
 
 import FlipCard from '@/components/customCards/FlipCard';
 
@@ -75,12 +75,15 @@ export function Widget({ name, value }: WidgetProp) {
 
     return (
         <View className="w-1/2 p-4">
-            <TouchableOpacity activeOpacity={0.9} onPress={flipCard}>
+            <Pressable
+                onPress={flipCard}
+                onStartShouldSetResponder={() => true} // Prevents Pressable from blocking ScrollView
+            >
                 {/* FRONT */}
                 <FlipCard
                     flipCardRef={flipCardRef}
                     Front={
-                        <View className="relative h-[150px] rounded-3xl bg-white p-6 dark:bg-gray-700">
+                        <View className="relative h-[150] rounded-3xl bg-white p-6 dark:bg-gray-700">
                             <TouchableOpacity onPress={flipCard} className="absolute right-3 top-3">
                                 <FontAwesome name="info-circle" size={20} color="gray" />
                             </TouchableOpacity>
@@ -99,19 +102,25 @@ export function Widget({ name, value }: WidgetProp) {
                         </View>
                     }
                     Back={
-                        <ScrollView
-                            className="h-[150px] rounded-3xl bg-white  p-4 dark:bg-gray-700"
-                            contentContainerStyle={{ justifyContent: 'center' }}>
-                            <Text className="mb-1 text-center font-bold dark:text-white">
-                                {name}
-                            </Text>
-                            <Text className="text-center text-sm dark:text-white">
-                                {DESCRIPTIONS[name]}
-                            </Text>
-                        </ScrollView>
+                        <View className="h-[150]">
+                            <ScrollView
+                                className="h-full rounded-3xl bg-white p-4 dark:bg-gray-700"
+                                contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+                                keyboardShouldPersistTaps="handled" // Ensures ScrollView handles taps
+                            >
+                                <Pressable onPress={flipCard}>
+                                    <Text className="mb-1 text-center font-bold dark:text-white">
+                                        {name}
+                                    </Text>
+                                    <Text className="text-center text-sm dark:text-white">
+                                        {DESCRIPTIONS[name]}
+                                    </Text>
+                                </Pressable>
+                            </ScrollView>
+                        </View>
                     }
                 />
-            </TouchableOpacity>
+            </Pressable>
         </View>
     );
 }
