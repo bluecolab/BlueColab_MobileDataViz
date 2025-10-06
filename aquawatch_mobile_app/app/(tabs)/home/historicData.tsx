@@ -6,16 +6,16 @@ import {
     View,
     ScrollView,
     Dimensions,
-    Modal,
     Text,
     TouchableWithoutFeedback,
     Pressable,
 } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 import CustomDropdown from '@/components/CustomDropdown';
+import { ModalWrapper, ModalWrapperRef } from '@/components/modals/ModalWrapper';
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -43,7 +43,6 @@ export default function HistoricData() {
     } = useGraphData();
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
-    const [modalOpen, setModalOpen] = useState(false);
 
     const unitMap =
         units[
@@ -61,14 +60,15 @@ export default function HistoricData() {
     const [selectedMonth, setSelectedMonth] = useState(lastMonth);
     const [selectedYear, setSelectedYear] = useState(lastMonthYear);
 
-    const { width, height } = Dimensions.get('window');
+    const { width } = Dimensions.get('window');
+
+    const modalRef = useRef<ModalWrapperRef>(null);
 
     const progress = useSharedValue(0);
 
-    const ref = useRef<ICarouselInstance>(null);
-
+    const carouselRef = useRef<ICarouselInstance>(null);
     const onPressPagination = (index: number) => {
-        ref.current?.scrollTo({
+        carouselRef.current?.scrollTo({
             /**
              * Calculate the difference between the current index and the target index
              * to ensure that the carousel scrolls to the nearest index
@@ -152,42 +152,14 @@ export default function HistoricData() {
 
     const HeaderRightButton = React.useCallback(
         () => (
-            <Pressable onPress={() => setModalOpen(!modalOpen)}>
+            <Pressable onPress={() => modalRef.current?.openModal()}>
                 <View>
                     <FontAwesome name="cog" size={32} color={isDark ? 'white' : '#333'} />
                 </View>
             </Pressable>
         ),
-        [modalOpen, isDark]
+        [isDark]
     );
-
-    const backdropOpacity = useSharedValue(0);
-    const modalTranslateY = useSharedValue(height); // Start off-screen
-
-    const backdropAnimatedStyle = useAnimatedStyle(() => ({
-        opacity: backdropOpacity.value,
-    }));
-
-    const modalAnimatedStyle = useAnimatedStyle(() => ({
-        transform: [{ translateY: modalTranslateY.value }],
-    }));
-
-    const openModal = useCallback(() => {
-        backdropOpacity.value = withTiming(1, { duration: 300 });
-        modalTranslateY.value = withTiming(0, { duration: 200 });
-    }, [backdropOpacity, modalTranslateY]);
-
-    const closeModal = useCallback(() => {
-        backdropOpacity.value = withTiming(0, { duration: 300 });
-        modalTranslateY.value = withTiming(height, { duration: 300 });
-        setModalOpen(false);
-    }, [backdropOpacity, height, modalTranslateY]);
-
-    useEffect(() => {
-        if (modalOpen) {
-            openModal();
-        }
-    }, [modalOpen, openModal]);
 
     return (
         <>
@@ -214,7 +186,7 @@ export default function HistoricData() {
                     </Text>
 
                     <Carousel
-                        ref={ref}
+                        ref={carouselRef}
                         loop
                         width={width}
                         onProgressChange={progress}
@@ -267,78 +239,58 @@ export default function HistoricData() {
                     </View>
                 </ScrollView>
 
-                <Modal transparent visible={modalOpen} animationType="none">
-                    <TouchableWithoutFeedback onPress={closeModal}>
-                        <Animated.View
-                            style={[
-                                {
-                                    flex: 1,
-                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                },
-                                backdropAnimatedStyle,
-                            ]}
-                        />
-                    </TouchableWithoutFeedback>
+                <ModalWrapper
+                    ref={modalRef}
+                    modalHeight={'80%'}
+                    body={
+                        <>
+                            <View className="absolute right-8 top-3">
+                                <TouchableWithoutFeedback
+                                    onPress={() => modalRef.current?.closeModal()}>
+                                    <Text className="text-2xl dark:text-white">✕</Text>
+                                </TouchableWithoutFeedback>
+                            </View>
 
-                    <Animated.View
-                        style={[
-                            {
-                                position: 'absolute',
-                                bottom: 0,
-                                height: '80%',
-                                width: '100%',
-                                backgroundColor: isDark ? '#1a202c' : '#f1f1f1',
-                                borderTopLeftRadius: 20,
-                                borderTopRightRadius: 20,
-                                padding: 20,
-                            },
-                            modalAnimatedStyle,
-                        ]}>
-                        <View className="absolute right-8 top-3">
-                            <TouchableWithoutFeedback onPress={closeModal}>
-                                <Text className="text-2xl dark:text-white">✕</Text>
-                            </TouchableWithoutFeedback>
-                        </View>
+                            <View className="elevation-[20] z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
+                                <Text className="text-center text-lg font-bold dark:text-white">
+                                    Historic Data Settings
+                                </Text>
+                            </View>
+                            <View className="elevation-[20] z-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
+                                <Text className="text-center text-lg font-bold dark:text-white">
+                                    Location 1
+                                </Text>
 
-                        <View className="elevation-[20] z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
-                            <Text className="text-center text-lg font-bold dark:text-white">
-                                Historic Data Settings
-                            </Text>
-                        </View>
-                        <View className="elevation-[20] z-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
-                            <Text className="text-center text-lg font-bold dark:text-white">
-                                Location 1
-                            </Text>
-
-                            <View className="w-full flex-row space-x-4">
-                                <View className="flex-[2]">
-                                    <CustomDropdown
-                                        label="Month"
-                                        options={monthOptions}
-                                        value={selectedMonth.toString()}
-                                        onSelect={onMonthSelect}
-                                    />
+                                <View className="w-full flex-row space-x-4">
+                                    <View className="flex-[2]">
+                                        <CustomDropdown
+                                            label="Month"
+                                            options={monthOptions}
+                                            value={selectedMonth.toString()}
+                                            onSelect={onMonthSelect}
+                                        />
+                                    </View>
+                                    <View className="flex-[2]">
+                                        <CustomDropdown
+                                            label="Year"
+                                            options={yearOptions}
+                                            value={selectedYear.toString()}
+                                            onSelect={onYearSelect}
+                                        />
+                                    </View>
                                 </View>
-                                <View className="flex-[2]">
+                                <View>
                                     <CustomDropdown
-                                        label="Year"
-                                        options={yearOptions}
-                                        value={selectedYear.toString()}
-                                        onSelect={onYearSelect}
+                                        label="Location"
+                                        options={locationOptions}
+                                        value={selectedLocation.toString()}
+                                        onSelect={onLocationSelect}
                                     />
                                 </View>
                             </View>
-                            <View>
-                                <CustomDropdown
-                                    label="Location"
-                                    options={locationOptions}
-                                    value={selectedLocation.toString()}
-                                    onSelect={onLocationSelect}
-                                />
-                            </View>
-                        </View>
-                    </Animated.View>
-                </Modal>
+                        </>
+                    }
+                />
             </View>
         </>
     );
