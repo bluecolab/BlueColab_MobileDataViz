@@ -62,7 +62,11 @@ export default function CurrentData() {
 
                 {/* — Current‐Data WQI Gauge — */}
                 <View className="mt-6 items-center px-4">
-                    <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
+                    {defaultLocation?.name === 'Choate Pond' ? (
+                        <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
+                    ) : (
+                        <></>
+                    )}
                 </View>
                 <View className="pb-[45]">
                     <Text></Text>
