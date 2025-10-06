@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
 // Function to get air quality data
 const getAirQuality = async (latitude: number, longitude: number) => {
     // TODO: Private API key
-    const apiKey = '4fd184c24fcacbb3bdf4ffcfb79ed8b9';
+    const apiKey = 'd4ed5de7a585258cb8851ed5cc64525d';
     const url = `${config.OPEN_WEATHER_API_URL}/data/2.5/air_pollution?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
 
     try {
