@@ -103,7 +103,7 @@ export default function FlipCard({
             <Animated.View
                 style={[
                     {
-                        zIndex: 2,
+                        zIndex: 0,
                         backfaceVisibility: 'hidden',
                     },
                     backCardAnimatedStyle,
