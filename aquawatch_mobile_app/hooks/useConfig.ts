@@ -4,7 +4,7 @@ import { Config, LocationType } from '@/types/config.interface';
 
 export const config = {
     // Not sure why only lets me query a minimum of 5 hours
-    BLUE_COLAB_API_ODIN_URL: 'https://api.bluecolab.cc/api/influx/sensordata/Odin/latest',
+    BLUE_COLAB_API_ODIN_URL: 'https://colabprod01.pace.edu/api/influx/sensordata/Odin',
     BLUE_COLAB_API_URL: 'https://colabprod01.pace.edu/api/influx/sensordata',
     BLUE_COLAB_API_CONFIG: {
         defaultMeasurement: 'Alan',
