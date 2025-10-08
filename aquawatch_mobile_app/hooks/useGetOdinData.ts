@@ -8,7 +8,7 @@ import { OdinData } from '@/types/water.interface';
 export default function useGetOdinData() {
     const networkState = useNetworkState();
 
-    const fetchOdinData = useCallback(async (): Promise<OdinData[]> => {
+    const fetchOdinData = useCallback(async (): Promise<OdinData> => {
         if (networkState.isInternetReachable === false) {
             throw new Error('No internet connection');
         }
@@ -30,7 +30,7 @@ export default function useGetOdinData() {
         try {
             const response = await axios.get(url);
             const apiData = response.data;
-            console.log(apiData[0]);
+            console.log(apiData);
             return apiData;
         } catch (error) {
             // Log the original error for debugging

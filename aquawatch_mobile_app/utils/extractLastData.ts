@@ -37,7 +37,7 @@ const currentDataErrorObject: CurrentData = {
 
 export function extractLastData(
     data: CleanedWaterData[] | undefined,
-    airData: OdinData[] | undefined,
+    airData: OdinData | undefined,
     defaultLocation: LocationType | undefined,
     defaultTempUnit: string | undefined,
     loading: boolean,
@@ -128,26 +128,22 @@ export function extractLastData(
 
     let odinValues: Partial<CurrentData> = {};
 
-    if (airData && airData.length > 0) {
-        const lastAirDataPoint = airData[0]; // Assuming the latest is the first element
+    if (airData) {
+        const shouldConvertAirTemp = defaultTempUnit?.trim().toLowerCase() === 'fahrenheit';
+        const airTempC = airData.sensors.AirTemp;
 
-        if (lastAirDataPoint.sensors) {
-            const shouldConvertAirTemp = defaultTempUnit?.trim().toLowerCase() === 'fahrenheit';
-            const airTempC = lastAirDataPoint.sensors.AirTemp;
+        // Handle air temp and its potential conversion to Fahrenheit
+        const displayedAirTemperature = !airTempC
+            ? 'N/A'
+            : shouldConvertAirTemp
+              ? ((airTempC * 9) / 5 + 32).toFixed(2)
+              : airTempC.toFixed(2);
 
-            // Handle air temp and its potential conversion to Fahrenheit
-            const displayedAirTemperature = !airTempC
-                ? 'N/A'
-                : shouldConvertAirTemp
-                  ? ((airTempC * 9) / 5 + 32).toFixed(2)
-                  : airTempC.toFixed(2);
-
-            odinValues = {
-                airTemp: displayedAirTemperature,
-                humidity: lastAirDataPoint.sensors.RelHumid?.toFixed(1) ?? 'N/A',
-                windSpeed: lastAirDataPoint.sensors.WindSpeed?.toFixed(1) ?? 'N/A',
-            };
-        }
+        odinValues = {
+            airTemp: displayedAirTemperature,
+            humidity: airData.sensors.RelHumid?.toFixed(1) ?? 'N/A',
+            windSpeed: airData.sensors.WindSpeed?.toFixed(1) ?? 'N/A',
+        };
     }
 
     return {

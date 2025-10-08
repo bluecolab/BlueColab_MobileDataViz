@@ -182,21 +182,29 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
                         {config.BLUE_COLAB_API_CONFIG.validMatches.some(
                             (loc) => loc.name === defaultLocation.name
                         ) ? (
-                            <ParamView param={lastDataPoint.wqi} name="WQI" />
+                            <>
+                                <ParamView param={lastDataPoint.wqi} name="WQI" />
+                                {airData && (
+                                    <>
+                                        <View className="w-full">
+                                            <Text className="text-center text-2xl font-bold text-white">
+                                                Live Odin Data
+                                            </Text>
+                                        </View>
+                                        {Object.entries(airData.sensors).map(([name, value]) => (
+                                            <ParamView
+                                                key={name}
+                                                param={Number(value).toFixed(1)}
+                                                name={formatSensorName(name)}
+                                                unit={getSensorUnit(name)}
+                                            />
+                                        ))}
+                                    </>
+                                )}
+                            </>
                         ) : (
                             <></>
                         )}
-
-                        {airData &&
-                            airData.length > 0 &&
-                            Object.entries(airData[0].sensors).map(([name, value]) => (
-                                <ParamView
-                                    key={name}
-                                    param={Number(value).toFixed(1)}
-                                    name={formatSensorName(name)}
-                                    unit={getSensorUnit(name)}
-                                />
-                            ))}
                     </View>
 
                     <Timer timestamp={lastDataPoint.timestamp} />

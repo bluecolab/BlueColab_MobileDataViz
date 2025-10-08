@@ -10,7 +10,7 @@ import { CleanedWaterData, OdinData } from '@/types/water.interface';
 
 interface CurrentDataContextType {
     data: CleanedWaterData[] | undefined; // This stays the same
-    airData?: OdinData[] | undefined;
+    airData?: OdinData | undefined;
     error: Error | null;
     defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;

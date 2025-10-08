@@ -1,21 +1,24 @@
 import { Stack } from 'expo-router';
 import { View, Text, ScrollView } from 'react-native';
 
-import { Widget } from '@/components/visualizations/Widget';
+import { Widget, SENSOR_MAP } from '@/components/visualizations/Widget';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
+import { config } from '@/hooks/useConfig';
 import { extractLastData } from '@/utils/extractLastData';
 
 export default function CurrentData() {
     const { isDark } = useColorScheme();
-    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
+    const { data, airData, defaultLocation, defaultTempUnit, loadingCurrent, error } =
+        useCurrentData();
 
     const { showConvertedUnits: showConvertedUnitsGlobal } = useGraphData();
 
     const lastDataPoint = extractLastData(
         data,
+        airData,
         defaultLocation,
         defaultTempUnit,
         loadingCurrent,
@@ -58,15 +61,37 @@ export default function CurrentData() {
                     <Widget name="pH" value={lastDataPoint.pH} />
                     <Widget name="Turbidity" value={lastDataPoint.turb} />
                     <Widget name="Oxygen" value={lastDataPoint.do} />
+                    {airData && (
+                        <>
+                            <View className="w-full">
+                                <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
+                                    Live Odin Data
+                                </Text>
+                            </View>
+                            {Object.entries(airData.sensors).map(([key, value]) => {
+                                // Use the map to get the correct widget name
+                                const widgetName = SENSOR_MAP[key];
+
+                                if (widgetName) {
+                                    return <Widget key={key} name={widgetName} value={value} />;
+                                }
+
+                                return null;
+                            })}
+                        </>
+                    )}
                 </View>
 
                 {/* — Current‐Data WQI Gauge — */}
-                <View className="mt-6 items-center px-4">
-                    <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
-                </View>
-                <View className="pb-[25]">
-                    <Text></Text>
-                </View>
+                {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                    (loc) => loc.name === defaultLocation?.name
+                ) ? (
+                    <View className="mb-12 mt-6 items-center px-4">
+                        <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
+                    </View>
+                ) : (
+                    <></>
+                )}
             </ScrollView>
         </>
     );
