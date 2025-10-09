@@ -9,6 +9,7 @@ import {
     Text,
     TouchableWithoutFeedback,
     Pressable,
+    Platform,
 } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
@@ -228,7 +229,8 @@ export default function HistoricData() {
                         onPress={onPressPagination}
                     />
 
-                    {(selectedLocationTemp ?? defaultLocation?.name) === 'Choate Pond' ? (
+                    {(selectedLocationTemp ?? defaultLocation?.name) === 'Choate Pond' &&
+                    Platform.OS !== 'web' ? (
                         <WQICard data={data} loading={loading} />
                     ) : (
                         <></>

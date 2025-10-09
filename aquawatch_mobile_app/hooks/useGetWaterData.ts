@@ -1,6 +1,7 @@
 import axios, { isAxiosError } from 'axios';
 import { useNetworkState } from 'expo-network';
 import { useCallback, useMemo } from 'react';
+import { Platform } from 'react-native';
 
 import { config, useAPIConfig } from '@/hooks/useConfig';
 import { LocationType } from '@/types/config.interface';
@@ -110,53 +111,107 @@ export default function useGetWaterData() {
                 return;
             }
 
-            axios
-                .get(url)
-                .then((response) => {
-                    const apiData = response.data;
-                    if (
-                        BLUE_COLAB_API_CONFIG.validMatches.some(
-                            (loc) => loc.name === defaultLocation.name
-                        )
-                    ) {
-                        const cleanedData = cleanChoatePondData(apiData);
-                        setData(cleanedData);
-                    } else {
-                        const cleanedData = cleanHudsonRiverData(apiData);
-                        setData(cleanedData);
-                    }
-                })
-                .catch((error) => {
-                    if (isAxiosError(error)) {
-                        if (error.response) {
-                            if (error.response.data.status === 404)
+            if (Platform.OS === 'web') {
+                axios
+                    .post('/api/bluecolab', {
+                        request: url,
+                    })
+                    .then((response) => {
+                        const apiData = response.data;
+                        if (
+                            BLUE_COLAB_API_CONFIG.validMatches.some(
+                                (loc) => loc.name === defaultLocation.name
+                            )
+                        ) {
+                            const cleanedData = cleanChoatePondData(apiData);
+                            setData(cleanedData);
+                        } else {
+                            const cleanedData = cleanHudsonRiverData(apiData);
+                            setData(cleanedData);
+                        }
+                    })
+                    .catch((error) => {
+                        if (isAxiosError(error)) {
+                            if (error.response) {
+                                if (error.response.data.status === 404)
+                                    setError({
+                                        message:
+                                            'Error: No data available, select a different date range',
+                                        code: 404,
+                                    });
+                                else
+                                    setError({
+                                        message: `Error: HTTP Error: ${error.response.status}`,
+                                    });
+                            } else if (error.request) {
                                 setError({
                                     message:
-                                        'Error: No data available, select a different date range',
-                                    code: 404,
+                                        'Error: No response from server, check WiFi connection',
                                 });
-                            else
+                            } else {
                                 setError({
-                                    message: `Error: HTTP Error: ${error.response.status}`,
+                                    message: `Error: A unknown error occurred, try restarting the app.`,
                                 });
-                        } else if (error.request) {
-                            setError({
-                                message: 'Error: No response from server, check WiFi connection',
-                            });
+                            }
+                            console.error('Axios error: ', error);
                         } else {
-                            setError({
-                                message: `Error: A unknown error occurred, try restarting the app.`,
-                            });
+                            console.error('Non-Axios error: ', error);
+                            setError({ message: 'Unknown error occurred' });
                         }
-                        console.error('Axios error: ', error);
-                    } else {
-                        console.error('Non-Axios error: ', error);
-                        setError({ message: 'Unknown error occurred' });
-                    }
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
+                    })
+                    .finally(() => {
+                        setLoading(false);
+                    });
+            } else {
+                axios
+                    .get(url)
+                    .then((response) => {
+                        const apiData = response.data;
+                        if (
+                            BLUE_COLAB_API_CONFIG.validMatches.some(
+                                (loc) => loc.name === defaultLocation.name
+                            )
+                        ) {
+                            const cleanedData = cleanChoatePondData(apiData);
+                            setData(cleanedData);
+                        } else {
+                            const cleanedData = cleanHudsonRiverData(apiData);
+                            setData(cleanedData);
+                        }
+                    })
+                    .catch((error) => {
+                        if (isAxiosError(error)) {
+                            if (error.response) {
+                                if (error.response.data.status === 404)
+                                    setError({
+                                        message:
+                                            'Error: No data available, select a different date range',
+                                        code: 404,
+                                    });
+                                else
+                                    setError({
+                                        message: `Error: HTTP Error: ${error.response.status}`,
+                                    });
+                            } else if (error.request) {
+                                setError({
+                                    message:
+                                        'Error: No response from server, check WiFi connection',
+                                });
+                            } else {
+                                setError({
+                                    message: `Error: A unknown error occurred, try restarting the app.`,
+                                });
+                            }
+                            console.error('Axios error: ', error);
+                        } else {
+                            console.error('Non-Axios error: ', error);
+                            setError({ message: 'Unknown error occurred' });
+                        }
+                    })
+                    .finally(() => {
+                        setLoading(false);
+                    });
+            }
         },
         [
             BLUE_COLAB_API_CONFIG.validMatches,
