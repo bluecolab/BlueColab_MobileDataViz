@@ -71,6 +71,33 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
     );
 };
 
+const formatSensorName = (name: string) => {
+    return name.replace(/([A-Z])/g, ' $1').trim();
+};
+
+const getSensorUnit = (sensorName: string) => {
+    switch (sensorName) {
+        case 'AirTemp':
+        case 'RelHumidTemp':
+            return '°C';
+        case 'BaroPressure':
+            return 'hPa';
+        case 'Rain':
+            return 'mm';
+        case 'RelHumid':
+            return '%';
+        case 'WindSpeed':
+        case 'MaxWindSpeed':
+            return 'm/s';
+        case 'WindDir':
+            return '°';
+        case 'SolarFlux':
+            return 'W/m²';
+        default:
+            return '';
+    }
+};
+
 /**
  * The quick current data component. It displays the current data in a quick grid-view format.
  * @returns {JSX.Element}
@@ -78,7 +105,8 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
 // Removed duplicate export default function QuickCurrentData()
 export default function QuickCurrentData({ showConvertedUnits }: { showConvertedUnits?: boolean }) {
     // All data is received from the context provider
-    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
+    const { data, airData, defaultLocation, defaultTempUnit, loadingCurrent, error } =
+        useCurrentData();
     // Read global toggle from GraphDataContext as the source of truth
     const { showConvertedUnits: showConvertedUnitsGlobal } = useGraphData();
     const effectiveShowConverted = showConvertedUnits ?? showConvertedUnitsGlobal;
@@ -89,6 +117,7 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
 
     const lastDataPoint = extractLastData(
         data,
+        airData,
         defaultLocation,
         defaultTempUnit,
         loadingCurrent,
@@ -149,10 +178,30 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
                             name="Salinity"
                             unit={lastDataPoint.salUnit}
                         />
+
                         {config.BLUE_COLAB_API_CONFIG.validMatches.some(
                             (loc) => loc.name === defaultLocation.name
                         ) ? (
-                            <ParamView param={lastDataPoint.wqi} name="WQI" />
+                            <>
+                                <ParamView param={lastDataPoint.wqi} name="WQI" />
+                                {airData && (
+                                    <>
+                                        <View className="w-full">
+                                            <Text className="text-center text-2xl font-bold text-white">
+                                                Live Odin Data
+                                            </Text>
+                                        </View>
+                                        {Object.entries(airData.sensors).map(([name, value]) => (
+                                            <ParamView
+                                                key={name}
+                                                param={Number(value).toFixed(1)}
+                                                name={formatSensorName(name)}
+                                                unit={getSensorUnit(name)}
+                                            />
+                                        ))}
+                                    </>
+                                )}
+                            </>
                         ) : (
                             <></>
                         )}
