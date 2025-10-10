@@ -38,12 +38,12 @@ export default function WQICardFront({ data, loading, wqi }: WQICardFrontProps) 
                     />
                 </View>
                 <View style={{ height: 200 }}>
-                    <View className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                    <View className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
                         <Text className="text-3xl font-bold text-black dark:text-white">
                             {percentage}%
                         </Text>
                     </View>
-                    
+
                     <View className="absolute inset-0">
                         <PolarChart percent={percentage} isDark={isDark} />
                     </View>
