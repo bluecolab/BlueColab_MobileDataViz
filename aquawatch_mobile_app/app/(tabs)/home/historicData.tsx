@@ -118,20 +118,32 @@ export default function HistoricData() {
 
     const onMonthSelect = useCallback(
         (value: string) => {
-            setSelectedMonth(Number.parseInt(value, 10));
-            setMonth(Number.parseInt(value, 10));
-            setEndDay(getDaysInMonthFn(Number.parseInt(value, 10), selectedYear));
+            const newMonth = Number.parseInt(value, 10);
+            setSelectedMonth(newMonth);
+            setMonth(newMonth);
+            // If selecting the current month in the current year, clamp to today's day
+            const isCurrentSelection = newMonth === currentMonth && selectedYear === currentYear;
+            const endDay = isCurrentSelection
+                ? new Date().getDate()
+                : getDaysInMonthFn(newMonth, selectedYear);
+            setEndDay(endDay);
         },
-        [selectedYear, setMonth, setEndDay]
+        [selectedYear, setMonth, setEndDay, currentMonth, currentYear]
     );
 
     const onYearSelect = useCallback(
         (value: string) => {
-            setSelectedYear(Number.parseInt(value, 10));
-            setYear(Number.parseInt(value, 10));
-            setEndDay(getDaysInMonthFn(selectedMonth, Number.parseInt(value, 10)));
+            const newYear = Number.parseInt(value, 10);
+            setSelectedYear(newYear);
+            setYear(newYear);
+            // If selecting the current month in the current year, clamp to today's day
+            const isCurrentSelection = selectedMonth === currentMonth && newYear === currentYear;
+            const endDay = isCurrentSelection
+                ? new Date().getDate()
+                : getDaysInMonthFn(selectedMonth, newYear);
+            setEndDay(endDay);
         },
-        [selectedMonth, setYear, setEndDay]
+        [selectedMonth, setYear, setEndDay, currentMonth, currentYear]
     );
 
     const onLocationSelect = useCallback(
