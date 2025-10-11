@@ -107,7 +107,9 @@ export default function useGetWaterData() {
 
             try {
                 let response =
-                    Platform.OS === 'web'
+                    BLUE_COLAB_API_CONFIG.validMatches.some(
+                        (loc) => loc.name === defaultLocation.name
+                    ) && Platform.OS === 'web'
                         ? await axios.post('/api/bluecolab', {
                               request: url,
                           })
