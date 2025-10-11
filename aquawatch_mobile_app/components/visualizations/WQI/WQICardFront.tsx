@@ -16,7 +16,7 @@ export default function WQICardFront({ data, loading, wqi }: WQICardFrontProps) 
     const { calculateWQI } = dataUtils();
     const { isDark } = useColorScheme();
 
-    if (!data || data.length === 0) {
+    if (!data) {
         return <Text>No data available yet!</Text>;
     }
 
