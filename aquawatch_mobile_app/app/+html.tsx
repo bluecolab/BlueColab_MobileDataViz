@@ -18,6 +18,11 @@ export default function Root({ children }: PropsWithChildren) {
 
                 <link rel="manifest" href="/manifest.json" />
 
+                {/* Favicon for web */}
+                <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+                <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+                <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+
                 {/*
           Disable body scrolling on web. This makes ScrollView components work closer to how they do on native.
           However, body scrolling is often nice to have for mobile web. If you want to enable it, remove this line.
