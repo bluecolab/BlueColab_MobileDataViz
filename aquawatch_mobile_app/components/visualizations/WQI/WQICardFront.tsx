@@ -16,6 +16,10 @@ export default function WQICardFront({ data, loading, wqi }: WQICardFrontProps) 
     const { calculateWQI } = dataUtils();
     const { isDark } = useColorScheme();
 
+    if (!data || data.length === 0) {
+        return <Text>No data available yet!</Text>;
+    }
+
     const filteredData = (data as CleanedWaterData[]).filter(
         (item) => item.Cond !== undefined
     ) as any;

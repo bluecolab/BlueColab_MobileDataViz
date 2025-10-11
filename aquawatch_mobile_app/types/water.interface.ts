@@ -134,4 +134,30 @@ export interface CurrentData {
     sal: number | string;
     salUnit: string;
     wqi: number | string;
+    airTemp?: number | string;
+    humidity?: number | string;
+    windSpeed?: number | string;
 }
+
+export type OdinData = {
+    measurement: string;
+    deployment_id: number;
+    timestamp: string;
+    sensors: {
+        AirTemp: number;
+        BaroPressure: number;
+        DistLightning: number;
+        LightningStrikes: number;
+        MaxWindSpeed: number;
+        Rain: number;
+        RelHumid: number;
+        RelHumidTemp: number;
+        SolarFlux: number;
+        SolarTotalFlux: number;
+        TiltNS: number;
+        TiltWE: number;
+        VaporPressure: number;
+        WindDir: number;
+        WindSpeed: number;
+    };
+};
