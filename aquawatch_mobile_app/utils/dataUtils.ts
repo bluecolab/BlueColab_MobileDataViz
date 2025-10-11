@@ -21,43 +21,32 @@ export default function dataUtils() {
         }
 
         // Group the data by date for unit indicated by finalUnitToUse (i.e. the key is the date, the value is list of number
-        // values for that date) and convert the temperature to Fahrenheit if needed. Filter out invalid sentinel values.
+        // values for that date) and convert the temperature to Fahrenheit if needed
         const groupedData: GroupedData = data.reduce((acc: GroupedData, item: any) => {
             const date = new Date(item.timestamp).toISOString().split('T')[0];
-            const raw = item[finalUnitToUse ?? 'Temp'];
             const value =
                 finalUnitToUse === 'Temp' && defaultTempUnit?.trim() === 'Fahrenheit'
-                    ? typeof raw === 'number'
-                        ? raw * (9 / 5) + 32
-                        : raw
-                    : raw;
+                    ? item[finalUnitToUse] * (9 / 5) + 32
+                    : item[finalUnitToUse ?? 'Temp'];
             if (!acc[date]) acc[date] = [];
-            if (typeof value === 'number' && Number.isFinite(value) && value !== -999999) {
-                acc[date].push(value);
-            }
+            acc[date].push(value);
             return acc;
         }, {});
 
-        // Build daily summary entries from valid samples only and skip empty days
-        let dailySummary = Object.entries(groupedData)
-            .filter(([, values]) => values.length > 0)
-            .map(([date, values]): DailySummaryType => {
-                const day = new Date(date).getDate();
-                const min = Math.min(...values);
-                const max = Math.max(...values);
-                const avg = values.reduce((sum, v) => sum + v, 0) / values.length;
-                return { day, avg, min, max };
-            });
-
-        // All stats are computed on filtered valid values above; no further sanitization required
-
-        // Remove entries where all values are undefined (e.g., placeholder or future days)
-        dailySummary = dailySummary.filter(
-            (entry) => entry.avg !== undefined || entry.min !== undefined || entry.max !== undefined
+        const dailySummary = Object.keys(groupedData).map(
+            (date): DailySummaryType => ({
+                day: new Date(date).getUTCDate(),
+                avg: groupedData[date].reduce((sum, v) => sum + v, 0) / groupedData[date].length,
+                min: Math.min(...groupedData[date]),
+                max: Math.max(...groupedData[date]),
+            })
         );
 
-        // Ensure days are sorted ascending to avoid rendering artifacts
-        dailySummary.sort((a, b) => a.day - b.day);
+        dailySummary.forEach((ele: DailySummaryType) => {
+            ele.avg = !isNaN(ele.avg ?? NaN) && ele.avg !== -999999 ? ele.avg : undefined;
+            ele.min = !isNaN(ele.min ?? NaN) && ele.min !== -999999 ? ele.min : undefined;
+            ele.max = !isNaN(ele.max ?? NaN) && ele.max !== -999999 ? ele.max : undefined;
+        });
 
         // Calculate overall min, max, and average
         const allValues = Object.values(groupedData)
