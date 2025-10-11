@@ -1,5 +1,6 @@
+import { FontAwesome } from '@expo/vector-icons';
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 
 import LinkComp from '@/components/LinkComp';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -29,6 +30,8 @@ interface MonthlyDataCardBackProps {
     overallAvg: number | 'N/A';
     yAxisLabel: string;
     meta: any;
+    flipCard: () => void;
+    title: string;
 }
 
 export function MonthlyDataCardBack({
@@ -37,71 +40,94 @@ export function MonthlyDataCardBack({
     overallAvg,
     yAxisLabel,
     meta,
+    flipCard,
+    title,
 }: MonthlyDataCardBackProps) {
     const { isDark } = useColorScheme();
 
     return (
-        <ScrollView
-            nestedScrollEnabled
-            className="h-full rounded-3xl bg-white p-4 dark:bg-gray-700">
-            <View
-                style={{
-                    borderBottomWidth: 1,
-                    borderBottomColor: isDark ? 'white' : 'black',
-                    marginVertical: 10,
-                }}
-            />
+        <View className="h-[340] rounded-3xl bg-white px-2 dark:bg-gray-700">
+            <ScrollView nestedScrollEnabled className=" rounded-3xl bg-white dark:bg-gray-700">
+                <Pressable onPress={flipCard}>
+                    <View className="w-full self-center">
+                        <Text className="rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-white">
+                            {title}
+                        </Text>
+                        <FontAwesome
+                            className="absolute right-0 top-2"
+                            name="info-circle"
+                            size={32}
+                            color={isDark ? 'white' : 'grey'}
+                        />
+                    </View>
+                    <View
+                        style={{
+                            borderBottomWidth: 1,
+                            borderBottomColor: isDark ? 'white' : 'black',
+                            marginVertical: 10,
+                        }}
+                    />
 
-            <Text className="text-center text-lg font-semibold dark:text-white">Quick Summary</Text>
-            <View className="w-full flex-row items-center justify-center ">
-                <View className="flex-1">
-                    <Text className="text-center text-3xl font-bold dark:text-white">
-                        {overallMin === 'N/A' ? overallMin : overallMin.toFixed(1)}
+                    <Text className="text-center text-lg font-semibold dark:text-white">
+                        Quick Summary
                     </Text>
-                    <Text className="text-center dark:text-white">Low</Text>
-                </View>
-                <View className="flex-1">
-                    <Text className="text-center text-3xl font-bold dark:text-white">
-                        {overallAvg === 'N/A' ? overallAvg : overallAvg.toFixed(1)}
+                    <View className="w-full flex-row items-center justify-center ">
+                        <View className="flex-1">
+                            <Text className="text-center text-3xl font-bold dark:text-white">
+                                {overallMin === 'N/A' ? overallMin : overallMin.toFixed(1)}
+                            </Text>
+                            <Text className="text-center dark:text-white">Low</Text>
+                        </View>
+                        <View className="flex-1">
+                            <Text className="text-center text-3xl font-bold dark:text-white">
+                                {overallAvg === 'N/A' ? overallAvg : overallAvg.toFixed(1)}
+                            </Text>
+                            <Text className="text-center dark:text-white">Average</Text>
+                        </View>
+                        <View className="flex-1">
+                            <Text className="text-center text-3xl font-bold dark:text-white">
+                                {overallMax === 'N/A' ? overallMax : overallMax.toFixed(1)}
+                            </Text>
+                            <Text className="text-center dark:text-white">High</Text>
+                        </View>
+                    </View>
+
+                    <Text className="text-center text-lg font-semibold dark:text-white">
+                        Skew of Average
                     </Text>
-                    <Text className="text-center dark:text-white">Average</Text>
-                </View>
-                <View className="flex-1">
-                    <Text className="text-center text-3xl font-bold dark:text-white">
-                        {overallMax === 'N/A' ? overallMax : overallMax.toFixed(1)}
+
+                    {overallAvg !== 'N/A' && overallMin !== 'N/A' && overallMax !== 'N/A' && (
+                        <PercentageDotLine
+                            percentage={
+                                ((overallAvg - overallMin) / (overallMax - overallMin)) * 100
+                            }
+                        />
+                    )}
+
+                    <View
+                        style={{
+                            borderBottomWidth: 1,
+                            borderBottomColor: isDark ? 'white' : 'black',
+                            marginVertical: 10,
+                        }}
+                    />
+
+                    <Text className="text-lg font-semibold dark:text-white">
+                        What is {yAxisLabel}?
                     </Text>
-                    <Text className="text-center dark:text-white">High</Text>
-                </View>
-            </View>
-
-            <Text className="text-center text-lg font-semibold dark:text-white">
-                Skew of Average
-            </Text>
-
-            {overallAvg !== 'N/A' && overallMin !== 'N/A' && overallMax !== 'N/A' && (
-                <PercentageDotLine
-                    percentage={((overallAvg - overallMin) / (overallMax - overallMin)) * 100}
-                />
-            )}
-
-            <View
-                style={{
-                    borderBottomWidth: 1,
-                    borderBottomColor: isDark ? 'white' : 'black',
-                    marginVertical: 10,
-                }}
-            />
-
-            <Text className="text-lg font-semibold dark:text-white">What is {yAxisLabel}?</Text>
-            <Text className="text-md dark:text-gray-300">{meta.description}</Text>
-            <Text className="mt-4 text-lg font-semibold dark:text-white">Why does it matter?</Text>
-            <Text className="text-md dark:text-gray-300">{meta?.reason}</Text>
-            <Text className="pt-4 text-lg font-semibold dark:text-white">References</Text>
-            {meta.ref &&
-                meta.ref.map((ref: any, index: number) => (
-                    <LinkComp key={index} label={ref.label} url={ref.url} />
-                ))}
-            <Text />
-        </ScrollView>
+                    <Text className="text-md dark:text-gray-300">{meta.description}</Text>
+                    <Text className="mt-4 text-lg font-semibold dark:text-white">
+                        Why does it matter?
+                    </Text>
+                    <Text className="text-md dark:text-gray-300">{meta?.reason}</Text>
+                    <Text className="pt-4 text-lg font-semibold dark:text-white">References</Text>
+                    {meta.ref &&
+                        meta.ref.map((ref: any, index: number) => (
+                            <LinkComp key={index} label={ref.label} url={ref.url} />
+                        ))}
+                    <Text />
+                </Pressable>
+            </ScrollView>
+        </View>
     );
 }
