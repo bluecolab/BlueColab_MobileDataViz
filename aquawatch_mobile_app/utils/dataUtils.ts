@@ -35,7 +35,7 @@ export default function dataUtils() {
 
         const dailySummary = Object.keys(groupedData).map(
             (date): DailySummaryType => ({
-                day: new Date(date).getDate(),
+                day: new Date(date).getUTCDate(),
                 avg: groupedData[date].reduce((sum, v) => sum + v, 0) / groupedData[date].length,
                 min: Math.min(...groupedData[date]),
                 max: Math.max(...groupedData[date]),

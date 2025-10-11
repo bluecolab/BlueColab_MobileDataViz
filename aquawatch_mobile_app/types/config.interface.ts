@@ -1,4 +1,5 @@
 export interface Config {
+    BLUE_COLAB_API_ODIN_URL: string;
     BLUE_COLAB_API_URL: string;
     BLUE_COLAB_API_CONFIG: {
         defaultMeasurement: string;
