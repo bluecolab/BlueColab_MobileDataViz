@@ -16,6 +16,9 @@ export default function Root({ children }: PropsWithChildren) {
                     content="width=device-width, initial-scale=1, shrink-to-fit=no"
                 />
 
+                <meta name="description" content="Real time data monitoring." />
+                <meta property="og:description" content="Real time data monitoring." />
+
                 <link rel="manifest" href="/manifest.json" />
 
                 {/* Favicon for web */}
