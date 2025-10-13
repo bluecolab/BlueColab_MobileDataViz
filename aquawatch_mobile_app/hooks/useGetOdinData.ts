@@ -1,6 +1,7 @@
 import axios, { isAxiosError } from 'axios';
 import { useNetworkState } from 'expo-network';
 import { useCallback } from 'react';
+import { Platform } from 'react-native';
 
 import { config } from '@/hooks/useConfig';
 import { OdinData } from '@/types/water.interface';
@@ -28,9 +29,13 @@ export default function useGetOdinData() {
         console.log('Fetching with React Query:', url);
 
         try {
-            const response = await axios.get(url);
+            const response =
+                Platform.OS === 'web'
+                    ? await await axios.post('/api/bluecolab', {
+                          request: url,
+                      })
+                    : await axios.get(url);
             const apiData = response.data;
-            console.log(apiData);
             return apiData;
         } catch (error) {
             // Log the original error for debugging
