@@ -6,7 +6,7 @@
     "android": "expo start --android",
     "postinstall": "patch-package",
     "build:Web": "npx expo export --platform web",
-    "deploy:web": "npx expo export --platform web && npx eas  deploy",
+    "deploy:web": "npx expo export --platform web && npx eas deploy --alias preprod",
     "ios": "expo start --ios",
     "start": "expo start",
     "prebuild": "expo prebuild",
