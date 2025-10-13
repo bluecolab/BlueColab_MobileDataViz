@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import type { ViewStyle } from 'react-native';
 import Animated, {
     interpolate,
@@ -23,6 +23,7 @@ interface FlipCardProps {
     duration?: number;
     frontStyles?: ViewStyle;
     backStyles?: ViewStyle;
+    height?: number;
 }
 
 /**
@@ -46,6 +47,7 @@ interface FlipCardProps {
  * @param duration - The duration of the flip animation in milliseconds.
  * @param frontStyles - Custom styles for the front side of the card.
  * @param backStyles - Custom styles for the back side of the card.
+ * @param height - The height of the card.
  */
 export default function FlipCard({
     Front,
@@ -54,6 +56,7 @@ export default function FlipCard({
     duration = 500,
     frontStyles = defaultFrontStyles,
     backStyles = defaultBackStyles,
+    height,
 }: FlipCardProps) {
     const isFlipped = useSharedValue(false);
     const [flipped, setFlipped] = useState(false);
@@ -87,7 +90,15 @@ export default function FlipCard({
     });
 
     return (
-        <View>
+        <View
+            style={[
+                {
+                    width: '100%',
+                    height: height,
+                    position: 'relative',
+                    overflow: Platform.OS === 'web' ? 'visible' : 'hidden',
+                },
+            ]}>
             <Animated.View
                 style={[
                     {
@@ -97,7 +108,8 @@ export default function FlipCard({
                     },
                     frontCardAnimatedStyle,
                     frontStyles,
-                ]}>
+                ]}
+                pointerEvents={flipped ? 'none' : 'auto'}>
                 {Front}
             </Animated.View>
             <Animated.View
