@@ -3,7 +3,7 @@
 // particularly likes like this: tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
 
 import { router, Tabs } from 'expo-router';
-import { TouchableOpacity } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
@@ -40,32 +40,45 @@ export default function TabLayout() {
                 }}
             />
             {/* we set headerShown false as stacks handle their own headers */}
-            <Tabs.Screen
-                name="currentData"
-                options={{
-                    tabBarLabel: () => null, // Hides only this tab’s label
-                    // title: 'Current Data',
-                    tabBarIcon: ({ color }) => (
-                        <TouchableOpacity
-                            onPress={() => router.push('/currentData')} // Navigate to the desired screen
-                            style={{
-                                position: 'absolute',
-                                top: -40,
-                                left: '50%',
-                                marginLeft: -30,
-                                width: 60,
-                                height: 60,
-                                borderRadius: 30,
-                                backgroundColor: '#00D6FC',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                elevation: 6,
-                            }}>
-                            <TabBarIcon name="tint" color={color} />
-                        </TouchableOpacity>
-                    ),
-                }}
-            />
+
+            {Platform.OS === 'web' ? (
+                <Tabs.Screen
+                    name="currentData"
+                    options={{
+                        headerShown: false,
+                        title: 'Current Data',
+                        tabBarIcon: ({ color }) => <TabBarIcon name="tint" color={color} />,
+                    }}
+                />
+            ) : (
+                <Tabs.Screen
+                    name="currentData"
+                    options={{
+                        tabBarLabel: () => null, // Hides only this tab’s label
+                        // title: 'Current Data',
+                        tabBarIcon: ({ color }) => (
+                            <TouchableOpacity
+                                onPress={() => router.push('/currentData')} // Navigate to the desired screen
+                                style={{
+                                    position: 'absolute',
+                                    top: -40,
+                                    left: '50%',
+                                    marginLeft: -30,
+                                    width: 60,
+                                    height: 60,
+                                    borderRadius: 30,
+                                    backgroundColor: '#00D6FC',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    elevation: 6,
+                                }}>
+                                <TabBarIcon name="tint" color={color} />
+                            </TouchableOpacity>
+                        ),
+                    }}
+                />
+            )}
+
             <Tabs.Screen
                 name="settings"
                 options={{

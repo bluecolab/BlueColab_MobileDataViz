@@ -1,8 +1,9 @@
 // app/(tabs)/home/blog.tsx
 import { Stack } from 'expo-router';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 import CustomWebView from '@/components/CustomWebView';
+import CustomWebViewIframe from '@/components/CustomWebView+web';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 /** The blog screen of the app. It loads a web page in a custom WebView component.
@@ -22,7 +23,11 @@ export default function Blog() {
                 }}
             />
             <View style={{ flex: 1 }}>
-                <CustomWebView uri="https://bluecolab.blogs.pace.edu/blog-app/" />
+                {Platform.OS === 'web' ? (
+                    <CustomWebViewIframe uri="https://bluecolab.blogs.pace.edu/blog-app/" />
+                ) : (
+                    <CustomWebView uri="https://bluecolab.blogs.pace.edu/blog-app/" />
+                )}
             </View>
         </>
     );

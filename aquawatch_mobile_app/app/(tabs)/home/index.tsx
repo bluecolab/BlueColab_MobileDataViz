@@ -107,7 +107,7 @@ export default function HomeScreen() {
                             data={homeScreenFlatListData}
                             horizontal
                             showsHorizontalScrollIndicator
-                            keyExtractor={(item, index) => index.toString()}
+                            keyExtractor={(_item, index) => index.toString()}
                             renderItem={renderItem}
                         />
                     </View>

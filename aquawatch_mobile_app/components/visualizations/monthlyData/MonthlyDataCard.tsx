@@ -121,6 +121,7 @@ export function MonthlyDataCard({
                 <View className="z-10 h-[340] w-[95%] self-center">
                     {/* Front View - Graph */}
                     <FlipCard
+                        height={300}
                         Front={
                             <Pressable onPress={flipCard} style={{ flex: 1 }}>
                                 <MonthlyDataCardFront

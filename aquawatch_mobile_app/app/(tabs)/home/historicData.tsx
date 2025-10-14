@@ -9,7 +9,6 @@ import {
     Text,
     TouchableWithoutFeedback,
     Pressable,
-    Platform,
 } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
@@ -21,6 +20,7 @@ import { MonthlyDataCard } from '@/components/visualizations/monthlyData/Monthly
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
+import { config } from '@/hooks/useConfig';
 import getMetadata from '@/utils/getMetadata';
 
 const getDaysInMonthFn = (month: number, year: number) => {
@@ -241,9 +241,12 @@ export default function HistoricData() {
                         onPress={onPressPagination}
                     />
 
-                    {(selectedLocationTemp ?? defaultLocation?.name) === 'Choate Pond' &&
-                    Platform.OS !== 'web' ? (
-                        <WQICard data={data} loading={loading} />
+                    {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                        (loc) => loc.name === defaultLocation?.name
+                    ) ? (
+                        <View className="mb-12 mt-6 items-center px-4">
+                            <WQICard data={data} loading={loading} />
+                        </View>
                     ) : (
                         <></>
                     )}
