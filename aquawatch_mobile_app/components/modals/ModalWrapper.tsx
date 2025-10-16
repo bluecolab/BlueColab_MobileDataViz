@@ -1,5 +1,5 @@
 import { ReactNode, Ref, useCallback, useImperativeHandle, useState } from 'react';
-import { Modal, TouchableWithoutFeedback, Dimensions, DimensionValue } from 'react-native';
+import { Modal, Pressable, Dimensions, DimensionValue } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -53,7 +53,7 @@ export function ModalWrapper({ body, modalHeight, ref }: ModalWrapperProps) {
 
     return (
         <Modal transparent visible={modalOpen} animationType="none">
-            <TouchableWithoutFeedback onPress={closeModal}>
+            <Pressable onPress={closeModal}>
                 <Animated.View
                     style={[
                         {
@@ -63,7 +63,7 @@ export function ModalWrapper({ body, modalHeight, ref }: ModalWrapperProps) {
                         backdropAnimatedStyle,
                     ]}
                 />
-            </TouchableWithoutFeedback>
+            </Pressable>
 
             <Animated.View
                 style={[
