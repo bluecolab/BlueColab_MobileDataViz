@@ -71,33 +71,6 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
     );
 };
 
-const formatSensorName = (name: string) => {
-    return name.replace(/([A-Z])/g, ' $1').trim();
-};
-
-const getSensorUnit = (sensorName: string) => {
-    switch (sensorName) {
-        case 'AirTemp':
-        case 'RelHumidTemp':
-            return '°C';
-        case 'BaroPressure':
-            return 'hPa';
-        case 'Rain':
-            return 'mm';
-        case 'RelHumid':
-            return '%';
-        case 'WindSpeed':
-        case 'MaxWindSpeed':
-            return 'm/s';
-        case 'WindDir':
-            return '°';
-        case 'SolarFlux':
-            return 'W/m²';
-        default:
-            return '';
-    }
-};
-
 /**
  * The quick current data component. It displays the current data in a quick grid-view format.
  * @returns {JSX.Element}
