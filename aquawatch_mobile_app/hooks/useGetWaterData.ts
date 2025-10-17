@@ -43,7 +43,6 @@ export default function useGetWaterData() {
 
                 if (!paramName) return; // Skip unneeded parameters
 
-                // Extracts array containing all values for selected parameter
                 const valuesList =
                     series.values[0].value.length > 0
                         ? series.values[0].value
@@ -58,13 +57,10 @@ export default function useGetWaterData() {
                     if (!existingEntry) {
                         existingEntry = {
                             timestamp,
-                        };
-                        if (paramName in existingEntry) {
-                            existingEntry[paramName as ParameterName] = value;
-                        }
+                        } as CleanedWaterData;
                         parsedData.push(existingEntry);
                     }
-                    existingEntry[paramName as ParameterName] = value;
+                    (existingEntry as any)[paramName as ParameterName] = value;
                 });
             });
             return parsedData;
@@ -79,6 +75,7 @@ export default function useGetWaterData() {
         });
     }, []);
 
+    // Legacy setter-based fetch function (used by GraphDataContext, etc.)
     const fetchData = useCallback(
         async (
             defaultLocation: LocationType,
@@ -104,49 +101,137 @@ export default function useGetWaterData() {
 
             console.log('Fetching with React Query:', url);
 
+            if (networkState.isInternetReachable === false) {
+                setError({
+                    message: 'Error: No internet connection',
+                });
+                setLoading(false);
+                return;
+            }
+
+            axios
+                .get(url)
+                .then((response) => {
+                    const apiData = response.data;
+                    if (
+                        BLUE_COLAB_API_CONFIG.validMatches.some(
+                            (loc) => loc.name === defaultLocation.name
+                        )
+                    ) {
+                        const cleanedData = cleanChoatePondData(apiData);
+                        setData(cleanedData);
+                    } else {
+                        const cleanedData = cleanHudsonRiverData(apiData);
+                        setData(cleanedData);
+                    }
+                })
+                .catch((error) => {
+                    if (isAxiosError(error)) {
+                        if (error.response) {
+                            if ((error.response.data as any)?.status === 404)
+                                setError({
+                                    message:
+                                        'Error: No data available, select a different date range',
+                                    code: 404,
+                                });
+                            else
+                                setError({
+                                    message: `Error: HTTP Error: ${error.response.status}`,
+                                });
+                        } else if (error.request) {
+                            setError({
+                                message: 'Error: No response from server, check WiFi connection',
+                            });
+                        } else {
+                            setError({
+                                message: `Error: A unknown error occurred, try restarting the app.`,
+                            });
+                        }
+                        console.error('Axios error: ', error);
+                    } else {
+                        console.error('Non-Axios error: ', error);
+                        setError({ message: 'Unknown error occurred' });
+                    }
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        },
+        [
+            BLUE_COLAB_API_CONFIG.validMatches,
+            cleanChoatePondData,
+            cleanHudsonRiverData,
+            getAPIUrl,
+            networkState.isInternetReachable,
+            stationIds,
+        ]
+    );
+
+    // Promise-based fetcher for React Query
+    const fetchDataPromise = useCallback(
+        async (
+            defaultLocation: LocationType,
+            isCurrentData: boolean,
+            year: number,
+            month: number,
+            start_day: number,
+            end_day: number
+        ): Promise<CleanedWaterData[]> => {
+            const url = getAPIUrl(
+                defaultLocation,
+                isCurrentData,
+                year,
+                month,
+                start_day,
+                end_day,
+                stationIds
+            );
+
+            if (networkState.isInternetReachable === false) {
+                throw new Error('Error: No internet connection');
+            }
+
             try {
                 const response = await axios.get(url);
                 const apiData = response.data;
-
                 if (
                     BLUE_COLAB_API_CONFIG.validMatches.some(
                         (loc) => loc.name === defaultLocation.name
                     )
                 ) {
                     return cleanChoatePondData(apiData);
-                } else {
-                    return cleanHudsonRiverData(apiData);
                 }
+                return cleanHudsonRiverData(apiData);
             } catch (error) {
-                // Log the original error for debugging
-                console.error('Data fetching error:', error);
-
-                // Re-throw a new, user-friendly error for React Query to catch
                 if (isAxiosError(error)) {
-                    if (error.response?.status === 404) {
-                        throw new Error('No data available for the selected date range.');
+                    if ((error as any).response) {
+                        const resp = (error as any).response;
+                        if (resp.data?.status === 404) {
+                            throw new Error(
+                                'Error: No data available, select a different date range'
+                            );
+                        }
+                        throw new Error(`Error: HTTP Error: ${resp.status}`);
+                    } else if ((error as any).request) {
+                        throw new Error('Error: No response from server, check WiFi connection');
                     }
-                    if (error.response) {
-                        throw new Error(`HTTP Error: ${error.response.status}`);
-                    }
-                    if (error.request) {
-                        throw new Error('No response from server. Check your network connection.');
-                    }
+                    throw new Error('Error: A unknown error occurred, try restarting the app.');
                 }
-                throw new Error('An unknown error occurred while fetching data.');
+                throw new Error('Unknown error occurred');
             }
         },
         [
-            getAPIUrl,
-            stationIds,
-            networkState.isInternetReachable,
             BLUE_COLAB_API_CONFIG.validMatches,
             cleanChoatePondData,
             cleanHudsonRiverData,
+            getAPIUrl,
+            networkState.isInternetReachable,
+            stationIds,
         ]
     );
 
     return {
-        fetchData, // Export the new promise-based function
+        fetchData,
+        fetchDataPromise,
     };
 }

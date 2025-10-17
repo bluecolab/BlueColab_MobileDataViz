@@ -16,6 +16,7 @@ interface GraphDataContextType {
     defaultTempUnit: string | undefined;
     selectedLocationTemp: string | undefined;
     showConvertedUnits: boolean;
+    normalizeComparative: boolean;
     changeLocation: (newLocation: LocationType) => void;
     setLoading: (newValue: boolean) => void;
     setYear: (newValue: number | undefined) => void;
@@ -24,6 +25,7 @@ interface GraphDataContextType {
     setDefaultLocation: (newValue: LocationType | undefined) => void;
     changeTemperatureUnit: (newUnit: string) => void;
     changeConvertedUnits: (enabled: boolean) => void;
+    setNormalizeComparative: (enabled: boolean) => void;
     setSelectedLocationTemp: (newValue: LocationType | undefined) => void;
 }
 
@@ -35,6 +37,7 @@ const GraphDataContext = createContext({
     defaultTempUnit: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
     showConvertedUnits: false,
+    normalizeComparative: false,
     changeLocation: () => {},
     setLoading: () => {},
     setYear: () => {},
@@ -44,6 +47,7 @@ const GraphDataContext = createContext({
     changeTemperatureUnit: () => {},
     setSelectedLocationTemp: () => {},
     changeConvertedUnits: () => {},
+    setNormalizeComparative: () => {},
 } as GraphDataContextType);
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
     const { fetchData } = useGetWaterData();
@@ -62,26 +66,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [selectedLocation, setSelectedLocation] = useState<LocationType>();
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
-
-    // Determine the active location to be used in the query.
-    const activeLocation = selectedLocation ?? defaultLocation;
-
-    // 3. The useQuery hook replaces the main data-fetching useEffect.
-    const {
-        data,
-        error,
-        isLoading: loading, // Alias isLoading to loading
-    } = useQuery({
-        // The query key includes all variables that the data depends on.
-        // React Query will automatically refetch when any of these change.
-        queryKey: ['graphWaterData', activeLocation, year, month, startDay, endDay],
-
-        // The query function calls your fetcher with the current state values.
-        queryFn: () => fetchData(activeLocation!, false, year!, month!, startDay!, endDay!),
-
-        // This query will only run when all its dependencies have values.
-        enabled: !!(activeLocation && year && month && startDay && endDay),
-    });
+    const [normalizeComparative, setNormalizeComparativeState] = useState<boolean>(true);
 
     const changeTemperatureUnit = (newUnit: string) => {
         const setStoredTempUnit = async (value: string) => {
@@ -120,6 +105,36 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         void setStoredConvertedUnits(enabled);
         setShowConvertedUnits(enabled);
     };
+
+    const setNormalizeComparative = (enabled: boolean) => {
+        const setStored = async (value: boolean) => {
+            try {
+                await AsyncStorage.setItem('normalize-comparative', JSON.stringify(value));
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        void setStored(enabled);
+        setNormalizeComparativeState(enabled);
+    };
+
+    useEffect(() => {
+        setLoading(true);
+        setData([]);
+        if (year && month && start_day && end_day && defaultLocation) {
+            void fetchData(
+                selectedLocation ?? defaultLocation,
+                false,
+                year,
+                month,
+                start_day,
+                end_day,
+                setData,
+                setLoading,
+                setError
+            );
+        }
+    }, [year, month, start_day, end_day, defaultLocation, selectedLocation, fetchData]);
 
     useEffect(() => {
         const getStoredDefaultLocation = async () => {
@@ -163,9 +178,23 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             }
         };
 
+        const getStoredNormalizeComparative = async () => {
+            try {
+                const value = await AsyncStorage.getItem('normalize-comparative');
+                if (value !== null) {
+                    setNormalizeComparativeState(JSON.parse(value));
+                } else {
+                    setNormalizeComparativeState(true);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
         void getStoredDefaultLocation();
         void getStoredDefaultTempUnit();
         void getStoredConvertedUnits();
+        void getStoredNormalizeComparative();
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
@@ -185,6 +214,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 defaultLocation,
                 defaultTempUnit,
                 showConvertedUnits,
+                normalizeComparative,
                 selectedLocationTemp: selectedLocation?.name,
                 changeLocation,
                 setYear,
@@ -197,6 +227,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 changeTemperatureUnit,
                 setSelectedLocationTemp: setSelectedLocation,
                 changeConvertedUnits,
+                setNormalizeComparative,
             }}>
             {children}
         </GraphDataContext.Provider>

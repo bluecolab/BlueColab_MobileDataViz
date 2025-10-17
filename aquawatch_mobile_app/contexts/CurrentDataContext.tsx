@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { createContext, useContext } from 'react';
+import { getMinutes } from 'date-fns';
+import { createContext, useContext, useEffect, useMemo } from 'react';
 import type { ReactNode } from 'react';
 
 import { useGraphData } from '@/contexts/GraphDataContext';
@@ -15,6 +16,7 @@ interface CurrentDataContextType {
     defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;
     loadingCurrent: boolean;
+    refetchCurrent: () => void;
 }
 
 const CurrentDataContext = createContext({
@@ -23,43 +25,62 @@ const CurrentDataContext = createContext({
     defaultLocation: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
     loadingCurrent: false,
+    refetchCurrent: () => {},
 } as CurrentDataContextType);
 
 export default function CurrentDataProvider({ children }: { children: ReactNode }) {
     const { defaultLocation, defaultTempUnit } = useGraphData();
-    const { fetchData } = useGetWaterData();
-    const { fetchOdinData } = useGetOdinData();
+    const { fetchDataPromise } = useGetWaterData();
 
-    const {
-        data: waterData, // Rename to avoid naming conflicts
-        error,
-        isLoading: loadingCurrent,
-    } = useQuery({
-        queryKey: ['waterData', defaultLocation], // Use a distinct key
-        queryFn: () => fetchData(defaultLocation!, true, 0, 0, 0, 0),
+    // Build a stable query key for current data
+    const queryKey = useMemo(
+        () => ['currentData', defaultLocation?.name, defaultTempUnit],
+        [defaultLocation?.name, defaultTempUnit]
+    );
+
+    const { data, error, isFetching, isPending, refetch } = useQuery<CleanedWaterData[], Error>({
+        queryKey,
         enabled: !!defaultLocation,
-        refetchInterval: 15 * 60 * 1000,
+        queryFn: async () => {
+            // DefaultLocation is guaranteed by enabled
+            return await fetchDataPromise(defaultLocation as LocationType, true, 0, 0, 0, 0);
+        },
+        // Keep showing previous data while fetching new
+        placeholderData: [],
+        gcTime: 1000 * 60 * 5, // 5 minutes
+        staleTime: 1000 * 30, // consider fresh for 30s; UI can override
+        refetchOnReconnect: true,
+        refetchOnWindowFocus: true,
+        retry: 1,
     });
 
-    // -- QUERY 2: ONLY FETCHES AIR DATA FOR CHOATE POND --
-    // This provides the optional `airData`.
-    const { data: airData } = useQuery({
-        queryKey: ['airData', defaultLocation], // Use a distinct key
-        queryFn: () => fetchOdinData(),
-        // ✨ This is the key: the query only runs if the location is Choate Pond.
-        enabled: !!defaultLocation && defaultLocation.name === 'Choate Pond',
-        refetchInterval: 15 * 60 * 1000,
-    });
+    // Manual refetch exposed to consumers
+    const refetchCurrent = () => {
+        if (!defaultLocation) return;
+        void refetch();
+    };
+
+    // Quarter-hour aligned auto-refresh: every 60s check and refetch on 0/15/30/45
+    useEffect(() => {
+        if (!defaultLocation) return;
+        const intervalId = setInterval(() => {
+            const currentMinute = getMinutes(new Date());
+            if ([0, 15, 30, 45].includes(currentMinute)) {
+                void refetch();
+            }
+        }, 60_000);
+        return () => clearInterval(intervalId);
+    }, [defaultLocation, refetch]);
 
     return (
         <CurrentDataContext.Provider
             value={{
-                data: waterData,
-                airData: airData,
-                error,
+                data: data ?? [],
+                error: error ? { message: error.message } : undefined,
                 defaultLocation,
                 defaultTempUnit,
-                loadingCurrent,
+                loadingCurrent: isFetching || isPending,
+                refetchCurrent,
             }}>
             {children}
         </CurrentDataContext.Provider>

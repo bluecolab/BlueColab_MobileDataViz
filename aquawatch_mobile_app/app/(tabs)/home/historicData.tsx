@@ -33,6 +33,9 @@ export default function HistoricData() {
         setSelectedLocationTemp,
         error,
         showConvertedUnits,
+        changeConvertedUnits,
+        normalizeComparative,
+        setNormalizeComparative,
     } = useGraphData();
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
@@ -244,57 +247,111 @@ export default function HistoricData() {
                     </View>
                 </ScrollView>
 
-                <ModalWrapper
-                    ref={modalRef}
-                    modalHeight={'80%'}
-                    body={
-                        <>
-                            <View className="absolute right-8 top-3">
-                                <Pressable onPress={() => modalRef.current?.closeModal()}>
-                                    <Text className="text-2xl dark:text-white">✕</Text>
-                                </Pressable>
-                            </View>
-
-                            <View className="elevation-[20] z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
-                                <Text className="text-center text-lg font-bold dark:text-white">
-                                    Historic Data Settings
-                                </Text>
-                            </View>
-                            <View className="elevation-[20] z-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
-                                <Text className="text-center text-lg font-bold dark:text-white">
-                                    Location 1
-                                </Text>
-
-                                <View className="w-full flex-row space-x-4">
-                                    <View className="flex-[2]">
-                                        <CustomDropdown
-                                            label="Month"
-                                            options={monthOptions}
-                                            value={selectedMonth.toString()}
-                                            onSelect={onMonthSelect}
-                                        />
-                                    </View>
-                                    <View className="flex-[2]">
-                                        <CustomDropdown
-                                            label="Year"
-                                            options={yearOptions}
-                                            value={selectedYear.toString()}
-                                            onSelect={onYearSelect}
-                                        />
+                <Modal
+                    animationType="slide"
+                    transparent
+                    visible={modalOpen}
+                    onRequestClose={() => setModalOpen(false)}>
+                    <TouchableWithoutFeedback onPress={() => setModalOpen(false)}>
+                        <View className="flex-1 justify-end bg-black/50">
+                            {/* Prevent closing when tapping inside the modal content */}
+                            <TouchableWithoutFeedback>
+                                <View className="h-[85vh] rounded-t-2xl bg-defaultbackground p-6 dark:bg-defaultdarkbackground">
+                                    <Text className="text-center text-lg font-bold dark:text-white">
+                                        Historic Data Settings
+                                    </Text>
+                                    {/* Add a close button */}
+                                    <TouchableHighlight
+                                        className="absolute right-4 top-4 rounded-full bg-gray-200 p-2 dark:bg-gray-700"
+                                        onPress={() => setModalOpen(false)}>
+                                        <Text className="text-lg font-bold">✕</Text>
+                                    </TouchableHighlight>
+                                    {/* Add more modal content here */}
+                                    <View className="elevation-[20] z-10 w-full bg-white p-default dark:bg-gray-700">
+                                        <View className="flex-row items-center justify-end pb-2">
+                                            <Text className="mr-2 text-lg dark:text-white">
+                                                Show Converted Units
+                                            </Text>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    changeConvertedUnits(!showConvertedUnits)
+                                                }
+                                                style={{
+                                                    backgroundColor: showConvertedUnits
+                                                        ? '#2563eb'
+                                                        : '#e5e7eb',
+                                                    borderRadius: 16,
+                                                    paddingVertical: 6,
+                                                    paddingHorizontal: 16,
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: showConvertedUnits
+                                                            ? 'white'
+                                                            : 'black',
+                                                    }}>
+                                                    {showConvertedUnits ? 'Converted' : 'Original'}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View className="flex-row items-center justify-end pb-4">
+                                            <Text className="mr-2 text-lg dark:text-white">
+                                                Normalize month (0–1)
+                                            </Text>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    setNormalizeComparative(!normalizeComparative)
+                                                }
+                                                style={{
+                                                    backgroundColor: normalizeComparative
+                                                        ? '#2563eb'
+                                                        : '#e5e7eb',
+                                                    borderRadius: 16,
+                                                    paddingVertical: 6,
+                                                    paddingHorizontal: 16,
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        color: normalizeComparative
+                                                            ? 'white'
+                                                            : 'black',
+                                                    }}>
+                                                    {normalizeComparative ? 'On' : 'Off'}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View className="w-full flex-row space-x-4">
+                                            <View className="flex-[2]">
+                                                <CustomDropdown
+                                                    label="Month"
+                                                    options={monthOptions}
+                                                    value={selectedMonth.toString()}
+                                                    onSelect={onMonthSelect}
+                                                />
+                                            </View>
+                                            <View className="flex-[2]">
+                                                <CustomDropdown
+                                                    label="Year"
+                                                    options={yearOptions}
+                                                    value={selectedYear.toString()}
+                                                    onSelect={onYearSelect}
+                                                />
+                                            </View>
+                                        </View>
+                                        <View>
+                                            <CustomDropdown
+                                                label="Location"
+                                                options={locationOptions}
+                                                value={selectedLocation.toString()}
+                                                onSelect={onLocationSelect}
+                                            />
+                                        </View>
                                     </View>
                                 </View>
-                                <View>
-                                    <CustomDropdown
-                                        label="Location"
-                                        options={locationOptions}
-                                        value={selectedLocation.toString()}
-                                        onSelect={onLocationSelect}
-                                    />
-                                </View>
-                            </View>
-                        </>
-                    }
-                />
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
             </View>
         </>
     );
