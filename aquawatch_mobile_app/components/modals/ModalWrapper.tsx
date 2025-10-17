@@ -53,7 +53,7 @@ export function ModalWrapper({ body, modalHeight, ref }: ModalWrapperProps) {
 
     return (
         <Modal transparent visible={modalOpen} animationType="none">
-            <Pressable onPress={closeModal}>
+            <Pressable onPress={closeModal} style={{ flex: 1 }}>
                 <Animated.View
                     style={[
                         {
