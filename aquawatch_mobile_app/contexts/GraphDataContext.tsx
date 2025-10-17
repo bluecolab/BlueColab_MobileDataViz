@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useQuery } from '@tanstack/react-query'; // Import useQuery
 import { subMonths, getYear, getMonth, getDaysInMonth } from 'date-fns';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
 import { CleanedWaterData } from '@/types/water.interface';
+// ... other imports
 
 interface GraphDataContextType {
     data: CleanedWaterData[] | undefined;
@@ -47,21 +49,21 @@ const GraphDataContext = createContext({
     changeConvertedUnits: () => {},
     setNormalizeComparative: () => {},
 } as GraphDataContextType);
-
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
     const { fetchData } = useGetWaterData();
 
-    const [data, setData] = useState<CleanedWaterData[] | undefined>([]);
-    const [error, setError] = useState<{ message: string } | undefined>(undefined);
-    const [loading, setLoading] = useState<boolean>(true);
+    // 1. State for server data is removed. No more useState for data, error, loading.
+    // const [data, setData] = useState<CleanedWaterData[] | undefined>([]);
+    // const [error, setError] = useState<{ message: string } | undefined>(undefined);
+    // const [loading, setLoading] = useState<boolean>(true);
 
+    // 2. State for user selections (filters) remains the same.
     const [year, setYear] = useState<number>();
     const [month, setMonth] = useState<number>();
-    const [start_day, setStartDay] = useState<number>();
-    const [end_day, setEndDay] = useState<number>();
-
-    const [defaultLocation, setDefaultLocation] = useState<LocationType>(); // the saved location in settings
-    const [selectedLocation, setSelectedLocation] = useState<LocationType>(); // if the user changed location. this is updated
+    const [startDay, setStartDay] = useState<number>();
+    const [endDay, setEndDay] = useState<number>();
+    const [defaultLocation, setDefaultLocation] = useState<LocationType>();
+    const [selectedLocation, setSelectedLocation] = useState<LocationType>();
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
     const [normalizeComparative, setNormalizeComparativeState] = useState<boolean>(true);
@@ -89,6 +91,8 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         void setStoredLocation(newLocation);
         setDefaultLocation(newLocation);
     };
+
+    // The initial useEffect to load settings and set the default date remains the same.
 
     const changeConvertedUnits = (enabled: boolean) => {
         const setStoredConvertedUnits = async (value: boolean) => {
@@ -194,7 +198,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
-        setMonth(getMonth(lastMonth) + 1); // `getMonth` is 0-indexed, so add 1
+        setMonth(getMonth(lastMonth) + 1);
         setStartDay(1);
         setEndDay(getDaysInMonth(lastMonth));
     }, []);
@@ -202,18 +206,22 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     return (
         <GraphDataContext.Provider
             value={{
+                // Values from useQuery
                 data,
-                error,
+                error: error ? { message: error.message } : undefined,
                 loading,
+                // State and setters that remain
                 defaultLocation,
                 defaultTempUnit,
                 showConvertedUnits,
                 normalizeComparative,
                 selectedLocationTemp: selectedLocation?.name,
                 changeLocation,
-                setLoading,
                 setYear,
                 setMonth,
+                // Note: You probably don't need to expose setLoading anymore
+                // as React Query handles it. It's kept here for compatibility.
+                setLoading: () => {},
                 setEndDay,
                 setDefaultLocation,
                 changeTemperatureUnit,

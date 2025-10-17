@@ -470,6 +470,89 @@ export default function VersionHistory() {
                         />{' '}
                         by @KoJesko)
                     </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.9.2:</Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Removed unneeded patch package library (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/241"
+                            label="#241"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - General UI Improvement (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/236"
+                            label="#236"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Hudson River Remove WQI from Current Data (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/243"
+                            label="#243"
+                        />{' '}
+                        by @Copilot/Ari)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Add OpenWeatherMap API URL to centralized config (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/244"
+                            label="#244"
+                        />{' '}
+                        by @Copilot/Ari)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Updated to handle react query (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/237"
+                            label="#237"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Add Odin data (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/237"
+                            label="#237"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Add Odin data (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/237"
+                            label="#237"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Bug: Selecting the current month in historic data page has weird result (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/246"
+                            label="#246"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Make PolarChart it's own component (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/247"
+                            label="#247"
+                        />{' '}
+                        by @ZVictorLima)
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>

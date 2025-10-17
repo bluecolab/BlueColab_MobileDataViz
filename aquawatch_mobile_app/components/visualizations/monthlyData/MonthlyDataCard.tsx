@@ -1,6 +1,5 @@
-import { FontAwesome } from '@expo/vector-icons';
 import { useMemo, useRef } from 'react';
-import { Dimensions, View, Text, TouchableOpacity } from 'react-native';
+import { Dimensions, View, Pressable } from 'react-native';
 
 import FlipCard from '@/components/customCards/FlipCard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -12,6 +11,32 @@ import normalize from '@/utils/normalize';
 
 import { MonthlyDataCardBack } from './MonthlyDataCardBack';
 import { MonthlyDataCardFront } from './MonthlyDataCardFront';
+
+const titleLabel = (
+    unitMap: Record<string, string | null>,
+    finalUnitToUse: string | undefined,
+    showConvertedUnits: boolean | undefined,
+    defaultTempUnit: string | undefined,
+    yAxisLabel: string
+): string => {
+    if (!unitMap || finalUnitToUse === 'pH') return `${yAxisLabel}`;
+
+    if (finalUnitToUse === 'Temp') {
+        return `${yAxisLabel} - ${defaultTempUnit?.trim() === 'Fahrenheit' ? '°F' : unitMap[finalUnitToUse]}`;
+    }
+
+    let displayUnit = unitMap[finalUnitToUse ?? 'Temp'];
+    if (showConvertedUnits) {
+        if (finalUnitToUse === 'Cond' && unitMap.Cond === 'µS/cm') {
+            displayUnit = 'ppt';
+        } else if (finalUnitToUse === 'Turb' && unitMap.Turb === 'FNU') {
+            displayUnit = 'NTU';
+        } else if (finalUnitToUse === 'Sal' && unitMap.Sal === 'PSU') {
+            displayUnit = 'ppt';
+        }
+    }
+    return `${yAxisLabel} - ${displayUnit}`;
+};
 
 interface MonthlyDataCardProps {
     loading: boolean;
@@ -97,9 +122,7 @@ export function MonthlyDataCard({
     }, [isNormalized, rawDataSummary.dailySummary, normalizeDailySummary]);
 
     const { width } = Dimensions.get('window');
-
     const containerWidth = width * 0.95;
-    const { isDark } = useColorScheme();
 
     const flipCardRef = useRef<{ flip: () => void }>(null);
     const flipCard = () => flipCardRef.current?.flip();
@@ -152,32 +175,49 @@ export function MonthlyDataCard({
                 </View>
 
                 {/* Graph Container */}
-                <View className="z-10 w-[95%] self-center">
-                    <View className="h-[300]">
-                        {/* Front View - Graph */}
-                        <FlipCard
-                            Front={
+                <View className="z-10 h-[340] w-[95%] self-center">
+                    {/* Front View - Graph */}
+                    <FlipCard
+                        Front={
+                            <Pressable onPress={flipCard} style={{ flex: 1 }}>
                                 <MonthlyDataCardFront
                                     loading={loading}
                                     dailySummary={normalizedDaily}
                                     error={error}
                                     month={selectedMonth}
+                                    title={titleLabel(
+                                        unitMap,
+                                        finalUnitToUse,
+                                        showConvertedUnits,
+                                        defaultTempUnit,
+                                        yAxisLabel
+                                    )}
                                 />
-                            }
-                            Back={
+                            </Pressable>
+                        }
+                        Back={
+                            <Pressable onPress={flipCard} style={{ flex: 1 }}>
                                 <MonthlyDataCardBack
                                     overallMin={rawDataSummary.overallMin}
                                     overallMax={rawDataSummary.overallMax}
                                     overallAvg={rawDataSummary.overallAvg}
                                     yAxisLabel={yAxisLabel}
                                     meta={meta}
+                                    flipCard={flipCard}
+                                    title={titleLabel(
+                                        unitMap,
+                                        finalUnitToUse,
+                                        showConvertedUnits,
+                                        defaultTempUnit,
+                                        yAxisLabel
+                                    )}
                                 />
-                            }
-                            flipCardRef={flipCardRef}
-                            frontStyles={{ marginTop: 5, width: containerWidth, height: '100%' }}
-                            backStyles={{ marginTop: 5, width: containerWidth }}
-                        />
-                    </View>
+                            </Pressable>
+                        }
+                        flipCardRef={flipCardRef}
+                        frontStyles={{ marginTop: 5, width: containerWidth, height: '100%' }}
+                        backStyles={{ marginTop: 5, width: containerWidth }}
+                    />
                 </View>
             </View>
         </View>

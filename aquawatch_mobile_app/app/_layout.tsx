@@ -12,6 +12,8 @@ export const unstable_settings = {
     initialRouteName: '(tabs)',
 };
 
+const queryClient = new QueryClient();
+
 /** The root layout of the app. It wraps the app in the necessary providers.
  * @returns {JSX.Element}
  */
@@ -28,6 +30,17 @@ const queryClient = new QueryClient({
 
 export default function RootLayout() {
     return (
+        <QueryClientProvider client={queryClient}>
+            <GraphDataProvider>
+                <CurrentDataProvider>
+                    <ColorSchemeProvider>
+                        <Stack>
+                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                        </Stack>
+                    </ColorSchemeProvider>
+                </CurrentDataProvider>
+            </GraphDataProvider>
+        </QueryClientProvider>
         <QueryClientProvider client={queryClient}>
             <GraphDataProvider>
                 <CurrentDataProvider>

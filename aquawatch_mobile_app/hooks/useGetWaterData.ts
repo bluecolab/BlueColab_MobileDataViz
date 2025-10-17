@@ -77,17 +77,18 @@ export default function useGetWaterData() {
 
     // Legacy setter-based fetch function (used by GraphDataContext, etc.)
     const fetchData = useCallback(
-        (
+        async (
             defaultLocation: LocationType,
             isCurrentData: boolean,
             year: number,
             month: number,
             start_day: number,
-            end_day: number,
-            setData: (data: CleanedWaterData[]) => void,
-            setLoading: (loading: boolean) => void,
-            setError: (error: { message: string; code?: number }) => void
-        ) => {
+            end_day: number
+        ): Promise<CleanedWaterData[]> => {
+            if (networkState.isInternetReachable === false) {
+                throw new Error('No internet connection');
+            }
+
             const url = getAPIUrl(
                 defaultLocation,
                 isCurrentData,
@@ -98,7 +99,7 @@ export default function useGetWaterData() {
                 stationIds
             );
 
-            console.log('Awaiting', url);
+            console.log('Fetching with React Query:', url);
 
             if (networkState.isInternetReachable === false) {
                 setError({

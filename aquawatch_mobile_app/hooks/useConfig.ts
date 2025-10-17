@@ -3,6 +3,8 @@ import { useMemo } from 'react';
 import { Config, LocationType } from '@/types/config.interface';
 
 export const config = {
+    // Not sure why only lets me query a minimum of 5 hours
+    BLUE_COLAB_API_ODIN_URL: 'https://colabprod01.pace.edu/api/influx/sensordata/Odin',
     BLUE_COLAB_API_URL: 'https://colabprod01.pace.edu/api/influx/sensordata',
     BLUE_COLAB_API_CONFIG: {
         defaultMeasurement: 'Alan',
@@ -54,7 +56,7 @@ export const config = {
             { name: 'Cohoes', lat: 42.78569444, long: -73.7104167 },
         ],
     },
-    OPEN_WEATHER_API_URL: '',
+    OPEN_WEATHER_API_URL: 'https://api.openweathermap.org',
 } as Config;
 
 export const useAPIConfig = () => {
