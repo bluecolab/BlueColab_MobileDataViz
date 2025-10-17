@@ -1,6 +1,6 @@
 import { Picker } from '@react-native-picker/picker';
 import { useRef } from 'react';
-import { View, Text, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, Pressable, Platform } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
@@ -23,7 +23,7 @@ export default function CustomDropdown({
     if (Platform.OS === 'ios') {
         return (
             <View style={{ padding: 16 }}>
-                <TouchableOpacity
+                <Pressable
                     onPress={() => modalRef.current?.openModal()}
                     style={{
                         backgroundColor: isDark ? '#333333' : 'white',
@@ -33,7 +33,7 @@ export default function CustomDropdown({
                     <Text style={{ color: isDark ? 'white' : 'black' }}>
                         {options.find((o) => o.value === value)?.label || label}
                     </Text>
-                </TouchableOpacity>
+                </Pressable>
                 <ModalWrapper
                     ref={modalRef}
                     modalHeight={'40%'}
