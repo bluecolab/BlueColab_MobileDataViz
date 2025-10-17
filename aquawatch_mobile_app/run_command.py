@@ -12,7 +12,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'Starting the move to production!')
             print("Button event received from client!")
-            # os.system("npx expo start -w")
+            os.system("npx eas deploy --prod")
         else:
             self.send_error(404)
 
