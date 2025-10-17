@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable } from 'react-native';
 
 import FlipCard from '@/components/customCards/FlipCard';
 
@@ -136,9 +136,9 @@ export function Widget({ name, value }: WidgetProp) {
                     flipCardRef={flipCardRef}
                     Front={
                         <View className="relative h-[150] rounded-3xl bg-white p-6 dark:bg-gray-700">
-                            <TouchableOpacity onPress={flipCard} className="absolute right-3 top-3">
+                            <Pressable onPress={flipCard} className="absolute right-3 top-3">
                                 <FontAwesome name="info-circle" size={20} color="gray" />
-                            </TouchableOpacity>
+                            </Pressable>
 
                             {/* -13px aligns water temperature with others */}
                             <Text

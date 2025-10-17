@@ -1,6 +1,6 @@
 import { Picker } from '@react-native-picker/picker';
 import React, { useRef } from 'react';
-import { View, Text, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, Pressable, Platform } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
@@ -41,7 +41,7 @@ export default function SettingsDropdown({
                     ellipsizeMode="tail">
                     {label}
                 </Text>
-                <TouchableOpacity
+                <Pressable
                     onPress={() => modalRef.current?.openModal()}
                     style={{
                         backgroundColor: isDark ? '#333333' : 'white',
@@ -61,7 +61,7 @@ export default function SettingsDropdown({
                         ellipsizeMode="tail">
                         {options.find((o) => o.value === value)?.label || label}
                     </Text>
-                </TouchableOpacity>
+                </Pressable>
                 <ModalWrapper
                     ref={modalRef}
                     modalHeight={'40%'}

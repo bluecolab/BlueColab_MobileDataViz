@@ -3,11 +3,11 @@
 // particularly likes like this: tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
 
 import { router, Tabs } from 'expo-router';
-import { Platform, TouchableOpacity } from 'react-native';
-
-import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { Platform, Pressable } from 'react-native';
 
 import { TabBarIcon } from '../../components/TabBarIcon';
+
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 /** The tab layout of the app. Here we define the tabs and their options.
  * @returns {JSX.Element}
@@ -57,7 +57,7 @@ export default function TabLayout() {
                         tabBarLabel: () => null, // Hides only this tab’s label
                         // title: 'Current Data',
                         tabBarIcon: ({ color }) => (
-                            <TouchableOpacity
+                            <Pressable
                                 onPress={() => router.push('/currentData')} // Navigate to the desired screen
                                 style={{
                                     position: 'absolute',
@@ -73,7 +73,7 @@ export default function TabLayout() {
                                     elevation: 6,
                                 }}>
                                 <TabBarIcon name="tint" color={color} />
-                            </TouchableOpacity>
+                            </Pressable>
                         ),
                     }}
                 />
