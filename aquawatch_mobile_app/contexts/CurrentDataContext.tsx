@@ -31,22 +31,19 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
     const { fetchOdinData } = useGetOdinData();
 
     const {
-        data: waterData, // Rename to avoid naming conflicts
+        data: waterData,
         error,
         isLoading: loadingCurrent,
     } = useQuery({
-        queryKey: ['waterData', defaultLocation], // Use a distinct key
+        queryKey: ['waterData', defaultLocation],
         queryFn: () => fetchData(defaultLocation!, true, 0, 0, 0, 0),
         enabled: !!defaultLocation,
         refetchInterval: 15 * 60 * 1000,
     });
 
-    // -- QUERY 2: ONLY FETCHES AIR DATA FOR CHOATE POND --
-    // This provides the optional `airData`.
     const { data: airData } = useQuery({
-        queryKey: ['airData', defaultLocation], // Use a distinct key
+        queryKey: ['airData', defaultLocation],
         queryFn: () => fetchOdinData(),
-        // ✨ This is the key: the query only runs if the location is Choate Pond.
         enabled: !!defaultLocation && defaultLocation.name === 'Choate Pond',
         refetchInterval: 15 * 60 * 1000,
     });

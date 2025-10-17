@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Pressable } from 'react-native';
 
 import SettingsDropdown from '@/components/SettingsDropdown';
 import { ColorScheme, useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -104,7 +104,7 @@ export default function Index() {
                     />
                     <View className=" flex-row items-center justify-between py-2">
                         <Text className="ml-2 text-lg dark:text-white">Show Converted Units:</Text>
-                        <TouchableOpacity
+                        <Pressable
                             onPress={() => changeConvertedUnits(!showConvertedUnits)}
                             style={{
                                 backgroundColor: showConvertedUnits ? '#2563eb' : '#e5e7eb',
@@ -115,7 +115,7 @@ export default function Index() {
                             <Text style={{ color: showConvertedUnits ? 'white' : 'black' }}>
                                 {showConvertedUnits ? 'Converted' : 'Original'}
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                     <View
                         style={{
@@ -151,11 +151,11 @@ export default function Index() {
                         }}
                     />
                     <View className="mt-2 flex-row justify-end">
-                        <TouchableOpacity
+                        <Pressable
                             onPress={() => resetToDefault()}
                             className="rounded-lg bg-gray-200 px-4 py-2 dark:bg-gray-700">
                             <Text className="text-md text-right dark:text-white">Reset All</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 </View>
                 <View className="mt-4 rounded-3xl  bg-white px-2 py-4 dark:bg-gray-700">
@@ -167,7 +167,7 @@ export default function Index() {
                             marginVertical: 5,
                         }}
                     />
-                    <TouchableOpacity onPress={() => router.push('/settings/feedback')}>
+                    <Pressable onPress={() => router.push('/settings/feedback')}>
                         <View className="flex-row items-center">
                             <Text className="mr-2 text-lg dark:text-white">Feedback</Text>
                             <FontAwesome
@@ -176,7 +176,7 @@ export default function Index() {
                                 color={isDark ? 'white' : 'grey'}
                             />
                         </View>
-                    </TouchableOpacity>
+                    </Pressable>
                     <View
                         style={{
                             borderBottomWidth: 0.5,
@@ -184,7 +184,7 @@ export default function Index() {
                             marginVertical: 1,
                         }}
                     />
-                    <TouchableOpacity onPress={() => router.push('/settings/versionHistory')}>
+                    <Pressable onPress={() => router.push('/settings/versionHistory')}>
                         <View className="flex-row items-center">
                             <Text className="mr-2 text-lg  dark:text-white">Version History</Text>
                             <FontAwesome
@@ -193,7 +193,7 @@ export default function Index() {
                                 color={isDark ? 'white' : 'grey'}
                             />
                         </View>
-                    </TouchableOpacity>
+                    </Pressable>
                     <View
                         style={{
                             borderBottomWidth: 0.5,
@@ -201,7 +201,7 @@ export default function Index() {
                             marginVertical: 1,
                         }}
                     />
-                    <TouchableOpacity onPress={() => router.push('/settings/attributions')}>
+                    <Pressable onPress={() => router.push('/settings/attributions')}>
                         <View className="flex-row items-center">
                             <Text className="mr-2 text-lg  dark:text-white">Attributions</Text>
                             <FontAwesome
@@ -210,7 +210,7 @@ export default function Index() {
                                 color={isDark ? 'white' : 'grey'}
                             />
                         </View>
-                    </TouchableOpacity>
+                    </Pressable>
                     <View
                         style={{
                             borderBottomWidth: 0.5,
@@ -218,7 +218,7 @@ export default function Index() {
                             marginVertical: 1,
                         }}
                     />
-                    <TouchableOpacity onPress={() => router.push('/settings/socials')}>
+                    <Pressable onPress={() => router.push('/settings/socials')}>
                         <View className="flex-row items-center">
                             <Text className="mr-2 text-lg  dark:text-white">Socials</Text>
                             <FontAwesome
@@ -227,7 +227,7 @@ export default function Index() {
                                 size={20}
                             />
                         </View>
-                    </TouchableOpacity>
+                    </Pressable>
                     <View
                         style={{
                             borderBottomWidth: 0.5,

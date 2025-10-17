@@ -2,7 +2,7 @@
   "expo": {
     "name": "AquaWatch Mobile",
     "slug": "AquaWatch_Mobile",
-    "version": "1.9.1",
+    "version": "1.9.2",
     "scheme": "expo-nav-template",
     "web": {
       "bundler": "metro",
@@ -48,7 +48,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bluecolab.aquawatchmobile"
     },
     "android": {
       "edgeToEdgeEnabled": true,

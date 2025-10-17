@@ -2,14 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { getMonth, getYear, getDaysInMonth } from 'date-fns';
 import { Stack } from 'expo-router';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import {
-    View,
-    ScrollView,
-    Dimensions,
-    Text,
-    TouchableWithoutFeedback,
-    Pressable,
-} from 'react-native';
+import { View, ScrollView, Dimensions, Text, Pressable } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import type { ICarouselInstance } from 'react-native-reanimated-carousel';
@@ -116,20 +109,32 @@ export default function HistoricData() {
 
     const onMonthSelect = useCallback(
         (value: string) => {
-            setSelectedMonth(Number.parseInt(value, 10));
-            setMonth(Number.parseInt(value, 10));
-            setEndDay(getDaysInMonthFn(Number.parseInt(value, 10), selectedYear));
+            const newMonth = Number.parseInt(value, 10);
+            setSelectedMonth(newMonth);
+            setMonth(newMonth);
+            // If selecting the current month in the current year, clamp to today's day
+            const isCurrentSelection = newMonth === currentMonth && selectedYear === currentYear;
+            const endDay = isCurrentSelection
+                ? new Date().getDate()
+                : getDaysInMonthFn(newMonth, selectedYear);
+            setEndDay(endDay);
         },
-        [selectedYear, setMonth, setEndDay]
+        [selectedYear, setMonth, setEndDay, currentMonth, currentYear]
     );
 
     const onYearSelect = useCallback(
         (value: string) => {
-            setSelectedYear(Number.parseInt(value, 10));
-            setYear(Number.parseInt(value, 10));
-            setEndDay(getDaysInMonthFn(selectedMonth, Number.parseInt(value, 10)));
+            const newYear = Number.parseInt(value, 10);
+            setSelectedYear(newYear);
+            setYear(newYear);
+            // If selecting the current month in the current year, clamp to today's day
+            const isCurrentSelection = selectedMonth === currentMonth && newYear === currentYear;
+            const endDay = isCurrentSelection
+                ? new Date().getDate()
+                : getDaysInMonthFn(selectedMonth, newYear);
+            setEndDay(endDay);
         },
-        [selectedMonth, setYear, setEndDay]
+        [selectedMonth, setYear, setEndDay, currentMonth, currentYear]
     );
 
     const onLocationSelect = useCallback(
@@ -245,10 +250,9 @@ export default function HistoricData() {
                     body={
                         <>
                             <View className="absolute right-8 top-3">
-                                <TouchableWithoutFeedback
-                                    onPress={() => modalRef.current?.closeModal()}>
+                                <Pressable onPress={() => modalRef.current?.closeModal()}>
                                     <Text className="text-2xl dark:text-white">✕</Text>
-                                </TouchableWithoutFeedback>
+                                </Pressable>
                             </View>
 
                             <View className="elevation-[20] z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
