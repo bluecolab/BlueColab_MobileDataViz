@@ -33,6 +33,8 @@ export default function HistoricData() {
         setSelectedLocationTemp,
         error,
         showConvertedUnits,
+        normalizeComparative,
+        setNormalizeComparative,
     } = useGraphData();
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
@@ -290,6 +292,31 @@ export default function HistoricData() {
                                         value={selectedLocation.toString()}
                                         onSelect={onLocationSelect}
                                     />
+                                </View>
+
+                                <View className="flex-row items-center justify-end pb-4">
+                                    <Text className="mr-2 text-lg dark:text-white">
+                                        Normalize month (0–1)
+                                    </Text>
+                                    <Pressable
+                                        onPress={() =>
+                                            setNormalizeComparative(!normalizeComparative)
+                                        }
+                                        style={{
+                                            backgroundColor: normalizeComparative
+                                                ? '#2563eb'
+                                                : '#e5e7eb',
+                                            borderRadius: 16,
+                                            paddingVertical: 6,
+                                            paddingHorizontal: 16,
+                                        }}>
+                                        <Text
+                                            style={{
+                                                color: normalizeComparative ? 'white' : 'black',
+                                            }}>
+                                            {normalizeComparative ? 'On' : 'Off'}
+                                        </Text>
+                                    </Pressable>
                                 </View>
                             </View>
                         </>
