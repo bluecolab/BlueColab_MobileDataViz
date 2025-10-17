@@ -1,6 +1,5 @@
 // app/_layout.tsx
 import '../global.css';
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 
@@ -11,6 +10,8 @@ import GraphDataProvider from '@/contexts/GraphDataContext';
 export const unstable_settings = {
     initialRouteName: '(tabs)',
 };
+
+const queryClient = new QueryClient();
 
 /** The root layout of the app. It wraps the app in the necessary providers.
  * @returns {JSX.Element}

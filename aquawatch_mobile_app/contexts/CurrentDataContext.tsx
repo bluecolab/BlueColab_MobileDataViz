@@ -4,13 +4,15 @@ import { createContext, useContext, useEffect, useMemo } from 'react';
 import type { ReactNode } from 'react';
 
 import { useGraphData } from '@/contexts/GraphDataContext';
+import useGetOdinData from '@/hooks/useGetOdinData';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
-import { CleanedWaterData } from '@/types/water.interface';
+import { CleanedWaterData, OdinData } from '@/types/water.interface';
 
 interface CurrentDataContextType {
-    data: CleanedWaterData[] | undefined;
-    error: { message: string } | undefined;
+    data: CleanedWaterData[] | undefined; // This stays the same
+    airData?: OdinData | undefined;
+    error: Error | null;
     defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;
     loadingCurrent: boolean;
@@ -19,7 +21,7 @@ interface CurrentDataContextType {
 
 const CurrentDataContext = createContext({
     data: undefined,
-    error: undefined,
+    error: null,
     defaultLocation: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
     loadingCurrent: false,
