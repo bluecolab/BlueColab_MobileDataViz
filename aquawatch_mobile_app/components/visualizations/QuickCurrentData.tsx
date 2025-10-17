@@ -3,7 +3,7 @@ import { differenceInSeconds } from 'date-fns';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { Text, View, Dimensions, Pressable } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
@@ -126,7 +126,7 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
     );
 
     return (
-        <TouchableOpacity onPress={() => router.push('/(tabs)/currentData')}>
+        <Pressable onPress={() => router.push('/(tabs)/currentData')}>
             <View className="px-4 pt-4">
                 <LinearGradient
                     colors={error ? ['#ff2929', '#ffa8a8'] : ['#00104d', '#3fb8ab']}
@@ -210,6 +210,6 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
                     <Timer timestamp={lastDataPoint.timestamp} />
                 </LinearGradient>
             </View>
-        </TouchableOpacity>
+        </Pressable>
     );
 }

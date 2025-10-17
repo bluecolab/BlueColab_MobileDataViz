@@ -1,6 +1,6 @@
 // /components/HomeScreenCard.tsx
 import { useRouter } from 'expo-router';
-import { View, Text, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, Pressable, Dimensions, ImageBackground } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -24,7 +24,7 @@ export default function HomeScreenCard({
     // Determine if imageSource is a URI or a local image
     const image = typeof imageSource === 'string' ? { uri: imageSource } : imageSource;
     return (
-        <TouchableOpacity onPress={() => router.push({ pathname: route as any })}>
+        <Pressable onPress={() => router.push({ pathname: route as any })}>
             <View
                 className={`my-2 overflow-hidden rounded-3xl bg-white dark:bg-gray-700 ${isMain ? '' : 'mr-4'}`}>
                 <ImageBackground
@@ -49,6 +49,6 @@ export default function HomeScreenCard({
                     {buttonText}
                 </Text>
             </View>
-        </TouchableOpacity>
+        </Pressable>
     );
 }
