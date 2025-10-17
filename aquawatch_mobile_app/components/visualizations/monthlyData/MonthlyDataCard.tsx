@@ -4,9 +4,11 @@ import { Dimensions, View, Text, TouchableOpacity } from 'react-native';
 
 import FlipCard from '@/components/customCards/FlipCard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { useGraphData } from '@/contexts/GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
 import dataUtils from '@/utils/dataUtils';
+import normalize from '@/utils/normalize';
 
 import { MonthlyDataCardBack } from './MonthlyDataCardBack';
 import { MonthlyDataCardFront } from './MonthlyDataCardFront';
@@ -30,6 +32,7 @@ interface MonthlyDataCardProps {
     alternateName?: string;
     selectedMonth: string;
     showConvertedUnits?: boolean;
+    normalizeComparative?: boolean;
 }
 
 export function MonthlyDataCard({
@@ -44,9 +47,12 @@ export function MonthlyDataCard({
     alternateName,
     selectedMonth,
     showConvertedUnits,
+    normalizeComparative,
 }: MonthlyDataCardProps) {
     const finalUnitToUse = unitMap[unit] === null ? alternateName : unit;
     const { generateDataSummary } = dataUtils();
+    const { normalizeDailySummary } = normalize();
+    const { normalizeComparative: normalizeComparativeFromContext } = useGraphData();
 
     // Conversion helpers for historical data
     const uscmToPpt = (uscm: number) => uscm * 0.00055;
@@ -82,7 +88,13 @@ export function MonthlyDataCard({
         });
     }, [showConvertedUnits, data, unit, unitMap]);
 
-    const dataSummary = generateDataSummary(convertedData, loading, unit, defaultTempUnit);
+    const rawDataSummary = generateDataSummary(convertedData, loading, unit, defaultTempUnit);
+    const isNormalized = (normalizeComparative ?? normalizeComparativeFromContext) && !loading;
+    const normalizedDaily = useMemo(() => {
+        if (!isNormalized) return rawDataSummary.dailySummary;
+        const { daily } = normalizeDailySummary(rawDataSummary.dailySummary);
+        return daily;
+    }, [isNormalized, rawDataSummary.dailySummary, normalizeDailySummary]);
 
     const { width } = Dimensions.get('window');
 
@@ -125,7 +137,8 @@ export function MonthlyDataCard({
                                           displayUnit = 'ppt';
                                       }
                                   }
-                                  return `- ${displayUnit}`;
+                                  const normalizedLabel = isNormalized ? ' (normalized 0–1)' : '';
+                                  return `- ${displayUnit}${normalizedLabel}`;
                               })()
                             : ''}
                     </Text>
@@ -146,16 +159,16 @@ export function MonthlyDataCard({
                             Front={
                                 <MonthlyDataCardFront
                                     loading={loading}
-                                    dailySummary={dataSummary.dailySummary}
+                                    dailySummary={normalizedDaily}
                                     error={error}
                                     month={selectedMonth}
                                 />
                             }
                             Back={
                                 <MonthlyDataCardBack
-                                    overallMin={dataSummary.overallMin}
-                                    overallMax={dataSummary.overallMax}
-                                    overallAvg={dataSummary.overallAvg}
+                                    overallMin={rawDataSummary.overallMin}
+                                    overallMax={rawDataSummary.overallMax}
+                                    overallAvg={rawDataSummary.overallAvg}
                                     yAxisLabel={yAxisLabel}
                                     meta={meta}
                                 />

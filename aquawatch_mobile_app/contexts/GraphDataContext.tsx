@@ -14,6 +14,7 @@ interface GraphDataContextType {
     defaultTempUnit: string | undefined;
     selectedLocationTemp: string | undefined;
     showConvertedUnits: boolean;
+    normalizeComparative: boolean;
     changeLocation: (newLocation: LocationType) => void;
     setLoading: (newValue: boolean) => void;
     setYear: (newValue: number | undefined) => void;
@@ -22,6 +23,7 @@ interface GraphDataContextType {
     setDefaultLocation: (newValue: LocationType | undefined) => void;
     changeTemperatureUnit: (newUnit: string) => void;
     changeConvertedUnits: (enabled: boolean) => void;
+    setNormalizeComparative: (enabled: boolean) => void;
     setSelectedLocationTemp: (newValue: LocationType | undefined) => void;
 }
 
@@ -33,6 +35,7 @@ const GraphDataContext = createContext({
     defaultTempUnit: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
     showConvertedUnits: false,
+    normalizeComparative: false,
     changeLocation: () => {},
     setLoading: () => {},
     setYear: () => {},
@@ -42,6 +45,7 @@ const GraphDataContext = createContext({
     changeTemperatureUnit: () => {},
     setSelectedLocationTemp: () => {},
     changeConvertedUnits: () => {},
+    setNormalizeComparative: () => {},
 } as GraphDataContextType);
 
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
@@ -60,6 +64,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [selectedLocation, setSelectedLocation] = useState<LocationType>(); // if the user changed location. this is updated
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
+    const [normalizeComparative, setNormalizeComparativeState] = useState<boolean>(true);
 
     const changeTemperatureUnit = (newUnit: string) => {
         const setStoredTempUnit = async (value: string) => {
@@ -97,11 +102,23 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         setShowConvertedUnits(enabled);
     };
 
+    const setNormalizeComparative = (enabled: boolean) => {
+        const setStored = async (value: boolean) => {
+            try {
+                await AsyncStorage.setItem('normalize-comparative', JSON.stringify(value));
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        void setStored(enabled);
+        setNormalizeComparativeState(enabled);
+    };
+
     useEffect(() => {
         setLoading(true);
         setData([]);
         if (year && month && start_day && end_day && defaultLocation) {
-            fetchData(
+            void fetchData(
                 selectedLocation ?? defaultLocation,
                 false,
                 year,
@@ -157,9 +174,23 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             }
         };
 
+        const getStoredNormalizeComparative = async () => {
+            try {
+                const value = await AsyncStorage.getItem('normalize-comparative');
+                if (value !== null) {
+                    setNormalizeComparativeState(JSON.parse(value));
+                } else {
+                    setNormalizeComparativeState(true);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
         void getStoredDefaultLocation();
         void getStoredDefaultTempUnit();
         void getStoredConvertedUnits();
+        void getStoredNormalizeComparative();
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
@@ -177,6 +208,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 defaultLocation,
                 defaultTempUnit,
                 showConvertedUnits,
+                normalizeComparative,
                 selectedLocationTemp: selectedLocation?.name,
                 changeLocation,
                 setLoading,
@@ -187,6 +219,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 changeTemperatureUnit,
                 setSelectedLocationTemp: setSelectedLocation,
                 changeConvertedUnits,
+                setNormalizeComparative,
             }}>
             {children}
         </GraphDataContext.Provider>
