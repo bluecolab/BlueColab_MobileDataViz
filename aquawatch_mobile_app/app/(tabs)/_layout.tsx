@@ -5,9 +5,9 @@
 import { router, Tabs } from 'expo-router';
 import { Platform, Pressable } from 'react-native';
 
-import { TabBarIcon } from '../../components/TabBarIcon';
-
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
+
+import { TabBarIcon } from '../../components/TabBarIcon';
 
 /** The tab layout of the app. Here we define the tabs and their options.
  * @returns {JSX.Element}
