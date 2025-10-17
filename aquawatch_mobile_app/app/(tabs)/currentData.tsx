@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
-import { View, Text, ScrollView } from 'react-native';
+import { useCallback } from 'react';
+import { View, Text, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
 
 import { Widget } from '@/components/visualizations/Widget';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
@@ -8,9 +9,19 @@ import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import { extractLastData } from '@/utils/extractLastData';
 
+// Stable header refresh button component (defined outside render to satisfy lint rules)
+function HeaderRefreshButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <TouchableOpacity onPress={onPress} accessibilityLabel="Refresh data">
+            <Text style={{ color }}>Refresh</Text>
+        </TouchableOpacity>
+    );
+}
+
 export default function CurrentData() {
     const { isDark } = useColorScheme();
-    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
+    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error, refetchCurrent } =
+        useCurrentData();
 
     const { showConvertedUnits: showConvertedUnitsGlobal } = useGraphData();
 
@@ -23,6 +34,11 @@ export default function CurrentData() {
         showConvertedUnitsGlobal
     );
 
+    const headerRight = useCallback(
+        () => <HeaderRefreshButton onPress={refetchCurrent} color={isDark ? 'white' : 'black'} />,
+        [refetchCurrent, isDark]
+    );
+
     return (
         <>
             <Stack.Screen
@@ -32,9 +48,18 @@ export default function CurrentData() {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
+                    headerRight,
                 }}
             />
-            <ScrollView className="h-full bg-defaultbackground dark:bg-defaultdarkbackground">
+            <ScrollView
+                className="h-full bg-defaultbackground dark:bg-defaultdarkbackground"
+                refreshControl={
+                    <RefreshControl
+                        refreshing={loadingCurrent}
+                        onRefresh={refetchCurrent}
+                        tintColor={isDark ? 'white' : 'black'}
+                    />
+                }>
                 {/* — Title — */}
                 <View>
                     <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
