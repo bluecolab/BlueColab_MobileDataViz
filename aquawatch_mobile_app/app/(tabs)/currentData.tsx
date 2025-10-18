@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import { useCallback } from 'react';
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
 
-import { Widget, SENSOR_MAP } from '@/components/visualizations/Widget';
+import { Widget } from '@/components/visualizations/Widget';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
@@ -85,25 +85,6 @@ export default function CurrentData() {
                     <Widget name="pH" value={lastDataPoint.pH} />
                     <Widget name="Turbidity" value={lastDataPoint.turb} />
                     <Widget name="Oxygen" value={lastDataPoint.do} />
-                    {airData && (
-                        <>
-                            <View className="w-full">
-                                <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
-                                    Live Odin Data
-                                </Text>
-                            </View>
-                            {Object.entries(airData.sensors).map(([key, value]) => {
-                                // Use the map to get the correct widget name
-                                const widgetName = SENSOR_MAP[key];
-
-                                if (widgetName) {
-                                    return <Widget key={key} name={widgetName} value={value} />;
-                                }
-
-                                return null;
-                            })}
-                        </>
-                    )}
                 </View>
 
                 {/* — Current‐Data WQI Gauge — */}

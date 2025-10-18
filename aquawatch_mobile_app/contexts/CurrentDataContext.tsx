@@ -44,8 +44,13 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
         [defaultLocation?.name, defaultTempUnit]
     );
 
-    const { data, error, isFetching, isPending, refetch } = useQuery<CleanedWaterData[], Error>({
-        queryKey,
+    const {
+        data: waterData,
+        error,
+        isLoading: loadingCurrent,
+    } = useQuery({
+        queryKey: ['waterData', defaultLocation],
+        queryFn: () => fetchData(defaultLocation!, true, 0, 0, 0, 0),
         enabled: !!defaultLocation,
         queryFn: async () => {
             // DefaultLocation is guaranteed by enabled
@@ -60,23 +65,19 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
         retry: 1,
     });
 
-    // Manual refetch exposed to consumers
+
     const refetchCurrent = () => {
         if (!defaultLocation) return;
         void refetch();
     };
 
-    // Quarter-hour aligned auto-refresh: every 60s check and refetch on 0/15/30/45
-    useEffect(() => {
-        if (!defaultLocation) return;
-        const intervalId = setInterval(() => {
-            const currentMinute = getMinutes(new Date());
-            if ([0, 15, 30, 45].includes(currentMinute)) {
-                void refetch();
-            }
-        }, 60_000);
-        return () => clearInterval(intervalId);
-    }, [defaultLocation, refetch]);
+     const { data: airData } = useQuery({
+        queryKey: ['airData', defaultLocation],
+        queryFn: () => fetchOdinData(),
+        enabled: !!defaultLocation && defaultLocation.name === 'Choate Pond',
+        refetchInterval: 15 * 60 * 1000,
+    });
+
 
     return (
         <CurrentDataContext.Provider
