@@ -43,7 +43,6 @@ export default function useGetWaterData() {
 
                 if (!paramName) return; // Skip unneeded parameters
 
-                // Extracts array containing all values for selected parameter
                 const valuesList =
                     series.values[0].value.length > 0
                         ? series.values[0].value
@@ -58,13 +57,10 @@ export default function useGetWaterData() {
                     if (!existingEntry) {
                         existingEntry = {
                             timestamp,
-                        };
-                        if (paramName in existingEntry) {
-                            existingEntry[paramName as ParameterName] = value;
-                        }
+                        } as CleanedWaterData;
                         parsedData.push(existingEntry);
                     }
-                    existingEntry[paramName as ParameterName] = value;
+                    (existingEntry as any)[paramName as ParameterName] = value;
                 });
             });
             return parsedData;
@@ -79,6 +75,7 @@ export default function useGetWaterData() {
         });
     }, []);
 
+    // Legacy setter-based fetch function (used by GraphDataContext, etc.)
     const fetchData = useCallback(
         async (
             defaultLocation: LocationType,
