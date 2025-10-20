@@ -11,8 +11,6 @@ export const unstable_settings = {
     initialRouteName: '(tabs)',
 };
 
-const queryClient = new QueryClient();
-
 /** The root layout of the app. It wraps the app in the necessary providers.
  * @returns {JSX.Element}
  */

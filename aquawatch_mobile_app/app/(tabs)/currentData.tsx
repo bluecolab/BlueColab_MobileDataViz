@@ -21,8 +21,15 @@ function HeaderRefreshButton({ onPress, color }: { onPress: () => void; color: s
 
 export default function CurrentData() {
     const { isDark } = useColorScheme();
-    const { data, airData, defaultLocation, defaultTempUnit, loadingCurrent, error } =
-        useCurrentData();
+    const {
+        data,
+        airData,
+        defaultLocation,
+        defaultTempUnit,
+        loadingCurrent,
+        error,
+        refetchCurrent,
+    } = useCurrentData();
 
     const { showConvertedUnits: showConvertedUnitsGlobal } = useGraphData();
 
