@@ -2,7 +2,7 @@
 import { subMonths, format } from 'date-fns';
 import { Stack } from 'expo-router';
 import React, { useCallback } from 'react';
-import { ScrollView, View, FlatList, Text } from 'react-native';
+import { ScrollView, View, FlatList, Text, RefreshControl } from 'react-native';
 
 import HomeScreenCard from '@/components/customCards/HomeScreenCard';
 import QuickCurrentData from '@/components/visualizations/QuickCurrentData';
@@ -30,7 +30,7 @@ const homeScreenFlatListData = [
  * @returns {JSX.Element}
  */
 export default function HomeScreen() {
-    const { defaultLocation } = useCurrentData();
+    const { defaultLocation, refetchCurrent, loadingCurrent } = useCurrentData();
     const { showConvertedUnits } = useGraphData();
     const { isDark } = useColorScheme();
 
@@ -75,7 +75,14 @@ export default function HomeScreen() {
                     contentContainerStyle={{
                         flexGrow: 1,
                         justifyContent: 'flex-start',
-                    }}>
+                    }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={loadingCurrent}
+                            onRefresh={refetchCurrent}
+                            tintColor={isDark ? 'white' : 'black'}
+                        />
+                    }>
                     <Text className="ml-4 mt-4 text-4xl font-bold dark:text-white">
                         {defaultLocation?.name} Data!
                     </Text>

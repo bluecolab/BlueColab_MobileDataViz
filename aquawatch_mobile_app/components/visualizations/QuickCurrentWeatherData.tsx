@@ -83,8 +83,8 @@ export default function QuickCurrentWeatherData() {
                         error
                             ? ['#ff2929', '#ffa8a8']
                             : isDark
-                              ? ['#fff', '#fff']
-                              : ['#374151', '#374151']
+                              ? ['#374151', '#374151']
+                              : ['#fff', '#fff']
                     }
                     start={{ x: 0, y: 1 }}
                     end={{ x: 0, y: 0 }}
