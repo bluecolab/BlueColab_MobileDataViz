@@ -6,6 +6,7 @@ import { ScrollView, View, FlatList, Text } from 'react-native';
 
 import HomeScreenCard from '@/components/customCards/HomeScreenCard';
 import QuickCurrentData from '@/components/visualizations/QuickCurrentData';
+import QuickCurrentWeatherData from '@/components/visualizations/QuickCurrentWeatherData';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
@@ -16,12 +17,6 @@ const homeScreenFlatListData = [
         title: 'Discover',
         buttonText: 'Blue CoLab Mission',
         route: '/home/story',
-    },
-    {
-        imageSource: require('@/assets/homescreen/sky.jpg'),
-        title: 'Look!',
-        buttonText: 'Air Quality Index...',
-        route: '/home/airQuality',
     },
     {
         imageSource: require('@/assets/homescreen/waterSplash2.jpg'),
@@ -87,6 +82,10 @@ export default function HomeScreen() {
 
                     <View>
                         <QuickCurrentData showConvertedUnits={showConvertedUnits} />
+                    </View>
+
+                    <View>
+                        <QuickCurrentWeatherData />
                     </View>
 
                     <View className="px-4 pt-4">

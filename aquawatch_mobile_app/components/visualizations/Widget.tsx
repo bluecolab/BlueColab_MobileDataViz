@@ -39,13 +39,53 @@ const getStatusAndColor = (name: string, value: number) => {
             else if ((value >= 41 && value < 66) || (value > 199 && value <= 299))
                 return { label: 'Warning', color: 'text-yellow-600' };
             else return { label: 'Bad', color: 'text-red-600' };
+        case 'Sulfur Dioxide': // SO2
+            if (value < 20) return { label: 'Good', color: 'text-green-600' };
+            else if (value < 80) return { label: 'Fair', color: 'text-lime-500' };
+            else if (value < 250) return { label: 'Moderate', color: 'text-yellow-600' };
+            else if (value < 350) return { label: 'Poor', color: 'text-orange-600' };
+            else return { label: 'Very Poor', color: 'text-red-600' };
+
+        case 'Nitrogen Dioxide': // NO2
+            if (value < 40) return { label: 'Good', color: 'text-green-600' };
+            else if (value < 70) return { label: 'Fair', color: 'text-lime-500' };
+            else if (value < 150) return { label: 'Moderate', color: 'text-yellow-600' };
+            else if (value < 200) return { label: 'Poor', color: 'text-orange-600' };
+            else return { label: 'Very Poor', color: 'text-red-600' };
+
+        case 'PM10':
+            if (value < 20) return { label: 'Good', color: 'text-green-600' };
+            else if (value < 50) return { label: 'Fair', color: 'text-lime-500' };
+            else if (value < 100) return { label: 'Moderate', color: 'text-yellow-600' };
+            else if (value < 200) return { label: 'Poor', color: 'text-orange-600' };
+            else return { label: 'Very Poor', color: 'text-red-600' };
+
+        case 'PM2.5':
+            if (value < 10) return { label: 'Good', color: 'text-green-600' };
+            else if (value < 25) return { label: 'Fair', color: 'text-lime-500' };
+            else if (value < 50) return { label: 'Moderate', color: 'text-yellow-600' };
+            else if (value < 75) return { label: 'Poor', color: 'text-orange-600' };
+            else return { label: 'Very Poor', color: 'text-red-600' };
+
+        case 'Ozone': // O3
+            if (value < 60) return { label: 'Good', color: 'text-green-600' };
+            else if (value < 100) return { label: 'Fair', color: 'text-lime-500' };
+            else if (value < 140) return { label: 'Moderate', color: 'text-yellow-600' };
+            else if (value < 180) return { label: 'Poor', color: 'text-orange-600' };
+            else return { label: 'Very Poor', color: 'text-red-600' };
+
+        case 'Carbon Monoxide': // CO
+            if (value < 4400) return { label: 'Good', color: 'text-green-600' };
+            else if (value < 9400) return { label: 'Fair', color: 'text-lime-500' };
+            else if (value < 12400) return { label: 'Moderate', color: 'text-yellow-600' };
+            else if (value < 15400) return { label: 'Poor', color: 'text-orange-600' };
+            else return { label: 'Very Poor', color: 'text-red-600' };
 
         default:
             return { label: '', color: 'text-gray-500' };
     }
 };
 
-// TODO: Move these to a file
 // flip‐card descriptions
 const DESCRIPTIONS = {
     // Water Quality
@@ -87,6 +127,20 @@ const DESCRIPTIONS = {
     // Sensor Orientation
     'Tilt NS': 'The North-South tilt of the sensor in degrees.',
     'Tilt WE': 'The West-East tilt of the sensor in degrees.',
+    'Carbon Monoxide':
+        'Concentration of CO gas in the air, in micrograms per cubic meter (µg/m³). High concentrations lead to less oxygen delivery in the body.',
+    'Nitric Oxide':
+        'Concentration of NO gas in the air, in micrograms per cubic meter (µg/m³). Becomes a irritant at high levels when breathing.',
+    'Nitrogen Dioxide':
+        'Concentration of NO2 gas in the air, in micrograms per cubic meter (µg/m³). Becomes a irritant at high levels when breathing',
+    Ozone: 'Concentration of O3 gas in the air, in micrograms per cubic meter (µg/m³). Cause breathing difficulties at high levels, especially for asthmatics.',
+    'Sulfur Dioxide':
+        'Concentration of SO2 gas in the air, in micrograms per cubic meter (µg/m³).  Cause breathing difficulties at high levels, especially for asthmatics.',
+    'PM2.5':
+        'Concentration of particulate matter ≤2.5 micrometers in diameter, in micrograms per cubic meter (µg/m³). Small particles can penetrate deep into lungs and bloodstream.',
+    PM10: 'Concentration of particulate matter ≤10 micrometers in diameter, in micrograms per cubic meter (µg/m³). Small particles can penetrate deep into lungs and bloodstream.',
+    Ammonia:
+        'Concentration of NH3 gas in the air, in micrograms per cubic meter (µg/m³). Cause irritation to eyes, nose, and throat at high levels.',
 };
 
 // Add this map in your CurrentData.tsx file
@@ -107,6 +161,14 @@ export const SENSOR_MAP: { [key: string]: DescriptionKeys | null } = {
     // Set keys to null if you want to ignore them
     RelHumidTemp: null,
     SolarTotalFlux: null,
+    co: 'Carbon Monoxide',
+    no: null,
+    no2: 'Nitrogen Dioxide',
+    o3: 'Ozone',
+    so2: 'Sulfur Dioxide',
+    pm2_5: 'PM2.5',
+    pm10: null,
+    nh3: 'Ammonia',
 };
 
 export type DescriptionKeys = keyof typeof DESCRIPTIONS;
