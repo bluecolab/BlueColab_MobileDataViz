@@ -3,7 +3,7 @@ import { differenceInSeconds } from 'date-fns';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { Text, View, Dimensions, Pressable } from 'react-native';
+import { Text, View, Dimensions, Button, Pressable } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
@@ -69,33 +69,6 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
             </Text>
         </View>
     );
-};
-
-const formatSensorName = (name: string) => {
-    return name.replace(/([A-Z])/g, ' $1').trim();
-};
-
-const getSensorUnit = (sensorName: string) => {
-    switch (sensorName) {
-        case 'AirTemp':
-        case 'RelHumidTemp':
-            return '°C';
-        case 'BaroPressure':
-            return 'hPa';
-        case 'Rain':
-            return 'mm';
-        case 'RelHumid':
-            return '%';
-        case 'WindSpeed':
-        case 'MaxWindSpeed':
-            return 'm/s';
-        case 'WindDir':
-            return '°';
-        case 'SolarFlux':
-            return 'W/m²';
-        default:
-            return '';
-    }
 };
 
 /**
@@ -184,28 +157,25 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
                         ) ? (
                             <>
                                 <ParamView param={lastDataPoint.wqi} name="WQI" />
-                                {airData && (
-                                    <>
-                                        <View className="w-full">
-                                            <Text className="text-center text-2xl font-bold text-white">
-                                                Live Odin Data
-                                            </Text>
-                                        </View>
-                                        {Object.entries(airData.sensors).map(([name, value]) => (
-                                            <ParamView
-                                                key={name}
-                                                param={Number(value).toFixed(1)}
-                                                name={formatSensorName(name)}
-                                                unit={getSensorUnit(name)}
-                                            />
-                                        ))}
-                                    </>
-                                )}
                             </>
                         ) : (
                             <></>
                         )}
                     </View>
+
+                    {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                        (loc) => loc.name === defaultLocation.name
+                    ) ? (
+                        <>
+                            <Button
+                                title="View Odin Data"
+                                onPress={() => {
+                                    router.push('/(tabs)/home/odinData');
+                                }}></Button>
+                        </>
+                    ) : (
+                        <></>
+                    )}
 
                     <Timer timestamp={lastDataPoint.timestamp} />
                 </LinearGradient>

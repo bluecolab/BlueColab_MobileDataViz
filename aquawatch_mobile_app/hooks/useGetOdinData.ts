@@ -13,17 +13,6 @@ export default function useGetOdinData() {
         if (networkState.isInternetReachable === false) {
             throw new Error('No internet connection');
         }
-
-        // const url = getAPIUrl(
-        //     defaultLocation,
-        //     isCurrentData,
-        //     year,
-        //     month,
-        //     start_day,
-        //     end_day,
-        //     stationIds
-        // );
-
         const url = config.BLUE_COLAB_API_ODIN_URL;
 
         console.log('Fetching with React Query:', url);

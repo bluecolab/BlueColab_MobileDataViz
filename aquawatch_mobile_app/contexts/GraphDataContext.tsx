@@ -16,6 +16,7 @@ interface GraphDataContextType {
     defaultTempUnit: string | undefined;
     selectedLocationTemp: string | undefined;
     showConvertedUnits: boolean;
+    normalizeComparative: boolean;
     changeLocation: (newLocation: LocationType) => void;
     setLoading: (newValue: boolean) => void;
     setYear: (newValue: number | undefined) => void;
@@ -24,6 +25,7 @@ interface GraphDataContextType {
     setDefaultLocation: (newValue: LocationType | undefined) => void;
     changeTemperatureUnit: (newUnit: string) => void;
     changeConvertedUnits: (enabled: boolean) => void;
+    setNormalizeComparative: (enabled: boolean) => void;
     setSelectedLocationTemp: (newValue: LocationType | undefined) => void;
 }
 
@@ -35,6 +37,7 @@ const GraphDataContext = createContext({
     defaultTempUnit: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
     showConvertedUnits: false,
+    normalizeComparative: false,
     changeLocation: () => {},
     setLoading: () => {},
     setYear: () => {},
@@ -44,6 +47,7 @@ const GraphDataContext = createContext({
     changeTemperatureUnit: () => {},
     setSelectedLocationTemp: () => {},
     changeConvertedUnits: () => {},
+    setNormalizeComparative: () => {},
 } as GraphDataContextType);
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
     const { fetchData } = useGetWaterData();
@@ -62,6 +66,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [selectedLocation, setSelectedLocation] = useState<LocationType>();
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
+    const [normalizeComparative, setNormalizeComparativeState] = useState<boolean>(true);
 
     // Determine the active location to be used in the query.
     const activeLocation = selectedLocation ?? defaultLocation;
@@ -105,6 +110,18 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         };
         void setStoredLocation(newLocation);
         setDefaultLocation(newLocation);
+    };
+
+    const setNormalizeComparative = (enabled: boolean) => {
+        const setStored = async (value: boolean) => {
+            try {
+                await AsyncStorage.setItem('normalize-comparative', JSON.stringify(value));
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        void setStored(enabled);
+        setNormalizeComparativeState(enabled);
     };
 
     // The initial useEffect to load settings and set the default date remains the same.
@@ -163,9 +180,23 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             }
         };
 
+        const getStoredNormalizeComparative = async () => {
+            try {
+                const value = await AsyncStorage.getItem('normalize-comparative');
+                if (value !== null) {
+                    setNormalizeComparativeState(JSON.parse(value));
+                } else {
+                    setNormalizeComparativeState(true);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
         void getStoredDefaultLocation();
         void getStoredDefaultTempUnit();
         void getStoredConvertedUnits();
+        void getStoredNormalizeComparative();
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
@@ -189,14 +220,14 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 changeLocation,
                 setYear,
                 setMonth,
-                // Note: You probably don't need to expose setLoading anymore
-                // as React Query handles it. It's kept here for compatibility.
+                normalizeComparative,
                 setLoading: () => {},
                 setEndDay,
                 setDefaultLocation,
                 changeTemperatureUnit,
                 setSelectedLocationTemp: setSelectedLocation,
                 changeConvertedUnits,
+                setNormalizeComparative,
             }}>
             {children}
         </GraphDataContext.Provider>
