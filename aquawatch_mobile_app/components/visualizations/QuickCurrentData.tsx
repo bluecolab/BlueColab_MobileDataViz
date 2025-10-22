@@ -1,9 +1,8 @@
 // /components/QuickCurrentData.tsx
 import { differenceInSeconds } from 'date-fns';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { Text, View, Dimensions, Pressable } from 'react-native';
+import { Text, View, Dimensions, Pressable, ImageBackground } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
@@ -79,6 +78,7 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
  */
 // Removed duplicate export default function QuickCurrentData()
 export default function QuickCurrentData({ showConvertedUnits }: { showConvertedUnits?: boolean }) {
+    const backgroundImage = require('@/assets/homescreen/waterBG.jpg');
     // All data is received from the context provider
     const { data, airData, defaultLocation, defaultTempUnit, loadingCurrent, error } =
         useCurrentData();
@@ -102,17 +102,17 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
 
     return (
         <Pressable onPress={() => router.push('/(tabs)/currentData')}>
-            <View className="px-4 pt-4">
-                <LinearGradient
-                    colors={error ? ['#ff2929', '#ffa8a8'] : ['#00104d', '#3fb8ab']}
-                    start={{ x: 0, y: 1 }}
-                    end={{ x: 0, y: 0 }}
+            <View className="rounded-[20px] px-4 pt-4">
+                <ImageBackground
+                    source={backgroundImage}
+                    resizeMode="cover"
                     style={{
                         paddingTop: 4,
                         alignItems: 'center',
                         borderRadius: 20,
+                        overflow: 'hidden',
                     }}>
-                    <View>
+                    <View className="rounded-[20px] px-4 pt-4">
                         <Text className="text-center text-2xl font-bold text-white">
                             Live{' '}
                             {config.BLUE_COLAB_API_CONFIG.validMatches.some(
@@ -180,7 +180,7 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
                     </View>
 
                     <Timer timestamp={lastDataPoint.timestamp} />
-                </LinearGradient>
+                </ImageBackground>
             </View>
         </Pressable>
     );

@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { useState, useEffect } from 'react';
 import { Text, View, Pressable } from 'react-native';
 
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { config } from '@/hooks/useConfig';
 
@@ -50,6 +51,7 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
  */
 // Removed duplicate export default function QuickCurrentData()
 export default function QuickCurrentWeatherData() {
+    const { isDark } = useColorScheme();
     const { aqiData, defaultLocation, error } = useCurrentData();
 
     const aqi = aqiData?.list[0].main.aqi;
@@ -77,7 +79,13 @@ export default function QuickCurrentWeatherData() {
             }}>
             <View className="px-4 pt-4">
                 <LinearGradient
-                    colors={error ? ['#ff2929', '#ffa8a8'] : ['#00104d', '#3fb8ab']}
+                    colors={
+                        error
+                            ? ['#ff2929', '#ffa8a8']
+                            : isDark
+                              ? ['#fff', '#fff']
+                              : ['#374151', '#374151']
+                    }
                     start={{ x: 0, y: 1 }}
                     end={{ x: 0, y: 0 }}
                     style={{
@@ -103,16 +111,24 @@ export default function QuickCurrentWeatherData() {
                         <View className="h-[200] w-[200]">
                             <View className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
                                 <>
-                                    <Text className="text-center text-3xl font-bold text-white">
+                                    <Text className="text-center text-3xl font-bold dark:text-white">
                                         {aqi}
                                     </Text>
-                                    <Text className="text-md text-center font-semibold text-white">
+                                    <Text className="text-md text-center font-semibold dark:text-white">
                                         {selectedCat}
                                     </Text>
                                 </>
                             </View>
                             <PolarChart percent={parseInt(`${percent}`)} isDark={false} />
                         </View>
+
+                        <Text className="text-md  w-full text-center font-semibold dark:text-white">
+                            Click to learn more about..
+                        </Text>
+
+                        <Text className="px-4  text-center text-xl font-semibold dark:text-white">
+                            Air Quality Index and Weather Data
+                        </Text>
                     </View>
 
                     <Timer timestamp={new Date(timestamp * 1000).toISOString()} />
