@@ -29,6 +29,12 @@ const homeScreenFlatListData = [
         buttonText: 'Blue CoLab Blogs',
         route: '/home/blog',
     },
+    {
+        imageSource: require('@/assets/homescreen/waterQuestion.jpg'),
+        title: 'Water Report',
+        buttonText: 'Water Report',
+        route: '/home/waterReport',
+    },
 ];
 
 /** The home screen of the app. It contains the quick current data component.
