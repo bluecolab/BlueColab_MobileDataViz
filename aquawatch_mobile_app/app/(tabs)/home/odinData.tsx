@@ -7,7 +7,7 @@ import { useCurrentData } from '@/contexts/CurrentDataContext';
 
 export default function CurrentData() {
     const { isDark } = useColorScheme();
-    const { airData, defaultLocation, error } = useCurrentData();
+    const { airData, aqiData, defaultLocation, error } = useCurrentData();
 
     return (
         <>
@@ -24,7 +24,7 @@ export default function CurrentData() {
                 {/* — Title — */}
                 <View>
                     <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
-                        {defaultLocation?.name} Odin Data
+                        {defaultLocation?.name} Odin Data with AQI
                     </Text>
                 </View>
 
@@ -44,7 +44,33 @@ export default function CurrentData() {
                                     Live Odin Data
                                 </Text>
                             </View> */}
-                            {Object.entries(airData.sensors).map(([key, value]) => {
+
+                            {Object.entries({
+                                ...airData.sensors,
+                            }).map(([key, value]) => {
+                                // Use the map to get the correct widget name
+                                const widgetName = SENSOR_MAP[key];
+
+                                if (widgetName) {
+                                    return <Widget key={key} name={widgetName} value={value} />;
+                                }
+
+                                return null;
+                            })}
+                        </>
+                    )}
+
+                    {aqiData && (
+                        <>
+                            {/* <View className="w-full">
+                                <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
+                                    Live Odin Data
+                                </Text>
+                            </View> */}
+
+                            {Object.entries({
+                                ...aqiData.list[0].components,
+                            }).map(([key, value]) => {
                                 // Use the map to get the correct widget name
                                 const widgetName = SENSOR_MAP[key];
 
