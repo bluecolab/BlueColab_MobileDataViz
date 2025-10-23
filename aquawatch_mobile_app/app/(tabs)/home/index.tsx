@@ -29,12 +29,6 @@ export default function HomeScreen() {
             route: '/home/historicData',
         },
         {
-            imageSource: require('@/assets/homescreen/waterQuestion.jpg'),
-            title: 'Water Report',
-            buttonText: 'Water Report',
-            route: '/home/waterReport',
-        },
-        {
             imageSource: require('@/assets/homescreen/PXL_20221014_204618892.jpg'),
             title: 'Discover',
             buttonText: 'Blue CoLab Mission',
@@ -109,10 +103,10 @@ export default function HomeScreen() {
 
                     <View className="px-4 pt-4">
                         <HomeScreenCard
-                            imageSource={require('@/assets/homescreen/Crotter_Construction.png')} // image source als identify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+                            imageSource={require('@/assets/homescreen/waterQuestion.jpg')}
                             title="Pace Water Data"
-                            buttonText={`Coming Soon`}
-                            route="(tabs)/home/"
+                            buttonText={`More Soon`}
+                            route="(tabs)/home/waterReport"
                             isMain
                         />
                     </View>
