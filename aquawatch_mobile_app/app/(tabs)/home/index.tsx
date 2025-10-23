@@ -2,50 +2,51 @@
 import { subMonths, format } from 'date-fns';
 import { Stack } from 'expo-router';
 import React, { useCallback } from 'react';
-import { ScrollView, View, FlatList, Text } from 'react-native';
+import { ScrollView, View, FlatList, Text, RefreshControl } from 'react-native';
 
 import HomeScreenCard from '@/components/customCards/HomeScreenCard';
 import QuickCurrentData from '@/components/visualizations/QuickCurrentData';
+import QuickCurrentWeatherData from '@/components/visualizations/QuickCurrentWeatherData';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
-
-const homeScreenFlatListData = [
-    {
-        imageSource: require('@/assets/homescreen/PXL_20221014_204618892.jpg'),
-        title: 'Discover',
-        buttonText: 'Blue CoLab Mission',
-        route: '/home/story',
-    },
-    {
-        imageSource: require('@/assets/homescreen/sky.jpg'),
-        title: 'Look!',
-        buttonText: 'Air Quality Index...',
-        route: '/home/airQuality',
-    },
-    {
-        imageSource: require('@/assets/homescreen/waterSplash2.jpg'),
-        title: 'Read Blogs',
-        buttonText: 'Blue CoLab Blogs',
-        route: '/home/blog',
-    },
-    {
-        imageSource: require('@/assets/homescreen/waterQuestion.jpg'),
-        title: 'Water Report',
-        buttonText: 'Water Report',
-        route: '/home/waterReport',
-    },
-];
 
 /** The home screen of the app. It contains the quick current data component.
  * @returns {JSX.Element}
  */
 export default function HomeScreen() {
-    const { defaultLocation } = useCurrentData();
+    const { defaultLocation, refetchCurrent, loadingCurrent } = useCurrentData();
     const { showConvertedUnits } = useGraphData();
     const { isDark } = useColorScheme();
 
     const lastMonth = format(subMonths(new Date(), 1), 'MMMM yyyy');
+
+    const homeScreenFlatListData = [
+        {
+            imageSource: require('@/assets/homescreen/IMG_9274.png'),
+            title: 'Historic Data',
+            buttonText: `${lastMonth} Data`,
+            route: '/home/historicData',
+        },
+        {
+            imageSource: require('@/assets/homescreen/waterQuestion.jpg'),
+            title: 'Water Report',
+            buttonText: 'Water Report',
+            route: '/home/waterReport',
+        },
+        {
+            imageSource: require('@/assets/homescreen/PXL_20221014_204618892.jpg'),
+            title: 'Discover',
+            buttonText: 'Blue CoLab Mission',
+            route: '/home/story',
+        },
+        {
+            imageSource: require('@/assets/homescreen/waterSplash2.jpg'),
+            title: 'Read Blogs',
+            buttonText: 'Blue CoLab Blogs',
+            route: '/home/blog',
+        },
+    ];
 
     const renderItem = useCallback(
         ({
@@ -86,7 +87,14 @@ export default function HomeScreen() {
                     contentContainerStyle={{
                         flexGrow: 1,
                         justifyContent: 'flex-start',
-                    }}>
+                    }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={loadingCurrent}
+                            onRefresh={refetchCurrent}
+                            tintColor={isDark ? 'white' : 'black'}
+                        />
+                    }>
                     <Text className="ml-4 mt-4 text-4xl font-bold dark:text-white">
                         {defaultLocation?.name} Data!
                     </Text>
@@ -95,12 +103,16 @@ export default function HomeScreen() {
                         <QuickCurrentData showConvertedUnits={showConvertedUnits} />
                     </View>
 
+                    <View>
+                        <QuickCurrentWeatherData />
+                    </View>
+
                     <View className="px-4 pt-4">
                         <HomeScreenCard
-                            imageSource={require('@/assets/homescreen/IMG_9274.png')} // image source als identify URl all u gotta do is "http//something.com" for local images use {require("./something")}
-                            title="Historic Data"
-                            buttonText={`${lastMonth} Data`}
-                            route="../home/historicData"
+                            imageSource={require('@/assets/homescreen/Crotter_Construction.png')} // image source als identify URl all u gotta do is "http//something.com" for local images use {require("./something")}
+                            title="Pace Water Data"
+                            buttonText={`Coming Soon`}
+                            route="(tabs)/home/"
                             isMain
                         />
                     </View>
