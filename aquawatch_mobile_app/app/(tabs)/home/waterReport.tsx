@@ -9,6 +9,7 @@ import {
     FlatList,
     TouchableOpacity,
     Modal,
+    Platform,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 
@@ -273,18 +274,24 @@ const WaterReport = () => {
                     </View>
 
                     {/* PDF Viewer using WebView */}
-                    {selectedReport && (
-                        <WebView
-                            source={{
-                                uri: `https://docs.google.com/viewer?url=${encodeURIComponent(selectedReport.uri)}&embedded=true`,
-                            }}
-                            style={styles.webview}
-                            startInLoadingState={true}
-                            scalesPageToFit={true}
-                            javaScriptEnabled={true}
-                            domStorageEnabled={true}
-                        />
-                    )}
+                    {selectedReport &&
+                        (Platform.OS === 'web' ? (
+                            <iframe
+                                src={`https://docs.google.com/viewer?url=${encodeURIComponent(selectedReport.uri)}&embedded=true`}
+                                style={styles.webview}
+                            />
+                        ) : (
+                            <WebView
+                                source={{
+                                    uri: `https://docs.google.com/viewer?url=${encodeURIComponent(selectedReport.uri)}&embedded=true`,
+                                }}
+                                style={styles.webview}
+                                startInLoadingState={true}
+                                scalesPageToFit={true}
+                                javaScriptEnabled={true}
+                                domStorageEnabled={true}
+                            />
+                        ))}
                 </View>
             </Modal>
         </>

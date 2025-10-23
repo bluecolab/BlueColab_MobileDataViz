@@ -3,13 +3,14 @@ import { differenceInSeconds } from 'date-fns';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View, Pressable, Platform } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { config } from '@/hooks/useConfig';
 
 import PolarChart from './WQI/PolarChart';
+import PolarChartVictoryWeb from './WQI/PolarChart-web';
 
 /** The timer component that displays the time since the last data point was received.
  * @param timestamp - The timestamp for the data point
@@ -119,7 +120,14 @@ export default function QuickCurrentWeatherData() {
                                     </Text>
                                 </>
                             </View>
-                            <PolarChart percent={parseInt(`${percent}`)} isDark={false} />
+                            {Platform.OS === 'web' ? (
+                                <PolarChartVictoryWeb
+                                    percent={parseInt(`${percent}`)}
+                                    isDark={false}
+                                />
+                            ) : (
+                                <PolarChart percent={parseInt(`${percent}`)} isDark={false} />
+                            )}
                         </View>
 
                         <Text className="text-md  w-full text-center font-semibold dark:text-white">
