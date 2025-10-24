@@ -66,7 +66,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [selectedLocation, setSelectedLocation] = useState<LocationType>();
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
-    const [normalizeComparative, setNormalizeComparativeState] = useState<boolean>(true);
+    const [normalizeComparative, setNormalizeComparativeState] = useState<boolean>(false);
 
     // Determine the active location to be used in the query.
     const activeLocation = selectedLocation ?? defaultLocation;
@@ -186,7 +186,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 if (value !== null) {
                     setNormalizeComparativeState(JSON.parse(value));
                 } else {
-                    setNormalizeComparativeState(true);
+                    setNormalizeComparativeState(false);
                 }
             } catch (e) {
                 console.error(e);
