@@ -57,6 +57,7 @@ export default function TabLayout() {
                 <Tabs.Screen
                     name="currentData"
                     options={{
+                        title: 'Current Data',
                         headerTitle: 'Current Data',
                         headerStyle: {
                             backgroundColor: isDark ? '#2e2e3b' : 'white',
