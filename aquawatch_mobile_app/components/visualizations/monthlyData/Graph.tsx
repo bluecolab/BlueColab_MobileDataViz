@@ -1,11 +1,9 @@
 import type { SkFont } from '@shopify/react-native-skia';
 import React, { useMemo } from 'react';
-import { CartesianChart, AreaRange, Line } from 'react-native-wagmi-charts';
+import { AreaRange, CartesianChart, Line } from 'victory-native';
 
 import { DailySummaryType } from '@/utils/dataUtils';
 import { getOrdinalSuffix } from '@/utils/getOrdinalSuffix';
-
-type ChartPoints = Record<string, Array<{ x: number; y: number }>>;
 
 interface GraphProps {
     dailySummary: DailySummaryType[];
@@ -62,7 +60,7 @@ const Graph = ({ dailySummary, isDark, font }: GraphProps) => {
                 lineWidth: { top: 0, bottom: 4, left: 4, right: 0 },
             }}
             padding={{ left: 0, bottom: 20, top: 5, right: 5 }}>
-            {({ points }: { points: ChartPoints }) => (
+            {({ points }) => (
                 <>
                     {points.max && points.min && (
                         <AreaRange
