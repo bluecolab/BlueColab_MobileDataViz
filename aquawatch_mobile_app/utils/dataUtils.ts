@@ -6,7 +6,7 @@ export default function dataUtils() {
         loading: boolean,
         finalUnitToUse?: string,
         defaultTempUnit?: string,
-        data2?: CleanedWaterData[] | undefined,
+        data2?: CleanedWaterData[] | undefined
     ) => {
         if (!data || loading || (!Array.isArray(data) && loading)) {
             return {
@@ -35,16 +35,18 @@ export default function dataUtils() {
             return acc;
         }, {});
 
-        const groupedData2: GroupedData = data2 ? data2.reduce((acc: GroupedData, item: any) => {
-            const date = new Date(item.timestamp).toISOString().split('T')[0];
-            const value =
-                finalUnitToUse === 'Temp' && defaultTempUnit?.trim() === 'Fahrenheit'
-                    ? item[finalUnitToUse] * (9 / 5) + 32
-                    : item[finalUnitToUse ?? 'Temp'];
-            if (!acc[date]) acc[date] = [];
-            acc[date].push(value);
-            return acc;
-        }, {}) : [] as never as GroupedData;
+        const groupedData2: GroupedData = data2
+            ? data2.reduce((acc: GroupedData, item: any) => {
+                  const date = new Date(item.timestamp).toISOString().split('T')[0];
+                  const value =
+                      finalUnitToUse === 'Temp' && defaultTempUnit?.trim() === 'Fahrenheit'
+                          ? item[finalUnitToUse] * (9 / 5) + 32
+                          : item[finalUnitToUse ?? 'Temp'];
+                  if (!acc[date]) acc[date] = [];
+                  acc[date].push(value);
+                  return acc;
+              }, {})
+            : ([] as never as GroupedData);
 
         const dailySummary = Object.keys(groupedData).map(
             (date): DailySummaryType => ({
@@ -52,13 +54,16 @@ export default function dataUtils() {
                 avg: groupedData[date].reduce((sum, v) => sum + v, 0) / groupedData[date].length,
                 min: Math.min(...groupedData[date]),
                 max: Math.max(...groupedData[date]),
-                ...(
-                    data2 ? {
-                        avg2: groupedData2[date] ? (groupedData2[date].reduce((sum, v) => sum + v, 0) / groupedData2[date].length) : undefined,
-                        min2: groupedData2[date] ? Math.min(...groupedData2[date]) : undefined,
-                        max2: groupedData2[date] ? Math.max(...groupedData2[date]) : undefined,
-                    } : {}
-                )
+                ...(data2
+                    ? {
+                          avg2: groupedData2[date]
+                              ? groupedData2[date].reduce((sum, v) => sum + v, 0) /
+                                groupedData2[date].length
+                              : undefined,
+                          min2: groupedData2[date] ? Math.min(...groupedData2[date]) : undefined,
+                          max2: groupedData2[date] ? Math.max(...groupedData2[date]) : undefined,
+                      }
+                    : {}),
             })
         );
 
@@ -167,7 +172,7 @@ export interface DailySummaryType {
     day: number;
     avg: number | undefined;
     min: number | undefined;
-    max: number | undefined;`
+    max: number | undefined;
     avg2?: number | undefined;
     min2?: number | undefined;
     max2?: number | undefined;
