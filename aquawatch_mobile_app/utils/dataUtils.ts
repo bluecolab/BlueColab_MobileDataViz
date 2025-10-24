@@ -5,7 +5,8 @@ export default function dataUtils() {
         data: CleanedWaterData[] | undefined,
         loading: boolean,
         finalUnitToUse?: string,
-        defaultTempUnit?: string
+        defaultTempUnit?: string,
+        data2?: CleanedWaterData[] | undefined,
     ) => {
         if (!data || loading || (!Array.isArray(data) && loading)) {
             return {
@@ -16,6 +17,7 @@ export default function dataUtils() {
                 tickValues: [],
             };
         }
+
         interface GroupedData {
             [date: string]: number[];
         }
@@ -33,12 +35,30 @@ export default function dataUtils() {
             return acc;
         }, {});
 
+        const groupedData2: GroupedData = data2 ? data2.reduce((acc: GroupedData, item: any) => {
+            const date = new Date(item.timestamp).toISOString().split('T')[0];
+            const value =
+                finalUnitToUse === 'Temp' && defaultTempUnit?.trim() === 'Fahrenheit'
+                    ? item[finalUnitToUse] * (9 / 5) + 32
+                    : item[finalUnitToUse ?? 'Temp'];
+            if (!acc[date]) acc[date] = [];
+            acc[date].push(value);
+            return acc;
+        }, {}) : [] as never as GroupedData;
+
         const dailySummary = Object.keys(groupedData).map(
             (date): DailySummaryType => ({
-                day: new Date(date).getUTCDate(),
+                day: new Date(date).getDate(),
                 avg: groupedData[date].reduce((sum, v) => sum + v, 0) / groupedData[date].length,
                 min: Math.min(...groupedData[date]),
                 max: Math.max(...groupedData[date]),
+                ...(
+                    data2 ? {
+                        avg2: groupedData2[date] ? (groupedData2[date].reduce((sum, v) => sum + v, 0) / groupedData2[date].length) : undefined,
+                        min2: groupedData2[date] ? Math.min(...groupedData2[date]) : undefined,
+                        max2: groupedData2[date] ? Math.max(...groupedData2[date]) : undefined,
+                    } : {}
+                )
             })
         );
 
@@ -46,6 +66,11 @@ export default function dataUtils() {
             ele.avg = !isNaN(ele.avg ?? NaN) && ele.avg !== -999999 ? ele.avg : undefined;
             ele.min = !isNaN(ele.min ?? NaN) && ele.min !== -999999 ? ele.min : undefined;
             ele.max = !isNaN(ele.max ?? NaN) && ele.max !== -999999 ? ele.max : undefined;
+            if (data2) {
+                ele.avg2 = !isNaN(ele.avg2 ?? NaN) && ele.avg2 !== -999999 ? ele.avg2 : undefined;
+                ele.min2 = !isNaN(ele.min2 ?? NaN) && ele.min2 !== -999999 ? ele.min2 : undefined;
+                ele.max2 = !isNaN(ele.max2 ?? NaN) && ele.max2 !== -999999 ? ele.max2 : undefined;
+            }
         });
 
         // Calculate overall min, max, and average
@@ -142,5 +167,8 @@ export interface DailySummaryType {
     day: number;
     avg: number | undefined;
     min: number | undefined;
-    max: number | undefined;
+    max: number | undefined;`
+    avg2?: number | undefined;
+    min2?: number | undefined;
+    max2?: number | undefined;
 }
