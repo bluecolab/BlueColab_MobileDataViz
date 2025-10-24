@@ -2,21 +2,13 @@ import { FontAwesome } from '@expo/vector-icons';
 import { getMonth, getYear, getDaysInMonth } from 'date-fns';
 import { Stack } from 'expo-router';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import {
-    View,
-    ScrollView,
-    Dimensions,
-    Modal,
-    Text,
-    TouchableWithoutFeedback,
-    TouchableHighlight,
-    TouchableOpacity,
-} from 'react-native';
+import { View, ScrollView, Dimensions, Text, Pressable } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 import CustomDropdown from '@/components/CustomDropdown';
+import { ModalWrapper, ModalWrapperRef } from '@/components/modals/ModalWrapper';
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -41,11 +33,11 @@ export default function HistoricData() {
         setSelectedLocationTemp,
         error,
         showConvertedUnits,
-        changeConvertedUnits,
+        normalizeComparative,
+        setNormalizeComparative,
     } = useGraphData();
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
-    const [modalOpen, setModalOpen] = useState(false);
 
     const unitMap =
         units[
@@ -65,12 +57,13 @@ export default function HistoricData() {
 
     const { width } = Dimensions.get('window');
 
+    const modalRef = useRef<ModalWrapperRef>(null);
+
     const progress = useSharedValue(0);
 
-    const ref = useRef<ICarouselInstance>(null);
-
+    const carouselRef = useRef<ICarouselInstance>(null);
     const onPressPagination = (index: number) => {
-        ref.current?.scrollTo({
+        carouselRef.current?.scrollTo({
             /**
              * Calculate the difference between the current index and the target index
              * to ensure that the carousel scrolls to the nearest index
@@ -118,20 +111,32 @@ export default function HistoricData() {
 
     const onMonthSelect = useCallback(
         (value: string) => {
-            setSelectedMonth(Number.parseInt(value, 10));
-            setMonth(Number.parseInt(value, 10));
-            setEndDay(getDaysInMonthFn(Number.parseInt(value, 10), selectedYear));
+            const newMonth = Number.parseInt(value, 10);
+            setSelectedMonth(newMonth);
+            setMonth(newMonth);
+            // If selecting the current month in the current year, clamp to today's day
+            const isCurrentSelection = newMonth === currentMonth && selectedYear === currentYear;
+            const endDay = isCurrentSelection
+                ? new Date().getDate()
+                : getDaysInMonthFn(newMonth, selectedYear);
+            setEndDay(endDay);
         },
-        [selectedYear, setMonth, setEndDay]
+        [selectedYear, setMonth, setEndDay, currentMonth, currentYear]
     );
 
     const onYearSelect = useCallback(
         (value: string) => {
-            setSelectedYear(Number.parseInt(value, 10));
-            setYear(Number.parseInt(value, 10));
-            setEndDay(getDaysInMonthFn(selectedMonth, Number.parseInt(value, 10)));
+            const newYear = Number.parseInt(value, 10);
+            setSelectedYear(newYear);
+            setYear(newYear);
+            // If selecting the current month in the current year, clamp to today's day
+            const isCurrentSelection = selectedMonth === currentMonth && newYear === currentYear;
+            const endDay = isCurrentSelection
+                ? new Date().getDate()
+                : getDaysInMonthFn(selectedMonth, newYear);
+            setEndDay(endDay);
         },
-        [selectedMonth, setYear, setEndDay]
+        [selectedMonth, setYear, setEndDay, currentMonth, currentYear]
     );
 
     const onLocationSelect = useCallback(
@@ -154,15 +159,13 @@ export default function HistoricData() {
 
     const HeaderRightButton = React.useCallback(
         () => (
-            <FontAwesome
-                name="cog"
-                size={24}
-                color={isDark ? 'white' : '#333'}
-                onPress={() => setModalOpen(!modalOpen)}
-                style={{ marginRight: 16 }}
-            />
+            <Pressable onPress={() => modalRef.current?.openModal()}>
+                <View>
+                    <FontAwesome name="cog" size={32} color={isDark ? 'white' : '#333'} />
+                </View>
+            </Pressable>
         ),
-        [modalOpen, isDark]
+        [isDark]
     );
 
     return (
@@ -177,8 +180,8 @@ export default function HistoricData() {
                     headerRight: HeaderRightButton,
                 }}
             />
-            <View className="bg-defaultbackground dark:bg-defaultdarkbackground ">
-                <ScrollView contentContainerStyle={{ paddingBottom: 400 }}>
+            <View className="flex-1">
+                <ScrollView className="h-full bg-defaultbackground dark:bg-defaultdarkbackground">
                     <Text className="mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-white">
                         {locationOptions.find((option) => option.value === selectedLocation)?.label}{' '}
                         -{' '}
@@ -190,7 +193,7 @@ export default function HistoricData() {
                     </Text>
 
                     <Carousel
-                        ref={ref}
+                        ref={carouselRef}
                         loop
                         width={width}
                         onProgressChange={progress}
@@ -237,87 +240,88 @@ export default function HistoricData() {
                     ) : (
                         <></>
                     )}
+
+                    <View className="pb-[45]">
+                        <Text></Text>
+                    </View>
                 </ScrollView>
 
-                <Modal
-                    animationType="slide"
-                    transparent
-                    visible={modalOpen}
-                    onRequestClose={() => setModalOpen(false)}>
-                    <TouchableWithoutFeedback onPress={() => setModalOpen(false)}>
-                        <View className="flex-1 justify-end bg-black/50">
-                            {/* Prevent closing when tapping inside the modal content */}
-                            <TouchableWithoutFeedback>
-                                <View className="h-[85vh] rounded-t-2xl bg-defaultbackground p-6 dark:bg-defaultdarkbackground">
-                                    <Text className="text-center text-lg font-bold dark:text-white">
-                                        Historic Data Settings
-                                    </Text>
-                                    {/* Add a close button */}
-                                    <TouchableHighlight
-                                        className="absolute right-4 top-4 rounded-full bg-gray-200 p-2 dark:bg-gray-700"
-                                        onPress={() => setModalOpen(false)}>
-                                        <Text className="text-lg font-bold">✕</Text>
-                                    </TouchableHighlight>
-                                    {/* Add more modal content here */}
-                                    <View className="elevation-[20] z-10 w-full bg-white p-default dark:bg-gray-700">
-                                        <View className="flex-row items-center justify-end pb-2">
-                                            <Text className="mr-2 text-lg dark:text-white">
-                                                Show Converted Units
-                                            </Text>
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    changeConvertedUnits(!showConvertedUnits)
-                                                }
-                                                style={{
-                                                    backgroundColor: showConvertedUnits
-                                                        ? '#2563eb'
-                                                        : '#e5e7eb',
-                                                    borderRadius: 16,
-                                                    paddingVertical: 6,
-                                                    paddingHorizontal: 16,
-                                                }}>
-                                                <Text
-                                                    style={{
-                                                        color: showConvertedUnits
-                                                            ? 'white'
-                                                            : 'black',
-                                                    }}>
-                                                    {showConvertedUnits ? 'Converted' : 'Original'}
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View className="w-full flex-row space-x-4">
-                                            <View className="flex-[2]">
-                                                <CustomDropdown
-                                                    label="Month"
-                                                    options={monthOptions}
-                                                    value={selectedMonth.toString()}
-                                                    onSelect={onMonthSelect}
-                                                />
-                                            </View>
-                                            <View className="flex-[2]">
-                                                <CustomDropdown
-                                                    label="Year"
-                                                    options={yearOptions}
-                                                    value={selectedYear.toString()}
-                                                    onSelect={onYearSelect}
-                                                />
-                                            </View>
-                                        </View>
-                                        <View>
-                                            <CustomDropdown
-                                                label="Location"
-                                                options={locationOptions}
-                                                value={selectedLocation.toString()}
-                                                onSelect={onLocationSelect}
-                                            />
-                                        </View>
+                <ModalWrapper
+                    ref={modalRef}
+                    modalHeight={'80%'}
+                    body={
+                        <>
+                            <View className="absolute right-8 top-3">
+                                <Pressable onPress={() => modalRef.current?.closeModal()}>
+                                    <Text className="text-2xl dark:text-white">✕</Text>
+                                </Pressable>
+                            </View>
+
+                            <View className="elevation-[20] z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
+                                <Text className="text-center text-lg font-bold dark:text-white">
+                                    Historic Data Settings
+                                </Text>
+                            </View>
+                            <View className="elevation-[20] z-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
+                                <Text className="text-center text-lg font-bold dark:text-white">
+                                    Location 1
+                                </Text>
+
+                                <View className="w-full flex-row space-x-4">
+                                    <View className="flex-[2]">
+                                        <CustomDropdown
+                                            label="Month"
+                                            options={monthOptions}
+                                            value={selectedMonth.toString()}
+                                            onSelect={onMonthSelect}
+                                        />
+                                    </View>
+                                    <View className="flex-[2]">
+                                        <CustomDropdown
+                                            label="Year"
+                                            options={yearOptions}
+                                            value={selectedYear.toString()}
+                                            onSelect={onYearSelect}
+                                        />
                                     </View>
                                 </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </Modal>
+                                <View>
+                                    <CustomDropdown
+                                        label="Location"
+                                        options={locationOptions}
+                                        value={selectedLocation.toString()}
+                                        onSelect={onLocationSelect}
+                                    />
+                                </View>
+
+                                <View className="flex-row items-center justify-end pb-4">
+                                    <Text className="mr-2 text-lg dark:text-white">
+                                        Normalize month (0–1)
+                                    </Text>
+                                    <Pressable
+                                        onPress={() =>
+                                            setNormalizeComparative(!normalizeComparative)
+                                        }
+                                        style={{
+                                            backgroundColor: normalizeComparative
+                                                ? '#2563eb'
+                                                : '#e5e7eb',
+                                            borderRadius: 16,
+                                            paddingVertical: 6,
+                                            paddingHorizontal: 16,
+                                        }}>
+                                        <Text
+                                            style={{
+                                                color: normalizeComparative ? 'white' : 'black',
+                                            }}>
+                                            {normalizeComparative ? 'On' : 'Off'}
+                                        </Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </>
+                    }
+                />
             </View>
         </>
     );

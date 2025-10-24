@@ -1,16 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMinutes } from 'date-fns';
-import { createContext, useContext, useEffect, useMemo } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import type { ReactNode } from 'react';
 
 import { useGraphData } from '@/contexts/GraphDataContext';
+import { config } from '@/hooks/useConfig';
+import useGetAQIData from '@/hooks/useGetAQIData';
+import useGetOdinData from '@/hooks/useGetOdinData';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
-import { CleanedWaterData } from '@/types/water.interface';
+import { CleanedWaterData, OdinData, OpenWeatherAQI } from '@/types/water.interface';
 
 interface CurrentDataContextType {
-    data: CleanedWaterData[] | undefined;
-    error: { message: string } | undefined;
+    data: CleanedWaterData[] | undefined; // This stays the same
+    airData?: OdinData | undefined;
+    aqiData?: OpenWeatherAQI | undefined;
+    error: Error | null;
     defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;
     loadingCurrent: boolean;
@@ -19,7 +23,7 @@ interface CurrentDataContextType {
 
 const CurrentDataContext = createContext({
     data: undefined,
-    error: undefined,
+    error: null,
     defaultLocation: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
     loadingCurrent: false,
@@ -28,7 +32,9 @@ const CurrentDataContext = createContext({
 
 export default function CurrentDataProvider({ children }: { children: ReactNode }) {
     const { defaultLocation, defaultTempUnit } = useGraphData();
-    const { fetchDataPromise } = useGetWaterData();
+    const { fetchData } = useGetWaterData();
+    const { fetchOdinData } = useGetOdinData();
+    const { fetchAQIData } = useGetAQIData();
 
     // Build a stable query key for current data
     const queryKey = useMemo(
@@ -41,7 +47,7 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
         enabled: !!defaultLocation,
         queryFn: async () => {
             // DefaultLocation is guaranteed by enabled
-            return await fetchDataPromise(defaultLocation as LocationType, true, 0, 0, 0, 0);
+            return await fetchData(defaultLocation as LocationType, true, 0, 0, 0, 0);
         },
         // Keep showing previous data while fetching new
         placeholderData: [],
@@ -58,23 +64,39 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
         void refetch();
     };
 
-    // Quarter-hour aligned auto-refresh: every 60s check and refetch on 0/15/30/45
-    useEffect(() => {
-        if (!defaultLocation) return;
-        const intervalId = setInterval(() => {
-            const currentMinute = getMinutes(new Date());
-            if ([0, 15, 30, 45].includes(currentMinute)) {
-                void refetch();
-            }
-        }, 60_000);
-        return () => clearInterval(intervalId);
-    }, [defaultLocation, refetch]);
+    const { data: airData } = useQuery({
+        queryKey: ['airData', defaultLocation],
+        queryFn: () => fetchOdinData(),
+        enabled: !!defaultLocation && defaultLocation.name === 'Choate Pond',
+        refetchInterval: 15 * 60 * 1000,
+    });
+
+    const allLatLongs = [
+        ...config.BLUE_COLAB_API_CONFIG.validMatches,
+        ...config.USGS_WATER_SERVICES_API_CONFIG.validMatches,
+    ];
+    const locationWithCoords =
+        allLatLongs.find(
+            (loc) =>
+                loc.name === defaultLocation?.name &&
+                loc.lat !== undefined &&
+                loc.long !== undefined
+        ) ?? config.BLUE_COLAB_API_CONFIG.validMatches[0];
+
+    const { data: aqiData } = useQuery({
+        queryKey: ['aqiData', defaultLocation],
+        queryFn: () =>
+            fetchAQIData(locationWithCoords.lat as number, locationWithCoords.long as number),
+        enabled: !!defaultLocation,
+    });
 
     return (
         <CurrentDataContext.Provider
             value={{
                 data: data ?? [],
-                error: error ? { message: error.message } : undefined,
+                airData: airData,
+                aqiData: aqiData,
+                error: error ?? null,
                 defaultLocation,
                 defaultTempUnit,
                 loadingCurrent: isFetching || isPending,

@@ -1,14 +1,15 @@
 // /components/QuickCurrentData.tsx
 import { differenceInSeconds } from 'date-fns';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { Text, View, Dimensions, Pressable, ImageBackground } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import { config } from '@/hooks/useConfig';
 import { extractLastData } from '@/utils/extractLastData';
+
+import PolarChart from './WQI/PolarChart';
 
 const screenWidth = Dimensions.get('window').width;
 const itemWidth = (screenWidth - 100) / 2; // Adjust 32px for padding/margins
@@ -77,8 +78,10 @@ const Timer = ({ timestamp }: { timestamp: string }) => {
  */
 // Removed duplicate export default function QuickCurrentData()
 export default function QuickCurrentData({ showConvertedUnits }: { showConvertedUnits?: boolean }) {
+    const backgroundImage = require('@/assets/homescreen/waterBG.jpg');
     // All data is received from the context provider
-    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error } = useCurrentData();
+    const { data, airData, defaultLocation, defaultTempUnit, loadingCurrent, error } =
+        useCurrentData();
     // Read global toggle from GraphDataContext as the source of truth
     const { showConvertedUnits: showConvertedUnitsGlobal } = useGraphData();
     const effectiveShowConverted = showConvertedUnits ?? showConvertedUnitsGlobal;
@@ -89,6 +92,7 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
 
     const lastDataPoint = extractLastData(
         data,
+        airData,
         defaultLocation,
         defaultTempUnit,
         loadingCurrent,
@@ -97,20 +101,26 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
     );
 
     return (
-        <TouchableOpacity onPress={() => router.push('/(tabs)/currentData')}>
-            <View className="px-4 pt-4">
-                <LinearGradient
-                    colors={error ? ['#ff2929', '#ffa8a8'] : ['#00104d', '#3fb8ab']}
-                    start={{ x: 0, y: 1 }}
-                    end={{ x: 0, y: 0 }}
+        <Pressable onPress={() => router.push('/(tabs)/currentData')}>
+            <View className="rounded-[20px] px-4 pt-4">
+                <ImageBackground
+                    source={backgroundImage}
+                    resizeMode="cover"
                     style={{
                         paddingTop: 4,
                         alignItems: 'center',
                         borderRadius: 20,
+                        overflow: 'hidden',
                     }}>
-                    <View>
+                    <View className="rounded-[20px] px-4 pt-4">
                         <Text className="text-center text-2xl font-bold text-white">
-                            Live Data Quick Look
+                            Live{' '}
+                            {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                                (loc) => loc.name === defaultLocation.name
+                            )
+                                ? 'WQI'
+                                : 'Data'}{' '}
+                            Quick Look
                         </Text>
                     </View>
 
@@ -123,44 +133,55 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
                     )}
 
                     <View className="flex flex-row flex-wrap items-center justify-center gap-4 pt-4">
-                        <ParamView
-                            param={lastDataPoint.temp}
-                            name="Temperature"
-                            unit={lastDataPoint.tempUnit}
-                        />
-                        <ParamView param={lastDataPoint.pH} name="pH" unit={''} />
-                        <ParamView
-                            param={lastDataPoint.do}
-                            name="Dissolved O2"
-                            unit={lastDataPoint.doUnit}
-                        />
-                        <ParamView
-                            param={lastDataPoint.turb}
-                            name="Turbidity"
-                            unit={lastDataPoint.turbUnit}
-                        />
-                        <ParamView
-                            param={lastDataPoint.cond}
-                            name="Conductivity"
-                            unit={lastDataPoint.condUnit}
-                        />
-                        <ParamView
-                            param={lastDataPoint.sal}
-                            name="Salinity"
-                            unit={lastDataPoint.salUnit}
-                        />
                         {config.BLUE_COLAB_API_CONFIG.validMatches.some(
                             (loc) => loc.name === defaultLocation.name
                         ) ? (
-                            <ParamView param={lastDataPoint.wqi} name="WQI" />
+                            <View className="h-[200] w-[200]">
+                                <View className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
+                                    <Text className="text-3xl font-bold text-white">
+                                        {lastDataPoint.wqi}%
+                                    </Text>
+                                </View>
+                                <PolarChart
+                                    percent={parseInt(`${lastDataPoint.wqi}`)}
+                                    isDark={false}
+                                />
+                            </View>
                         ) : (
-                            <></>
+                            <>
+                                <ParamView
+                                    param={lastDataPoint.temp}
+                                    name="Temperature"
+                                    unit={lastDataPoint.tempUnit}
+                                />
+                                <ParamView param={lastDataPoint.pH} name="pH" unit={''} />
+                                <ParamView
+                                    param={lastDataPoint.do}
+                                    name="Dissolved O2"
+                                    unit={lastDataPoint.doUnit}
+                                />
+                                <ParamView
+                                    param={lastDataPoint.turb}
+                                    name="Turbidity"
+                                    unit={lastDataPoint.turbUnit}
+                                />
+                                <ParamView
+                                    param={lastDataPoint.cond}
+                                    name="Conductivity"
+                                    unit={lastDataPoint.condUnit}
+                                />
+                                <ParamView
+                                    param={lastDataPoint.sal}
+                                    name="Salinity"
+                                    unit={lastDataPoint.salUnit}
+                                />
+                            </>
                         )}
                     </View>
 
                     <Timer timestamp={lastDataPoint.timestamp} />
-                </LinearGradient>
+                </ImageBackground>
             </View>
-        </TouchableOpacity>
+        </Pressable>
     );
 }

@@ -470,6 +470,154 @@ export default function VersionHistory() {
                         />{' '}
                         by @KoJesko)
                     </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.9.2:</Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Removed unneeded patch package library (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/241"
+                            label="#241"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - General UI Improvement (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/236"
+                            label="#236"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Hudson River Remove WQI from Current Data (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/243"
+                            label="#243"
+                        />{' '}
+                        by @Copilot/Ari)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Add OpenWeatherMap API URL to centralized config (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/244"
+                            label="#244"
+                        />{' '}
+                        by @Copilot/Ari)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Updated to handle react query (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/237"
+                            label="#237"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Add Odin data (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/237"
+                            label="#237"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Add Odin data (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/237"
+                            label="#237"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Bug: Selecting the current month in historic data page has weird result (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/246"
+                            label="#246"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Make PolarChart it's own component (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/247"
+                            label="#247"
+                        />{' '}
+                        by @ZVictorLima)
+                    </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.9.3:</Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Replaced TouchableOpacity/TouchableWithoutFeedback with Pressable (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/252"
+                            label="#252"
+                        />{' '}
+                        by @ZVictorLima)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Odin data on behalf of Vansh (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/255"
+                            label="#255"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-55 - Add ability to refresh data on command (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/253"
+                            label="#253"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-21 - Refactor AQI Page (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/257"
+                            label="#257"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-67 - Normalize units (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/254"
+                            label="#254"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - add water reports (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/258"
+                            label="#258"
+                        />{' '}
+                        by @liziimedo)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Use refresh logo instead of text; disable normalize by default (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/259"
+                            label="#259"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>

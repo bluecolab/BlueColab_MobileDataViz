@@ -1,3 +1,4 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 import { useCallback } from 'react';
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
@@ -7,26 +8,35 @@ import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
+import { config } from '@/hooks/useConfig';
 import { extractLastData } from '@/utils/extractLastData';
 
 // Stable header refresh button component (defined outside render to satisfy lint rules)
 function HeaderRefreshButton({ onPress, color }: { onPress: () => void; color: string }) {
     return (
-        <TouchableOpacity onPress={onPress} accessibilityLabel="Refresh data">
-            <Text style={{ color }}>Refresh</Text>
+        <TouchableOpacity onPress={onPress} accessibilityLabel="Refresh data" className="pr-4">
+            <FontAwesome name="refresh" size={24} color={color} />
         </TouchableOpacity>
     );
 }
 
 export default function CurrentData() {
     const { isDark } = useColorScheme();
-    const { data, defaultLocation, defaultTempUnit, loadingCurrent, error, refetchCurrent } =
-        useCurrentData();
+    const {
+        data,
+        airData,
+        defaultLocation,
+        defaultTempUnit,
+        loadingCurrent,
+        error,
+        refetchCurrent,
+    } = useCurrentData();
 
     const { showConvertedUnits: showConvertedUnitsGlobal } = useGraphData();
 
     const lastDataPoint = extractLastData(
         data,
+        airData,
         defaultLocation,
         defaultTempUnit,
         loadingCurrent,
@@ -86,12 +96,15 @@ export default function CurrentData() {
                 </View>
 
                 {/* — Current‐Data WQI Gauge — */}
-                <View className="mt-6 items-center px-4">
-                    <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
-                </View>
-                <View className="pb-[25]">
-                    <Text></Text>
-                </View>
+                {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                    (loc) => loc.name === defaultLocation?.name
+                ) ? (
+                    <View className="mb-12 mt-6 items-center px-4">
+                        <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
+                    </View>
+                ) : (
+                    <></>
+                )}
             </ScrollView>
         </>
     );

@@ -1,8 +1,10 @@
 import { Picker } from '@react-native-picker/picker';
-import React, { useState } from 'react';
-import { View, Text, Modal, TouchableOpacity, Platform } from 'react-native';
+import { useRef } from 'react';
+import { View, Text, Pressable, Platform } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
+
+import { ModalWrapper, ModalWrapperRef } from './modals/ModalWrapper';
 
 export default function CustomDropdown({
     label,
@@ -16,13 +18,13 @@ export default function CustomDropdown({
     onSelect: (value: string) => void;
 }) {
     const { isDark } = useColorScheme();
-    const [modalVisible, setModalVisible] = useState(false);
+    const modalRef = useRef<ModalWrapperRef>(null);
 
     if (Platform.OS === 'ios') {
         return (
             <View style={{ padding: 16 }}>
-                <TouchableOpacity
-                    onPress={() => setModalVisible(true)}
+                <Pressable
+                    onPress={() => modalRef.current?.openModal()}
                     style={{
                         backgroundColor: isDark ? '#333333' : 'white',
                         padding: 12,
@@ -31,43 +33,31 @@ export default function CustomDropdown({
                     <Text style={{ color: isDark ? 'white' : 'black' }}>
                         {options.find((o) => o.value === value)?.label || label}
                     </Text>
-                </TouchableOpacity>
-                <Modal
-                    visible={modalVisible}
-                    transparent
-                    animationType="slide"
-                    onRequestClose={() => setModalVisible(false)}>
-                    <TouchableOpacity
-                        style={{
-                            flex: 1,
-                            justifyContent: 'flex-end',
-                            backgroundColor: 'rgba(0,0,0,0.3)',
-                        }}
-                        activeOpacity={1}
-                        onPressOut={() => setModalVisible(false)}>
-                        <View
-                            style={{ backgroundColor: isDark ? '#333333' : 'white', padding: 16 }}>
-                            <Picker
-                                selectedValue={value}
-                                onValueChange={(itemValue) => {
-                                    onSelect(String(itemValue));
-                                    setModalVisible(false);
-                                }}
-                                style={{
-                                    color: isDark ? 'white' : 'black',
-                                }}>
-                                {options.map((option) => (
-                                    <Picker.Item
-                                        key={option.value}
-                                        label={option.label}
-                                        value={option.value}
-                                        color={isDark ? 'white' : 'black'}
-                                    />
-                                ))}
-                            </Picker>
-                        </View>
-                    </TouchableOpacity>
-                </Modal>
+                </Pressable>
+                <ModalWrapper
+                    ref={modalRef}
+                    modalHeight={'40%'}
+                    body={
+                        <Picker
+                            selectedValue={value}
+                            onValueChange={(itemValue) => {
+                                modalRef.current?.closeModal();
+                                onSelect(String(itemValue));
+                            }}
+                            style={{
+                                color: isDark ? 'white' : 'black',
+                            }}>
+                            {options.map((option) => (
+                                <Picker.Item
+                                    key={option.value}
+                                    label={option.label}
+                                    value={option.value}
+                                    color={isDark ? 'white' : 'black'}
+                                />
+                            ))}
+                        </Picker>
+                    }
+                />
             </View>
         );
     }
