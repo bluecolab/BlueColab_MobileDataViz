@@ -1,20 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import type { ReactNode } from 'react';
 
 import { useGraphData } from '@/contexts/GraphDataContext';
+import { config } from '@/hooks/useConfig';
+import useGetAQIData from '@/hooks/useGetAQIData';
 import useGetOdinData from '@/hooks/useGetOdinData';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
-import { CleanedWaterData, OdinData } from '@/types/water.interface';
+import { CleanedWaterData, OdinData, OpenWeatherAQI } from '@/types/water.interface';
 
 interface CurrentDataContextType {
     data: CleanedWaterData[] | undefined; // This stays the same
     airData?: OdinData | undefined;
+    aqiData?: OpenWeatherAQI | undefined;
     error: Error | null;
     defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;
     loadingCurrent: boolean;
+    refetchCurrent: () => void;
 }
 
 const CurrentDataContext = createContext({
@@ -23,43 +27,80 @@ const CurrentDataContext = createContext({
     defaultLocation: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
     loadingCurrent: false,
+    refetchCurrent: () => {},
 } as CurrentDataContextType);
 
 export default function CurrentDataProvider({ children }: { children: ReactNode }) {
     const { defaultLocation, defaultTempUnit } = useGraphData();
     const { fetchData } = useGetWaterData();
     const { fetchOdinData } = useGetOdinData();
+    const { fetchAQIData } = useGetAQIData();
 
-    const {
-        data: waterData, // Rename to avoid naming conflicts
-        error,
-        isLoading: loadingCurrent,
-    } = useQuery({
-        queryKey: ['waterData', defaultLocation], // Use a distinct key
-        queryFn: () => fetchData(defaultLocation!, true, 0, 0, 0, 0),
+    // Build a stable query key for current data
+    const queryKey = useMemo(
+        () => ['currentData', defaultLocation?.name, defaultTempUnit],
+        [defaultLocation?.name, defaultTempUnit]
+    );
+
+    const { data, error, isFetching, isPending, refetch } = useQuery<CleanedWaterData[], Error>({
+        queryKey,
         enabled: !!defaultLocation,
+        queryFn: async () => {
+            // DefaultLocation is guaranteed by enabled
+            return await fetchData(defaultLocation as LocationType, true, 0, 0, 0, 0);
+        },
+        // Keep showing previous data while fetching new
+        placeholderData: [],
+        gcTime: 1000 * 60 * 5, // 5 minutes
+        staleTime: 1000 * 30, // consider fresh for 30s; UI can override
+        refetchOnReconnect: true,
+        refetchOnWindowFocus: true,
+        retry: 1,
+    });
+
+    // Manual refetch exposed to consumers
+    const refetchCurrent = () => {
+        if (!defaultLocation) return;
+        void refetch();
+    };
+
+    const { data: airData } = useQuery({
+        queryKey: ['airData', defaultLocation],
+        queryFn: () => fetchOdinData(),
+        enabled: !!defaultLocation && defaultLocation.name === 'Choate Pond',
         refetchInterval: 15 * 60 * 1000,
     });
 
-    // -- QUERY 2: ONLY FETCHES AIR DATA FOR CHOATE POND --
-    // This provides the optional `airData`.
-    const { data: airData } = useQuery({
-        queryKey: ['airData', defaultLocation], // Use a distinct key
-        queryFn: () => fetchOdinData(),
-        // ✨ This is the key: the query only runs if the location is Choate Pond.
-        enabled: !!defaultLocation && defaultLocation.name === 'Choate Pond',
-        refetchInterval: 15 * 60 * 1000,
+    const allLatLongs = [
+        ...config.BLUE_COLAB_API_CONFIG.validMatches,
+        ...config.USGS_WATER_SERVICES_API_CONFIG.validMatches,
+    ];
+    const locationWithCoords =
+        allLatLongs.find(
+            (loc) =>
+                loc.name === defaultLocation?.name &&
+                loc.lat !== undefined &&
+                loc.long !== undefined
+        ) ?? config.BLUE_COLAB_API_CONFIG.validMatches[0];
+
+    const { data: aqiData } = useQuery({
+        queryKey: ['aqiData', defaultLocation],
+        queryFn: () =>
+            fetchAQIData(locationWithCoords.lat as number, locationWithCoords.long as number),
+        enabled: !!defaultLocation,
     });
 
     return (
         <CurrentDataContext.Provider
             value={{
-                data: waterData,
+                data: data ?? [],
                 airData: airData,
-                error,
+                aqiData: aqiData,
+                error: error ?? null,
                 defaultLocation,
                 defaultTempUnit,
-                loadingCurrent,
+                loadingCurrent: isFetching || isPending,
+                refetchCurrent,
             }}>
             {children}
         </CurrentDataContext.Provider>
