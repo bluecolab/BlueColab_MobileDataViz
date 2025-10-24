@@ -553,6 +553,71 @@ export default function VersionHistory() {
                         />{' '}
                         by @ZVictorLima)
                     </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.9.3:</Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Replaced TouchableOpacity/TouchableWithoutFeedback with Pressable (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/252"
+                            label="#252"
+                        />{' '}
+                        by @ZVictorLima)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Odin data on behalf of Vansh (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/255"
+                            label="#255"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-55 - Add ability to refresh data on command (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/253"
+                            label="#253"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-21 - Refactor AQI Page (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/257"
+                            label="#257"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-67 - Normalize units (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/254"
+                            label="#254"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - add water reports (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/258"
+                            label="#258"
+                        />{' '}
+                        by @liziimedo)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Use refresh logo instead of text; disable normalize by default (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/259"
+                            label="#259"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>
