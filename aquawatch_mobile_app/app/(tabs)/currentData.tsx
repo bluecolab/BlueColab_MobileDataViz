@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 import { useCallback } from 'react';
-import { View, Text, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Platform } from 'react-native';
 
 import { Widget } from '@/components/visualizations/Widget';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
@@ -51,16 +51,18 @@ export default function CurrentData() {
 
     return (
         <>
-            <Stack.Screen
-                options={{
-                    headerTitle: 'Current Data',
-                    headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
-                    },
-                    headerTintColor: isDark ? 'white' : 'black',
-                    headerRight,
-                }}
-            />
+            {Platform.OS !== 'web' && (
+                <Stack.Screen
+                    options={{
+                        headerTitle: 'Current Data',
+                        headerStyle: {
+                            backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        },
+                        headerTintColor: isDark ? 'white' : 'black',
+                        headerRight,
+                    }}
+                />
+            )}
             <ScrollView
                 className="h-full bg-defaultbackground dark:bg-defaultdarkbackground"
                 refreshControl={
