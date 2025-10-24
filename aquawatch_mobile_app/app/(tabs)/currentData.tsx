@@ -1,3 +1,4 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 import { useCallback } from 'react';
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
@@ -13,8 +14,8 @@ import { extractLastData } from '@/utils/extractLastData';
 // Stable header refresh button component (defined outside render to satisfy lint rules)
 function HeaderRefreshButton({ onPress, color }: { onPress: () => void; color: string }) {
     return (
-        <TouchableOpacity onPress={onPress} accessibilityLabel="Refresh data">
-            <Text style={{ color }}>Refresh</Text>
+        <TouchableOpacity onPress={onPress} accessibilityLabel="Refresh data" className="pr-4">
+            <FontAwesome name="refresh" size={24} color={color} />
         </TouchableOpacity>
     );
 }
