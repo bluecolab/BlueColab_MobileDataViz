@@ -10,24 +10,23 @@ const withAndroidEdgeToEdge = (config) => {
         const styles = config.modResults;
 
         // Find the AppTheme style
-        const appThemeIndex = styles.resources.style?.findIndex(
+        if (!styles?.resources?.style) {
+            return config;
+        }
+
+        const appThemeIndex = styles.resources.style.findIndex(
             (style) => style.$.name === 'AppTheme'
         );
 
         if (appThemeIndex !== -1) {
             const appTheme = styles.resources.style[appThemeIndex];
 
-            // Remove android:statusBarColor item if it exists
+            // Remove deprecated edge-to-edge color properties
             if (appTheme.item) {
                 appTheme.item = appTheme.item.filter(
-                    (item) => item.$?.name !== 'android:statusBarColor'
-                );
-            }
-
-            // Remove android:navigationBarColor item if it exists
-            if (appTheme.item) {
-                appTheme.item = appTheme.item.filter(
-                    (item) => item.$?.name !== 'android:navigationBarColor'
+                    (item) =>
+                        item.$?.name !== 'android:statusBarColor' &&
+                        item.$?.name !== 'android:navigationBarColor'
                 );
             }
         }
