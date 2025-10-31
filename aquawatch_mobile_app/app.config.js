@@ -1,0 +1,65 @@
+const withAndroidEdgeToEdge = require('./plugins/withAndroidEdgeToEdge');
+
+module.exports = {
+    expo: {
+        name: 'AquaWatch Mobile',
+        slug: 'AquaWatch_Mobile',
+        version: '1.9.3',
+        scheme: 'expo-nav-template',
+        web: {
+            bundler: 'metro',
+            output: 'static',
+            favicon: './assets/favicon.png',
+        },
+        plugins: [
+            'expo-router',
+            [
+                'expo-location',
+                {
+                    locationAlwaysAndWhenInUsePermission:
+                        'Allow AquaWatch Mobile to use your location.',
+                },
+            ],
+            [
+                'expo-splash-screen',
+                {
+                    backgroundColor: '#232323',
+                    image: './assets/splash.png',
+                    dark: {
+                        image: './assets/splash.png',
+                        backgroundColor: '#000000',
+                    },
+                    imageWidth: 200,
+                },
+            ],
+            'expo-web-browser',
+            'expo-font',
+            withAndroidEdgeToEdge,
+        ],
+        experiments: {
+            typedRoutes: true,
+            tsconfigPaths: true,
+        },
+        icon: './assets/icon.png',
+        userInterfaceStyle: 'automatic',
+        splash: {
+            image: './assets/splash.png',
+            resizeMode: 'contain',
+            backgroundColor: '#ffffff',
+        },
+        assetBundlePatterns: ['**/*'],
+        ios: {
+            supportsTablet: true,
+            bundleIdentifier: 'com.bluecolab.aquawatchmobile',
+        },
+        android: {
+            edgeToEdgeEnabled: true,
+            adaptiveIcon: {
+                foregroundImage: './assets/adaptive-icon.png',
+                backgroundColor: '#ffffff',
+            },
+            package: 'com.okaykenji.AquaWatch_Mobile',
+        },
+        newArchEnabled: true,
+    },
+};
