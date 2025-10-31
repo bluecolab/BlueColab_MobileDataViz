@@ -7,6 +7,7 @@ import SettingsDropdown from '@/components/SettingsDropdown';
 import { ColorScheme, useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
+import useGetClosestStation from '@/hooks/useClosestStation';
 
 export default function Index() {
     const {
@@ -20,14 +21,23 @@ export default function Index() {
     const { isDark, colorSchemeSys, changeColor } = useColorScheme();
     const { locationOptions } = getMetadata();
 
+    const closestStation = useGetClosestStation();
+
     const [selectedLocation, setSelectedLocation] = useState(
         `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation?.name?.toLowerCase()) + 1}`
     );
 
     const onLocationSelect = (value: string) => {
-        const newLocation = locationOptions.find((option) => option.value === value)?.label || '';
-        changeLocation({ name: newLocation });
-        setSelectedLocation(value);
+        if (value === '0') {
+            const newLocation = closestStation?.closestStation?.name || '';
+            changeLocation({ name: newLocation });
+            setSelectedLocation(value);
+        } else {
+            const newLocation =
+                locationOptions.find((option) => option.value === value)?.label || '';
+            changeLocation({ name: newLocation });
+            setSelectedLocation(value);
+        }
     };
 
     const tempUnitOptions = [
