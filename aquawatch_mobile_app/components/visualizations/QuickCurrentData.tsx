@@ -114,13 +114,11 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
                     }}>
                     <View className="rounded-[20px] px-4 pt-4">
                         <Text className="text-center text-2xl font-bold text-white">
-                            Live{' '}
                             {config.BLUE_COLAB_API_CONFIG.validMatches.some(
                                 (loc) => loc.name === defaultLocation.name
                             )
-                                ? 'WQI'
-                                : 'Data'}{' '}
-                            Quick Look
+                                ? 'Live Water Quality Index'
+                                : 'Live Data Quick Look'}
                         </Text>
                     </View>
 
