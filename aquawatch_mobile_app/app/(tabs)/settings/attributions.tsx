@@ -162,7 +162,7 @@ export default function Attributions() {
                                     source={{
                                         uri: 'https://bluecolab.pace.edu/files/2022/02/Cronin-portrait-500-216x216.jpg',
                                     }}
-                                    className="mb-2 h-32 w-32 rounded-lg"
+                                    className="mb-2 mt-2 h-32 w-32 rounded-lg"
                                     resizeMode="cover"
                                 />
                                 <Text className="text-lg text-black dark:text-white">
@@ -186,9 +186,9 @@ export default function Attributions() {
                         <View className="w-full items-center md:w-1/2 lg:w-1/3">
                             <Image
                                 source={{
-                                    uri: 'https://media.licdn.com/dms/image/v2/D4D03AQG9-uMYZyRJ4Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1707151456684?e=1761177600&v=beta&t=VBfn4c6KnjUWmUZYimM3EsZsl4yZG2CQ8MSuGl79JLY',
+                                    uri: 'https://www.pace.edu/sites/default/files/styles/1_1_360x360/public/profiles/IMG_20190502_124415_208x208-1.webp?h=ca89c27b&itok=6vS0UjkD',
                                 }}
-                                className="mb-2 h-32 w-32 rounded-lg"
+                                className="mb-2 mt-2 h-32 w-32 rounded-lg"
                                 resizeMode="cover"
                             />
                             <Text className="text-lg text-black dark:text-white">
