@@ -162,7 +162,7 @@ export default function Attributions() {
                                     source={{
                                         uri: 'https://bluecolab.pace.edu/files/2022/02/Cronin-portrait-500-216x216.jpg',
                                     }}
-                                    className="mb-2 h-32 w-32 rounded-lg"
+                                    className="mb-2 mt-2 h-32 w-32 rounded-lg"
                                     resizeMode="cover"
                                 />
                                 <Text className="text-lg text-black dark:text-white">
@@ -183,12 +183,12 @@ export default function Attributions() {
                                 </Text>
                             </View>
                         </View>
-                        <View className="items-center">
+                        <View className="w-full items-center md:w-1/2 lg:w-1/3">
                             <Image
                                 source={{
-                                    uri: 'https://media.licdn.com/dms/image/v2/D4D03AQG9-uMYZyRJ4Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1707151456684?e=1761177600&v=beta&t=VBfn4c6KnjUWmUZYimM3EsZsl4yZG2CQ8MSuGl79JLY',
+                                    uri: 'https://www.pace.edu/sites/default/files/styles/1_1_360x360/public/profiles/IMG_20190502_124415_208x208-1.webp?h=ca89c27b&itok=6vS0UjkD',
                                 }}
-                                className="mb-2 h-32 w-32 rounded-lg"
+                                className="mb-2 mt-2 h-32 w-32 rounded-lg"
                                 resizeMode="cover"
                             />
                             <Text className="text-lg text-black dark:text-white">
@@ -348,6 +348,13 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                     <Item
+                        name="@react-native-picker/picker"
+                        label="React Native Picker"
+                        link="https://github.com/react-native-picker/picker"
+                        team={[]}
+                        isLinkedin={false}
+                    />
+                    <Item
                         name="@react-navigation/native"
                         label="React Navigation Native"
                         link="https://github.com/react-navigation/react-navigation"
@@ -362,9 +369,23 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                     <Item
+                        name="@tanstack/react-query"
+                        label="TanStack Query"
+                        link="https://github.com/TanStack/query"
+                        team={[]}
+                        isLinkedin={false}
+                    />
+                    <Item
                         name="axios"
                         label="Axios"
                         link="https://github.com/axios/axios"
+                        team={[]}
+                        isLinkedin={false}
+                    />
+                    <Item
+                        name="date-fns"
+                        label="date-fns"
+                        link="https://github.com/date-fns/date-fns"
                         team={[]}
                         isLinkedin={false}
                     />
@@ -379,6 +400,13 @@ export default function Attributions() {
                         name="expo-constants"
                         label="Expo Constants"
                         link="https://github.com/expo/expo/tree/main/packages/expo-constants"
+                        team={[]}
+                        isLinkedin={false}
+                    />
+                    <Item
+                        name="expo-font"
+                        label="Expo Font"
+                        link="https://github.com/expo/expo/tree/main/packages/expo-font"
                         team={[]}
                         isLinkedin={false}
                     />
@@ -404,9 +432,23 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                     <Item
+                        name="expo-network"
+                        label="Expo Network"
+                        link="https://github.com/expo/expo/tree/main/packages/expo-network"
+                        team={[]}
+                        isLinkedin={false}
+                    />
+                    <Item
                         name="expo-router"
                         label="Expo Router"
                         link="https://github.com/expo/router"
+                        team={[]}
+                        isLinkedin={false}
+                    />
+                    <Item
+                        name="expo-splash-screen"
+                        label="Expo Splash Screen"
+                        link="https://github.com/expo/expo/tree/main/packages/expo-splash-screen"
                         team={[]}
                         isLinkedin={false}
                     />
@@ -432,9 +474,9 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                     <Item
-                        name="luxon"
-                        label="Luxon"
-                        link="https://github.com/moment/luxon"
+                        name="lottie-react-native"
+                        label="Lottie React Native"
+                        link="https://github.com/lottie-react-native/lottie-react-native"
                         team={[]}
                         isLinkedin={false}
                     />
@@ -483,7 +525,7 @@ export default function Attributions() {
                     <Item
                         name="react-native-reanimated-carousel"
                         label="Reanimated Carousel"
-                        link="https://github.com/dohoons/react-native-reanimated-carousel"
+                        link="https://github.com/dohooo/react-native-reanimated-carousel"
                         team={[]}
                         isLinkedin={false}
                     />
@@ -509,9 +551,9 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                     <Item
-                        name="tailwindcss"
-                        label="Tailwind CSS"
-                        link="https://github.com/tailwindlabs/tailwindcss"
+                        name="react-native-worklets"
+                        label="React Native Worklets"
+                        link="https://github.com/margelo/react-native-worklets-core"
                         team={[]}
                         isLinkedin={false}
                     />
