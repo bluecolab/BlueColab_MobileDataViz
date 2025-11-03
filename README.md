@@ -1,4 +1,11 @@
 # AquaWatch Mobile App
+
+> [! NOTE]
+> This repo is no longer maintained. For the latest changes please see: https://github.com/bluecolab/BlueColab_MobileDataViz/
+>
+> Thanks!
+>
+
 <h3>Overview</h3>
 <p>The AquaWatch Mobile App is designed to educate users about the quality of outdoor water sources. It provides comprehensive information on water quality metrics such as salinity, pH, and turbidity, offering insights for users making decisions about recreational activities involving local bodies of water.
 </p>
