@@ -1,4 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
+import React from 'react';
 import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -15,6 +16,7 @@ interface MonthlyDataCardFrontProp {
     error: ErrorType | undefined;
     month: string;
     title: string;
+    legend?: React.ReactNode;
 }
 
 export function MonthlyDataCardFront({
@@ -23,6 +25,7 @@ export function MonthlyDataCardFront({
     error,
     month,
     title,
+    legend,
 }: MonthlyDataCardFrontProp) {
     const { isDark, loading: fontLoading, font } = useColorScheme();
 
@@ -68,6 +71,7 @@ export function MonthlyDataCardFront({
                     color={isDark ? 'white' : 'grey'}
                 />
             </View>
+            {legend ? <View className="mt-1 items-center">{legend}</View> : null}
             <Text
                 className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black dark:text-white"
                 key="month-label">
