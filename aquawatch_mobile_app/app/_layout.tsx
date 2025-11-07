@@ -3,7 +3,7 @@ import '../global.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 
-import ColorSchemeProvider from '@/contexts/ColorSchemeContext';
+import ColorSchemeProvider, { useColorScheme } from '@/contexts/ColorSchemeContext';
 import CurrentDataProvider from '@/contexts/CurrentDataContext';
 import GraphDataProvider from '@/contexts/GraphDataContext';
 
@@ -31,12 +31,24 @@ export default function RootLayout() {
             <GraphDataProvider>
                 <CurrentDataProvider>
                     <ColorSchemeProvider>
-                        <Stack>
-                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                        </Stack>
+                        <InnerStack />
                     </ColorSchemeProvider>
                 </CurrentDataProvider>
             </GraphDataProvider>
         </QueryClientProvider>
+    );
+}
+
+function InnerStack() {
+    const { isDark } = useColorScheme();
+
+    return (
+        <Stack
+            screenOptions={{
+                // set the stack's scene background so tab transitions don't flash white
+                contentStyle: { backgroundColor: isDark ? '#1a202c' : '#f1f1f1' },
+            }}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
     );
 }

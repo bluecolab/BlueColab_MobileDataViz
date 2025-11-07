@@ -23,6 +23,8 @@ export default function TabLayout() {
                 },
                 tabBarActiveTintColor: isDark ? 'white' : 'black',
                 tabBarInactiveTintColor: isDark ? '#a1a1a1' : 'gray',
+                animation: 'fade', // or 'shift' as needed
+                sceneStyle: { backgroundColor: isDark ? '#1a202c' : '#f1f1f1' },
             }}>
             <Tabs.Screen
                 name="index"
