@@ -3,21 +3,23 @@ import { useQuery } from '@tanstack/react-query'; // Import useQuery
 import { subMonths, getYear, getMonth, getDaysInMonth } from 'date-fns';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
+import useGetClosestStation from '@/hooks/useClosestStation';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
 import { CleanedWaterData } from '@/types/water.interface';
-// ... other imports
 
 interface GraphDataContextType {
     data: CleanedWaterData[] | undefined;
     error: { message: string } | undefined;
     loading: boolean;
     defaultLocation: LocationType | undefined;
+    defaultLocationValue: LocationType | undefined;
     defaultTempUnit: string | undefined;
     selectedLocationTemp: string | undefined;
     showConvertedUnits: boolean;
     normalizeComparative: boolean;
     changeLocation: (newLocation: LocationType) => void;
+    changeTempLocation: (newLocation: LocationType) => void;
     setLoading: (newValue: boolean) => void;
     setYear: (newValue: number | undefined) => void;
     setMonth: (newValue: number | undefined) => void;
@@ -34,11 +36,13 @@ const GraphDataContext = createContext({
     error: undefined,
     loading: false,
     defaultLocation: undefined as LocationType | undefined,
+    defaultLocationValue: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
     showConvertedUnits: false,
     normalizeComparative: false,
     changeLocation: () => {},
+    changeTempLocation: () => {},
     setLoading: () => {},
     setYear: () => {},
     setMonth: () => {},
@@ -63,6 +67,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [startDay, setStartDay] = useState<number>();
     const [endDay, setEndDay] = useState<number>();
     const [defaultLocation, setDefaultLocation] = useState<LocationType>();
+    const [defaultLocationValue, setDefaultLocationValue] = useState<LocationType>();
     const [selectedLocation, setSelectedLocation] = useState<LocationType>();
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
@@ -71,6 +76,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     // Determine the active location to be used in the query.
     const activeLocation = selectedLocation ?? defaultLocation;
 
+    const closestStation = useGetClosestStation();
     // 3. The useQuery hook replaces the main data-fetching useEffect.
     const {
         data,
@@ -112,6 +118,10 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         setDefaultLocation(newLocation);
     };
 
+    const changeTempLocation = (newLocation: LocationType) => {
+        setDefaultLocation(newLocation);
+    };
+
     const setNormalizeComparative = (enabled: boolean) => {
         const setStored = async (value: boolean) => {
             try {
@@ -144,9 +154,23 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 const value = await AsyncStorage.getItem('default-location');
                 if (value !== null) {
                     console.log(`Stored value: ${value}`);
-                    setDefaultLocation(JSON.parse(value));
+                    if (JSON.parse(value).name === 'Nearest Station') {
+                        const newLocation = closestStation?.closestStation;
+                        setDefaultLocationValue({ name: 'Nearest Station' });
+                        if (newLocation) {
+                            setDefaultLocation({
+                                name: newLocation.name,
+                                lat: newLocation.lat,
+                                long: newLocation.long,
+                            });
+                        }
+                    } else {
+                        setDefaultLocationValue(JSON.parse(value));
+                        setDefaultLocation(JSON.parse(value));
+                    }
                 } else {
-                    setDefaultLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
+                    setDefaultLocation({ name: 'Nearest Station' });
+                    setDefaultLocationValue({ name: 'Nearest Station' });
                 }
             } catch (e) {
                 console.error(e);
@@ -203,7 +227,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         setMonth(getMonth(lastMonth) + 1);
         setStartDay(1);
         setEndDay(getDaysInMonth(lastMonth));
-    }, []);
+    }, [closestStation?.closestStation]);
 
     return (
         <GraphDataContext.Provider
@@ -214,10 +238,12 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 loading,
                 // State and setters that remain
                 defaultLocation,
+                defaultLocationValue,
                 defaultTempUnit,
                 showConvertedUnits,
                 selectedLocationTemp: selectedLocation?.name,
                 changeLocation,
+                changeTempLocation,
                 setYear,
                 setMonth,
                 normalizeComparative,

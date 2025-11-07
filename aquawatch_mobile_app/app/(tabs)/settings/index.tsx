@@ -11,9 +11,10 @@ import useGetClosestStation from '@/hooks/useClosestStation';
 
 export default function Index() {
     const {
+        changeTempLocation,
         changeLocation,
         changeTemperatureUnit,
-        defaultLocation,
+        defaultLocationValue,
         defaultTempUnit,
         showConvertedUnits,
         changeConvertedUnits,
@@ -24,14 +25,15 @@ export default function Index() {
     const closestStation = useGetClosestStation();
 
     const [selectedLocation, setSelectedLocation] = useState(
-        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation?.name?.toLowerCase()) + 1}`
+        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocationValue?.name?.toLowerCase())}`
     );
 
     const onLocationSelect = (value: string) => {
         if (value === '0') {
             const newLocation = closestStation?.closestStation?.name || '';
-            changeLocation({ name: newLocation });
-            setSelectedLocation(value);
+            changeLocation({ name: 'Nearest Station' });
+            changeTempLocation({ name: newLocation });
+            setSelectedLocation('0');
         } else {
             const newLocation =
                 locationOptions.find((option) => option.value === value)?.label || '';
@@ -74,7 +76,7 @@ export default function Index() {
     const resetToDefault = () => {
         onAppearanceSelect('1');
         onTempUnitSelect('1');
-        onLocationSelect('1');
+        onLocationSelect('0');
         changeConvertedUnits(false);
     };
 
