@@ -9,6 +9,7 @@ import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 import CustomDropdown from '@/components/CustomDropdown';
 import { ModalWrapper, ModalWrapperRef } from '@/components/modals/ModalWrapper';
+import ComparisonCard from '@/components/visualizations/monthlyData/ComparisonCard';
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -35,6 +36,8 @@ export default function HistoricData() {
         showConvertedUnits,
         normalizeComparative,
         setNormalizeComparative,
+        showComparison,
+        setShowComparison,
     } = useGraphData();
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
@@ -235,6 +238,23 @@ export default function HistoricData() {
                         onPress={onPressPagination}
                     />
 
+                    {/* Comparison Card: Salinity vs Conductivity */}
+                    {showComparison ? (
+                        <ComparisonCard
+                            loading={loading}
+                            data={data}
+                            error={error}
+                            defaultTempUnit={defaultTempUnit}
+                            unitMap={unitMap}
+                            selectedMonth={
+                                monthOptions.find(
+                                    (option) => option.value === selectedMonth.toString()
+                                )?.label || 'oh no'
+                            }
+                            showConvertedUnits={showConvertedUnits}
+                        />
+                    ) : null}
+
                     {(selectedLocationTemp ?? defaultLocation?.name) === 'Choate Pond' ? (
                         <WQICard data={data} loading={loading} />
                     ) : (
@@ -315,6 +335,24 @@ export default function HistoricData() {
                                                 color: normalizeComparative ? 'white' : 'black',
                                             }}>
                                             {normalizeComparative ? 'On' : 'Off'}
+                                        </Text>
+                                    </Pressable>
+                                </View>
+
+                                <View className="flex-row items-center justify-end pb-4">
+                                    <Text className="mr-2 text-lg dark:text-white">
+                                        Show Salinity vs Conductivity
+                                    </Text>
+                                    <Pressable
+                                        onPress={() => setShowComparison(!showComparison)}
+                                        style={{
+                                            backgroundColor: showComparison ? '#2563eb' : '#e5e7eb',
+                                            borderRadius: 16,
+                                            paddingVertical: 6,
+                                            paddingHorizontal: 16,
+                                        }}>
+                                        <Text style={{ color: showComparison ? 'white' : 'black' }}>
+                                            {showComparison ? 'On' : 'Off'}
                                         </Text>
                                     </Pressable>
                                 </View>
