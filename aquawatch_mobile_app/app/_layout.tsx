@@ -31,7 +31,11 @@ export default function RootLayout() {
             <GraphDataProvider>
                 <CurrentDataProvider>
                     <ColorSchemeProvider>
-                        <Stack>
+                        <Stack
+                            screenOptions={{
+                                // Provide a gentle default animation for pushes above the tab bar
+                                animation: 'fade',
+                            }}>
                             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                         </Stack>
                     </ColorSchemeProvider>
