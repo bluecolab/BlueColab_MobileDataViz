@@ -18,6 +18,7 @@ interface GraphDataContextType {
     selectedLocationTemp: string | undefined;
     showConvertedUnits: boolean;
     normalizeComparative: boolean;
+    showComparison: boolean;
     changeLocation: (newLocation: LocationType) => void;
     changeTempLocation: (newLocation: LocationType) => void;
     setLoading: (newValue: boolean) => void;
@@ -28,6 +29,7 @@ interface GraphDataContextType {
     changeTemperatureUnit: (newUnit: string) => void;
     changeConvertedUnits: (enabled: boolean) => void;
     setNormalizeComparative: (enabled: boolean) => void;
+    setShowComparison: (enabled: boolean) => void;
     setSelectedLocationTemp: (newValue: LocationType | undefined) => void;
 }
 
@@ -41,6 +43,7 @@ const GraphDataContext = createContext({
     selectedLocationTemp: undefined as string | undefined,
     showConvertedUnits: false,
     normalizeComparative: false,
+    showComparison: true,
     changeLocation: () => {},
     changeTempLocation: () => {},
     setLoading: () => {},
@@ -52,6 +55,7 @@ const GraphDataContext = createContext({
     setSelectedLocationTemp: () => {},
     changeConvertedUnits: () => {},
     setNormalizeComparative: () => {},
+    setShowComparison: () => {},
 } as GraphDataContextType);
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
     const { fetchData } = useGetWaterData();
@@ -72,6 +76,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
     const [normalizeComparative, setNormalizeComparativeState] = useState<boolean>(false);
+    const [showComparison, setShowComparisonState] = useState<boolean>(true);
 
     // Determine the active location to be used in the query.
     const activeLocation = selectedLocation ?? defaultLocation;
@@ -148,6 +153,18 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         setShowConvertedUnits(enabled);
     };
 
+    const setShowComparison = (enabled: boolean) => {
+        const setStoredShowComparison = async (value: boolean) => {
+            try {
+                await AsyncStorage.setItem('show-comparison', JSON.stringify(value));
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        void setStoredShowComparison(enabled);
+        setShowComparisonState(enabled);
+    };
+
     useEffect(() => {
         const getStoredDefaultLocation = async () => {
             try {
@@ -217,10 +234,24 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             }
         };
 
+        const getStoredShowComparison = async () => {
+            try {
+                const value = await AsyncStorage.getItem('show-comparison');
+                if (value !== null) {
+                    setShowComparisonState(JSON.parse(value));
+                } else {
+                    setShowComparisonState(true);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
         void getStoredDefaultLocation();
         void getStoredDefaultTempUnit();
         void getStoredConvertedUnits();
         void getStoredNormalizeComparative();
+        void getStoredShowComparison();
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
@@ -241,6 +272,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 defaultLocationValue,
                 defaultTempUnit,
                 showConvertedUnits,
+                showComparison,
                 selectedLocationTemp: selectedLocation?.name,
                 changeLocation,
                 changeTempLocation,
@@ -254,6 +286,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 setSelectedLocationTemp: setSelectedLocation,
                 changeConvertedUnits,
                 setNormalizeComparative,
+                setShowComparison,
             }}>
             {children}
         </GraphDataContext.Provider>
