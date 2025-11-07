@@ -104,7 +104,7 @@ const DESCRIPTIONS = {
     'Relative Humidity':
         'The amount of water vapor in the air, expressed as a percentage of the maximum amount the air could hold.',
     'Barometric Pressure':
-        'The weight of the atmosphere, measured in hectopascals (hPa). Changes can indicate shifts in weather.',
+        'The pressure exerted by the atmosphere, measured in hectopascals (hPa). Changes can indicate shifts in weather.',
     'Vapor Pressure':
         'The pressure exerted by water vapor in the air, measured in kilopascals (kPa).',
     'Solar Flux':
@@ -128,19 +128,19 @@ const DESCRIPTIONS = {
     'Tilt NS': 'The North-South tilt of the sensor in degrees.',
     'Tilt WE': 'The West-East tilt of the sensor in degrees.',
     'Carbon Monoxide':
-        'Concentration of CO gas in the air, in micrograms per cubic meter (µg/m³). High concentrations lead to less oxygen delivery in the body.',
+        'Concentration of CO gas in the air, in micrograms per cubic meter (µg/m³). High concentrations reduce oxygen delivery in the body.',
     'Nitric Oxide':
-        'Concentration of NO gas in the air, in micrograms per cubic meter (µg/m³). Becomes a irritant at high levels when breathing.',
+        'Concentration of NO gas in the air, in micrograms per cubic meter (µg/m³). Can irritate the respiratory system at high levels.',
     'Nitrogen Dioxide':
-        'Concentration of NO2 gas in the air, in micrograms per cubic meter (µg/m³). Becomes a irritant at high levels when breathing',
-    Ozone: 'Concentration of O3 gas in the air, in micrograms per cubic meter (µg/m³). Cause breathing difficulties at high levels, especially for asthmatics.',
+        'Concentration of NO2 gas in the air, in micrograms per cubic meter (µg/m³). Can irritate the respiratory system at high levels.',
+    Ozone: 'Concentration of O3 gas in the air, in micrograms per cubic meter (µg/m³). Can cause breathing difficulties, especially for people with asthma.',
     'Sulfur Dioxide':
-        'Concentration of SO2 gas in the air, in micrograms per cubic meter (µg/m³).  Cause breathing difficulties at high levels, especially for asthmatics.',
+        'Concentration of SO2 gas in the air, in micrograms per cubic meter (µg/m³). Can cause breathing difficulties, especially for people with asthma.',
     'PM2.5':
-        'Concentration of particulate matter ≤2.5 micrometers in diameter, in micrograms per cubic meter (µg/m³). Small particles can penetrate deep into lungs and bloodstream.',
-    PM10: 'Concentration of particulate matter ≤10 micrometers in diameter, in micrograms per cubic meter (µg/m³). Small particles can penetrate deep into lungs and bloodstream.',
+        'Concentration of particulate matter ≤2.5 micrometers in diameter, in micrograms per cubic meter (µg/m³). Small particles can penetrate deep into the lungs and bloodstream.',
+    PM10: 'Concentration of particulate matter ≤10 micrometers in diameter, in micrograms per cubic meter (µg/m³). Small particles can penetrate deep into the lungs and bloodstream.',
     Ammonia:
-        'Concentration of NH3 gas in the air, in micrograms per cubic meter (µg/m³). Cause irritation to eyes, nose, and throat at high levels.',
+        'Concentration of NH3 gas in the air, in micrograms per cubic meter (µg/m³). Can irritate the eyes, nose, and throat at high levels.',
 };
 
 // Add this map in your CurrentData.tsx file
