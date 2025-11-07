@@ -3,8 +3,8 @@
         "yAxisLabel": "Temperature",
         "unit": "Temp",
         "meta": {
-            "description": "The measure of how cold or hot the water is. Measured in celsius or fahrenheit.",
-            "reason": "Changes in temperature have an effect on biological activity. Each species has a preferred range to live at. Temperature effects water chemistry as well. For example, higher temperature can dissolve for minerals but hold less gas.",
+            "description": "A measure of how hot or cold the water is, measured in Celsius or Fahrenheit.",
+            "reason": "Changes in temperature affect biological activity. Each species has a preferred range. Temperature also affects water chemistry; for example, warmer water can dissolve more minerals but holds less dissolved gas.",
             "ref": [
                 {
                     "label": "USGS",
@@ -17,8 +17,8 @@
         "yAxisLabel": "pH",
         "unit": "pH",
         "meta": {
-            "description": "The measure to determine the acidity of water.",
-            "reason": "pH is effected by changes in water chemistry and thus can be an important indicator. pH also affects solubility of metals, causing the water to be more toxic.",
+            "description": "A measure of water's acidity or alkalinity.",
+            "reason": "pH is affected by changes in water chemistry and can be an important indicator. pH also affects the solubility of metals, which can make water more toxic.",
             "ref": [
                 {
                     "label": "USGS",
@@ -36,8 +36,8 @@
         "unit": "DOpct",
         "alternateName": "DO",
         "meta": {
-            "description": "The measure of oxygen in the water.",
-            "reason": "It is an important indicator of the water body’s ability to support aquatic life. Too little oxygen or too much can kill aquatic life.",
+            "description": "A measure of oxygen in the water.",
+            "reason": "An important indicator of a water body's ability to support aquatic life. Too little or too much oxygen can harm aquatic organisms.",
             "ref": [
                 {
                     "label": "USGS",
@@ -54,8 +54,8 @@
         "yAxisLabel": "Conductivity",
         "unit": "Cond",
         "meta": {
-            "description": "The measure of the ability of the water to pass electrical current.",
-            "reason": "Bodies of water usually have a base line range of conductivity. Significant changes in it may be indicators of a pollution event as conductivity is effected by salts and other compounds.",
+            "description": "A measure of water's ability to conduct an electrical current.",
+            "reason": "Bodies of water usually have a baseline conductivity range. Significant changes may indicate a pollution event, as conductivity is affected by salts and other dissolved compounds.",
             "ref": [
                 {
                     "label": "USGS",
@@ -72,8 +72,8 @@
         "yAxisLabel": "Salinity",
         "unit": "Sal",
         "meta": {
-            "description": "The measure of dissolved salt content in water. Effects conductivity.",
-            "reason": "For organisms not used to changes in salinity, fluctuating levels can cause stress. Each living organism is adapted to the water body’s usual salinity range.",
+            "description": "A measure of dissolved salt content in water. Affects conductivity.",
+            "reason": "For organisms not adapted to changes in salinity, fluctuating levels can cause stress. Each organism is adapted to the water body's usual salinity range.",
             "ref": [
                 {
                     "label": "USGS",
@@ -90,8 +90,8 @@
         "yAxisLabel": "Turbidity",
         "unit": "Turb",
         "meta": {
-            "description": "The measure of the relative clarity of the water. Measured in NTU.",
-            "reason": "High turbidity affects light penetration. Particles also provide places for bacteria and other pollutants to attach to.",
+            "description": "A measure of the relative clarity of the water, typically measured in NTU.",
+            "reason": "High turbidity reduces light penetration. Particles also provide places for bacteria and other pollutants to attach.",
             "ref": [
                 {
                     "label": "USGS",

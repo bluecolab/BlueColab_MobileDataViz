@@ -618,6 +618,9 @@ export default function VersionHistory() {
                         />{' '}
                         by @OkuraKenG)
                     </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-95 - Add comparison graph: Salinity vs Conductivity in Historic Data
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>
