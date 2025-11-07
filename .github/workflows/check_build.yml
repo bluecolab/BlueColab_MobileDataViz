@@ -10,11 +10,6 @@ on:
       - main
     paths:
       - "aquawatch_mobile_app/**"
-  push:
-    branches:
-      - main
-    paths:
-      - "aquawatch_mobile_app/**"
       - ".github/workflows/**"
   push:
     branches:
