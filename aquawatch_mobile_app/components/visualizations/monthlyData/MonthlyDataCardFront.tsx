@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { View, Text, Platform } from 'react-native';
 import React from 'react';
+import { View, Text, Platform } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { ErrorType } from '@/types/error.interface';
