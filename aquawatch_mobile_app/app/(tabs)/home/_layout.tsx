@@ -9,5 +9,5 @@ export const unstable_settings = {
  * @returns {JSX.Element}
  */
 export default function HomeStackLayout() {
-    return <Stack screenOptions={{ animation: 'fade' }} />;
+    return <Stack />;
 }

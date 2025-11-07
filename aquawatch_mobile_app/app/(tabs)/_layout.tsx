@@ -39,15 +39,15 @@ export default function TabLayout() {
                     tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
                 }}
             />
-            {/* Center action button tab is a stub; we navigate to /liveData via onPress */}
+            {/* we set headerShown false as stacks handle their own headers */}
             <Tabs.Screen
-                name="center"
+                name="currentData"
                 options={{
                     tabBarLabel: () => null, // Hides only this tab’s label
                     // title: 'Current Data',
                     tabBarIcon: ({ color }) => (
                         <Pressable
-                            onPress={() => router.push('/data/current')} // Navigate to the desired screen
+                            onPress={() => router.push('/currentData')} // Navigate to the desired screen
                             style={{
                                 position: 'absolute',
                                 top: -40,
