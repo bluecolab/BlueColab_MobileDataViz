@@ -6,6 +6,8 @@
     "android": "expo start --android",
     "postinstall": "patch-package",
     "ios": "expo start --ios",
+    "build:web": "npx expo export --platform web",
+    "deploy:web": "npx expo export --platform web && npx eas deploy --alias preprod",
     "start": "expo start",
     "prebuild": "expo prebuild",
     "lint": "tsc --noEmit && eslint \"**/*.{js,jsx,ts,tsx}\" --max-warnings=0 && prettier -c \"**/*.{js,jsx,ts,tsx}\"",
