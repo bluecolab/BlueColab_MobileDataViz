@@ -64,13 +64,16 @@ export function MonthlyDataCardFront({
                 <Text className="rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-white">
                     {title}
                 </Text>
-                <FontAwesome
-                    className="absolute right-0 top-2"
-                    name="info-circle"
-                    size={32}
-                    color={isDark ? 'white' : 'grey'}
-                />
+                {!legend && (
+                    <FontAwesome
+                        className="absolute right-0 top-2"
+                        name="info-circle"
+                        size={32}
+                        color={isDark ? 'white' : 'grey'}
+                    />
+                )}
             </View>
+
             {legend ? <View className="mt-1 items-center">{legend}</View> : null}
             <Text
                 className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black dark:text-white"
