@@ -84,14 +84,14 @@ const Graph = ({ dailySummary, isDark, font }: GraphProps) => {
                                 upperPoints={points.max2}
                                 lowerPoints={points.min2}
                                 color={
-                                    isDark ? 'rgba(73, 146, 255, 0.95)' : 'rgba(0, 100, 255, 0.4)'
+                                    isDark ? 'rgba(16, 185, 129, 0.35)' : 'rgba(16, 185, 129, 0.2)'
                                 }
                                 animate={{ type: 'timing' }}
                             />
                             {points.avg2 && (
                                 <Line
                                     points={points.avg2}
-                                    color="blue"
+                                    color="#10b981"
                                     strokeWidth={2}
                                     animate={{ type: 'timing' }}
                                 />
