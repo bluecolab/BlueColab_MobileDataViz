@@ -2,7 +2,7 @@
     "expo": {
         "name": "AquaWatch Mobile",
         "slug": "AquaWatch_Mobile",
-        "version": "1.9.3",
+        "version": "1.9.4",
         "scheme": "expo-nav-template",
         "web": {
             "bundler": "metro",
