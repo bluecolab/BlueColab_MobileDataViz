@@ -1,11 +1,12 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { CleanedWaterData } from '@/types/water.interface';
 import dataUtils from '@/utils/dataUtils';
 
 import PolarChart from './PolarChart';
+import PolarChartVictoryWeb from './PolarChart-web';
 interface WQICardFrontProps {
     data: CleanedWaterData[] | undefined;
     loading: boolean;
@@ -49,7 +50,11 @@ export default function WQICardFront({ data, loading, wqi }: WQICardFrontProps) 
                     </View>
 
                     <View className="absolute inset-0">
-                        <PolarChart percent={percentage} isDark={isDark} />
+                        {Platform.OS === 'web' ? (
+                            <PolarChartVictoryWeb percent={percentage} isDark={isDark} />
+                        ) : (
+                            <PolarChart percent={percentage} isDark={isDark} />
+                        )}
                     </View>
                 </View>
             </View>

@@ -2,7 +2,7 @@
 import { differenceInSeconds } from 'date-fns';
 import { router } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { Text, View, Dimensions, Pressable, ImageBackground } from 'react-native';
+import { Text, View, Dimensions, Pressable, ImageBackground, Platform } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
@@ -10,6 +10,7 @@ import { config } from '@/hooks/useConfig';
 import { extractLastData } from '@/utils/extractLastData';
 
 import PolarChart from './WQI/PolarChart';
+import PolarChartVictoryWeb from './WQI/PolarChart-web';
 
 const screenWidth = Dimensions.get('window').width;
 const itemWidth = (screenWidth - 100) / 2; // Adjust 32px for padding/margins
@@ -140,10 +141,18 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
                                         {lastDataPoint.wqi}%
                                     </Text>
                                 </View>
-                                <PolarChart
-                                    percent={parseInt(`${lastDataPoint.wqi}`)}
-                                    isDark={false}
-                                />
+
+                                {Platform.OS === 'web' ? (
+                                    <PolarChartVictoryWeb
+                                        percent={parseInt(`${lastDataPoint.wqi}`)}
+                                        isDark={false}
+                                    />
+                                ) : (
+                                    <PolarChart
+                                        percent={parseInt(`${lastDataPoint.wqi}`)}
+                                        isDark={false}
+                                    />
+                                )}
                             </View>
                         ) : (
                             <>

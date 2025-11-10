@@ -194,6 +194,7 @@ export function Widget({ name, value }: WidgetProp) {
             >
                 {/* FRONT */}
                 <FlipCard
+                    height={140}
                     flipCardRef={flipCardRef}
                     Front={
                         <View className="relative h-[150] rounded-3xl bg-white p-6 dark:bg-gray-700">
@@ -217,7 +218,7 @@ export function Widget({ name, value }: WidgetProp) {
                     Back={
                         <View className="h-[150]">
                             <ScrollView
-                                className="h-full rounded-3xl bg-white p-4 dark:bg-gray-700"
+                                className="h-[150] rounded-3xl bg-white p-4 dark:bg-gray-700"
                                 contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
                                 keyboardShouldPersistTaps="handled" // Ensures ScrollView handles taps
                             >

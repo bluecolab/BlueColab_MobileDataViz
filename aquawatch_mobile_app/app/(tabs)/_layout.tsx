@@ -2,18 +2,30 @@
 // ^ This comment is necessary to avoid warnings about unstable nested components in Expo Router
 // particularly likes like this: tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
 
+import { FontAwesome } from '@expo/vector-icons';
 import { router, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Platform, Pressable, TouchableOpacity } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { useCurrentData } from '@/contexts/CurrentDataContext';
 
 import { TabBarIcon } from '../../components/TabBarIcon';
+
+function HeaderRefreshButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <TouchableOpacity onPress={onPress} accessibilityLabel="Refresh data" className="pr-4">
+            <FontAwesome name="refresh" size={24} color={color} />
+        </TouchableOpacity>
+    );
+}
 
 /** The tab layout of the app. Here we define the tabs and their options.
  * @returns {JSX.Element}
  */
 export default function TabLayout() {
     const { isDark } = useColorScheme();
+
+    const { refetchCurrent } = useCurrentData();
 
     return (
         <Tabs
@@ -42,32 +54,55 @@ export default function TabLayout() {
                 }}
             />
             {/* we set headerShown false as stacks handle their own headers */}
-            <Tabs.Screen
-                name="currentData"
-                options={{
-                    tabBarLabel: () => null, // Hides only this tab’s label
-                    // title: 'Current Data',
-                    tabBarIcon: ({ color }) => (
-                        <Pressable
-                            onPress={() => router.push('/currentData')} // Navigate to the desired screen
-                            style={{
-                                position: 'absolute',
-                                top: -40,
-                                left: '50%',
-                                marginLeft: -30,
-                                width: 60,
-                                height: 60,
-                                borderRadius: 30,
-                                backgroundColor: '#00D6FC',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                elevation: 6,
-                            }}>
-                            <TabBarIcon name="tint" color={color} />
-                        </Pressable>
-                    ),
-                }}
-            />
+
+            {Platform.OS === 'web' ? (
+                <Tabs.Screen
+                    name="currentData"
+                    options={{
+                        title: 'Current Data',
+                        headerTitle: 'Current Data',
+                        headerStyle: {
+                            backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        },
+                        tabBarIcon: ({ color }) => <TabBarIcon name="tint" color={color} />,
+                        headerTintColor: isDark ? 'white' : 'black',
+                        headerRight: () => (
+                            <HeaderRefreshButton
+                                onPress={refetchCurrent}
+                                color={isDark ? 'white' : 'black'}
+                            />
+                        ),
+                    }}
+                />
+            ) : (
+                <Tabs.Screen
+                    name="currentData"
+                    options={{
+                        tabBarLabel: () => null, // Hides only this tab’s label
+                        // title: 'Current Data',
+                        tabBarIcon: ({ color }) => (
+                            <Pressable
+                                onPress={() => router.push('/currentData')} // Navigate to the desired screen
+                                style={{
+                                    position: 'absolute',
+                                    top: -40,
+                                    left: '50%',
+                                    marginLeft: -30,
+                                    width: 60,
+                                    height: 60,
+                                    borderRadius: 30,
+                                    backgroundColor: '#00D6FC',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    elevation: 6,
+                                }}>
+                                <TabBarIcon name="tint" color={color} />
+                            </Pressable>
+                        ),
+                    }}
+                />
+            )}
+
             <Tabs.Screen
                 name="settings"
                 options={{

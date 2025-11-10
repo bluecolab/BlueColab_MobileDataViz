@@ -83,6 +83,16 @@ export default function ColorSchemeProvider({ children }: { children: ReactNode 
         };
     }, [colorSchemeSys, font, setColorScheme]);
 
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            if (isDark) {
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+            }
+        }
+    }, [isDark]);
+
     return (
         <ColorSchemeContext.Provider
             value={{

@@ -46,6 +46,7 @@ export const config = {
         //     'Bronx River',
         // ],
         validMatches: [
+            { name: 'Nearest Station' },
             { name: 'Botanical Garden', lat: 40.86230556, long: -73.87438889 },
             { name: 'Albany', lat: 42.61952778, long: -73.7589167 },
             { name: 'Poughkeepsie', lat: 41.72058333, long: -73.93875 },

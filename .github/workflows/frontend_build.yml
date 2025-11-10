@@ -40,7 +40,7 @@ jobs:
       - name: 🚀 Build Android app
         working-directory: ./aquawatch_mobile_app
         env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_TOKEN: ${{ secrets.EXPO_ORG_SECRET }}
         run: eas build --platform android --non-interactive --no-wait
 
       - name: 🚀 Build Apple app

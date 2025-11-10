@@ -6,13 +6,15 @@ import { View, Text, ScrollView, Pressable } from 'react-native';
 import SettingsDropdown from '@/components/SettingsDropdown';
 import { ColorScheme, useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
+import useGetClosestStation from '@/hooks/useClosestStation';
 import getMetadata from '@/utils/getMetadata';
 
 export default function Index() {
     const {
+        changeTempLocation,
         changeLocation,
         changeTemperatureUnit,
-        defaultLocation,
+        defaultLocationValue,
         defaultTempUnit,
         showConvertedUnits,
         changeConvertedUnits,
@@ -20,14 +22,24 @@ export default function Index() {
     const { isDark, colorSchemeSys, changeColor } = useColorScheme();
     const { locationOptions } = getMetadata();
 
+    const closestStation = useGetClosestStation();
+
     const [selectedLocation, setSelectedLocation] = useState(
-        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation?.name?.toLowerCase()) + 1}`
+        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocationValue?.name?.toLowerCase())}`
     );
 
     const onLocationSelect = (value: string) => {
-        const newLocation = locationOptions.find((option) => option.value === value)?.label || '';
-        changeLocation({ name: newLocation });
-        setSelectedLocation(value);
+        if (value === '0') {
+            const newLocation = closestStation?.closestStation?.name || '';
+            changeLocation({ name: 'Nearest Station' });
+            changeTempLocation({ name: newLocation });
+            setSelectedLocation('0');
+        } else {
+            const newLocation =
+                locationOptions.find((option) => option.value === value)?.label || '';
+            changeLocation({ name: newLocation });
+            setSelectedLocation(value);
+        }
     };
 
     const tempUnitOptions = [
@@ -64,7 +76,7 @@ export default function Index() {
     const resetToDefault = () => {
         onAppearanceSelect('1');
         onTempUnitSelect('1');
-        onLocationSelect('1');
+        onLocationSelect('0');
         changeConvertedUnits(false);
     };
 

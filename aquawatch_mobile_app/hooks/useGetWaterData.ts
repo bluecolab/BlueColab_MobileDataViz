@@ -1,6 +1,7 @@
 import axios, { isAxiosError } from 'axios';
 import { useNetworkState } from 'expo-network';
 import { useCallback, useMemo } from 'react';
+import { Platform } from 'react-native';
 
 import { config, useAPIConfig } from '@/hooks/useConfig';
 import { LocationType } from '@/types/config.interface';
@@ -102,7 +103,14 @@ export default function useGetWaterData() {
             console.log('Fetching with React Query:', url);
 
             try {
-                const response = await axios.get(url);
+                let response =
+                    BLUE_COLAB_API_CONFIG.validMatches.some(
+                        (loc) => loc.name === defaultLocation.name
+                    ) && Platform.OS === 'web'
+                        ? await axios.post('/api/bluecolab', {
+                              request: url,
+                          })
+                        : await axios.get(url);
                 const apiData = response.data;
 
                 if (

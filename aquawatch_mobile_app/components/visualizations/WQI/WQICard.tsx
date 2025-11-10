@@ -31,6 +31,7 @@ export function WQICard({ loading, data, wqi }: WQICardProps) {
                     <View>
                         {/* Front View - Graph */}
                         <FlipCard
+                            height={300}
                             Front={
                                 <Pressable onPress={flipCard}>
                                     <WQICardFront data={data} loading={loading} wqi={wqi} />

@@ -14,6 +14,7 @@ import { MonthlyDataCard } from '@/components/visualizations/monthlyData/Monthly
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
+import { config } from '@/hooks/useConfig';
 import getMetadata from '@/utils/getMetadata';
 
 const getDaysInMonthFn = (month: number, year: number) => {
@@ -255,11 +256,13 @@ export default function HistoricData() {
                         />
                     ) : null}
 
-                    {(selectedLocationTemp ?? defaultLocation?.name) === 'Choate Pond' ? (
-                        <WQICard data={data} loading={loading} />
-                    ) : (
-                        <></>
-                    )}
+                    {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                        (loc) => loc.name === defaultLocation?.name
+                    ) ? (
+                        <View className="mb-12 mt-6 items-center px-4">
+                            <WQICard data={data} loading={loading} />
+                        </View>
+                    ) : null}
 
                     <View className="pb-[45]">
                         <Text></Text>
