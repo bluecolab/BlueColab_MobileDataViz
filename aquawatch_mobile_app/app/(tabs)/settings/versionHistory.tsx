@@ -661,7 +661,7 @@ export default function VersionHistory() {
                     </Text>
 
                     <Text className="ml-3 text-gray-700 dark:text-gray-300">
-                        - AWM-95 - Add the ability to compare salinity and conductvity (
+                        - AWM-95 - Add the ability to compare salinity and conductivity (
                         <LinkComp
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/279"
                             label="#279"
