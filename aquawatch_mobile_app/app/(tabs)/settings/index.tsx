@@ -6,8 +6,8 @@ import { View, Text, ScrollView, Pressable } from 'react-native';
 import SettingsDropdown from '@/components/SettingsDropdown';
 import { ColorScheme, useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
-import getMetadata from '@/utils/getMetadata';
 import useGetClosestStation from '@/hooks/useClosestStation';
+import getMetadata from '@/utils/getMetadata';
 
 export default function Index() {
     const {
