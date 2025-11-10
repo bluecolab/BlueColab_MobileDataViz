@@ -2,11 +2,11 @@
   "expo": {
     "name": "AquaWatch Mobile",
     "slug": "AquaWatch_Mobile",
-    "version": "1.9.3",
+    "version": "1.9.4",
     "scheme": "expo-nav-template",
     "web": {
       "bundler": "metro",
-      "output": "server",
+      "output": "static",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
@@ -50,7 +50,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.bluecolab.aquawatchmobile",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "We use your location to show you nearby stations of interest near you."
+        "NSLocationWhenInUseUsageDescription": "We use your location to show you nearby stations of interest near you.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -65,12 +66,6 @@
         "android.permission.ACCESS_FINE_LOCATION"
       ]
     },
-    "newArchEnabled": true,
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "d753c40f-c89b-4c3a-bdff-2d8f982604e5"
-      }
-    }
+    "newArchEnabled": true
   }
 }
