@@ -47,4 +47,4 @@ jobs:
         working-directory: ./aquawatch_mobile_app
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: eas build --platform ios --non-interactive --no-wait
+        run: eas build --platform ios --non-interactive --no-wait > /dev/null 2>&1
