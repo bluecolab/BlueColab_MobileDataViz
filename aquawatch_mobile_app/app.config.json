@@ -1,6 +1,6 @@
 {
     "expo": {
-        "name": "Aqua Watch",
+        "name": "AquaWatch Mobile",
         "slug": "AquaWatch_Mobile",
         "version": "1.9.3",
         "scheme": "expo-nav-template",
@@ -36,7 +36,6 @@
             "typedRoutes": true,
             "tsconfigPaths": true
         },
-        "orientation": "portrait",
         "icon": "./assets/icon.png",
         "userInterfaceStyle": "automatic",
         "splash": {
@@ -44,7 +43,9 @@
             "resizeMode": "contain",
             "backgroundColor": "#ffffff"
         },
-        "assetBundlePatterns": ["*/"],
+        "assetBundlePatterns": [
+            "**/*"
+        ],
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.bluecolab.aquawatchmobile",
@@ -65,12 +66,6 @@
                 "android.permission.ACCESS_FINE_LOCATION"
             ]
         },
-        "newArchEnabled": true,
-        "extra": {
-            "router": {},
-            "eas": {
-                "projectId": "d753c40f-c89b-4c3a-bdff-2d8f982604e5"
-            }
-        }
+        "newArchEnabled": true
     }
 }
