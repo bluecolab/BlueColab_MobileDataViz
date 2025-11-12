@@ -10,6 +10,7 @@ interface HomeScreenCardProps {
     buttonText: string;
     route: string;
     isMain?: boolean;
+    isSafe?: boolean;
 }
 
 export default function HomeScreenCard({
@@ -18,6 +19,7 @@ export default function HomeScreenCard({
     buttonText,
     route,
     isMain,
+    isSafe,
 }: HomeScreenCardProps) {
     const router = useRouter();
 
@@ -27,6 +29,12 @@ export default function HomeScreenCard({
         <Pressable onPress={() => router.push({ pathname: route as any })}>
             <View
                 className={`my-2 overflow-hidden rounded-3xl bg-white dark:bg-gray-700 ${isMain ? '' : 'mr-4'}`}>
+                {isSafe !== undefined && (
+                    <View
+                        className={`absolute right-4 top-4 z-10 rounded-full ${isSafe ? 'bg-green-400' : 'bg-red-400'} px-3 py-1`}>
+                        <Text className="dark:text-white">{isSafe ? 'Safe' : 'Unsafe'}</Text>
+                    </View>
+                )}
                 <ImageBackground
                     source={image}
                     style={[
