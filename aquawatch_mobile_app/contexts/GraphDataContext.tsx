@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query'; // Import useQuery
 import { subMonths, getYear, getMonth, getDaysInMonth } from 'date-fns';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
+import useGetClosestStation from '@/hooks/useClosestStation';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
 import { CleanedWaterData } from '@/types/water.interface';
-// ... other imports
 
 interface GraphDataContextType {
     data: CleanedWaterData[] | undefined;
@@ -16,12 +16,15 @@ interface GraphDataContextType {
     loading: boolean;
     loading2?: boolean;
     defaultLocation: LocationType | undefined;
+    defaultLocationValue: LocationType | undefined;
     defaultTempUnit: string | undefined;
     selectedLocationTemp: string | undefined;
     selectedLocationTemp2?: string | undefined;
     showConvertedUnits: boolean;
     normalizeComparative: boolean;
+    showComparison: boolean;
     changeLocation: (newLocation: LocationType) => void;
+    changeTempLocation: (newLocation: LocationType) => void;
     setLoading: (newValue: boolean) => void;
     setYear: (newValue: number | undefined) => void;
     setMonth: (newValue: number | undefined) => void;
@@ -33,6 +36,7 @@ interface GraphDataContextType {
     changeTemperatureUnit: (newUnit: string) => void;
     changeConvertedUnits: (enabled: boolean) => void;
     setNormalizeComparative: (enabled: boolean) => void;
+    setShowComparison: (enabled: boolean) => void;
     setSelectedLocationTemp: (newValue: LocationType | undefined) => void;
     setSelectedLocationTemp2: (newValue: LocationType | undefined) => void;
 }
@@ -45,12 +49,15 @@ const GraphDataContext = createContext({
     loading: false,
     loading2: false,
     defaultLocation: undefined as LocationType | undefined,
+    defaultLocationValue: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
     selectedLocationTemp2: undefined as string | undefined,
     showConvertedUnits: false,
     normalizeComparative: false,
+    showComparison: true,
     changeLocation: () => {},
+    changeTempLocation: () => {},
     setLoading: () => {},
     setYear: () => {},
     setMonth: () => {},
@@ -64,6 +71,7 @@ const GraphDataContext = createContext({
     setSelectedLocationTemp2: () => {},
     changeConvertedUnits: () => {},
     setNormalizeComparative: () => {},
+    setShowComparison: () => {},
 } as GraphDataContextType);
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
     const { fetchData } = useGetWaterData();
@@ -84,6 +92,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [startDay2, setStartDay2] = useState<number>();
     const [endDay2, setEndDay2] = useState<number>();
     const [defaultLocation, setDefaultLocation] = useState<LocationType>();
+    const [defaultLocationValue, setDefaultLocationValue] = useState<LocationType>();
     const [selectedLocation, setSelectedLocation] = useState<LocationType>();
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
@@ -94,6 +103,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const activeLocation = selectedLocation ?? defaultLocation;
     const activeLocation2 = selectedLocation2;
 
+    const closestStation = useGetClosestStation();
     // 3. The useQuery hook replaces the main data-fetching useEffect.
     const {
         data,
@@ -146,6 +156,10 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         setDefaultLocation(newLocation);
     };
 
+    const changeTempLocation = (newLocation: LocationType) => {
+        setDefaultLocation(newLocation);
+    };
+
     const setNormalizeComparative = (enabled: boolean) => {
         const setStored = async (value: boolean) => {
             try {
@@ -172,15 +186,41 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         setShowConvertedUnits(enabled);
     };
 
+    const setShowComparison = (enabled: boolean) => {
+        const setStoredShowComparison = async (value: boolean) => {
+            try {
+                await AsyncStorage.setItem('show-comparison', JSON.stringify(value));
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        void setStoredShowComparison(enabled);
+        setShowComparisonState(enabled);
+    };
+
     useEffect(() => {
         const getStoredDefaultLocation = async () => {
             try {
                 const value = await AsyncStorage.getItem('default-location');
                 if (value !== null) {
                     console.log(`Stored value: ${value}`);
-                    setDefaultLocation(JSON.parse(value));
+                    if (JSON.parse(value).name === 'Nearest Station') {
+                        const newLocation = closestStation?.closestStation;
+                        setDefaultLocationValue({ name: 'Nearest Station' });
+                        if (newLocation) {
+                            setDefaultLocation({
+                                name: newLocation.name,
+                                lat: newLocation.lat,
+                                long: newLocation.long,
+                            });
+                        }
+                    } else {
+                        setDefaultLocationValue(JSON.parse(value));
+                        setDefaultLocation(JSON.parse(value));
+                    }
                 } else {
-                    setDefaultLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
+                    setDefaultLocation({ name: 'Nearest Station' });
+                    setDefaultLocationValue({ name: 'Nearest Station' });
                 }
             } catch (e) {
                 console.error(e);
@@ -227,10 +267,24 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             }
         };
 
+        const getStoredShowComparison = async () => {
+            try {
+                const value = await AsyncStorage.getItem('show-comparison');
+                if (value !== null) {
+                    setShowComparisonState(JSON.parse(value));
+                } else {
+                    setShowComparisonState(true);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
         void getStoredDefaultLocation();
         void getStoredDefaultTempUnit();
         void getStoredConvertedUnits();
         void getStoredNormalizeComparative();
+        void getStoredShowComparison();
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
@@ -258,11 +312,14 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 loading2,
                 // State and setters that remain
                 defaultLocation,
+                defaultLocationValue,
                 defaultTempUnit,
                 showConvertedUnits,
+                showComparison,
                 selectedLocationTemp: selectedLocation?.name,
                 selectedLocationTemp2: selectedLocation2?.name,
                 changeLocation,
+                changeTempLocation,
                 setYear,
                 setMonth,
                 setYear2,
@@ -277,6 +334,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 setSelectedLocationTemp2: setSelectedLocation2,
                 changeConvertedUnits,
                 setNormalizeComparative,
+                setShowComparison,
             }}>
             {children}
         </GraphDataContext.Provider>

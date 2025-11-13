@@ -618,6 +618,83 @@ export default function VersionHistory() {
                         />{' '}
                         by @OkuraKenG)
                     </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-95 - Add comparison graph: Salinity vs Conductivity in Historic Data
+                    </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.9.4:</Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Enhance generateDataSummary with additional data processing (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/261"
+                            label="#261"
+                        />{' '}
+                        by @KoJesko)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-90 - Fall 2025 Midterm Suggestions (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/268"
+                            label="#268"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-91 - Fix attribution layout on small screens and sync package list (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/270"
+                            label="#270"
+                        />{' '}
+                        by @Copilot/KoJesko)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Remove portrait orientation lock for tablet support (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/271"
+                            label="#271"
+                        />{' '}
+                        by @Copilot/KoJesko)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-95 - Add the ability to compare salinity and conductivity (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/279"
+                            label="#279"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-14 - Add animations when navigating between tabs (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/280"
+                            label="#280"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-93 - Automate Apple build (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/281"
+                            label="#281"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-92 - Implement location based water quality (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/282"
+                            label="#282"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>

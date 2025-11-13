@@ -1,4 +1,5 @@
 [
+    { "label": "Nearest Station", "value": "0" },
     { "label": "Choate Pond", "value": "1" },
     { "label": "Piermont", "value": "2" },
     { "label": "West Point", "value": "3" },
