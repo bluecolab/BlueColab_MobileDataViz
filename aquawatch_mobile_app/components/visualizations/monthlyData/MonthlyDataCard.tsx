@@ -41,6 +41,7 @@ interface MonthlyDataCardProps {
     loading: boolean;
     yAxisLabel: string;
     data: CleanedWaterData[] | undefined;
+    data2?: CleanedWaterData[] | undefined;
     error: ErrorType | undefined;
     unit: string;
     meta: {
@@ -63,6 +64,7 @@ export function MonthlyDataCard({
     loading,
     yAxisLabel,
     data,
+    data2,
     error,
     unit,
     meta,
@@ -112,7 +114,41 @@ export function MonthlyDataCard({
         });
     }, [showConvertedUnits, data, unit, unitMap]);
 
-    const rawDataSummary = generateDataSummary(convertedData, loading, unit, defaultTempUnit);
+    const convertedData2 = useMemo(() => {
+        if (!showConvertedUnits || !data2) return data2;
+
+        return data2.map((item) => {
+            const next = { ...item };
+            switch (unit) {
+                case 'Cond':
+                    if (typeof item.Cond === 'number' && unitMap.Cond === 'µS/cm') {
+                        next.Cond = uscmToPpt(item.Cond);
+                    }
+                    break;
+                case 'Turb':
+                    if (typeof item.Turb === 'number' && unitMap.Turb === 'FNU') {
+                        next.Turb = fnuToNtu(item.Turb);
+                    }
+                    break;
+                case 'Sal':
+                    if (typeof item.Sal === 'number' && unitMap.Sal === 'PSU') {
+                        next.Sal = psuToPpt(item.Sal);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return next;
+        });
+    }, [showConvertedUnits, data2, unit, unitMap]);
+
+    const rawDataSummary = generateDataSummary(
+        convertedData,
+        loading,
+        unit,
+        defaultTempUnit,
+        convertedData2
+    );
     const isNormalized = (normalizeComparative ?? normalizeComparativeFromContext) && !loading;
     const normalizedDaily = useMemo(() => {
         if (!isNormalized) return rawDataSummary.dailySummary;

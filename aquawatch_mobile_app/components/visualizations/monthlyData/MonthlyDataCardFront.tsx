@@ -2,6 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { useGraphData } from '@/contexts/GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { DailySummaryType } from '@/utils/dataUtils';
 
@@ -25,6 +26,11 @@ export function MonthlyDataCardFront({
     title,
 }: MonthlyDataCardFrontProp) {
     const { isDark, loading: fontLoading, font } = useColorScheme();
+    const { selectedLocationTemp, selectedLocationTemp2 } = useGraphData();
+
+    const showSecondSet = dailySummary.some(
+        ({ avg2, min2, max2 }) => avg2 !== undefined || min2 !== undefined || max2 !== undefined
+    );
 
     if (fontLoading) {
         return <></>;
@@ -67,6 +73,23 @@ export function MonthlyDataCardFront({
                     size={32}
                     color={isDark ? 'white' : 'grey'}
                 />
+            </View>
+            {/* Simple legend */}
+            <View className="mb-1 mt-1 w-full flex-row items-center justify-center gap-6">
+                <View className="flex-row items-center">
+                    <View style={{ width: 12, height: 3, backgroundColor: '#2563eb' }} />
+                    <Text className="ml-2 text-xs text-black dark:text-white">
+                        {selectedLocationTemp || 'Location 1'}
+                    </Text>
+                </View>
+                {showSecondSet && (
+                    <View className="flex-row items-center">
+                        <View style={{ width: 12, height: 3, backgroundColor: '#f59e0b' }} />
+                        <Text className="ml-2 text-xs text-black dark:text-white">
+                            {selectedLocationTemp2 || 'Location 2'}
+                        </Text>
+                    </View>
+                )}
             </View>
             <Text
                 className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black dark:text-white"

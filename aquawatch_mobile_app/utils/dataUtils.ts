@@ -19,49 +19,58 @@ export default function dataUtils() {
         }
 
         interface GroupedData {
-            [date: string]: number[];
+            [day: number]: number[];
         }
 
-        // Group the data by date for unit indicated by finalUnitToUse (i.e. the key is the date, the value is list of number
-        // values for that date) and convert the temperature to Fahrenheit if needed
+        // Group the data by day-of-month (1..31) so we can align across different months
         const groupedData: GroupedData = data.reduce((acc: GroupedData, item: any) => {
-            const date = new Date(item.timestamp).toISOString().split('T')[0];
+            const day = new Date(item.timestamp).getDate();
             const value =
                 finalUnitToUse === 'Temp' && defaultTempUnit?.trim() === 'Fahrenheit'
                     ? item[finalUnitToUse] * (9 / 5) + 32
                     : item[finalUnitToUse ?? 'Temp'];
-            if (!acc[date]) acc[date] = [];
-            acc[date].push(value);
+            if (!acc[day]) acc[day] = [];
+            acc[day].push(value);
             return acc;
-        }, {});
+        }, {} as GroupedData);
 
         const groupedData2: GroupedData = data2
             ? data2.reduce((acc: GroupedData, item: any) => {
-                  const date = new Date(item.timestamp).toISOString().split('T')[0];
+                  const day = new Date(item.timestamp).getDate();
                   const value =
                       finalUnitToUse === 'Temp' && defaultTempUnit?.trim() === 'Fahrenheit'
                           ? item[finalUnitToUse] * (9 / 5) + 32
                           : item[finalUnitToUse ?? 'Temp'];
-                  if (!acc[date]) acc[date] = [];
-                  acc[date].push(value);
+                  if (!acc[day]) acc[day] = [];
+                  acc[day].push(value);
                   return acc;
-              }, {})
+              }, {} as GroupedData)
             : ([] as never as GroupedData);
 
-        const dailySummary = Object.keys(groupedData).map(
-            (date): DailySummaryType => ({
-                day: new Date(date).getDate(),
-                avg: groupedData[date].reduce((sum, v) => sum + v, 0) / groupedData[date].length,
-                min: Math.min(...groupedData[date]),
-                max: Math.max(...groupedData[date]),
+        // Use the union of day keys from both datasets, sorted ascending
+        const allDays = Array.from(
+            new Set([
+                ...Object.keys(groupedData).map((k) => Number.parseInt(k, 10)),
+                ...Object.keys(groupedData2).map((k) => Number.parseInt(k, 10)),
+            ])
+        ).sort((a, b) => a - b);
+
+        const dailySummary = allDays.map(
+            (day): DailySummaryType => ({
+                day,
+                avg: groupedData[day]
+                    ? groupedData[day].reduce((sum, v) => sum + v, 0) / groupedData[day].length
+                    : undefined,
+                min: groupedData[day] ? Math.min(...groupedData[day]) : undefined,
+                max: groupedData[day] ? Math.max(...groupedData[day]) : undefined,
                 ...(data2
                     ? {
-                          avg2: groupedData2[date]
-                              ? groupedData2[date].reduce((sum, v) => sum + v, 0) /
-                                groupedData2[date].length
+                          avg2: groupedData2[day]
+                              ? groupedData2[day].reduce((sum, v) => sum + v, 0) /
+                                groupedData2[day].length
                               : undefined,
-                          min2: groupedData2[date] ? Math.min(...groupedData2[date]) : undefined,
-                          max2: groupedData2[date] ? Math.max(...groupedData2[date]) : undefined,
+                          min2: groupedData2[day] ? Math.min(...groupedData2[day]) : undefined,
+                          max2: groupedData2[day] ? Math.max(...groupedData2[day]) : undefined,
                       }
                     : {}),
             })

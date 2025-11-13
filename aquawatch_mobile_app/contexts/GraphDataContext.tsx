@@ -10,11 +10,15 @@ import { CleanedWaterData } from '@/types/water.interface';
 
 interface GraphDataContextType {
     data: CleanedWaterData[] | undefined;
+    data2?: CleanedWaterData[] | undefined;
     error: { message: string } | undefined;
+    error2?: { message: string } | undefined;
     loading: boolean;
+    loading2?: boolean;
     defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;
     selectedLocationTemp: string | undefined;
+    selectedLocationTemp2?: string | undefined;
     showConvertedUnits: boolean;
     normalizeComparative: boolean;
     changeLocation: (newLocation: LocationType) => void;
@@ -22,20 +26,28 @@ interface GraphDataContextType {
     setYear: (newValue: number | undefined) => void;
     setMonth: (newValue: number | undefined) => void;
     setEndDay: (newValue: number | undefined) => void;
+    setYear2: (newValue: number | undefined) => void;
+    setMonth2: (newValue: number | undefined) => void;
+    setEndDay2: (newValue: number | undefined) => void;
     setDefaultLocation: (newValue: LocationType | undefined) => void;
     changeTemperatureUnit: (newUnit: string) => void;
     changeConvertedUnits: (enabled: boolean) => void;
     setNormalizeComparative: (enabled: boolean) => void;
     setSelectedLocationTemp: (newValue: LocationType | undefined) => void;
+    setSelectedLocationTemp2: (newValue: LocationType | undefined) => void;
 }
 
 const GraphDataContext = createContext({
     data: undefined,
+    data2: undefined,
     error: undefined,
+    error2: undefined,
     loading: false,
+    loading2: false,
     defaultLocation: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
+    selectedLocationTemp2: undefined as string | undefined,
     showConvertedUnits: false,
     normalizeComparative: false,
     changeLocation: () => {},
@@ -43,9 +55,13 @@ const GraphDataContext = createContext({
     setYear: () => {},
     setMonth: () => {},
     setEndDay: () => {},
+    setYear2: () => {},
+    setMonth2: () => {},
+    setEndDay2: () => {},
     setDefaultLocation: () => {},
     changeTemperatureUnit: () => {},
     setSelectedLocationTemp: () => {},
+    setSelectedLocationTemp2: () => {},
     changeConvertedUnits: () => {},
     setNormalizeComparative: () => {},
 } as GraphDataContextType);
@@ -62,14 +78,21 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [month, setMonth] = useState<number>();
     const [startDay, setStartDay] = useState<number>();
     const [endDay, setEndDay] = useState<number>();
+    // Secondary month/year/day range for comparison
+    const [year2, setYear2] = useState<number>();
+    const [month2, setMonth2] = useState<number>();
+    const [startDay2, setStartDay2] = useState<number>();
+    const [endDay2, setEndDay2] = useState<number>();
     const [defaultLocation, setDefaultLocation] = useState<LocationType>();
     const [selectedLocation, setSelectedLocation] = useState<LocationType>();
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
     const [normalizeComparative, setNormalizeComparativeState] = useState<boolean>(false);
+    const [selectedLocation2, setSelectedLocation2] = useState<LocationType>();
 
     // Determine the active location to be used in the query.
     const activeLocation = selectedLocation ?? defaultLocation;
+    const activeLocation2 = selectedLocation2;
 
     // 3. The useQuery hook replaces the main data-fetching useEffect.
     const {
@@ -86,6 +109,17 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
 
         // This query will only run when all its dependencies have values.
         enabled: !!(activeLocation && year && month && startDay && endDay),
+    });
+
+    // Second dataset for comparison (optional)
+    const {
+        data: data2,
+        error: error2,
+        isLoading: loading2,
+    } = useQuery({
+        queryKey: ['graphWaterData2', activeLocation2, year2, month2, startDay2, endDay2],
+        queryFn: () => fetchData(activeLocation2!, false, year2!, month2!, startDay2!, endDay2!),
+        enabled: !!(activeLocation2 && year2 && month2 && startDay2 && endDay2),
     });
 
     const changeTemperatureUnit = (newUnit: string) => {
@@ -203,6 +237,13 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         setMonth(getMonth(lastMonth) + 1);
         setStartDay(1);
         setEndDay(getDaysInMonth(lastMonth));
+
+        // Initialize secondary date range to mirror primary by default
+        const lastMonth2 = subMonths(new Date(), 1);
+        setYear2(getYear(lastMonth2));
+        setMonth2(getMonth(lastMonth2) + 1);
+        setStartDay2(1);
+        setEndDay2(getDaysInMonth(lastMonth2));
     }, []);
 
     return (
@@ -210,22 +251,30 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             value={{
                 // Values from useQuery
                 data,
+                data2,
                 error: error ? { message: error.message } : undefined,
+                error2: error2 ? { message: error2.message } : undefined,
                 loading,
+                loading2,
                 // State and setters that remain
                 defaultLocation,
                 defaultTempUnit,
                 showConvertedUnits,
                 selectedLocationTemp: selectedLocation?.name,
+                selectedLocationTemp2: selectedLocation2?.name,
                 changeLocation,
                 setYear,
                 setMonth,
+                setYear2,
+                setMonth2,
                 normalizeComparative,
                 setLoading: () => {},
                 setEndDay,
+                setEndDay2,
                 setDefaultLocation,
                 changeTemperatureUnit,
                 setSelectedLocationTemp: setSelectedLocation,
+                setSelectedLocationTemp2: setSelectedLocation2,
                 changeConvertedUnits,
                 setNormalizeComparative,
             }}>
