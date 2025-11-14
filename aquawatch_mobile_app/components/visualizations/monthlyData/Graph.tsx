@@ -73,7 +73,7 @@ const Graph = ({ dailySummary, isDark, font }: GraphProps) => {
                     {points.avg && (
                         <Line
                             points={points.avg}
-                            color="blue"
+                            color="#2563eb" // blue-600
                             strokeWidth={2}
                             animate={{ type: 'timing' }}
                         />
@@ -83,15 +83,13 @@ const Graph = ({ dailySummary, isDark, font }: GraphProps) => {
                             <AreaRange
                                 upperPoints={points.max2}
                                 lowerPoints={points.min2}
-                                color={
-                                    isDark ? 'rgba(16, 185, 129, 0.35)' : 'rgba(16, 185, 129, 0.2)'
-                                }
+                                color={isDark ? 'rgba(255,165,0,0.9)' : 'rgba(255,165,0,0.35)'}
                                 animate={{ type: 'timing' }}
                             />
                             {points.avg2 && (
                                 <Line
                                     points={points.avg2}
-                                    color="#10b981"
+                                    color="#f59e0b" // amber-500
                                     strokeWidth={2}
                                     animate={{ type: 'timing' }}
                                 />
