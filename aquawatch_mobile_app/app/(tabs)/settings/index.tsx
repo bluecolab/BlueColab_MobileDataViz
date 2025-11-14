@@ -11,13 +11,13 @@ import getMetadata from '@/utils/getMetadata';
 
 export default function Index() {
     const {
-        changeTempLocation,
         changeLocation,
         changeTemperatureUnit,
-        defaultLocationValue,
+        defaultLocation,
         defaultTempUnit,
         showConvertedUnits,
         changeConvertedUnits,
+        setSelectedLocationTemp,
     } = useGraphData();
     const { isDark, colorSchemeSys, changeColor } = useColorScheme();
     const { locationOptions } = getMetadata();
@@ -25,14 +25,14 @@ export default function Index() {
     const closestStation = useGetClosestStation();
 
     const [selectedLocation, setSelectedLocation] = useState(
-        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocationValue?.name?.toLowerCase())}`
+        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation?.name?.toLowerCase())}`
     );
 
     const onLocationSelect = (value: string) => {
         if (value === '0') {
             const newLocation = closestStation?.closestStation?.name || '';
             changeLocation({ name: 'Nearest Station' });
-            changeTempLocation({ name: newLocation });
+            setSelectedLocationTemp({ name: newLocation });
             setSelectedLocation('0');
         } else {
             const newLocation =

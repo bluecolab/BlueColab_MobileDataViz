@@ -9,7 +9,6 @@ import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 import CustomDropdown from '@/components/CustomDropdown';
 import { ModalWrapper, ModalWrapperRef } from '@/components/modals/ModalWrapper';
-import ComparisonCard from '@/components/visualizations/monthlyData/ComparisonCard';
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -24,20 +23,24 @@ const getDaysInMonthFn = (month: number, year: number) => {
 export default function HistoricData() {
     const {
         data,
+        data2,
         loading,
         setYear,
         setMonth,
         setEndDay,
+        setYear2,
+        setMonth2,
+        setEndDay2,
         defaultLocation,
         defaultTempUnit,
         selectedLocationTemp,
+        selectedLocationTemp2,
         setSelectedLocationTemp,
+        setSelectedLocationTemp2,
         error,
         showConvertedUnits,
         normalizeComparative,
         setNormalizeComparative,
-        showComparison,
-        setShowComparison,
     } = useGraphData();
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
@@ -57,6 +60,9 @@ export default function HistoricData() {
     // Set the default selected month and year
     const [selectedMonth, setSelectedMonth] = useState(lastMonth);
     const [selectedYear, setSelectedYear] = useState(lastMonthYear);
+    // Separate selection for Location 2 (defaults mirror primary)
+    const [selectedMonth2, setSelectedMonth2] = useState(lastMonth);
+    const [selectedYear2, setSelectedYear2] = useState(lastMonthYear);
 
     const { width } = Dimensions.get('window');
 
@@ -97,6 +103,26 @@ export default function HistoricData() {
             : fullMonthOptions;
     }, [currentMonth, currentYear, selectedYear]);
 
+    const monthOptions2 = React.useMemo(() => {
+        const fullMonthOptions = [
+            { label: 'January', value: '1' },
+            { label: 'February', value: '2' },
+            { label: 'March', value: '3' },
+            { label: 'April', value: '4' },
+            { label: 'May', value: '5' },
+            { label: 'June', value: '6' },
+            { label: 'July', value: '7' },
+            { label: 'August', value: '8' },
+            { label: 'September', value: '9' },
+            { label: 'October', value: '10' },
+            { label: 'November', value: '11' },
+            { label: 'December', value: '12' },
+        ];
+        return selectedYear2 === currentYear
+            ? fullMonthOptions.filter((_, i) => i < currentMonth)
+            : fullMonthOptions;
+    }, [currentMonth, currentYear, selectedYear2]);
+
     const yearOptions = React.useMemo(() => {
         const options: { label: string; value: string }[] = [];
         for (let year = currentYear; year >= 2020; year--) {
@@ -105,12 +131,19 @@ export default function HistoricData() {
         return options;
     }, [currentYear]);
 
+    const yearOptions2 = yearOptions;
+
     const defaultLocationValue =
         locationOptions.find(
             (option) => option.label === (selectedLocationTemp ?? defaultLocation?.name)
         )?.value || '';
 
     const [selectedLocation, setSelectedLocation] = useState(defaultLocationValue);
+    const [selectedLocationSecond, setSelectedLocationSecond] = useState<string>(
+        selectedLocationTemp2
+            ? locationOptions.find((o) => o.label === selectedLocationTemp2)?.value || ''
+            : ''
+    );
 
     const onMonthSelect = useCallback(
         (value: string) => {
@@ -125,6 +158,20 @@ export default function HistoricData() {
             setEndDay(endDay);
         },
         [selectedYear, setMonth, setEndDay, currentMonth, currentYear]
+    );
+
+    const onMonth2Select = useCallback(
+        (value: string) => {
+            const newMonth = Number.parseInt(value, 10);
+            setSelectedMonth2(newMonth);
+            setMonth2(newMonth);
+            const isCurrentSelection = newMonth === currentMonth && selectedYear2 === currentYear;
+            const endDay = isCurrentSelection
+                ? new Date().getDate()
+                : getDaysInMonthFn(newMonth, selectedYear2);
+            setEndDay2(endDay);
+        },
+        [selectedYear2, setMonth2, setEndDay2, currentMonth, currentYear]
     );
 
     const onYearSelect = useCallback(
@@ -142,6 +189,20 @@ export default function HistoricData() {
         [selectedMonth, setYear, setEndDay, currentMonth, currentYear]
     );
 
+    const onYear2Select = useCallback(
+        (value: string) => {
+            const newYear = Number.parseInt(value, 10);
+            setSelectedYear2(newYear);
+            setYear2(newYear);
+            const isCurrentSelection = selectedMonth2 === currentMonth && newYear === currentYear;
+            const endDay = isCurrentSelection
+                ? new Date().getDate()
+                : getDaysInMonthFn(selectedMonth2, newYear);
+            setEndDay2(endDay);
+        },
+        [selectedMonth2, setYear2, setEndDay2, currentMonth, currentYear]
+    );
+
     const onLocationSelect = useCallback(
         (value: string) => {
             setSelectedLocation(value);
@@ -152,13 +213,30 @@ export default function HistoricData() {
         [locationOptions, setSelectedLocationTemp]
     );
 
+    const onLocation2Select = useCallback(
+        (value: string) => {
+            setSelectedLocationSecond(value);
+            if (!value) {
+                setSelectedLocationTemp2(undefined);
+                return;
+            }
+            const label = locationOptions.find((option) => option.value === value)?.label || '';
+            setSelectedLocationTemp2({ name: label });
+        },
+        [locationOptions, setSelectedLocationTemp2]
+    );
+
     useEffect(() => {
         const defaultLocationValue =
             locationOptions.find(
                 (option) => option.label === (selectedLocationTemp ?? defaultLocation?.name)
             )?.value || '';
         setSelectedLocation(defaultLocationValue);
-    }, [defaultLocation, locationOptions, selectedLocationTemp]);
+        const secondValue = selectedLocationTemp2
+            ? locationOptions.find((o) => o.label === selectedLocationTemp2)?.value || ''
+            : '';
+        setSelectedLocationSecond(secondValue);
+    }, [defaultLocation, locationOptions, selectedLocationTemp, selectedLocationTemp2]);
 
     const HeaderRightButton = React.useCallback(
         () => (
@@ -209,6 +287,7 @@ export default function HistoricData() {
                                     loading={loading}
                                     yAxisLabel={item.yAxisLabel}
                                     data={data}
+                                    data2={data2}
                                     error={error}
                                     unit={item.unit}
                                     meta={item.meta}
@@ -237,23 +316,6 @@ export default function HistoricData() {
                         containerStyle={{ gap: 5, marginBottom: 10 }}
                         onPress={onPressPagination}
                     />
-
-                    {/* Comparison Card: Salinity vs Conductivity */}
-                    {showComparison ? (
-                        <ComparisonCard
-                            loading={loading}
-                            data={data}
-                            error={error}
-                            defaultTempUnit={defaultTempUnit}
-                            unitMap={unitMap}
-                            selectedMonth={
-                                monthOptions.find(
-                                    (option) => option.value === selectedMonth.toString()
-                                )?.label || 'oh no'
-                            }
-                            showConvertedUnits={showConvertedUnits}
-                        />
-                    ) : null}
 
                     {(selectedLocationTemp ?? defaultLocation?.name) === 'Choate Pond' ? (
                         <WQICard data={data} loading={loading} />
@@ -314,6 +376,41 @@ export default function HistoricData() {
                                     />
                                 </View>
 
+                                <View className="border-b border-gray-300 dark:border-gray-600" />
+
+                                <Text className="mt-2 text-center text-lg font-bold dark:text-white">
+                                    Location 2
+                                </Text>
+                                <Text className="-mt-1 text-center text-xs text-gray-600 dark:text-gray-300">
+                                    Optional: choose a second location to compare
+                                </Text>
+                                <View className="w-full flex-row space-x-4">
+                                    <View className="flex-[2]">
+                                        <CustomDropdown
+                                            label="Month"
+                                            options={monthOptions2}
+                                            value={selectedMonth2.toString()}
+                                            onSelect={onMonth2Select}
+                                        />
+                                    </View>
+                                    <View className="flex-[2]">
+                                        <CustomDropdown
+                                            label="Year"
+                                            options={yearOptions2}
+                                            value={selectedYear2.toString()}
+                                            onSelect={onYear2Select}
+                                        />
+                                    </View>
+                                </View>
+                                <View>
+                                    <CustomDropdown
+                                        label="Location 2"
+                                        options={[{ label: 'None', value: '' }, ...locationOptions]}
+                                        value={selectedLocationSecond}
+                                        onSelect={onLocation2Select}
+                                    />
+                                </View>
+
                                 <View className="flex-row items-center justify-end pb-4">
                                     <Text className="mr-2 text-lg dark:text-white">
                                         Normalize month (0–1)
@@ -335,24 +432,6 @@ export default function HistoricData() {
                                                 color: normalizeComparative ? 'white' : 'black',
                                             }}>
                                             {normalizeComparative ? 'On' : 'Off'}
-                                        </Text>
-                                    </Pressable>
-                                </View>
-
-                                <View className="flex-row items-center justify-end pb-4">
-                                    <Text className="mr-2 text-lg dark:text-white">
-                                        Show Salinity vs Conductivity
-                                    </Text>
-                                    <Pressable
-                                        onPress={() => setShowComparison(!showComparison)}
-                                        style={{
-                                            backgroundColor: showComparison ? '#2563eb' : '#e5e7eb',
-                                            borderRadius: 16,
-                                            paddingVertical: 6,
-                                            paddingHorizontal: 16,
-                                        }}>
-                                        <Text style={{ color: showComparison ? 'white' : 'black' }}>
-                                            {showComparison ? 'On' : 'Off'}
                                         </Text>
                                     </Pressable>
                                 </View>
