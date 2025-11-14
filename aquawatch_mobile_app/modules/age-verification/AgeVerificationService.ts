@@ -22,6 +22,14 @@ const STORAGE_KEYS = {
 
 /**
  * Age Verification Service
+ * High-level service for managing age verification via Google Play Age Signals API
+ * Ensures compliance with state regulations (Texas, Utah, Louisiana)
+ *
+ * Note: Age verification is only considered valid for up to 12 months from the time of verification,
+ * in accordance with state regulations (e.g., Utah law). This service does not automatically trigger
+ * re-verification when the verification expires. Consumers of this service are responsible for:
+ *   - Checking `isVerificationComplete()` before relying on cached verification data.
+ *   - Calling `requestVerification()` to re-verify the user's age if verification is not complete or has expired.
  */
 export class AgeVerificationService {
     /**
@@ -161,19 +169,19 @@ export class AgeVerificationService {
      * REQUIRED BY LAW: Must be called after verification is complete
      *
      * Per Texas/Utah/Louisiana law:
-     * - Data must be deleted on completion of verification
+     * - Raw personal data from app store must be deleted after verification
+     * - Age category may be retained only for enforcing age-related restrictions
      * - Data may only be used for age-related restrictions, compliance, and safety
      */
     static async deleteVerificationData(): Promise<void> {
         try {
-            // Delete from native module
+            // Delete from native module (removes raw app store data)
             if (Platform.OS === 'android' && AgeVerificationNative) {
                 await AgeVerificationNative.deleteAgeVerificationData();
             }
 
-            // Delete from local storage
-            // Keep only the verification completed flag and minimal category info
-            // for enforcing age restrictions
+            // Delete verification timestamp (raw personal data)
+            // Keep age category and parental consent for enforcement purposes as allowed by law
             await AsyncStorage.removeItem(STORAGE_KEYS.VERIFICATION_TIMESTAMP);
 
             console.log('Age verification data deleted successfully');

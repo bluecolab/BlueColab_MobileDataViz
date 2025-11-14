@@ -179,7 +179,7 @@ export function AgeVerificationExample() {
             )}
 
             {/* Actions */}
-            <View style={{ gap: 10 }}>
+            <View>
                 {!isVerified && (
                     <Button
                         title="Request Age Verification"
@@ -190,10 +190,12 @@ export function AgeVerificationExample() {
 
                 {isVerified && (
                     <>
-                        <Button
-                            title="Check Access to Adult Content"
-                            onPress={() => void handleAccessRestrictedFeature()}
-                        />
+                        <View style={{ marginBottom: 10 }}>
+                            <Button
+                                title="Check Access to Adult Content"
+                                onPress={() => void handleAccessRestrictedFeature()}
+                            />
+                        </View>
                         <Button title="Re-verify Age" onPress={() => void handleVerification()} />
                     </>
                 )}

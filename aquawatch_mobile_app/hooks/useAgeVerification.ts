@@ -56,7 +56,7 @@ export function useAgeVerification() {
 
             if (result.isAvailable) {
                 setAgeCategory(result.ageCategory);
-                AgeVerificationService.completeVerification().catch(console.error);
+                await AgeVerificationService.completeVerification();
                 setIsVerified(true);
             }
 

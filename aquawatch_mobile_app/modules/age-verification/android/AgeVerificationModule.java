@@ -1,8 +1,6 @@
 package com.bluecolab.aquawatchmobile.agesignals;
 
 import android.app.Activity;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -11,14 +9,8 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.Arguments;
 
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.integrity.IntegrityManager;
 import com.google.android.play.core.integrity.IntegrityManagerFactory;
-import com.google.android.play.core.integrity.IntegrityServiceException;
-import com.google.android.play.core.integrity.model.IntegrityErrorCode;
 
 /**
  * Native Android module for accessing Google Play Age Signals API
