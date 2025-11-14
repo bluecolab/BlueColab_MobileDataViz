@@ -108,7 +108,7 @@ export default function HomeScreen() {
                             buttonText={`2024 Water Report`}
                             route="(tabs)/home/waterReport"
                             isMain
-                            isSafe={false}
+                            isSafe={true}
                         />
                     </View>
 

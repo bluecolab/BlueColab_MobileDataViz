@@ -32,7 +32,9 @@ export default function HomeScreenCard({
                 {isSafe !== undefined && (
                     <View
                         className={`absolute right-4 top-4 z-10 rounded-full ${isSafe ? 'bg-green-400' : 'bg-red-400'} px-3 py-1`}>
-                        <Text className="dark:text-white">{isSafe ? 'Safe' : 'Unsafe'}</Text>
+                        <Text className="text-4xl dark:text-white">
+                            {isSafe ? 'Safe' : 'Unsafe'}
+                        </Text>
                     </View>
                 )}
                 <ImageBackground
