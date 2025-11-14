@@ -104,16 +104,22 @@ export default function useGetWaterData() {
             try {
                 const response = await axios.get(url);
                 const apiData = response.data;
+                const isBlueColab = BLUE_COLAB_API_CONFIG.validMatches.some(
+                    (loc) => loc.name === defaultLocation.name
+                );
+                const isUSGS = config.USGS_WATER_SERVICES_API_CONFIG.validMatches.some(
+                    (loc) => loc.name === defaultLocation.name
+                );
 
-                if (
-                    BLUE_COLAB_API_CONFIG.validMatches.some(
-                        (loc) => loc.name === defaultLocation.name
-                    )
-                ) {
+                if (isBlueColab) {
                     return cleanChoatePondData(apiData);
-                } else {
+                }
+                if (isUSGS) {
                     return cleanHudsonRiverData(apiData);
                 }
+
+                // Fallback mirrors getAPIUrl() else branch which uses BlueCoLab default measurement
+                return cleanChoatePondData(apiData);
             } catch (error) {
                 // Log the original error for debugging
                 console.error('Data fetching error:', error);
