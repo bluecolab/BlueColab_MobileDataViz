@@ -98,7 +98,16 @@ export interface BlueCoLabData {
     };
 }
 
-export type ParameterName = 'Cond' | 'DO' | 'DOpct' | 'pH' | 'Temp' | 'Turb' | 'Sal';
+export type ParameterName =
+    | 'Cond'
+    | 'DO'
+    | 'DOpct'
+    | 'pH'
+    | 'Temp'
+    | 'Turb'
+    | 'Sal'
+    | 'Tide1'
+    | 'Tide2';
 
 export interface CleanedWaterData {
     timestamp: string;
@@ -109,6 +118,8 @@ export interface CleanedWaterData {
     Temp?: number;
     Turb?: number;
     Sal?: number;
+    Tide1?: number;
+    Tide2?: number;
 }
 
 export type SensorData = {
