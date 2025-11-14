@@ -1,4 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
+import React, { ReactNode } from 'react';
 import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -16,6 +17,7 @@ interface MonthlyDataCardFrontProp {
     error: ErrorType | undefined;
     month: string;
     title: string;
+    legend?: ReactNode;
 }
 
 export function MonthlyDataCardFront({
@@ -24,6 +26,7 @@ export function MonthlyDataCardFront({
     error,
     month,
     title,
+    legend,
 }: MonthlyDataCardFrontProp) {
     const { isDark, loading: fontLoading, font } = useColorScheme();
     const { selectedLocationTemp, selectedLocationTemp2 } = useGraphData();
@@ -74,23 +77,27 @@ export function MonthlyDataCardFront({
                     color={isDark ? 'white' : 'grey'}
                 />
             </View>
-            {/* Simple legend */}
-            <View className="mb-1 mt-1 w-full flex-row items-center justify-center gap-6">
-                <View className="flex-row items-center">
-                    <View style={{ width: 12, height: 3, backgroundColor: '#2563eb' }} />
-                    <Text className="ml-2 text-xs text-black dark:text-white">
-                        {selectedLocationTemp || 'Location 1'}
-                    </Text>
-                </View>
-                {showSecondSet && (
+            {/* Legend: custom when provided, else default location-based */}
+            {legend ? (
+                <View className="mb-1 mt-1 w-full items-center justify-center">{legend}</View>
+            ) : (
+                <View className="mb-1 mt-1 w-full flex-row items-center justify-center gap-6">
                     <View className="flex-row items-center">
-                        <View style={{ width: 12, height: 3, backgroundColor: '#f59e0b' }} />
+                        <View style={{ width: 12, height: 3, backgroundColor: '#2563eb' }} />
                         <Text className="ml-2 text-xs text-black dark:text-white">
-                            {selectedLocationTemp2 || 'Location 2'}
+                            {selectedLocationTemp || 'Location 1'}
                         </Text>
                     </View>
-                )}
-            </View>
+                    {showSecondSet && (
+                        <View className="flex-row items-center">
+                            <View style={{ width: 12, height: 3, backgroundColor: '#f59e0b' }} />
+                            <Text className="ml-2 text-xs text-black dark:text-white">
+                                {selectedLocationTemp2 || 'Location 2'}
+                            </Text>
+                        </View>
+                    )}
+                </View>
+            )}
             <Text
                 className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black dark:text-white"
                 key="month-label">
