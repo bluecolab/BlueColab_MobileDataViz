@@ -7,6 +7,7 @@ import { config } from '@/hooks/useConfig';
 import useGetAQIData from '@/hooks/useGetAQIData';
 import useGetOdinData from '@/hooks/useGetOdinData';
 import useGetWaterData from '@/hooks/useGetWaterData';
+import useGetWaterReportsData from '@/hooks/useGetWaterReportsData';
 import { LocationType } from '@/types/config.interface';
 import { CleanedWaterData, OdinData, OpenWeatherAQI } from '@/types/water.interface';
 
@@ -14,6 +15,7 @@ interface CurrentDataContextType {
     data: CleanedWaterData[] | undefined; // This stays the same
     airData?: OdinData | undefined;
     aqiData?: OpenWeatherAQI | undefined;
+    waterReportsData?: any | undefined;
     error: Error | null;
     defaultLocation: LocationType | undefined;
     defaultTempUnit: string | undefined;
@@ -35,6 +37,7 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
     const { fetchData } = useGetWaterData();
     const { fetchOdinData } = useGetOdinData();
     const { fetchAQIData } = useGetAQIData();
+    const { fetchWaterReportsData } = useGetWaterReportsData();
 
     // Build a stable query key for current data
     const queryKey = useMemo(
@@ -90,12 +93,19 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
         enabled: !!defaultLocation,
     });
 
+    const { data: waterReportsData } = useQuery({
+        queryKey: ['waterReportsData', defaultLocation],
+        queryFn: () => fetchWaterReportsData('2023'),
+        enabled: !!defaultLocation,
+    });
+
     return (
         <CurrentDataContext.Provider
             value={{
                 data: data ?? [],
                 airData: airData,
                 aqiData: aqiData,
+                waterReportsData: waterReportsData,
                 error: error ?? null,
                 defaultLocation,
                 defaultTempUnit,
