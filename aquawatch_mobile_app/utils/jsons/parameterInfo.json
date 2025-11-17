@@ -99,5 +99,24 @@
                 }
             ]
         }
+    },
+    {
+        "yAxisLabel": "Tide",
+        "unit": "Tide1",
+        "alternateName": "Tide2",
+        "meta": {
+            "description": "A measure of the water level elevation relative to a datum, typically measured in feet.",
+            "reason": "Tides affect water levels, currents, and salinity. Understanding tidal patterns is important for navigation, ecology, and understanding estuarine dynamics in tidal rivers like the Hudson.",
+            "ref": [
+                {
+                    "label": "USGS",
+                    "link": "https://www.usgs.gov/special-topics/water-science-school/science/tides-and-water-levels"
+                },
+                {
+                    "label": "NOAA",
+                    "link": "https://oceanservice.noaa.gov/facts/tide.html"
+                }
+            ]
+        }
     }
 ]
