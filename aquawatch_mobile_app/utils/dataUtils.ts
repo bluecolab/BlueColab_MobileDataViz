@@ -55,10 +55,6 @@ export default function dataUtils() {
             ])
         ).sort((a, b) => a - b);
 
-        console.log('Parameter:', finalUnitToUse);
-
-        // console.log(groupedData);
-
         const dailySummary = allDays.map((day): DailySummaryType => {
             const cleanedGroupedData = (groupedData[day] ?? []).filter(
                 (v) => v !== undefined && v !== null && !Number.isNaN(v as number)
@@ -86,7 +82,6 @@ export default function dataUtils() {
                     : {}),
             };
         });
-        if (finalUnitToUse === 'Temp') console.log('Daily Summary before cleaning:', dailySummary);
 
         dailySummary.forEach((ele: DailySummaryType) => {
             ele.avg = !isNaN(ele.avg ?? NaN) && ele.avg !== -999999 ? ele.avg : undefined;
