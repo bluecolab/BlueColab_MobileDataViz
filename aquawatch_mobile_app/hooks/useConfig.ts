@@ -16,7 +16,7 @@ export const config = {
     USGS_WATER_SERVICES_API_URL: 'https://waterservices.usgs.gov/nwis/iv',
     USGS_WATER_SERVICES_API_CONFIG: {
         defaultStation: '01376269',
-        parameterCd: '00010,00301,00300,90860,00095,63680,00400',
+        parameterCd: '00010,00301,00300,90860,00095,63680,00400,62620',
         format: 'json',
         currentDataQuery: (stationId: string) =>
             `?sites=${stationId}&period=P2D&format=${config.USGS_WATER_SERVICES_API_CONFIG.format}&parameterCd=${config.USGS_WATER_SERVICES_API_CONFIG.parameterCd}`,
