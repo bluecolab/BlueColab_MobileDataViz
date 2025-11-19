@@ -331,9 +331,8 @@ export default function HistoricData() {
                         defaultTempUnit={defaultTempUnit}
                         unitMap={unitMap}
                         selectedMonth={
-                            monthOptions.find(
-                                (option) => option.value === selectedMonth.toString()
-                            )?.label || 'oh no'
+                            monthOptions.find((option) => option.value === selectedMonth.toString())
+                                ?.label || 'oh no'
                         }
                         showConvertedUnits={showConvertedUnits}
                     />
