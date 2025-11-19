@@ -52,7 +52,7 @@ export const config = {
             { name: 'Poughkeepsie', lat: 41.72058333, long: -73.93875 },
             { name: 'West Point', lat: 41.3862049, long: -73.95513879 },
             { name: 'Piermont', lat: 41.04319444, long: -73.8960556 },
-            { name: 'NYC', lat: 40.72152778, long: -74.0156111 },
+            { name: 'New York City', lat: 40.72152778, long: -74.0156111 },
             { name: 'Gowanda', lat: 42.46344444, long: -78.9345278 },
             { name: 'Cohoes', lat: 42.78569444, long: -73.7104167 },
         ],
