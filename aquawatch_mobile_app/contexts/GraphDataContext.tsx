@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query'; // Import useQuery
 import { subMonths, getYear, getMonth, getDaysInMonth } from 'date-fns';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
+import useGetClosestStation from '@/hooks/useClosestStation';
+import { config } from '@/hooks/useConfig';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
 import { CleanedWaterData } from '@/types/water.interface';
@@ -16,6 +18,7 @@ interface GraphDataContextType {
     loading: boolean;
     loading2?: boolean;
     defaultLocation: LocationType | undefined;
+    defaultLocationName: string | undefined;
     defaultTempUnit: string | undefined;
     selectedLocationTemp: string | undefined;
     selectedLocationTemp2?: string | undefined;
@@ -46,6 +49,7 @@ const GraphDataContext = createContext({
     loading2: false,
     defaultLocation: undefined as LocationType | undefined,
     defaultTempUnit: undefined as string | undefined,
+    defaultLocationName: undefined as string | undefined,
     selectedLocationTemp: undefined as string | undefined,
     selectedLocationTemp2: undefined as string | undefined,
     showConvertedUnits: false,
@@ -73,6 +77,8 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     // const [error, setError] = useState<{ message: string } | undefined>(undefined);
     // const [loading, setLoading] = useState<boolean>(true);
 
+    const closestStation = useGetClosestStation();
+
     // 2. State for user selections (filters) remains the same.
     const [year, setYear] = useState<number>();
     const [month, setMonth] = useState<number>();
@@ -84,6 +90,8 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     const [startDay2, setStartDay2] = useState<number>();
     const [endDay2, setEndDay2] = useState<number>();
     const [defaultLocation, setDefaultLocation] = useState<LocationType>();
+    const [defaultLocationName, setDefaultLocationName] = useState<string>();
+
     const [selectedLocation, setSelectedLocation] = useState<LocationType>();
     const [defaultTempUnit, setDefaultTempUnit] = useState<string>();
     const [showConvertedUnits, setShowConvertedUnits] = useState<boolean>(false);
@@ -135,15 +143,19 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     };
 
     const changeLocation = (newLocation: LocationType) => {
-        const setStoredLocation = async (value: LocationType) => {
-            try {
-                await AsyncStorage.setItem('default-location', JSON.stringify(value));
-            } catch (e) {
-                console.log(e);
-            }
-        };
-        void setStoredLocation(newLocation);
-        setDefaultLocation(newLocation);
+        if (newLocation.name == config.USGS_WATER_SERVICES_API_CONFIG.validMatches[0].name) {
+            setDefaultLocation(closestStation.closestStation);
+        } else {
+            const setStoredLocation = async (value: LocationType) => {
+                try {
+                    await AsyncStorage.setItem('default-location', JSON.stringify(value));
+                } catch (e) {
+                    console.log(e);
+                }
+            };
+            void setStoredLocation(newLocation);
+            setDefaultLocation(newLocation);
+        }
     };
 
     const setNormalizeComparative = (enabled: boolean) => {
@@ -177,10 +189,28 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             try {
                 const value = await AsyncStorage.getItem('default-location');
                 if (value !== null) {
-                    console.log(`Stored value: ${value}`);
-                    setDefaultLocation(JSON.parse(value));
+                    const station: LocationType = JSON.parse(value);
+                    if (
+                        station.name == config.USGS_WATER_SERVICES_API_CONFIG.validMatches[0].name
+                    ) {
+                        setDefaultLocation(closestStation.closestStation);
+                    } else {
+                        setDefaultLocation(station);
+                    }
                 } else {
                     setDefaultLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
+        const getStoredDefaultLocationName = async () => {
+            try {
+                const value = await AsyncStorage.getItem('default-location');
+                if (value !== null) {
+                    const station: LocationType = JSON.parse(value);
+                    setDefaultLocationName(station.name);
                 }
             } catch (e) {
                 console.error(e);
@@ -231,6 +261,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         void getStoredDefaultTempUnit();
         void getStoredConvertedUnits();
         void getStoredNormalizeComparative();
+        void getStoredDefaultLocationName();
 
         const lastMonth = subMonths(new Date(), 1);
         setYear(getYear(lastMonth));
@@ -244,7 +275,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         setMonth2(getMonth(lastMonth2) + 1);
         setStartDay2(1);
         setEndDay2(getDaysInMonth(lastMonth2));
-    }, []);
+    }, [closestStation.closestStation]);
 
     return (
         <GraphDataContext.Provider
@@ -258,6 +289,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 loading2,
                 // State and setters that remain
                 defaultLocation,
+                defaultLocationName,
                 defaultTempUnit,
                 showConvertedUnits,
                 selectedLocationTemp: selectedLocation?.name,

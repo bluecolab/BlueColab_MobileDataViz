@@ -13,9 +13,9 @@ export default function Index() {
     const {
         changeLocation,
         changeTemperatureUnit,
-        defaultLocation,
         defaultTempUnit,
         showConvertedUnits,
+        defaultLocationName,
         changeConvertedUnits,
         setSelectedLocationTemp,
     } = useGraphData();
@@ -25,12 +25,13 @@ export default function Index() {
     const closestStation = useGetClosestStation();
 
     const [selectedLocation, setSelectedLocation] = useState(
-        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocation?.name?.toLowerCase())}`
+        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocationName?.toLowerCase())}`
     );
 
     const onLocationSelect = (value: string) => {
         if (value === '0') {
             const newLocation = closestStation?.closestStation?.name || '';
+            console.log(newLocation);
             changeLocation({ name: 'Nearest Station' });
             setSelectedLocationTemp({ name: newLocation });
             setSelectedLocation('0');
