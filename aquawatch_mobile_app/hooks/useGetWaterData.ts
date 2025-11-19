@@ -41,7 +41,6 @@ export default function useGetWaterData() {
         date.setMinutes(roundedMinutes);
         date.setSeconds(0);
         date.setMilliseconds(0);
-
         return date.toISOString();
     }, []);
 
@@ -81,6 +80,7 @@ export default function useGetWaterData() {
                     (existingEntry as any)[paramName as ParameterName] = value;
                 });
             });
+
             return parsedData;
         },
         [USGSParameterMappingsEnum, roundToNearest15Minutes]
