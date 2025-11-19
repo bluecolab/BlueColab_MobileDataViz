@@ -14,6 +14,8 @@ import { WebView } from 'react-native-webview';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
+import WaterReportAPI from './waterReportAPI';
+
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 
@@ -254,6 +256,8 @@ const WaterReport = () => {
                     showsVerticalScrollIndicator={true}
                 />
             </View>
+
+            <WaterReportAPI />
 
             {/* PDF Viewer Modal */}
             <Modal

@@ -7,7 +7,7 @@ import { useCurrentData } from '@/contexts/CurrentDataContext';
 
 export default function CurrentData() {
     const { isDark } = useColorScheme();
-    const { waterReportsData, aqiData, defaultLocation, error } = useCurrentData();
+    const { aqiData, defaultLocation, error } = useCurrentData();
 
     return (
         <>

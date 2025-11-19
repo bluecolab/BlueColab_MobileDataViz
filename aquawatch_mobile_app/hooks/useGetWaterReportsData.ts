@@ -14,7 +14,7 @@ export default function useGetWaterReportsData() {
                 throw new Error('No internet connection');
             }
 
-            const url = `http://127.0.0.1:8080/waterReports/latest/report/${year}`;
+            const url = `http://127.0.0.1:8000/waterReports/latest/report/${year}`;
 
             console.log('Fetching with React Query:', url);
 
