@@ -144,6 +144,8 @@ export interface CurrentData {
     turbUnit: string;
     sal: number | string;
     salUnit: string;
+    tide: number | string;
+    tideUnit: string;
     wqi: number | string;
     airTemp?: number | string;
     humidity?: number | string;
