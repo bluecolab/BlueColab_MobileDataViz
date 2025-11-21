@@ -66,6 +66,12 @@
         "android.permission.ACCESS_FINE_LOCATION"
       ]
     },
-    "newArchEnabled": true
+    "newArchEnabled": true,
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d753c40f-c89b-4c3a-bdff-2d8f982604e5"
+      }
+    }
   }
 }
