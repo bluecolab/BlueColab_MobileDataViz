@@ -7,6 +7,7 @@
     "postinstall": "patch-package",
     "build:web": "npx expo export --platform web",
     "deploy:web": "npx expo export --platform web && npx eas deploy --alias preprod",
+    "deploy:prod": "npx eas deploy --prod",
     "ios": "expo start --ios",
     "start": "expo start",
     "prebuild": "expo prebuild",
