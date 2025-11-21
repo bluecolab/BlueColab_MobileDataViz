@@ -9,6 +9,7 @@ import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 
 import CustomDropdown from '@/components/CustomDropdown';
 import { ModalWrapper, ModalWrapperRef } from '@/components/modals/ModalWrapper';
+import ComparisonCard from '@/components/visualizations/monthlyData/ComparisonCard';
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -325,6 +326,19 @@ export default function HistoricData() {
                             <WQICard data={data} loading={loading} />
                         </View>
                     ) : null}
+
+                    <ComparisonCard
+                        loading={loading}
+                        data={data}
+                        error={error}
+                        defaultTempUnit={defaultTempUnit}
+                        unitMap={unitMap}
+                        selectedMonth={
+                            monthOptions.find((option) => option.value === selectedMonth.toString())
+                                ?.label || 'oh no'
+                        }
+                        showConvertedUnits={showConvertedUnits}
+                    />
 
                     <View className="pb-[45]">
                         <Text></Text>

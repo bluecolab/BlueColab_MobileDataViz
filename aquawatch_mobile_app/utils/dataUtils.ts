@@ -55,26 +55,33 @@ export default function dataUtils() {
             ])
         ).sort((a, b) => a - b);
 
-        const dailySummary = allDays.map(
-            (day): DailySummaryType => ({
+        const dailySummary = allDays.map((day): DailySummaryType => {
+            const cleanedGroupedData = (groupedData[day] ?? []).filter(
+                (v) => v !== undefined && v !== null && !Number.isNaN(v as number)
+            ) as number[];
+
+            const cleanedGroupedData2 = (groupedData2[day] ?? []).filter(
+                (v) => v !== undefined && v !== null && !Number.isNaN(v as number)
+            ) as number[];
+            return {
                 day,
-                avg: groupedData[day]
-                    ? groupedData[day].reduce((sum, v) => sum + v, 0) / groupedData[day].length
+                avg: cleanedGroupedData
+                    ? cleanedGroupedData.reduce((sum, v) => sum + v, 0) / cleanedGroupedData.length
                     : undefined,
-                min: groupedData[day] ? Math.min(...groupedData[day]) : undefined,
-                max: groupedData[day] ? Math.max(...groupedData[day]) : undefined,
+                min: cleanedGroupedData ? Math.min(...cleanedGroupedData) : undefined,
+                max: cleanedGroupedData ? Math.max(...cleanedGroupedData) : undefined,
                 ...(data2
                     ? {
-                          avg2: groupedData2[day]
-                              ? groupedData2[day].reduce((sum, v) => sum + v, 0) /
-                                groupedData2[day].length
+                          avg2: cleanedGroupedData2
+                              ? cleanedGroupedData2.reduce((sum, v) => sum + v, 0) /
+                                cleanedGroupedData2.length
                               : undefined,
-                          min2: groupedData2[day] ? Math.min(...groupedData2[day]) : undefined,
-                          max2: groupedData2[day] ? Math.max(...groupedData2[day]) : undefined,
+                          min2: cleanedGroupedData2 ? Math.min(...cleanedGroupedData2) : undefined,
+                          max2: cleanedGroupedData2 ? Math.max(...cleanedGroupedData2) : undefined,
                       }
                     : {}),
-            })
-        );
+            };
+        });
 
         dailySummary.forEach((ele: DailySummaryType) => {
             ele.avg = !isNaN(ele.avg ?? NaN) && ele.avg !== -999999 ? ele.avg : undefined;

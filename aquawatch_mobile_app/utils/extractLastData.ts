@@ -32,6 +32,8 @@ const currentDataErrorObject: CurrentData = {
     turbUnit: '',
     sal: 'N/A',
     salUnit: '',
+    tide: 'N/A',
+    tideUnit: '',
     wqi: 'N/A',
 };
 
@@ -61,39 +63,140 @@ export function extractLastData(
         return currentDataErrorObject;
     }
 
-    const lastDataPoint = data[data.length - 1];
+    const sorted = [...data].filter(Boolean).sort((a, b) => {
+        const ta = Date.parse(a.timestamp ?? '') || 0;
+        const tb = Date.parse(b.timestamp ?? '') || 0;
+        return ta - tb;
+    });
+
+    let lastDOpctVal: number | undefined;
+    let lastDOVal: number | undefined;
+    let lastPhVal: number | undefined;
+    let lastCondVal: number | undefined;
+    let lastTurbVal: number | undefined;
+    let lastSalVal: number | undefined;
+    let lastTempVal: number | undefined;
+    let lastTideVal: number | undefined;
+
+    for (let i = sorted.length - 1; i >= 0; i--) {
+        const row = sorted[i] as CleanedWaterData;
+        if (
+            lastDOpctVal === undefined &&
+            row.DOpct !== undefined &&
+            row.DOpct !== null &&
+            !Number.isNaN(row.DOpct as number)
+        ) {
+            lastDOpctVal = row.DOpct as number;
+        }
+        if (
+            lastDOVal === undefined &&
+            row.DO !== undefined &&
+            row.DO !== null &&
+            !Number.isNaN(row.DO as number)
+        ) {
+            lastDOVal = row.DO as number;
+        }
+        if (
+            lastPhVal === undefined &&
+            row.pH !== undefined &&
+            row.pH !== null &&
+            !Number.isNaN(row.pH as number)
+        ) {
+            lastPhVal = row.pH as number;
+        }
+        if (
+            lastCondVal === undefined &&
+            row.Cond !== undefined &&
+            row.Cond !== null &&
+            !Number.isNaN(row.Cond as number)
+        ) {
+            lastCondVal = row.Cond as number;
+        }
+        if (
+            lastTurbVal === undefined &&
+            row.Turb !== undefined &&
+            row.Turb !== null &&
+            !Number.isNaN(row.Turb as number)
+        ) {
+            lastTurbVal = row.Turb as number;
+        }
+        if (
+            lastSalVal === undefined &&
+            row.Sal !== undefined &&
+            row.Sal !== null &&
+            !Number.isNaN(row.Sal as number)
+        ) {
+            lastSalVal = row.Sal as number;
+        }
+        if (
+            lastTempVal === undefined &&
+            row.Temp !== undefined &&
+            row.Temp !== null &&
+            !Number.isNaN(row.Temp as number)
+        ) {
+            lastTempVal = row.Temp as number;
+        }
+        if (
+            lastTideVal === undefined &&
+            row.Tide2 !== undefined &&
+            row.Tide2 !== null &&
+            !Number.isNaN(row.Tide2 as number)
+        ) {
+            lastTideVal = row.Tide2 as number;
+        }
+
+        // break early if we've found all values we care about
+        if (
+            lastDOpctVal !== undefined &&
+            lastDOVal !== undefined &&
+            lastPhVal !== undefined &&
+            lastCondVal !== undefined &&
+            lastTurbVal !== undefined &&
+            lastSalVal !== undefined &&
+            lastTempVal !== undefined &&
+            lastTideVal !== undefined
+        ) {
+            break;
+        }
+    }
 
     // Uses % DO first, fallback to DO if not available
     const dissolvedOxygen =
-        lastDataPoint.DOpct?.toFixed(2) ?? lastDataPoint.DO?.toFixed(2) ?? 'N/A';
-    const pH = lastDataPoint.pH?.toFixed(2) ?? 'N/A';
-    let conductivity = lastDataPoint.Cond?.toFixed(2) ?? 'N/A';
-    let turbidity = lastDataPoint.Turb?.toFixed(2) ?? 'N/A';
-    let salinity = lastDataPoint.Sal?.toFixed(2) ?? 'N/A';
+        typeof lastDOpctVal === 'number'
+            ? lastDOpctVal.toFixed(2)
+            : typeof lastDOVal === 'number'
+              ? lastDOVal.toFixed(2)
+              : 'N/A';
+    const pH = typeof lastPhVal === 'number' ? lastPhVal.toFixed(2) : 'N/A';
+    let conductivity = typeof lastCondVal === 'number' ? lastCondVal.toFixed(2) : 'N/A';
+    let turbidity = typeof lastTurbVal === 'number' ? lastTurbVal.toFixed(2) : 'N/A';
+    let salinity = typeof lastSalVal === 'number' ? lastSalVal.toFixed(2) : 'N/A';
+    let tide = typeof lastTideVal === 'number' ? lastTideVal.toFixed(2) : 'N/A';
     let condUnit = unitMap.Cond || '';
     let turbUnit = unitMap.Turb || '';
     let salUnit = unitMap.Sal || '';
+    let tideUnit = 'feet';
 
     // Conversion logic based on the location's unit map (not hardcoded names)
     if (showConvertedUnits) {
         // Cond: µS/cm -> ppt
         if (unitMap.Cond === 'µS/cm') {
-            if (lastDataPoint.Cond !== undefined && lastDataPoint.Cond !== null) {
-                conductivity = uscmToPpt(lastDataPoint.Cond).toFixed(3);
+            if (lastCondVal !== undefined && lastCondVal !== null && !Number.isNaN(lastCondVal)) {
+                conductivity = uscmToPpt(lastCondVal).toFixed(3);
             }
             condUnit = 'ppt';
         }
         // Turb: FNU -> NTU
         if (unitMap.Turb === 'FNU') {
-            if (lastDataPoint.Turb !== undefined && lastDataPoint.Turb !== null) {
-                turbidity = fnuToNtu(lastDataPoint.Turb).toFixed(2);
+            if (lastTurbVal !== undefined && lastTurbVal !== null && !Number.isNaN(lastTurbVal)) {
+                turbidity = fnuToNtu(lastTurbVal).toFixed(2);
             }
             turbUnit = 'NTU';
         }
         // Sal: PSU -> ppt
         if (unitMap.Sal === 'PSU') {
-            if (lastDataPoint.Sal !== undefined && lastDataPoint.Sal !== null) {
-                salinity = psuToPpt(lastDataPoint.Sal).toFixed(2);
+            if (lastSalVal !== undefined && lastSalVal !== null && !Number.isNaN(lastSalVal)) {
+                salinity = psuToPpt(lastSalVal).toFixed(2);
             }
             salUnit = 'ppt';
         }
@@ -102,11 +205,12 @@ export function extractLastData(
     const shouldConvertTemp = defaultTempUnit
         ? defaultTempUnit.trim().toLowerCase() === 'fahrenheit'
         : false;
-    const displayedTemperature = !lastDataPoint.Temp
-        ? 'N/A'
-        : shouldConvertTemp
-          ? ((lastDataPoint.Temp * 9) / 5 + 32).toFixed(2)
-          : lastDataPoint.Temp.toFixed(2);
+    const displayedTemperature =
+        lastTempVal === undefined || lastTempVal === null
+            ? 'N/A'
+            : shouldConvertTemp
+              ? ((lastTempVal * 9) / 5 + 32).toFixed(2)
+              : lastTempVal.toFixed(2);
 
     const waterQualityIndex: number = config.BLUE_COLAB_API_CONFIG.validMatches.some(
         (loc) => loc.name === defaultLocation.name
@@ -114,12 +218,12 @@ export function extractLastData(
         ? calculateWQI(
               [
                   {
-                      Cond: lastDataPoint.Cond ?? 0,
-                      DOpct: lastDataPoint.DOpct ?? 0,
-                      Sal: lastDataPoint.Sal ?? 0,
-                      Temp: lastDataPoint.Temp ?? 0,
-                      Turb: lastDataPoint.Turb ?? 0,
-                      pH: lastDataPoint.pH ?? 0,
+                      Cond: lastCondVal ?? 0,
+                      DOpct: lastDOpctVal ?? 0,
+                      Sal: lastSalVal ?? 0,
+                      Temp: lastTempVal ?? 0,
+                      Turb: lastTurbVal ?? 0,
+                      pH: lastPhVal ?? 0,
                   },
               ],
               false
@@ -147,7 +251,7 @@ export function extractLastData(
     }
 
     return {
-        timestamp: lastDataPoint.timestamp || 'Loading...',
+        timestamp: sorted[sorted.length - 1].timestamp || 'Loading...',
         cond: conductivity,
         condUnit: condUnit,
         do: dissolvedOxygen,
@@ -159,6 +263,8 @@ export function extractLastData(
         turbUnit: turbUnit,
         sal: salinity,
         salUnit: salUnit,
+        tide: tide,
+        tideUnit: tideUnit,
         wqi: waterQualityIndex,
         ...odinValues,
     };

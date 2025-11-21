@@ -1,103 +1,122 @@
 [
-    {
-        "yAxisLabel": "Temperature",
-        "unit": "Temp",
-        "meta": {
-            "description": "A measure of how hot or cold the water is, measured in Celsius or Fahrenheit.",
-            "reason": "Changes in temperature affect biological activity. Each species has a preferred range. Temperature also affects water chemistry; for example, warmer water can dissolve more minerals but holds less dissolved gas.",
-            "ref": [
-                {
-                    "label": "USGS",
-                    "link": "https://www.usgs.gov/special-topics/water-science-school/science/temperature-and-water#overview"
-                }
-            ]
+  {
+    "yAxisLabel": "Temperature",
+    "unit": "Temp",
+    "meta": {
+      "description": "A measure of how hot or cold the water is, measured in Celsius or Fahrenheit.",
+      "reason": "Changes in temperature affect biological activity. Each species has a preferred range. Temperature also affects water chemistry; for example, warmer water can dissolve more minerals but holds less dissolved gas.",
+      "ref": [
+        {
+          "label": "USGS",
+          "link": "https://www.usgs.gov/special-topics/water-science-school/science/temperature-and-water#overview"
         }
-    },
-    {
-        "yAxisLabel": "pH",
-        "unit": "pH",
-        "meta": {
-            "description": "A measure of water's acidity or alkalinity.",
-            "reason": "pH is affected by changes in water chemistry and can be an important indicator. pH also affects the solubility of metals, which can make water more toxic.",
-            "ref": [
-                {
-                    "label": "USGS",
-                    "link": "https://www.usgs.gov/special-topics/water-science-school/science/ph-and-water#overview"
-                },
-                {
-                    "label": "EPA",
-                    "link": "https://www.epa.gov/system/files/documents/2021-07/parameter-factsheet_ph.pdf"
-                }
-            ]
-        }
-    },
-    {
-        "yAxisLabel": "Dissolved Oxygen",
-        "unit": "DOpct",
-        "alternateName": "DO",
-        "meta": {
-            "description": "A measure of oxygen in the water.",
-            "reason": "An important indicator of a water body's ability to support aquatic life. Too little or too much oxygen can harm aquatic organisms.",
-            "ref": [
-                {
-                    "label": "USGS",
-                    "link": "https://www.usgs.gov/special-topics/water-science-school/science/dissolved-oxygen-and-water#overview"
-                },
-                {
-                    "label": "EPA",
-                    "link": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-dissolved-oxygen"
-                }
-            ]
-        }
-    },
-    {
-        "yAxisLabel": "Conductivity",
-        "unit": "Cond",
-        "meta": {
-            "description": "A measure of water's ability to conduct an electrical current.",
-            "reason": "Bodies of water usually have a baseline conductivity range. Significant changes may indicate a pollution event, as conductivity is affected by salts and other dissolved compounds.",
-            "ref": [
-                {
-                    "label": "USGS",
-                    "link": "https://www.usgs.gov/special-topics/water-science-school/science/conductivity-electrical-conductance-and-water#overview"
-                },
-                {
-                    "label": "EPA",
-                    "link": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-conductivity"
-                }
-            ]
-        }
-    },
-    {
-        "yAxisLabel": "Salinity",
-        "unit": "Sal",
-        "meta": {
-            "description": "A measure of dissolved salt content in water. Affects conductivity.",
-            "reason": "For organisms not adapted to changes in salinity, fluctuating levels can cause stress. Each organism is adapted to the water body's usual salinity range.",
-            "ref": [
-                {
-                    "label": "USGS",
-                    "link": "https://www.usgs.gov/special-topics/water-science-school/science/saline-water-and-salinity#overview"
-                },
-                {
-                    "label": "EPA",
-                    "link": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-salinity"
-                }
-            ]
-        }
-    },
-    {
-        "yAxisLabel": "Turbidity",
-        "unit": "Turb",
-        "meta": {
-            "description": "A measure of the relative clarity of the water, typically measured in NTU.",
-            "reason": "High turbidity reduces light penetration. Particles also provide places for bacteria and other pollutants to attach.",
-            "ref": [
-                {
-                    "label": "USGS",
-                    "link": "https://www.usgs.gov/special-topics/water-science-school/science/turbidity-and-water#overview"
-                }
-            ]
-        }
+      ]
     }
+  },
+  {
+    "yAxisLabel": "pH",
+    "unit": "pH",
+    "meta": {
+      "description": "A measure of water's acidity or alkalinity.",
+      "reason": "pH is affected by changes in water chemistry and can be an important indicator. pH also affects the solubility of metals, which can make water more toxic.",
+      "ref": [
+        {
+          "label": "USGS",
+          "link": "https://www.usgs.gov/special-topics/water-science-school/science/ph-and-water#overview"
+        },
+        {
+          "label": "EPA",
+          "link": "https://www.epa.gov/system/files/documents/2021-07/parameter-factsheet_ph.pdf"
+        }
+      ]
+    }
+  },
+  {
+    "yAxisLabel": "Dissolved Oxygen",
+    "unit": "DOpct",
+    "alternateName": "DO",
+    "meta": {
+      "description": "A measure of oxygen in the water.",
+      "reason": "An important indicator of a water body's ability to support aquatic life. Too little or too much oxygen can harm aquatic organisms.",
+      "ref": [
+        {
+          "label": "USGS",
+          "link": "https://www.usgs.gov/special-topics/water-science-school/science/dissolved-oxygen-and-water#overview"
+        },
+        {
+          "label": "EPA",
+          "link": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-dissolved-oxygen"
+        }
+      ]
+    }
+  },
+  {
+    "yAxisLabel": "Conductivity",
+    "unit": "Cond",
+    "meta": {
+      "description": "A measure of water's ability to conduct an electrical current.",
+      "reason": "Bodies of water usually have a baseline conductivity range. Significant changes may indicate a pollution event, as conductivity is affected by salts and other dissolved compounds.",
+      "ref": [
+        {
+          "label": "USGS",
+          "link": "https://www.usgs.gov/special-topics/water-science-school/science/conductivity-electrical-conductance-and-water#overview"
+        },
+        {
+          "label": "EPA",
+          "link": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-conductivity"
+        }
+      ]
+    }
+  },
+  {
+    "yAxisLabel": "Salinity",
+    "unit": "Sal",
+    "meta": {
+      "description": "A measure of dissolved salt content in water. Affects conductivity.",
+      "reason": "For organisms not adapted to changes in salinity, fluctuating levels can cause stress. Each organism is adapted to the water body's usual salinity range.",
+      "ref": [
+        {
+          "label": "USGS",
+          "link": "https://www.usgs.gov/special-topics/water-science-school/science/saline-water-and-salinity#overview"
+        },
+        {
+          "label": "EPA",
+          "link": "https://www.epa.gov/national-aquatic-resource-surveys/indicators-salinity"
+        }
+      ]
+    }
+  },
+  {
+    "yAxisLabel": "Turbidity",
+    "unit": "Turb",
+    "meta": {
+      "description": "A measure of the relative clarity of the water, typically measured in NTU.",
+      "reason": "High turbidity reduces light penetration. Particles also provide places for bacteria and other pollutants to attach.",
+      "ref": [
+        {
+          "label": "USGS",
+          "link": "https://www.usgs.gov/special-topics/water-science-school/science/turbidity-and-water#overview"
+        }
+      ]
+    }
+  },
+  {
+    "yAxisLabel": "Tide",
+    "unit": "Tide2",
+    "alternateName": "Tide2",
+    "meta": {
+      "description": "A measure of the water level elevation relative to a datum, typically measured in feet.",
+      "reason": "Tides affect water levels, currents, and salinity. Understanding tidal patterns is important for navigation, ecology, and understanding estuarine dynamics in tidal rivers like the Hudson.",
+      "ref": [
+        {
+          "label": "USGS",
+          "link": "https://www.usgs.gov/special-topics/water-science-school/science/tides-and-water-levels"
+        },
+        {
+          "label": "NOAA",
+          "link": "https://oceanservice.noaa.gov/facts/tide.html"
+        }
+      ]
+    }
+  }
 ]

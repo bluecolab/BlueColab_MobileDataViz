@@ -95,6 +95,7 @@ export default function CurrentData() {
                     <Widget name="pH" value={lastDataPoint.pH} />
                     <Widget name="Turbidity" value={lastDataPoint.turb} />
                     <Widget name="Oxygen" value={lastDataPoint.do} />
+                    <Widget name="Tide" value={lastDataPoint.tide} />
                 </View>
 
                 {/* — Current‐Data WQI Gauge — */}

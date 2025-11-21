@@ -16,7 +16,7 @@ export const config = {
     USGS_WATER_SERVICES_API_URL: 'https://waterservices.usgs.gov/nwis/iv',
     USGS_WATER_SERVICES_API_CONFIG: {
         defaultStation: '01376269',
-        parameterCd: '00010,00301,00300,90860,00095,63680,00400',
+        parameterCd: '00010,00301,00300,90860,00095,63680,00400,62620',
         format: 'json',
         currentDataQuery: (stationId: string) =>
             `?sites=${stationId}&period=P2D&format=${config.USGS_WATER_SERVICES_API_CONFIG.format}&parameterCd=${config.USGS_WATER_SERVICES_API_CONFIG.parameterCd}`,
@@ -47,7 +47,7 @@ export const config = {
         // ],
         validMatches: [
             { name: 'Nearest Station' },
-            { name: 'Botanical Garden', lat: 40.86230556, long: -73.87438889 },
+            { name: 'Bronx River', lat: 40.86230556, long: -73.87438889 },
             { name: 'Albany', lat: 42.61952778, long: -73.7589167 },
             { name: 'Poughkeepsie', lat: 41.72058333, long: -73.93875 },
             { name: 'West Point', lat: 41.3862049, long: -73.95513879 },

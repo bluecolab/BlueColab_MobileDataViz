@@ -99,6 +99,8 @@ const DESCRIPTIONS = {
         'The cloudiness of water caused by suspended particles (NTU). High turbidity can harm habitats.',
     Oxygen: 'Dissolved oxygen in water (mg/L). Essential for fish and other organisms.',
 
+    Tide: 'The rise and fall of sea levels caused by the gravitational forces of the moon and sun. (feet)',
+
     // Atmospheric Conditions
     'Air Temperature': 'The ambient air temperature, measured in degrees Celsius (°C).',
     'Relative Humidity':
