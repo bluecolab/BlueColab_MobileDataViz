@@ -14,13 +14,17 @@ export default function useGetWaterReportsData() {
                 throw new Error('No internet connection');
             }
 
-            const url = `http://127.0.0.1:8000/waterReports/latest/report/${year}`;
+            const base_url = await axios.get('https://aquawatchmobile.expo.app/api/waterreports');
+            console.log('Base URL fetched:', base_url.data.api_address);
+
+            const url = `${base_url.data.api_address}/waterReports/latest/report/${year}`;
 
             console.log('Fetching with React Query:', url);
 
             try {
                 const response = await axios.get(url);
                 const apiData = response.data;
+                console.log('Data fetched successfully:', apiData);
                 return apiData;
             } catch (error) {
                 // Log the original error for debugging
