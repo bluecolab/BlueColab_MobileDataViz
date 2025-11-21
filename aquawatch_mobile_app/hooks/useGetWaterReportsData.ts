@@ -15,7 +15,6 @@ export default function useGetWaterReportsData() {
             }
 
             const base_url = await axios.get('https://aquawatchmobile.expo.app/api/waterreports');
-            console.log('Base URL fetched:', base_url.data.api_address);
 
             const url = `${base_url.data.api_address}/waterReports/latest/report/${year}`;
 
@@ -24,7 +23,6 @@ export default function useGetWaterReportsData() {
             try {
                 const response = await axios.get(url);
                 const apiData = response.data;
-                console.log('Data fetched successfully:', apiData);
                 return apiData;
             } catch (error) {
                 // Log the original error for debugging

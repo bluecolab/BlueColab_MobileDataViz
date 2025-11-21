@@ -10,7 +10,6 @@ import {
     TouchableOpacity,
     Modal,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
@@ -257,8 +256,6 @@ const WaterReport = () => {
                 />
             </View>
 
-            <WaterReportAPI />
-
             {/* PDF Viewer Modal */}
             <Modal
                 visible={modalVisible}
@@ -278,16 +275,7 @@ const WaterReport = () => {
 
                     {/* PDF Viewer using WebView */}
                     {selectedReport && (
-                        <WebView
-                            source={{
-                                uri: `https://docs.google.com/viewer?url=${encodeURIComponent(selectedReport.uri)}&embedded=true`,
-                            }}
-                            style={styles.webview}
-                            startInLoadingState={true}
-                            scalesPageToFit={true}
-                            javaScriptEnabled={true}
-                            domStorageEnabled={true}
-                        />
+                        <WaterReportAPI year={selectedReport.year} uri={selectedReport.uri} />
                     )}
                 </View>
             </Modal>
