@@ -31,7 +31,6 @@ export default function Index() {
     const onLocationSelect = (value: string) => {
         if (value === '0') {
             const newLocation = closestStation?.closestStation?.name || '';
-            console.log(newLocation);
             changeLocation({ name: 'Nearest Station' });
             setSelectedLocationTemp({ name: newLocation });
             setSelectedLocation('0');

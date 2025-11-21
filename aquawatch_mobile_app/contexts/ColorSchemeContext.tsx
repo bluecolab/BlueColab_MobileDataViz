@@ -33,7 +33,7 @@ export default function ColorSchemeProvider({ children }: { children: ReactNode 
             try {
                 await AsyncStorage.setItem('default-appearance', value);
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
         };
         void setStoredAppearance(newColorScheme);
@@ -51,7 +51,6 @@ export default function ColorSchemeProvider({ children }: { children: ReactNode 
             try {
                 const value = await AsyncStorage.getItem('default-appearance');
                 if (value !== null) {
-                    console.log(`Stored value: ${value}`);
                     setColorSchemeSys(value);
                     setIsDark(
                         value === 'system'
@@ -60,7 +59,6 @@ export default function ColorSchemeProvider({ children }: { children: ReactNode 
                     );
                     setColorScheme(value as ColorScheme);
                 } else {
-                    console.log('Nothing stored');
                     setColorSchemeSys('system');
                     setIsDark(Appearance.getColorScheme() === 'dark');
                 }
