@@ -1,9 +1,17 @@
 // app/(tabs)/home/index.tsx
-import { subMonths, format } from 'date-fns';
-import { Stack, router } from 'expo-router';
-import React, { useCallback, useMemo } from 'react';
-import { ScrollView, View, FlatList, Text, RefreshControl, Pressable } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { subMonths, format } from 'date-fns';
+import { router } from 'expo-router';
+import React, { useCallback } from 'react';
+import {
+    ScrollView,
+    View,
+    FlatList,
+    Text,
+    RefreshControl,
+    Pressable,
+    ScrollView as RNScrollView,
+} from 'react-native';
 
 import HomeScreenCard from '@/components/customCards/HomeScreenCard';
 import QuickCurrentData from '@/components/visualizations/QuickCurrentData';
@@ -74,66 +82,10 @@ export default function HomeScreen() {
         ? '/(tabs)/home/odinData'
         : '/(tabs)/home/airQuality';
 
-    const ShortcutTile = ({
-        icon,
-        label,
-        sub,
-        to,
-    }: {
-        icon: React.ComponentProps<typeof FontAwesome>['name'];
-        label: string;
-        sub?: string;
-        to: string;
-    }) => (
-        <Pressable
-            onPress={() => router.push(to as any)}
-            className="flex-1 rounded-2xl bg-white p-4 dark:bg-gray-700"
-            style={{ minWidth: '48%' }}>
-            <View className="mb-2 flex-row items-center">
-                <FontAwesome name={icon} size={20} color={isDark ? 'white' : '#111827'} />
-                <Text className="ml-2 text-lg font-semibold dark:text-white">{label}</Text>
-            </View>
-            {sub ? <Text className="text-xs text-gray-600 dark:text-gray-200">{sub}</Text> : null}
-        </Pressable>
-    );
-
-    const headerRight = useMemo(
-        () => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ fontSize: 11, color: isDark ? 'white' : '#4b5563' }}>
-                    Viewing: <Text style={{ fontWeight: '600' }}>{defaultLocation?.name}</Text>
-                </Text>
-                <Pressable
-                    onPress={() => router.push('/(tabs)/settings')}
-                    style={{
-                        marginLeft: 6,
-                        backgroundColor: isDark ? '#374151' : '#e5e7eb',
-                        paddingVertical: 4,
-                        paddingHorizontal: 8,
-                        borderRadius: 6,
-                    }}>
-                    <Text style={{ fontSize: 10, color: isDark ? 'white' : '#111827' }}>
-                        Change
-                    </Text>
-                </Pressable>
-            </View>
-        ),
-        [defaultLocation?.name, isDark]
-    );
+    // (Old ShortcutTile component removed; direct Pressables used for leaner UI)
 
     return (
         <>
-            <Stack.Screen
-                options={{
-                    headerTitle: 'Blue CoLab',
-                    headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
-                    },
-                    headerTintColor: isDark ? 'white' : 'black',
-                    headerTitleStyle: { fontSize: 20, fontWeight: 'bold' },
-                    headerRight: () => headerRight,
-                }}
-            />
             <View className="h-full bg-defaultbackground dark:bg-defaultdarkbackground">
                 <ScrollView
                     contentContainerStyle={{
@@ -149,19 +101,28 @@ export default function HomeScreen() {
                     }>
                     {/* — Intro Copy (header now handles title & viewing) — */}
                     <View className="px-4 pt-4">
-                        <Text className="text-3xl font-extrabold leading-9 dark:text-white">
-                            Live Water, Clear Insights
+                        <Text className="text-2xl font-extrabold tracking-tight dark:text-white">
+                            Real‑time Water & Air
                         </Text>
-                        <Text className="text-base text-gray-700 dark:text-gray-200">
-                            Live water & air quality data with clear, concise explanations.
+                        <Text className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                            Know conditions instantly. Learn the basics. Dive deeper.
                         </Text>
-                        <Pressable
-                            onPress={() => router.push('/home/story')}
-                            className="mt-3 w-fit self-start rounded-lg bg-blue-600 px-3 py-2">
-                            <Text className="text-sm font-semibold text-white">
-                                What is Blue CoLab?
-                            </Text>
-                        </Pressable>
+                        <View className="mt-3 flex-row space-x-3">
+                            <Pressable
+                                onPress={() => router.push('/home/story')}
+                                className="rounded-full bg-blue-600 px-4 py-2">
+                                <Text className="text-xs font-semibold uppercase tracking-wide text-white">
+                                    What is Blue CoLab
+                                </Text>
+                            </Pressable>
+                            <Pressable
+                                onPress={() => router.push('/home/historicData')}
+                                className="rounded-full bg-gray-200 px-4 py-2 dark:bg-gray-700">
+                                <Text className="text-xs font-semibold uppercase tracking-wide dark:text-white">
+                                    Trends
+                                </Text>
+                            </Pressable>
+                        </View>
                     </View>
 
                     {/* — Live Now — */}
@@ -174,66 +135,117 @@ export default function HomeScreen() {
                     </View>
 
                     {/* — Shortcuts: Make navigation obvious — */}
-                    <View className="px-4 pt-4">
-                        <Text className="mb-2 text-xl font-bold dark:text-white">Explore Data</Text>
-                        <View className="flex-row flex-wrap justify-between gap-3">
-                            <ShortcutTile
-                                icon="tachometer"
-                                label="Current Data"
-                                sub="Latest readings & WQI"
-                                to="/(tabs)/currentData"
-                            />
-                            <ShortcutTile
-                                icon="line-chart"
-                                label="Historic Data"
-                                sub={`${lastMonth} trends & comparisons`}
-                                to="/home/historicData"
-                            />
-                            <ShortcutTile
-                                icon="cloud"
-                                label="AQI & Weather"
-                                sub="Air quality with context"
-                                to={aqiRoute}
-                            />
-                            <ShortcutTile
-                                icon="file-text-o"
-                                label="Water Report"
-                                sub="2024 Pace report summary"
-                                to="/(tabs)/home/waterReport"
-                            />
+                    <View className="px-4 pt-6">
+                        <Text className="mb-3 text-lg font-bold dark:text-white">
+                            Quick Actions
+                        </Text>
+                        <View className="flex-row flex-wrap gap-3">
+                            <Pressable
+                                onPress={() => router.push('/(tabs)/currentData')}
+                                className="min-w-[46%] flex-1 rounded-xl bg-white p-4 dark:bg-gray-700">
+                                <View className="mb-1 flex-row items-center">
+                                    <FontAwesome
+                                        name="tachometer"
+                                        size={18}
+                                        color={isDark ? 'white' : '#111827'}
+                                    />
+                                    <Text className="ml-2 text-sm font-semibold dark:text-white">
+                                        Current
+                                    </Text>
+                                </View>
+                                <Text className="text-[11px] text-gray-600 dark:text-gray-300">
+                                    Live readings & WQI
+                                </Text>
+                            </Pressable>
+                            <Pressable
+                                onPress={() => router.push('/home/historicData')}
+                                className="min-w-[46%] flex-1 rounded-xl bg-white p-4 dark:bg-gray-700">
+                                <View className="mb-1 flex-row items-center">
+                                    <FontAwesome
+                                        name="line-chart"
+                                        size={18}
+                                        color={isDark ? 'white' : '#111827'}
+                                    />
+                                    <Text className="ml-2 text-sm font-semibold dark:text-white">
+                                        Historic
+                                    </Text>
+                                </View>
+                                <Text className="text-[11px] text-gray-600 dark:text-gray-300">
+                                    {lastMonth} trends
+                                </Text>
+                            </Pressable>
+                            <Pressable
+                                onPress={() => router.push(aqiRoute as any)}
+                                className="min-w-[46%] flex-1 rounded-xl bg-white p-4 dark:bg-gray-700">
+                                <View className="mb-1 flex-row items-center">
+                                    <FontAwesome
+                                        name="cloud"
+                                        size={18}
+                                        color={isDark ? 'white' : '#111827'}
+                                    />
+                                    <Text className="ml-2 text-sm font-semibold dark:text-white">
+                                        AQI
+                                    </Text>
+                                </View>
+                                <Text className="text-[11px] text-gray-600 dark:text-gray-300">
+                                    Air quality + weather
+                                </Text>
+                            </Pressable>
+                            <Pressable
+                                onPress={() => router.push('/(tabs)/home/waterReport')}
+                                className="min-w-[46%] flex-1 rounded-xl bg-white p-4 dark:bg-gray-700">
+                                <View className="mb-1 flex-row items-center">
+                                    <FontAwesome
+                                        name="file-text-o"
+                                        size={18}
+                                        color={isDark ? 'white' : '#111827'}
+                                    />
+                                    <Text className="ml-2 text-sm font-semibold dark:text-white">
+                                        Report
+                                    </Text>
+                                </View>
+                                <Text className="text-[11px] text-gray-600 dark:text-gray-300">
+                                    2024 summary
+                                </Text>
+                            </Pressable>
                         </View>
                     </View>
 
                     {/* — Brief Explainers — */}
-                    <View className="px-4 pt-5">
-                        <View className="rounded-2xl bg-white p-4 dark:bg-gray-700">
-                            <Text className="mb-1 text-lg font-semibold dark:text-white">
-                                What these metrics mean
+                    <View className="px-4 pt-6">
+                        <Text className="mb-2 text-lg font-bold dark:text-white">Core Terms</Text>
+                        <RNScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            className="flex-row">
+                            {parameterInfo.slice(0, 7).map((p, idx) => (
+                                <View
+                                    key={`${p.yAxisLabel}-${idx}`}
+                                    className="mr-3 w-[160] rounded-xl bg-white p-3 dark:bg-gray-700">
+                                    <Text className="text-xs font-semibold uppercase tracking-wide dark:text-white">
+                                        {p.yAxisLabel}
+                                    </Text>
+                                    <Text
+                                        className="mt-1 text-[11px] leading-4 text-gray-600 dark:text-gray-300"
+                                        numberOfLines={4}>
+                                        {p.meta.description}
+                                    </Text>
+                                </View>
+                            ))}
+                        </RNScrollView>
+                        <Pressable
+                            onPress={() => router.push('/home/historicData')}
+                            className="mt-3 self-start rounded-full bg-gray-200 px-4 py-2 dark:bg-gray-700">
+                            <Text className="text-xs font-semibold uppercase tracking-wide dark:text-white">
+                                See in graphs
                             </Text>
-                            <Text className="mb-3 text-xs text-gray-600 dark:text-gray-200">
-                                Quick definitions to help you interpret the data.
-                            </Text>
-                            <View className="flex-row flex-wrap gap-2">
-                                {parameterInfo.slice(0, 6).map((p, idx) => (
-                                    <View
-                                        key={`${p.yAxisLabel}-${idx}`}
-                                        className="rounded-xl bg-gray-100 px-3 py-2 dark:bg-gray-600">
-                                        <Text className="text-xs font-semibold dark:text-white">
-                                            {p.yAxisLabel}
-                                        </Text>
-                                        <Text className="mt-1 max-w-[260] text-[11px] text-gray-700 dark:text-gray-200">
-                                            {p.meta.description}
-                                        </Text>
-                                    </View>
-                                ))}
-                            </View>
-                        </View>
+                        </Pressable>
                     </View>
 
                     {/* — Feature card (visual) — */}
                     <View className="px-4 pt-4">
                         <HomeScreenCard
-                            imageSource={require('@/assets/homescreen/waterQuestion.jpg')}
+                            imageSource="https://www.pace.edu/sites/default/files/styles/16_9_1600x900/public/2022-03/seidenberg-hero-blue-colab.jpg"
                             title="Pace Water Data"
                             buttonText={`2024 Water Report`}
                             route="(tabs)/home/waterReport"

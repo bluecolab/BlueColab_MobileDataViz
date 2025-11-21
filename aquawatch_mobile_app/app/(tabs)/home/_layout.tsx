@@ -9,5 +9,6 @@ export const unstable_settings = {
  * @returns {JSX.Element}
  */
 export default function HomeStackLayout() {
-    return <Stack />;
+    // Suppress nested headers; top-level layout supplies the sticky header.
+    return <Stack screenOptions={{ headerShown: false }} />;
 }

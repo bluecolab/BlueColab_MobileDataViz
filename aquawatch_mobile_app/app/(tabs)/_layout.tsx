@@ -1,81 +1,88 @@
-/* eslint-disable react/no-unstable-nested-components */
-// ^ This comment is necessary to avoid warnings about unstable nested components in Expo Router
-// particularly likes like this: tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-
-import { router, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
-
+import { Stack, router } from 'expo-router';
+import { Pressable, View, Text, Image } from 'react-native';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import React, { useMemo } from 'react';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { useCurrentData } from '@/contexts/CurrentDataContext';
 
-import { TabBarIcon } from '../../components/TabBarIcon';
-
-/** The tab layout of the app. Here we define the tabs and their options.
- * @returns {JSX.Element}
- */
-export default function TabLayout() {
+// Custom app-wide stack layout with a sticky top menu (gear left, logo center, location right)
+export default function AppLayout() {
     const { isDark } = useColorScheme();
+    const { defaultLocation } = useCurrentData();
+
+    const headerBackground = isDark ? '#2e2e3b' : 'white';
+    const textColor = isDark ? 'white' : '#111827';
+
+    const commonScreenOptions = useMemo(
+        () => ({
+            headerStyle: { backgroundColor: headerBackground, height: 48, paddingVertical: 0 },
+            headerTitleAlign: 'center' as const,
+            headerTitleContainerStyle: { paddingVertical: 0 },
+            headerLeftContainerStyle: { paddingVertical: 0, paddingLeft: 6 },
+            headerRightContainerStyle: { paddingVertical: 0, paddingRight: 6 },
+            headerTintColor: textColor,
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            headerTitle: () => (
+                <Pressable onPress={() => router.push('/home')} accessibilityLabel="Go Home">
+                    <Image
+                        source={require('@/assets/splash.png')}
+                        style={{ width: 120, height: 28, resizeMode: 'contain' }}
+                    />
+                </Pressable>
+            ),
+            headerLeft: () => (
+                <Pressable
+                    onPress={() => router.push('/settings')}
+                    accessibilityLabel="Open Settings"
+                    style={{ paddingHorizontal: 4, paddingVertical: 4 }}>
+                    <FontAwesome name="gear" size={20} color={textColor} />
+                </Pressable>
+            ),
+            headerRight: () => (
+                <Pressable
+                    onPress={() => router.push('/settings')}
+                    accessibilityLabel="Change Location"
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        backgroundColor: isDark ? '#374151' : '#e5e7eb',
+                        paddingVertical: 6,
+                        paddingHorizontal: 10,
+                        borderRadius: 14,
+                    }}>
+                    <FontAwesome
+                        name="map-marker"
+                        size={14}
+                        color={textColor}
+                        style={{ marginRight: 6 }}
+                    />
+                    <Text style={{ fontSize: 11, fontWeight: '600', color: textColor }}>
+                        {defaultLocation?.name ?? 'Location'}
+                    </Text>
+                </Pressable>
+            ),
+        }),
+        [headerBackground, textColor, isDark, defaultLocation?.name]
+    );
 
     return (
-        <Tabs
-            screenOptions={{
-                tabBarStyle: {
-                    backgroundColor: isDark ? '#2e2e3b' : 'white',
-                },
-                tabBarActiveTintColor: isDark ? 'white' : 'black',
-                tabBarInactiveTintColor: isDark ? '#a1a1a1' : 'gray',
-                animation: 'fade',
-                sceneStyle: { backgroundColor: isDark ? '#1a202c' : '#f1f1f1' },
-            }}>
-            <Tabs.Screen
-                name="index"
-                options={{
-                    href: null,
-                }}
-            />
-
-            <Tabs.Screen
+        <Stack initialRouteName="home" screenOptions={commonScreenOptions}>
+            <Stack.Screen
                 name="home"
                 options={{
-                    headerShown: false,
-                    title: 'Home',
-                    tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+                    headerBackVisible: false,
                 }}
             />
-            {/* we set headerShown false as stacks handle their own headers */}
-            <Tabs.Screen
-                name="currentData"
-                options={{
-                    tabBarLabel: () => null, // Hides only this tab’s label
-                    // title: 'Current Data',
-                    tabBarIcon: ({ color }) => (
-                        <Pressable
-                            onPress={() => router.push('/currentData')} // Navigate to the desired screen
-                            style={{
-                                position: 'absolute',
-                                top: -40,
-                                left: '50%',
-                                marginLeft: -30,
-                                width: 60,
-                                height: 60,
-                                borderRadius: 30,
-                                backgroundColor: '#00D6FC',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                elevation: 6,
-                            }}>
-                            <TabBarIcon name="tint" color={color} />
-                        </Pressable>
-                    ),
-                }}
-            />
-            <Tabs.Screen
-                name="settings"
-                options={{
-                    headerShown: false,
-                    title: 'Settings',
-                    tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />,
-                }}
-            />
-        </Tabs>
+            <Stack.Screen name="currentData" />
+            <Stack.Screen name="settings" />
+            {/* Nested home stack screens */}
+            <Stack.Screen name="home/historicData" />
+            <Stack.Screen name="home/airQuality" />
+            <Stack.Screen name="home/odinData" />
+            <Stack.Screen name="home/waterReport" />
+            <Stack.Screen name="home/story" />
+            <Stack.Screen name="home/blog" />
+        </Stack>
     );
 }
