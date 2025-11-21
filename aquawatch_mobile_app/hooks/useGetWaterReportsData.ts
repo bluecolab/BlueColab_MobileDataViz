@@ -16,7 +16,7 @@ export default function useGetWaterReportsData() {
 
             const base_url = await axios.get('https://aquawatchmobile.expo.app/api/waterreports');
 
-            const url = `${base_url.data.api_address}/waterReports/latest/report/${year}`;
+            const url = `${base_url.data.api_address}/waterReports/latest/report/year/${year}`;
 
             console.log('Fetching with React Query:', url);
 
