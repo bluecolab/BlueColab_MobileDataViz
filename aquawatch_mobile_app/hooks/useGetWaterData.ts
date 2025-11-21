@@ -28,6 +28,22 @@ export default function useGetWaterData() {
         [usgsParameterMappings]
     );
 
+    /**
+     * Rounds a timestamp to the nearest 15-minute interval
+     * @param timestamp - ISO 8601 timestamp string
+     * @returns Rounded timestamp string
+     */
+    const roundToNearest15Minutes = useCallback((timestamp: string): string => {
+        const date = new Date(timestamp);
+        const minutes = date.getMinutes();
+        const roundedMinutes = Math.round(minutes / 15) * 15;
+
+        date.setMinutes(roundedMinutes);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        return date.toISOString();
+    }, []);
+
     const cleanHudsonRiverData = useCallback(
         (rawData: WaterServicesData) => {
             if (!rawData?.value?.timeSeries) {
@@ -49,7 +65,8 @@ export default function useGetWaterData() {
                         : (series.values[1]?.value ?? []);
 
                 valuesList.forEach((entry) => {
-                    const timestamp = entry.dateTime;
+                    const rawTimestamp = entry.dateTime;
+                    const timestamp = roundToNearest15Minutes(rawTimestamp);
                     const value = parseFloat(entry.value);
 
                     let existingEntry = parsedData.find((data) => data.timestamp === timestamp);
@@ -63,9 +80,10 @@ export default function useGetWaterData() {
                     (existingEntry as any)[paramName as ParameterName] = value;
                 });
             });
+
             return parsedData;
         },
-        [USGSParameterMappingsEnum]
+        [USGSParameterMappingsEnum, roundToNearest15Minutes]
     );
 
     const cleanChoatePondData = useCallback((rawData: BlueCoLabData[]) => {

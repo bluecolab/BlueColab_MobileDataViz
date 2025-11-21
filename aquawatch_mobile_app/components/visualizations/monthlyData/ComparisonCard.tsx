@@ -117,18 +117,16 @@ export default function ComparisonCard({
 
     // Render using the existing Front card UI for consistency
     return (
-        <View style={{ width, marginTop: 10 }}>
-            <View className="z-10 h-[340] w-[95%] self-center">
-                <View style={{ marginTop: 5, width: containerWidth, height: '100%' }}>
-                    <MonthlyDataCardFront
-                        loading={loading}
-                        dailySummary={combinedDaily}
-                        error={error}
-                        month={selectedMonth}
-                        title={title}
-                        legend={legend}
-                    />
-                </View>
+        <View className="z-10 mt-10 h-[340] w-[95%] self-center">
+            <View style={{ marginTop: 5, width: containerWidth, height: '100%' }}>
+                <MonthlyDataCardFront
+                    loading={loading}
+                    dailySummary={combinedDaily}
+                    error={error}
+                    month={selectedMonth}
+                    title={title}
+                    legend={legend}
+                />
             </View>
         </View>
     );
