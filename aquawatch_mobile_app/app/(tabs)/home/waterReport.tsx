@@ -1,17 +1,9 @@
 // app/(tabs)/home/waterReport.tsx
+
 import { Stack } from 'expo-router';
 import { useState } from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    Dimensions,
-    FlatList,
-    TouchableOpacity,
-    Modal,
-} from 'react-native';
+import { View, Text, Dimensions, FlatList, Pressable, Modal } from 'react-native';
 import { WebView } from 'react-native-webview';
-
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 const deviceHeight = Dimensions.get('window').height;
@@ -27,7 +19,6 @@ interface WaterReport {
 const WaterReport = () => {
     const { isDark } = useColorScheme();
 
-    // Water reports data - sorted with newest first (2024 on top)
     const waterReports: WaterReport[] = [
         {
             id: '2024',
@@ -92,146 +83,58 @@ const WaterReport = () => {
         setSelectedReport(null);
     };
 
-    // Styles inside component so they can access isDark
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: isDark ? '#1a202c' : 'rgb(220, 220, 220)',
-            width: deviceWidth,
-        },
-        headerText: {
-            color: isDark ? 'white' : '#333',
-            fontSize: deviceHeight / 30,
-            textAlign: 'center',
-            marginVertical: 20,
-            fontWeight: 'bold',
-        },
-        listContainer: {
-            paddingHorizontal: 15,
-            paddingBottom: 20,
-        },
-        reportCard: {
-            backgroundColor: isDark ? '#374151' : '#fff',
-            borderRadius: 15,
-            marginBottom: 15,
-            padding: 15,
-            flexDirection: 'row',
-            alignItems: 'center',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.3,
-            shadowRadius: 4,
-            elevation: 5,
-        },
-        latestReportCard: {
-            backgroundColor: isDark ? '#4A6D7C' : '#E3F2FD',
-            borderWidth: 2,
-            borderColor: '#7CB9E8',
-        },
-        thumbnailContainer: {
-            width: 80,
-            height: 100,
-            marginRight: 15,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        pdfIconContainer: {
-            width: '100%',
-            height: '100%',
-            backgroundColor: isDark ? '#3A5D6C' : '#B3D9E8',
-            borderRadius: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        pdfIcon: {
-            fontSize: 40,
-        },
-        reportInfo: {
-            flex: 1,
-        },
-        reportHeader: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 5,
-        },
-        reportYear: {
-            color: isDark ? '#7CB9E8' : '#1976D2',
-            fontSize: deviceHeight / 35,
-            fontWeight: 'bold',
-            marginRight: 10,
-        },
-        latestBadge: {
-            backgroundColor: '#FFD700',
-            color: '#000',
-            fontSize: 12,
-            fontWeight: 'bold',
-            paddingHorizontal: 8,
-            paddingVertical: 3,
-            borderRadius: 5,
-        },
-        reportTitle: {
-            color: isDark ? 'white' : '#333',
-            fontSize: deviceHeight / 45,
-            lineHeight: 22,
-        },
-        // Modal styles
-        modalContainer: {
-            flex: 1,
-            backgroundColor: isDark ? '#1a202c' : 'rgb(220, 220, 220)',
-        },
-        modalHeader: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            backgroundColor: isDark ? '#2e2e3b' : 'white',
-            paddingHorizontal: 15,
-            paddingVertical: 15,
-            paddingTop: 50,
-        },
-        modalTitle: {
-            color: isDark ? 'white' : '#333',
-            fontSize: 18,
-            fontWeight: 'bold',
-            flex: 1,
-            marginRight: 10,
-        },
-        closeButton: {
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            backgroundColor: isDark ? '#4A6D7C' : '#1976D2',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        closeButtonText: {
-            color: 'white',
-            fontSize: 24,
-            fontWeight: 'bold',
-        },
-        webview: {
-            flex: 1,
-            backgroundColor: isDark ? '#1a202c' : 'rgb(220, 220, 220)',
-        },
-    });
+    const renderReportItem = ({ item, index }: { item: WaterReport; index: number }) => {
+        const latestCard = index === 0;
 
-    const renderReportItem = ({ item, index }: { item: WaterReport; index: number }) => (
-        <TouchableOpacity
-            style={[styles.reportCard, index === 0 && styles.latestReportCard]}
-            onPress={() => handleReportPress(item)}>
-            <View style={styles.thumbnailContainer}>
-                <View style={styles.pdfIconContainer}>
-                    <Text style={styles.pdfIcon}>📄</Text>
+        return (
+            <Pressable
+                onPress={() => handleReportPress(item)}
+                className={`
+                    flex-row items-center p-4 rounded-xl mb-4 shadow
+                    ${isDark ? "bg-gray-700" : "bg-white"}
+                    ${latestCard ? (isDark ? "bg-[#4A6D7C] border-2 border-[#7CB9E8]" : "bg-[#E3F2FD] border-2 border-[#7CB9E8]") : ""}
+                `}
+            >
+                <View className="w-20 h-24 mr-4 items-center justify-center">
+                    <View
+                        className={`
+                            w-full h-full rounded-lg items-center justify-center 
+                            ${isDark ? "bg-[#3A5D6C]" : "bg-[#B3D9E8]"}
+                        `}
+                    >
+                        <Text className="text-4xl">📄</Text>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.reportInfo}>
-                <View style={styles.reportHeader}>
-                    <Text style={styles.reportYear}>{item.year}</Text>
-                    {index === 0 && <Text style={styles.latestBadge}>LATEST</Text>}
+
+                <View className="flex-1">
+                    <View className="flex-row items-center mb-1">
+                        <Text
+                            className={`
+                                font-bold text-xl mr-2
+                                ${isDark ? "text-[#7CB9E8]" : "text-[#1976D2]"}
+                            `}
+                        >
+                            {item.year}
+                        </Text>
+                        {latestCard && (
+                            <Text className="bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
+                                LATEST
+                            </Text>
+                        )}
+                    </View>
+
+                    <Text
+                        className={`
+                            text-base leading-6
+                            ${isDark ? "text-white" : "text-gray-700"}
+                        `}
+                    >
+                        {item.title}
+                    </Text>
                 </View>
-                <Text style={styles.reportTitle}>{item.title}</Text>
-            </View>
-        </TouchableOpacity>
-    );
+            </Pressable>
+        );
+    };
 
     return (
         <>
@@ -244,43 +147,84 @@ const WaterReport = () => {
                     headerTintColor: isDark ? 'white' : 'black',
                 }}
             />
-            <View style={styles.container}>
-                <Text style={styles.headerText}>Annual Water Quality Reports</Text>
+
+            <View
+                className={`
+                    flex-1 w-full 
+                    ${isDark ? "bg-[#1a202c]" : "bg-neutral-300"}
+                `}
+            >
+                <Text
+                    className={`
+                        text-2xl font-bold text-center my-5
+                        ${isDark ? "text-white" : "text-gray-800"}
+                    `}
+                >
+                    Annual Water Quality Reports
+                </Text>
+
                 <FlatList
                     data={waterReports}
                     renderItem={renderReportItem}
                     keyExtractor={(item) => item.id}
-                    contentContainerStyle={styles.listContainer}
+                    contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 20 }}
                     showsVerticalScrollIndicator={true}
                 />
             </View>
 
-            {/* PDF Viewer Modal */}
+            {/* PDF Modal */}
             <Modal
                 visible={modalVisible}
                 animationType="slide"
                 onRequestClose={closeModal}
-                presentationStyle="fullScreen">
-                <View style={styles.modalContainer}>
-                    {/* Modal Header */}
-                    <View style={styles.modalHeader}>
-                        <Text style={styles.modalTitle} numberOfLines={1}>
+                presentationStyle="fullScreen"
+            >
+                <View
+                    className={`
+                        flex-1
+                        ${isDark ? "bg-[#1a202c]" : "bg-neutral-300"}
+                    `}
+                >
+                    <View
+                        className={`
+                            flex-row items-center justify-between 
+                            px-4 py-4 pt-12
+                            ${isDark ? "bg-[#2e2e3b]" : "bg-white"}
+                        `}
+                    >
+                        <Text
+                            numberOfLines={1}
+                            className={`
+                                flex-1 text-lg font-bold mr-4
+                                ${isDark ? "text-white" : "text-gray-800"}
+                            `}
+                        >
                             {selectedReport?.title}
                         </Text>
-                        <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-                            <Text style={styles.closeButtonText}>✕</Text>
-                        </TouchableOpacity>
+
+                        <Pressable
+                            onPress={closeModal}
+                            className={`
+                                w-10 h-10 rounded-full items-center justify-center
+                                ${isDark ? "bg-[#4A6D7C]" : "bg-[#1976D2]"}
+                            `}
+                        >
+                            <Text className="text-white text-2xl font-bold">✕</Text>
+                        </Pressable>
                     </View>
 
-                    {/* PDF Viewer using WebView */}
                     {selectedReport && (
                         <WebView
                             source={{
-                                uri: `https://docs.google.com/viewer?url=${encodeURIComponent(selectedReport.uri)}&embedded=true`,
+                                uri: `https://docs.google.com/viewer?url=${encodeURIComponent(
+                                    selectedReport.uri
+                                )}&embedded=true`,
                             }}
-                            style={styles.webview}
+                            className={`
+                                flex-1 
+                                ${isDark ? "bg-[#1a202c]" : "bg-neutral-300"}
+                            `}
                             startInLoadingState={true}
-                            scalesPageToFit={true}
                             javaScriptEnabled={true}
                             domStorageEnabled={true}
                         />
