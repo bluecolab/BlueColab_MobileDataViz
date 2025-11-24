@@ -103,9 +103,9 @@ export default function HomeScreen() {
 
                     <View className="px-4 pt-4">
                         <HomeScreenCard
-                            imageSource={require('@/assets/homescreen/waterQuestion.jpg')}
+                            imageSource={require('@/assets/homescreen/waterDrop.jpg')}
                             title="Pace Water Data"
-                            buttonText={`2024 Water Report`}
+                            buttonText={`Annual Water Reports`}
                             route="(tabs)/home/waterReport"
                             isMain
                             isSafe={true}
