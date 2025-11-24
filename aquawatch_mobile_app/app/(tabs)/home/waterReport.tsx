@@ -4,10 +4,8 @@ import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { View, Text, Dimensions, FlatList, Pressable, Modal } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
-const deviceHeight = Dimensions.get('window').height;
-const deviceWidth = Dimensions.get('window').width;
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 interface WaterReport {
     id: string;
