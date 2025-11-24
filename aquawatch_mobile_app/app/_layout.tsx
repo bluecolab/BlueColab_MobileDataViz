@@ -8,7 +8,7 @@ import CurrentDataProvider from '@/contexts/CurrentDataContext';
 import GraphDataProvider from '@/contexts/GraphDataContext';
 
 export const unstable_settings = {
-    initialRouteName: '(tabs)',
+    initialRouteName: 'home',
 };
 
 /** The root layout of the app. It wraps the app in the necessary providers.
@@ -45,10 +45,9 @@ function InnerStack() {
     return (
         <Stack
             screenOptions={{
-                // set the stack's scene background so tab transitions don't flash white
                 contentStyle: { backgroundColor: isDark ? '#1a202c' : '#f1f1f1' },
             }}>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="home" options={{ headerShown: false }} />
         </Stack>
     );
 }
