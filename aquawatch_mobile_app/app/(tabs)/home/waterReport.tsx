@@ -2,7 +2,7 @@
 
 import { Stack } from 'expo-router';
 import { useState } from 'react';
-import { View, Text, Dimensions, FlatList, Pressable, Modal } from 'react-native';
+import { View, Text, FlatList, Pressable, Modal } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -88,34 +88,31 @@ const WaterReport = () => {
             <Pressable
                 onPress={() => handleReportPress(item)}
                 className={`
-                    flex-row items-center p-4 rounded-xl mb-4 shadow
-                    ${isDark ? "bg-gray-700" : "bg-white"}
-                    ${latestCard ? (isDark ? "bg-[#4A6D7C] border-2 border-[#7CB9E8]" : "bg-[#E3F2FD] border-2 border-[#7CB9E8]") : ""}
-                `}
-            >
-                <View className="w-20 h-24 mr-4 items-center justify-center">
+                    mb-4 flex-row items-center rounded-xl p-4 shadow
+                    ${isDark ? 'bg-gray-700' : 'bg-white'}
+                    ${latestCard ? (isDark ? 'border-2 border-[#7CB9E8] bg-[#4A6D7C]' : 'border-2 border-[#7CB9E8] bg-[#E3F2FD]') : ''}
+                `}>
+                <View className="mr-4 h-24 w-20 items-center justify-center">
                     <View
                         className={`
-                            w-full h-full rounded-lg items-center justify-center 
-                            ${isDark ? "bg-[#3A5D6C]" : "bg-[#B3D9E8]"}
-                        `}
-                    >
+                            h-full w-full items-center justify-center rounded-lg 
+                            ${isDark ? 'bg-[#3A5D6C]' : 'bg-[#B3D9E8]'}
+                        `}>
                         <Text className="text-4xl">📄</Text>
                     </View>
                 </View>
 
                 <View className="flex-1">
-                    <View className="flex-row items-center mb-1">
+                    <View className="mb-1 flex-row items-center">
                         <Text
                             className={`
-                                font-bold text-xl mr-2
-                                ${isDark ? "text-[#7CB9E8]" : "text-[#1976D2]"}
-                            `}
-                        >
+                                mr-2 text-xl font-bold
+                                ${isDark ? 'text-[#7CB9E8]' : 'text-[#1976D2]'}
+                            `}>
                             {item.year}
                         </Text>
                         {latestCard && (
-                            <Text className="bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
+                            <Text className="rounded bg-yellow-400 px-2 py-1 text-xs font-bold text-black">
                                 LATEST
                             </Text>
                         )}
@@ -124,9 +121,8 @@ const WaterReport = () => {
                     <Text
                         className={`
                             text-base leading-6
-                            ${isDark ? "text-white" : "text-gray-700"}
-                        `}
-                    >
+                            ${isDark ? 'text-white' : 'text-gray-700'}
+                        `}>
                         {item.title}
                     </Text>
                 </View>
@@ -148,16 +144,14 @@ const WaterReport = () => {
 
             <View
                 className={`
-                    flex-1 w-full 
-                    ${isDark ? "bg-[#1a202c]" : "bg-neutral-300"}
-                `}
-            >
+                    w-full flex-1 
+                    ${isDark ? 'bg-[#1a202c]' : 'bg-neutral-300'}
+                `}>
                 <Text
                     className={`
-                        text-2xl font-bold text-center my-5
-                        ${isDark ? "text-white" : "text-gray-800"}
-                    `}
-                >
+                        my-5 text-center text-2xl font-bold
+                        ${isDark ? 'text-white' : 'text-gray-800'}
+                    `}>
                     Annual Water Quality Reports
                 </Text>
 
@@ -175,39 +169,34 @@ const WaterReport = () => {
                 visible={modalVisible}
                 animationType="slide"
                 onRequestClose={closeModal}
-                presentationStyle="fullScreen"
-            >
+                presentationStyle="fullScreen">
                 <View
                     className={`
                         flex-1
-                        ${isDark ? "bg-[#1a202c]" : "bg-neutral-300"}
-                    `}
-                >
+                        ${isDark ? 'bg-[#1a202c]' : 'bg-neutral-300'}
+                    `}>
                     <View
                         className={`
                             flex-row items-center justify-between 
                             px-4 py-4 pt-12
-                            ${isDark ? "bg-[#2e2e3b]" : "bg-white"}
-                        `}
-                    >
+                            ${isDark ? 'bg-[#2e2e3b]' : 'bg-white'}
+                        `}>
                         <Text
                             numberOfLines={1}
                             className={`
-                                flex-1 text-lg font-bold mr-4
-                                ${isDark ? "text-white" : "text-gray-800"}
-                            `}
-                        >
+                                mr-4 flex-1 text-lg font-bold
+                                ${isDark ? 'text-white' : 'text-gray-800'}
+                            `}>
                             {selectedReport?.title}
                         </Text>
 
                         <Pressable
                             onPress={closeModal}
                             className={`
-                                w-10 h-10 rounded-full items-center justify-center
-                                ${isDark ? "bg-[#4A6D7C]" : "bg-[#1976D2]"}
-                            `}
-                        >
-                            <Text className="text-white text-2xl font-bold">✕</Text>
+                                h-10 w-10 items-center justify-center rounded-full
+                                ${isDark ? 'bg-[#4A6D7C]' : 'bg-[#1976D2]'}
+                            `}>
+                            <Text className="text-2xl font-bold text-white">✕</Text>
                         </Pressable>
                     </View>
 
@@ -220,7 +209,7 @@ const WaterReport = () => {
                             }}
                             className={`
                                 flex-1 
-                                ${isDark ? "bg-[#1a202c]" : "bg-neutral-300"}
+                                ${isDark ? 'bg-[#1a202c]' : 'bg-neutral-300'}
                             `}
                             startInLoadingState={true}
                             javaScriptEnabled={true}
