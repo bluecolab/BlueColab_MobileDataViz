@@ -51,11 +51,11 @@ export default function HomeScreenCard({
                     }}
                 />
                 <Text
-                    className={`font-bold text-gray-700 dark:text-white ${isMain ? 'text-3xl' : 'text-2xl'}  pl-1`}>
+                    className={`font-bold text-gray-700 dark:text-white ${isMain ? 'pl-4 text-3xl' : 'pl-2 text-2xl'}  pl-1`}>
                     {title}
                 </Text>
                 <Text
-                    className={`text-gray-600 dark:text-white ${isMain ? 'text-lg' : 'text-sm'} pb-4 pl-1`}>
+                    className={`text-gray-600 dark:text-white ${isMain ? 'pl-4 text-lg' : 'pl-2 text-sm'} pb-4 pl-1`}>
                     {buttonText}
                 </Text>
             </View>

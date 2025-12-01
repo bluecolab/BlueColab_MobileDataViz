@@ -117,8 +117,6 @@ export default function useGetWaterData() {
                 stationIds
             );
 
-            console.log('Fetching with React Query:', url);
-
             try {
                 const response = await axios.get(url);
                 const apiData = response.data;
