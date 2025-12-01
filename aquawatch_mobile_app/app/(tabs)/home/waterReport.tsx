@@ -3,9 +3,10 @@
 import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { View, Text, FlatList, Pressable, Modal } from 'react-native';
-import { WebView } from 'react-native-webview';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
+
+import WaterReportAPI from './waterReportAPI';
 
 interface WaterReport {
     id: string;
@@ -201,20 +202,7 @@ const WaterReport = () => {
                     </View>
 
                     {selectedReport && (
-                        <WebView
-                            source={{
-                                uri: `https://docs.google.com/viewer?url=${encodeURIComponent(
-                                    selectedReport.uri
-                                )}&embedded=true`,
-                            }}
-                            className={`
-                                flex-1 
-                                ${isDark ? 'bg-[#1a202c]' : 'bg-neutral-300'}
-                            `}
-                            startInLoadingState={true}
-                            javaScriptEnabled={true}
-                            domStorageEnabled={true}
-                        />
+                        <WaterReportAPI year={selectedReport.year} uri={selectedReport.uri} />
                     )}
                 </View>
             </Modal>
