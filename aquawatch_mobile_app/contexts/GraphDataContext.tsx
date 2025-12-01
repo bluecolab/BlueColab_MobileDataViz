@@ -135,7 +135,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             try {
                 await AsyncStorage.setItem('default-temp-unit', value);
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
         };
         void setStoredTempUnit(newUnit);
@@ -150,7 +150,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
                 try {
                     await AsyncStorage.setItem('default-location', JSON.stringify(value));
                 } catch (e) {
-                    console.log(e);
+                    console.error(e);
                 }
             };
             void setStoredLocation(newLocation);
@@ -163,7 +163,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             try {
                 await AsyncStorage.setItem('normalize-comparative', JSON.stringify(value));
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
         };
         void setStored(enabled);
@@ -177,7 +177,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             try {
                 await AsyncStorage.setItem('show-converted-units', JSON.stringify(value));
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
         };
         void setStoredConvertedUnits(enabled);
@@ -221,7 +221,6 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
             try {
                 const value = await AsyncStorage.getItem('default-temp-unit');
                 if (value !== null) {
-                    console.log(`Stored value: ${value}`);
                     setDefaultTempUnit(value);
                 } else {
                     setDefaultTempUnit('Fahrenheit');
