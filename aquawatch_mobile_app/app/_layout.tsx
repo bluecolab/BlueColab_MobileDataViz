@@ -8,7 +8,7 @@ import CurrentDataProvider from '@/contexts/CurrentDataContext';
 import GraphDataProvider from '@/contexts/GraphDataContext';
 
 export const unstable_settings = {
-    initialRouteName: 'home',
+    initialRouteName: 'index',
 };
 
 /** The root layout of the app. It wraps the app in the necessary providers.
@@ -47,7 +47,7 @@ function InnerStack() {
             screenOptions={{
                 contentStyle: { backgroundColor: isDark ? '#1a202c' : '#f1f1f1' },
             }}>
-            <Stack.Screen name="home" options={{ headerShown: false }} />
+            <Stack.Screen name="index" options={{ headerShown: false }} />
         </Stack>
     );
 }

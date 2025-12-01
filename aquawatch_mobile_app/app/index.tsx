@@ -1,4 +1,5 @@
-import { Image, ImageBackground, View, useWindowDimensions, Text } from 'react-native';
+import { Image, ImageBackground, View, useWindowDimensions, Text, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { HomepageCard } from '@/components/HomepageCard';
 
@@ -45,35 +46,37 @@ export default function Home() {
     const imageHeight = screenWidth / aspectRatio;
 
     return (
-        <View className="flex-1 items-center bg-[#263A75]">
-            <ImageBackground
-                source={panorama}
-                style={{ width: screenWidth, height: imageHeight }}
-                resizeMode="contain"
-                blurRadius={10}>
-                <View className="flex-1 items-center justify-center">
-                    <Image
-                        source={logo}
-                        className="w-full self-center"
-                        style={{ height: screenWidth / 6 }}
-                        resizeMode="contain"
-                    />
-                    <Text className="text-center text-2xl text-white">
-                        Environmental Observatory
+        <SafeAreaView className="flex-1">
+            <ScrollView className="bg-[#263A75]" contentContainerStyle={{ alignItems: 'center' }}>
+                <ImageBackground
+                    source={panorama}
+                    style={{ width: screenWidth, height: imageHeight }}
+                    resizeMode="contain"
+                    blurRadius={10}>
+                    <View className="flex-1 items-center justify-center">
+                        <Image
+                            source={logo}
+                            className="w-full self-center"
+                            style={{ height: screenWidth / 6 }}
+                            resizeMode="contain"
+                        />
+                        <Text className="text-center text-2xl text-white">
+                            Environmental Observatory
+                        </Text>
+                    </View>
+                </ImageBackground>
+
+                {titleCards.map((card, index) => (
+                    <HomepageCard key={index} {...card} />
+                ))}
+
+                <View className="pb-4">
+                    <Text className="text-center text-sm text-white">Gale Epstein Center</Text>
+                    <Text className="text-center text-sm text-white">
+                        For Technology, Policy, and the Environment
                     </Text>
                 </View>
-            </ImageBackground>
-
-            {titleCards.map((card, index) => (
-                <HomepageCard key={index} {...card} />
-            ))}
-
-            <View className="absolute bottom-0 left-0 right-0 pb-4">
-                <Text className="text-center text-sm text-white">Gale Epstein Center</Text>
-                <Text className="text-center text-sm text-white">
-                    For Technology, Policy, and the Environment
-                </Text>
-            </View>
-        </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
