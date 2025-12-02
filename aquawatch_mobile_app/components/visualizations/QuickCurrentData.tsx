@@ -101,7 +101,7 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
     );
 
     return (
-        <Pressable onPress={() => router.push('/(tabs)/currentData')}>
+        <Pressable onPress={() => router.push('/currentData')}>
             <View className="rounded-[20px] px-4 pt-4">
                 <ImageBackground
                     source={backgroundImage}
