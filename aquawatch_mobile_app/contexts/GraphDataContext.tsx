@@ -8,7 +8,6 @@ import { config } from '@/hooks/useConfig';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/config.interface';
 import { CleanedWaterData } from '@/types/water.interface';
-// ... other imports
 
 interface GraphDataContextType {
     data: CleanedWaterData[] | undefined;
@@ -187,19 +186,21 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
     useEffect(() => {
         const getStoredDefaultLocation = async () => {
             try {
-                const value = await AsyncStorage.getItem('default-location');
-                if (value !== null) {
-                    const station: LocationType = JSON.parse(value);
-                    if (
-                        station.name == config.USGS_WATER_SERVICES_API_CONFIG.validMatches[0].name
-                    ) {
-                        setDefaultLocation(closestStation.closestStation);
-                    } else {
-                        setDefaultLocation(station);
-                    }
-                } else {
-                    setDefaultLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
-                }
+                setDefaultLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
+
+                // const value = await AsyncStorage.getItem('default-location');
+                // if (value !== null) {
+                //     const station: LocationType = JSON.parse(value);
+                //     if (
+                //         station.name == config.USGS_WATER_SERVICES_API_CONFIG.validMatches[0].name
+                //     ) {
+                //         setDefaultLocation(closestStation.closestStation);
+                //     } else {
+                //         setDefaultLocation(station);
+                //     }
+                // } else {
+                //     setDefaultLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
+                // }
             } catch (e) {
                 console.error(e);
             }

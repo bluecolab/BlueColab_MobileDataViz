@@ -10,30 +10,35 @@ const titleCards = [
     {
         image: require('@/assets/homescreen/waterData.png'),
         title: 'Choate Pond Water Quality',
+        path: '/currentData',
         description:
             "Water quality measured every fifteen minutes by solar-powered underwater sensors deployed by Seidenberg School's Blue CoLab.",
     },
     {
         image: require('@/assets/homescreen/waterReport.png'),
         title: 'Pace Drinking Water Quality',
+        path: '/waterReport',
         description:
             'Yearly reports on Pleasantville campus water quality published by the university in compliance with state and federal law.',
     },
     {
         image: require('@/assets/homescreen/weatherData.png'),
         title: 'Pleasantville Campus Climate',
+        path: '/odinData',
         description:
             'More than 20 climate conditions measured every five minutes by the sensor-based weather station Blue CoLab built near Miller Hall.',
     },
     {
         image: require('@/assets/homescreen/aqiData.png'),
         title: 'Pleasantville Air Quality',
+        path: '/airQuality',
         description:
             'Our local Air Quality Index, part of the federal AirNow program that also issues alerts when air quality threatens human health.',
     },
     {
         image: require('@/assets/homescreen/hudson.png'),
         title: 'Hudson River Monitoring',
+        path: '/',
         description:
             'Updates on river environmental conditions aggregated by Blue CoLab from data collected USGS and partners.',
     },
