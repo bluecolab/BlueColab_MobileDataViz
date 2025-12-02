@@ -73,8 +73,8 @@ export default function QuickCurrentWeatherData() {
                     config.BLUE_COLAB_API_CONFIG.validMatches.some(
                         (loc) => loc.name === defaultLocation.name
                     )
-                        ? router.push('/(tabs)/home/odinData')
-                        : router.push('/(tabs)/home/airQuality');
+                        ? router.push('/odinData')
+                        : router.push('/airQuality');
                 }
             }}>
             <View className="px-4 pt-4">
