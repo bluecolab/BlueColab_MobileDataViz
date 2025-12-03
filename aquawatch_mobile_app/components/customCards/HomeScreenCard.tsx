@@ -8,9 +8,10 @@ interface HomeScreenCardProps {
     imageSource: string | { uri: string };
     title: string;
     buttonText: string;
-    route: string;
+    route?: string;
     isMain?: boolean;
     isSafe?: boolean;
+    onPress?: () => void;
 }
 
 export default function HomeScreenCard({
@@ -20,13 +21,22 @@ export default function HomeScreenCard({
     route,
     isMain,
     isSafe,
+    onPress,
 }: HomeScreenCardProps) {
     const router = useRouter();
+
+    const handlePress = () => {
+        if (onPress) {
+            onPress();
+        } else if (route) {
+            router.push({ pathname: route as any });
+        }
+    };
 
     // Determine if imageSource is a URI or a local image
     const image = typeof imageSource === 'string' ? { uri: imageSource } : imageSource;
     return (
-        <Pressable onPress={() => router.push({ pathname: route as any })}>
+        <Pressable onPress={handlePress}>
             <View
                 className={`my-2 overflow-hidden rounded-3xl bg-white dark:bg-gray-700 ${isMain ? '' : 'mr-4'}`}>
                 {isSafe !== undefined && (
