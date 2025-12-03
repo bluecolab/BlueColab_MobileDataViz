@@ -12,7 +12,7 @@ import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 import { config } from '@/hooks/useConfig';
 
-import WaterSourceModal from './AboutUsModal';
+import WaterSourceModal from './WaterSourceModal';
 // Removed parameter metadata on simplified landing; can reintroduce later.
 
 /** The home screen of the app. It contains the quick current data component.
