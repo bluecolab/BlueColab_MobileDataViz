@@ -1,7 +1,7 @@
 // app/(tabs)/home/index.tsx
 import { subMonths, format } from 'date-fns';
 import { Stack } from 'expo-router';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, View, FlatList, Text, RefreshControl } from 'react-native';
 
 import HomeScreenCard from '@/components/customCards/HomeScreenCard';
@@ -11,6 +11,8 @@ import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useGraphData } from '@/contexts/GraphDataContext';
 
+import WaterSourceModal from './WaterSourceModal';
+
 /** The home screen of the app. It contains the quick current data component.
  * @returns {JSX.Element}
  */
@@ -18,6 +20,7 @@ export default function HomeScreen() {
     const { defaultLocation, refetchCurrent, loadingCurrent } = useCurrentData();
     const { showConvertedUnits } = useGraphData();
     const { isDark } = useColorScheme();
+    const [modalVisible, setModalVisible] = useState(false);
 
     const lastMonth = format(subMonths(new Date(), 1), 'MMMM yyyy');
 
@@ -40,6 +43,12 @@ export default function HomeScreen() {
             buttonText: 'Blue CoLab Blogs',
             route: '/home/blog',
         },
+        {
+            imageSource: require('@/assets/homescreen/Map_of_drinking_water_pace.png'),
+            title: 'Water Sources',
+            buttonText: 'About Our Water',
+            isModal: true,
+        },
     ];
 
     const renderItem = useCallback(
@@ -50,8 +59,9 @@ export default function HomeScreen() {
                 imageSource: string | { uri: string };
                 title: string;
                 buttonText: string;
-                route: string;
+                route?: string;
                 isMain?: boolean;
+                isModal?: boolean;
             };
         }) => (
             <HomeScreenCard
@@ -59,6 +69,7 @@ export default function HomeScreen() {
                 title={item.title}
                 buttonText={item.buttonText}
                 route={item.route}
+                onPress={item.isModal ? () => setModalVisible(true) : undefined}
             />
         ),
         []
@@ -129,6 +140,8 @@ export default function HomeScreen() {
                         <Text></Text>
                     </View>
                 </ScrollView>
+
+                <WaterSourceModal visible={modalVisible} onClose={() => setModalVisible(false)} />
             </View>
         </>
     );
