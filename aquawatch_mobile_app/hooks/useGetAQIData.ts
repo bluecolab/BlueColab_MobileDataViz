@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 
 import { config } from '@/hooks/useConfig';
 import { OpenWeatherAQI } from '@/types/water.interface';
+import { calculateUSAQI } from '@/utils/calculateUSAQI';
 
 export default function useGetAQIData() {
     const networkState = useNetworkState();
@@ -19,7 +20,27 @@ export default function useGetAQIData() {
 
             try {
                 const response = await axios.get(url);
-                const apiData = response.data;
+                const apiData = response.data as OpenWeatherAQI;
+
+                // Validate that we have data in the list (runtime check)
+                if (!apiData.list?.[0]?.components) {
+                    throw new Error('No air quality data available for this location.');
+                }
+
+                // Calculate US EPA AQI from pollutant concentrations
+                const components = apiData.list[0].components;
+                const usAQI = calculateUSAQI({
+                    co: components.co,
+                    no2: components.no2,
+                    o3: components.o3,
+                    so2: components.so2,
+                    pm2_5: components.pm2_5,
+                    pm10: components.pm10,
+                });
+
+                // Add US AQI to the response
+                apiData.usAQI = usAQI;
+
                 return apiData;
             } catch (error) {
                 // Log the original error for debugging
