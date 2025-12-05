@@ -36,28 +36,28 @@ const PM10_BREAKPOINTS = [
     { aqiLow: 301, aqiHigh: 500, concLow: 425, concHigh: 604 },
 ];
 
-// Ozone O3 (μg/m³) - 8-hour average (converted from ppb)
+// Ozone O3 (μg/m³) - 8-hour average
 // OpenWeather returns O3 in μg/m³, EPA uses ppb
 // 1 ppb O3 ≈ 1.96 μg/m³ at 25°C and 1 atm
-// So we convert μg/m³ to ppb by dividing by 1.96
+// Breakpoints converted: ppb values * 1.96 ≈ μg/m³ (using ~2 for simplicity)
 const O3_BREAKPOINTS = [
-    { aqiLow: 0, aqiHigh: 50, concLow: 0, concHigh: 108 }, // 0-54 ppb * 2
-    { aqiLow: 51, aqiHigh: 100, concLow: 109, concHigh: 140 }, // 55-70 ppb * 2
-    { aqiLow: 101, aqiHigh: 150, concLow: 141, concHigh: 170 }, // 71-85 ppb * 2
-    { aqiLow: 151, aqiHigh: 200, concLow: 171, concHigh: 210 }, // 86-105 ppb * 2
-    { aqiLow: 201, aqiHigh: 300, concLow: 211, concHigh: 400 }, // 106-200 ppb * 2
+    { aqiLow: 0, aqiHigh: 50, concLow: 0, concHigh: 106 }, // 0-54 ppb * 1.96
+    { aqiLow: 51, aqiHigh: 100, concLow: 107, concHigh: 137 }, // 55-70 ppb * 1.96
+    { aqiLow: 101, aqiHigh: 150, concLow: 138, concHigh: 167 }, // 71-85 ppb * 1.96
+    { aqiLow: 151, aqiHigh: 200, concLow: 168, concHigh: 206 }, // 86-105 ppb * 1.96
+    { aqiLow: 201, aqiHigh: 300, concLow: 207, concHigh: 392 }, // 106-200 ppb * 1.96
 ];
 
-// CO (mg/m³) - 8-hour average
-// OpenWeather returns CO in μg/m³, need to convert to mg/m³
-// EPA uses ppm: 1 ppm CO ≈ 1.145 mg/m³
+// CO (μg/m³) - 8-hour average
+// OpenWeather returns CO in μg/m³
+// EPA uses ppm: 1 ppm CO ≈ 1.145 mg/m³ = 1145 μg/m³
 const CO_BREAKPOINTS = [
-    { aqiLow: 0, aqiHigh: 50, concLow: 0, concHigh: 5030 }, // 0-4.4 ppm * 1145
-    { aqiLow: 51, aqiHigh: 100, concLow: 5031, concHigh: 10950 }, // 4.5-9.4 ppm * 1145
-    { aqiLow: 101, aqiHigh: 150, concLow: 10951, concHigh: 14210 }, // 9.5-12.4 ppm * 1145
-    { aqiLow: 151, aqiHigh: 200, concLow: 14211, concHigh: 17620 }, // 12.5-15.4 ppm * 1145
-    { aqiLow: 201, aqiHigh: 300, concLow: 17621, concHigh: 34800 }, // 15.5-30.4 ppm * 1145
-    { aqiLow: 301, aqiHigh: 500, concLow: 34801, concHigh: 57500 }, // 30.5-50.4 ppm * 1145
+    { aqiLow: 0, aqiHigh: 50, concLow: 0, concHigh: 5038 }, // 0-4.4 ppm * 1145 μg/m³
+    { aqiLow: 51, aqiHigh: 100, concLow: 5039, concHigh: 10763 }, // 4.5-9.4 ppm * 1145 μg/m³
+    { aqiLow: 101, aqiHigh: 150, concLow: 10764, concHigh: 14198 }, // 9.5-12.4 ppm * 1145 μg/m³
+    { aqiLow: 151, aqiHigh: 200, concLow: 14199, concHigh: 17633 }, // 12.5-15.4 ppm * 1145 μg/m³
+    { aqiLow: 201, aqiHigh: 300, concLow: 17634, concHigh: 34808 }, // 15.5-30.4 ppm * 1145 μg/m³
+    { aqiLow: 301, aqiHigh: 500, concLow: 34809, concHigh: 57708 }, // 30.5-50.4 ppm * 1145 μg/m³
 ];
 
 // SO2 (μg/m³) - 1-hour average

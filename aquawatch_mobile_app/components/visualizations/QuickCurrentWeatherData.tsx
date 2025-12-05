@@ -121,7 +121,7 @@ export default function QuickCurrentWeatherData() {
                                     </Text>
                                 </>
                             </View>
-                            <PolarChart percent={parseInt(`${percent}`)} isDark={false} />
+                            <PolarChart percent={Math.round(percent)} isDark={false} />
                         </View>
 
                         <Text className="text-md  w-full text-center font-semibold dark:text-white">

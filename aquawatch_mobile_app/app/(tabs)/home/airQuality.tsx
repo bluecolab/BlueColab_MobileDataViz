@@ -58,7 +58,7 @@ export default function CurrentData() {
                                     {category}
                                 </Text>
                             </View>
-                            <PolarChart percent={parseInt(`${percent}`)} isDark={isDark} />
+                            <PolarChart percent={Math.round(percent)} isDark={isDark} />
                         </View>
                         <Text className="mt-2 text-center text-sm dark:text-white">
                             US EPA Air Quality Index
