@@ -22,6 +22,11 @@ export default function useGetAQIData() {
                 const response = await axios.get(url);
                 const apiData = response.data as OpenWeatherAQI;
 
+                // Validate that we have data in the list (runtime check)
+                if (!apiData.list?.[0]?.components) {
+                    throw new Error('No air quality data available for this location.');
+                }
+
                 // Calculate US EPA AQI from pollutant concentrations
                 const components = apiData.list[0].components;
                 const usAQI = calculateUSAQI({

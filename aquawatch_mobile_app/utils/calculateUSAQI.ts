@@ -63,12 +63,12 @@ const CO_BREAKPOINTS = [
 // SO2 (μg/m³) - 1-hour average
 // EPA uses ppb: 1 ppb SO2 ≈ 2.62 μg/m³
 const SO2_BREAKPOINTS = [
-    { aqiLow: 0, aqiHigh: 50, concLow: 0, concHigh: 93 }, // 0-35 ppb * 2.66
-    { aqiLow: 51, aqiHigh: 100, concLow: 94, concHigh: 199 }, // 36-75 ppb * 2.66
-    { aqiLow: 101, aqiHigh: 150, concLow: 200, concHigh: 486 }, // 76-185 ppb * 2.66
-    { aqiLow: 151, aqiHigh: 200, concLow: 487, concHigh: 797 }, // 186-304 ppb * 2.66
-    { aqiLow: 201, aqiHigh: 300, concLow: 798, concHigh: 1583 }, // 305-604 ppb * 2.66
-    { aqiLow: 301, aqiHigh: 500, concLow: 1584, concHigh: 2630 }, // 605-1004 ppb * 2.66
+    { aqiLow: 0, aqiHigh: 50, concLow: 0, concHigh: 92 }, // 0-35 ppb * 2.62
+    { aqiLow: 51, aqiHigh: 100, concLow: 93, concHigh: 197 }, // 36-75 ppb * 2.62
+    { aqiLow: 101, aqiHigh: 150, concLow: 198, concHigh: 485 }, // 76-185 ppb * 2.62
+    { aqiLow: 151, aqiHigh: 200, concLow: 486, concHigh: 797 }, // 186-304 ppb * 2.62
+    { aqiLow: 201, aqiHigh: 300, concLow: 798, concHigh: 1582 }, // 305-604 ppb * 2.62
+    { aqiLow: 301, aqiHigh: 500, concLow: 1583, concHigh: 2630 }, // 605-1004 ppb * 2.62
 ];
 
 // NO2 (μg/m³) - 1-hour average
