@@ -54,17 +54,19 @@ export default function QuickCurrentWeatherData() {
     const { isDark } = useColorScheme();
     const { aqiData, defaultLocation, error } = useCurrentData();
 
-    const aqi = aqiData?.list[0].main.aqi;
+    // Use US EPA AQI instead of European AQI
+    const usAQI = aqiData?.usAQI;
+    const aqi = usAQI?.aqi;
+    const category = usAQI?.category;
     const timestamp = aqiData?.list[0].dt;
 
-    if (!defaultLocation || !aqi || !timestamp) {
+    if (!defaultLocation || aqi === undefined || !timestamp) {
         return <></>;
     }
 
-    const categories = ['Good', 'Fair', 'Moderate', 'Poor', 'Very Poor'];
-
-    const percent = ((5 - aqi) / 4) * 100;
-    const selectedCat = categories[aqi - 1];
+    // Calculate percent for PolarChart (0-500 scale, where lower is better)
+    // Cap at 500 and invert so 0 AQI = 100%, 500 AQI = 0%
+    const percent = Math.max(0, Math.min(100, ((500 - aqi) / 500) * 100));
 
     return (
         <Pressable
@@ -115,7 +117,7 @@ export default function QuickCurrentWeatherData() {
                                         {aqi}
                                     </Text>
                                     <Text className="text-md text-center font-semibold dark:text-white">
-                                        {selectedCat}
+                                        {category}
                                     </Text>
                                 </>
                             </View>
