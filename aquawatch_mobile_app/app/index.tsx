@@ -1,11 +1,13 @@
-import { Image, ImageBackground, View, useWindowDimensions, Text, ScrollView } from 'react-native';
+import { Image, View, Text, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { HomepageCard } from '@/components/customCards/HomePageCardMini';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { useCurrentData } from '@/contexts/CurrentDataContext';
 
-const panorama = require('@/assets/homescreen/landing_main.jpg');
 const logo = require('@/assets/icons/Pace_White_KO_Centered.png');
 
+// Keep new card list and text content
 const titleCards = [
     {
         image: require('@/assets/homescreen/waterData.png'),
@@ -45,39 +47,46 @@ const titleCards = [
 ];
 
 export default function Home() {
-    const { width: screenWidth } = useWindowDimensions();
-    const { width: imgW, height: imgH } = Image.resolveAssetSource(panorama) || {};
-    const aspectRatio = imgW / imgH;
-    const imageHeight = screenWidth / aspectRatio;
+    const { isDark } = useColorScheme();
+    const { refetchCurrent, loadingCurrent } = useCurrentData();
 
     return (
-        <SafeAreaView className="flex-1">
-            <ScrollView className="bg-[#263A75]" contentContainerStyle={{ alignItems: 'center' }}>
-                <ImageBackground
-                    source={panorama}
-                    style={{ width: screenWidth, height: imageHeight }}
-                    resizeMode="contain"
-                    blurRadius={10}>
-                    <View className="flex-1 items-center justify-center">
+        <SafeAreaView className="flex-1 bg-black dark:bg-black">
+            <ScrollView
+                contentContainerStyle={{ paddingBottom: 24 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={loadingCurrent}
+                        onRefresh={refetchCurrent}
+                        tintColor={isDark ? 'white' : 'black'}
+                    />
+                }>
+                {/* Header area, simplified to match app style */}
+                <View className="px-4 pt-6">
+                    <View className="items-center">
                         <Image
                             source={logo}
-                            className="w-full self-center"
-                            style={{ height: screenWidth / 6 }}
+                            className="w-full"
+                            style={{ height: 56 }}
                             resizeMode="contain"
                         />
-                        <Text className="text-center text-2xl text-white">
+                        <Text className="mt-2 text-center text-xl font-semibold text-white">
                             Environmental Observatory
                         </Text>
                     </View>
-                </ImageBackground>
+                </View>
 
-                {titleCards.map((card, index) => (
-                    <HomepageCard key={index} {...card} />
-                ))}
+                {/* New list content preserved */}
+                <View className="mt-4 px-3">
+                    {titleCards.map((card, index) => (
+                        <HomepageCard key={index} {...card} />
+                    ))}
+                </View>
 
-                <View className="pb-4">
-                    <Text className="text-center text-sm text-white">Gale Epstein Center</Text>
-                    <Text className="text-center text-sm text-white">
+                {/* Footer text preserved */}
+                <View className="pb-6 pt-2">
+                    <Text className="text-center text-xs text-white/90">Gale Epstein Center</Text>
+                    <Text className="text-center text-xs text-white/90">
                         For Technology, Policy, and the Environment
                     </Text>
                 </View>
