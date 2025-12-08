@@ -93,12 +93,6 @@ export default function HomeScreen() {
                         {defaultLocation?.name} Data!
                     </Text>
 
-                    <iframe
-                        style={{ width: 1080, height: 600 }}
-                        src="http://10.86.81.148:8081/"
-                        title="Mobile App"
-                    />
-
                     <View>
                         <QuickCurrentData showConvertedUnits={showConvertedUnits} />
                     </View>
