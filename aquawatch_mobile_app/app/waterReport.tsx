@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { View, Text, FlatList, Pressable, Modal } from 'react-native';
 
 import WaterReportAPI from '@/components/WaterReportAPI';
+import WaterSourceModal from '@/components/WaterSourceModal';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 interface WaterReport {
@@ -16,6 +17,7 @@ interface WaterReport {
 
 const WaterReport = () => {
     const { isDark } = useColorScheme();
+    const [modelOpen, setModelOpen] = useState(false);
 
     const waterReports: WaterReport[] = [
         {
@@ -154,6 +156,17 @@ const WaterReport = () => {
                     `}>
                     Annual Water Quality Reports
                 </Text>
+                <Text
+                    className={`
+                        mx-4 mb-5 rounded-xl
+                        bg-[#1976D2] px-6 text-center
+                        text-2xl font-bold
+                        shadow-lg
+                        dark:bg-[#4A6D7C] dark:text-white
+                    `}
+                    onPress={() => setModelOpen(true)}>
+                    Where does our water come from?
+                </Text>
 
                 <FlatList
                     data={waterReports}
@@ -163,6 +176,8 @@ const WaterReport = () => {
                     showsVerticalScrollIndicator={true}
                 />
             </View>
+
+            <WaterSourceModal visible={modelOpen} onClose={() => setModelOpen(false)} />
 
             {/* PDF Modal */}
             <Modal
