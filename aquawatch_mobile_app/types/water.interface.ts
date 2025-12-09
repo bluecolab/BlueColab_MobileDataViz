@@ -175,6 +175,20 @@ export type OdinData = {
     };
 };
 
+export type USAQIData = {
+    aqi: number;
+    category: string;
+    dominantPollutant: string;
+    pollutantAQIs: {
+        pm25: number;
+        pm10: number;
+        o3: number;
+        co: number;
+        so2: number;
+        no2: number;
+    };
+};
+
 export type OpenWeatherAQI = {
     coord: {
         lon: number;
@@ -198,4 +212,5 @@ export type OpenWeatherAQI = {
             dt: number;
         },
     ];
+    usAQI?: USAQIData;
 };
