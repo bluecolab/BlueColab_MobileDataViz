@@ -16,7 +16,7 @@ const WaterSourceModal: React.FC<WaterSourceModalProps> = ({ visible, onClose })
                         {/* Header with Title and Close Button */}
                         <View className="flex-row items-center justify-between bg-[#1c2b4b] px-4 py-3">
                             <Text className="flex-1 text-lg font-bold text-white">
-                                Where your water is coming from
+                                Where your water is coming from?
                             </Text>
                             <TouchableOpacity onPress={onClose} className="p-1">
                                 <Text className="text-2xl font-bold text-white">✕</Text>
