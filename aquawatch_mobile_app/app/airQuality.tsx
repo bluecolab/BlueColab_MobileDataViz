@@ -1,5 +1,7 @@
 import { Stack } from 'expo-router';
-import { View, Text, ScrollView } from 'react-native';
+import { useState } from 'react';
+import { View, Text, ScrollView, Modal, Pressable } from 'react-native';
+import WebView from 'react-native-webview';
 
 import { Widget, SENSOR_MAP } from '@/components/visualizations/Widget';
 import PolarChart from '@/components/visualizations/WQI/PolarChart';
@@ -8,6 +10,7 @@ import { useCurrentData } from '@/contexts/CurrentDataContext';
 
 export default function CurrentData() {
     const { isDark } = useColorScheme();
+    const [modalVisible, setModalVisible] = useState(false);
     const { aqiData, defaultLocation, error } = useCurrentData();
 
     // Use US EPA AQI
@@ -71,6 +74,12 @@ export default function CurrentData() {
                     </View>
                 )}
 
+                <Pressable
+                    className="m-4 rounded-lg bg-blue-500 p-4"
+                    onPress={() => setModalVisible(true)}>
+                    <Text className="text-center text-white">View Grafana Dashboards</Text>
+                </Pressable>
+
                 <View className="flex flex-row flex-wrap">
                     {aqiData && (
                         <>
@@ -87,6 +96,45 @@ export default function CurrentData() {
                         </>
                     )}
                 </View>
+
+                <Modal visible={modalVisible} animationType="slide">
+                    <View className="flex-col justify-around">
+                        <View className="flex-row items-center justify-between bg-[#1c2b4b] px-4 py-3">
+                            <Text className="flex-1 text-lg font-bold text-white">
+                                Where your water is coming from
+                            </Text>
+                            <Pressable onPress={() => setModalVisible(false)} className="p-1">
+                                <Text className="text-2xl font-bold text-white">✕</Text>
+                            </Pressable>
+                        </View>
+                        <ScrollView className="dark:bg-defaultdarkbackground">
+                            <View className="h-[500px] w-full">
+                                <Text className="text-center text-lg dark:text-white">
+                                    Softball Field
+                                </Text>
+                                <WebView
+                                    className="rounded-lg border-0"
+                                    source={{
+                                        uri: `https://bluecolab.github.io/grafana-dashboard-gallery/purple-air-1?isDark=${isDark}`,
+                                    }}
+                                    scrollEnabled={false}
+                                />
+                            </View>
+                            <View className="h-[500px] w-full">
+                                <Text className="text-center text-lg dark:text-white">
+                                    Nature Center
+                                </Text>
+                                <WebView
+                                    className="rounded-lg border-0"
+                                    source={{
+                                        uri: `https://bluecolab.github.io/grafana-dashboard-gallery/purple-air-2?isDark=${isDark}`,
+                                    }}
+                                    scrollEnabled={false}
+                                />
+                            </View>
+                        </ScrollView>
+                    </View>
+                </Modal>
             </ScrollView>
         </>
     );
