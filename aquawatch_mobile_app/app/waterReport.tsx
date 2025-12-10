@@ -4,8 +4,8 @@ import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { View, Text, FlatList, Pressable, Modal } from 'react-native';
 
+import WaterSourceModal from '@/components/modals/WaterSourceModal';
 import WaterReportAPI from '@/components/WaterReportAPI';
-import WaterSourceModal from '@/components/WaterSourceModal';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 
 interface WaterReport {

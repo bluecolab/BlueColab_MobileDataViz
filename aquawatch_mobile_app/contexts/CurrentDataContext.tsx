@@ -97,6 +97,7 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
         queryKey: ['waterReportsData', defaultLocation],
         queryFn: () => fetchWaterReportsData('2023'),
         enabled: !!defaultLocation,
+        retry: 3,
     });
 
     return (
