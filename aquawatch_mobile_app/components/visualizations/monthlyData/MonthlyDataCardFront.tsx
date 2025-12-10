@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
-import { useGraphData } from '@/contexts/GraphDataContext';
+import { useGraphData } from '@/contexts/~GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { DailySummaryType } from '@/utils/dataUtils';
 

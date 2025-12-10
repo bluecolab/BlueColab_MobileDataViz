@@ -2,7 +2,7 @@ import { useMemo, useRef } from 'react';
 import { Dimensions, View, Pressable } from 'react-native';
 
 import FlipCard from '@/components/customCards/FlipCard';
-import { useGraphData } from '@/contexts/GraphDataContext';
+import { useGraphData } from '@/contexts/~GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
 import dataUtils from '@/utils/dataUtils';

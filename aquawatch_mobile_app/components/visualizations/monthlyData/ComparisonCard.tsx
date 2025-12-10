@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Dimensions, View, Text } from 'react-native';
 
-import { useGraphData } from '@/contexts/GraphDataContext';
+import { useGraphData } from '@/contexts/~GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
 import dataUtils, { DailySummaryType } from '@/utils/dataUtils';

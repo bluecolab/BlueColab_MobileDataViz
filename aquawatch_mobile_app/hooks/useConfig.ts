@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 
-import { Config, LocationType } from '@/types/config.interface';
+import { LocationType } from '@/types/location.type';
 
 export const config = {
-    // Not sure why only lets me query a minimum of 5 hours
     BLUE_COLAB_API_ODIN_URL: 'https://colabprod01.pace.edu/api/influx/sensordata/Odin',
     BLUE_COLAB_API_URL: 'https://colabprod01.pace.edu/api/influx/sensordata',
     BLUE_COLAB_API_CONFIG: {
@@ -35,16 +34,6 @@ export const config = {
                     2,
                     '0'
                 )}&format=${config.USGS_WATER_SERVICES_API_CONFIG.format}&parameterCd=${config.USGS_WATER_SERVICES_API_CONFIG.parameterCd}`,
-        // validMatches: [
-        //     'New York City',
-        //     'Piermont',
-        //     'West Point',
-        //     'Poughkeepsie',
-        //     'Albany',
-        //     'Cohoes',
-        //     'Gowanda',
-        //     'Bronx River',
-        // ],
         validMatches: [
             { name: 'Nearest Station' },
             { name: 'Bronx River', lat: 40.86230556, long: -73.87438889 },
@@ -58,7 +47,7 @@ export const config = {
         ],
     },
     OPEN_WEATHER_API_URL: 'https://api.openweathermap.org',
-} as Config;
+};
 
 export const useAPIConfig = () => {
     const getBlueColabQuery = useMemo(

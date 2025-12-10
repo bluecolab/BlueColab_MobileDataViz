@@ -3,7 +3,7 @@ import { useNetworkState } from 'expo-network';
 import { useCallback, useMemo } from 'react';
 
 import { config, useAPIConfig } from '@/hooks/useConfig';
-import { LocationType } from '@/types/config.interface';
+import { LocationType } from '@/types/location.type';
 import {
     CleanedWaterData,
     WaterServicesData,

@@ -1,7 +1,7 @@
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
 
-import type { LocationType } from '@/types/config.interface';
+import type { LocationType } from '@/types/location.type';
 
 import { config } from './useConfig';
 

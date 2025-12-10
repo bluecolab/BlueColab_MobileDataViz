@@ -7,7 +7,6 @@ import { useCurrentData } from '@/contexts/CurrentDataContext';
 
 const logo = require('@/assets/icons/Pace_White_KO_Centered.png');
 
-// Keep new card list and text content
 const titleCards = [
     {
         image: require('@/assets/homescreen/waterData.png'),

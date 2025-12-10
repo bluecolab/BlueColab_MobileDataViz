@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Text, View, Dimensions, Pressable, ImageBackground } from 'react-native';
 
 import { useCurrentData } from '@/contexts/CurrentDataContext';
-import { useGraphData } from '@/contexts/GraphDataContext';
+import { useGraphData } from '@/contexts/~GraphDataContext';
 import { config } from '@/hooks/useConfig';
 import { extractLastData } from '@/utils/extractLastData';
 

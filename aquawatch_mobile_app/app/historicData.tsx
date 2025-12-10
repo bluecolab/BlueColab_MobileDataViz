@@ -13,7 +13,7 @@ import ComparisonCard from '@/components/visualizations/monthlyData/ComparisonCa
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
-import { useGraphData } from '@/contexts/GraphDataContext';
+import { useGraphData } from '@/contexts/~GraphDataContext';
 import getMetadata from '@/utils/getMetadata';
 
 const getDaysInMonthFn = (month: number, year: number) => {

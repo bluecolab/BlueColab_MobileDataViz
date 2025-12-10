@@ -1,5 +1,5 @@
 import { config } from '@/hooks/useConfig';
-import { LocationType } from '@/types/config.interface';
+import { LocationType } from '@/types/location.type';
 import { CleanedWaterData, CurrentData, OdinData } from '@/types/water.interface';
 
 import dataUtils from './dataUtils';

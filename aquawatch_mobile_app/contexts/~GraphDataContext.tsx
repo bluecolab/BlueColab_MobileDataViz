@@ -6,7 +6,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import useGetClosestStation from '@/hooks/useClosestStation';
 import { config } from '@/hooks/useConfig';
 import useGetWaterData from '@/hooks/useGetWaterData';
-import { LocationType } from '@/types/config.interface';
+import { LocationType } from '@/types/location.type';
 import { CleanedWaterData } from '@/types/water.interface';
 
 interface GraphDataContextType {

@@ -7,7 +7,7 @@ import { Widget } from '@/components/visualizations/Widget';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
-import { useGraphData } from '@/contexts/GraphDataContext';
+import { useGraphData } from '@/contexts/~GraphDataContext';
 import { config } from '@/hooks/useConfig';
 import { extractLastData } from '@/utils/extractLastData';
 

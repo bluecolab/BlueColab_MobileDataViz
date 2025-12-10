@@ -5,7 +5,7 @@ import { Stack } from 'expo-router';
 
 import ColorSchemeProvider, { useColorScheme } from '@/contexts/ColorSchemeContext';
 import CurrentDataProvider from '@/contexts/CurrentDataContext';
-import GraphDataProvider from '@/contexts/GraphDataContext';
+import UserSettingsProvider from '@/contexts/UserSettingsContext';
 
 export const unstable_settings = {
     initialRouteName: 'index',
@@ -28,13 +28,13 @@ const queryClient = new QueryClient({
 export default function RootLayout() {
     return (
         <QueryClientProvider client={queryClient}>
-            <GraphDataProvider>
+            <UserSettingsProvider>
                 <CurrentDataProvider>
                     <ColorSchemeProvider>
                         <InnerStack />
                     </ColorSchemeProvider>
                 </CurrentDataProvider>
-            </GraphDataProvider>
+            </UserSettingsProvider>
         </QueryClientProvider>
     );
 }
@@ -49,6 +49,12 @@ function InnerStack() {
                 contentStyle: { backgroundColor: isDark ? '#1a202c' : '#f1f1f1' },
             }}>
             <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen
+                name="settings"
+                options={{
+                    presentation: 'modal',
+                }}
+            />
         </Stack>
     );
 }
