@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 
 import SettingsDropdown from '@/components/SettingsDropdown';
@@ -9,6 +9,14 @@ import { useUserSettings } from '@/contexts/UserSettingsContext';
 import { ColorScheme } from '@/types/colorScheme.enum';
 import { TemperatureUnit } from '@/types/temperature.enum';
 import capitalize from '@/utils/capitalize';
+
+function HeaderGoBackButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Settings" className="pr-4">
+            <FontAwesome name="arrow-left" size={24} color={color} />
+        </Pressable>
+    );
+}
 
 export default function Index() {
     const {
@@ -56,6 +64,16 @@ export default function Index() {
         changeConvertedUnits(false);
     };
 
+    const headerLeft = useCallback(
+        () => (
+            <HeaderGoBackButton
+                onPress={() => router.push('../')}
+                color={isDark ? 'white' : 'black'}
+            />
+        ),
+        [isDark]
+    );
+
     return (
         <>
             <Stack.Screen
@@ -65,6 +83,7 @@ export default function Index() {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
+                    headerLeft,
                 }}
             />
             <ScrollView className="bg-defaultbackground p-5 dark:bg-defaultdarkbackground">

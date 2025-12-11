@@ -141,6 +141,7 @@ const WaterReport = () => {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
+                    headerBackTitle: 'Home',
                 }}
             />
 

@@ -83,7 +83,11 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
     });
 
     // Air Data Query
-    const { data: airData, error: airError } = useQuery({
+    const {
+        data: airData,
+        error: airError,
+        refetch: refetchAir,
+    } = useQuery({
         queryKey: [
             'airData',
             config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0],
@@ -95,7 +99,11 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
     });
 
     // AQI Data Query
-    const { data: aqiData, error: aqiError } = useQuery({
+    const {
+        data: aqiData,
+        error: aqiError,
+        refetch: refetchAQI,
+    } = useQuery({
         queryKey: ['aqiData', config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0]],
         queryFn: () =>
             fetchAQIData(
@@ -115,7 +123,9 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
 
     const refetchCurrent = useCallback(() => {
         void refetchWater();
-    }, [refetchWater]);
+        void refetchAir();
+        void refetchAQI();
+    }, [refetchWater, refetchAir, refetchAQI]);
 
     const contextValue = useMemo(
         () => ({

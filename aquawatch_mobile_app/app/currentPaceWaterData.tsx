@@ -1,51 +1,56 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { useCallback } from 'react';
-import { View, Text, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, Pressable } from 'react-native';
 
 import { Widget } from '@/components/visualizations/Widget';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
-import { useGraphData } from '@/contexts/~GraphDataContext';
+import { useUserSettings } from '@/contexts/UserSettingsContext';
 import { config } from '@/hooks/useConfig';
-import { extractLastData } from '@/utils/extractLastData';
+import { extractLastData } from '@/utils/data/extractLastData';
 
-// Stable header refresh button component (defined outside render to satisfy lint rules)
 function HeaderRefreshButton({ onPress, color }: { onPress: () => void; color: string }) {
     return (
-        <TouchableOpacity onPress={onPress} accessibilityLabel="Refresh data" className="pr-4">
+        <Pressable onPress={onPress} accessibilityLabel="Refresh waterData" className="pr-4">
             <FontAwesome name="refresh" size={24} color={color} />
-        </TouchableOpacity>
+        </Pressable>
     );
 }
 
-export default function CurrentData() {
-    const { isDark } = useColorScheme();
-    const {
-        data,
-        airData,
-        defaultLocation,
-        defaultTempUnit,
-        loadingCurrent,
-        error,
-        refetchCurrent,
-    } = useCurrentData();
+function HeaderSettingsButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Settings" className="pr-4">
+            <FontAwesome name="gear" size={24} color={color} />
+        </Pressable>
+    );
+}
 
-    const { showConvertedUnits: showConvertedUnitsGlobal } = useGraphData();
+export default function CurrentPaceWaterData() {
+    const { isDark } = useColorScheme();
+    const { waterData, loadingCurrent, waterError, refetchCurrent } = useCurrentData();
+    const { defaultTemperatureUnit, showConvertedUnits } = useUserSettings();
 
     const lastDataPoint = extractLastData(
-        data,
-        airData,
-        defaultLocation,
-        defaultTempUnit,
+        waterData,
+        config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0],
+        defaultTemperatureUnit,
         loadingCurrent,
-        error,
-        showConvertedUnitsGlobal
+        waterError,
+        showConvertedUnits
     );
 
     const headerRight = useCallback(
-        () => <HeaderRefreshButton onPress={refetchCurrent} color={isDark ? 'white' : 'black'} />,
+        () => (
+            <>
+                <HeaderRefreshButton onPress={refetchCurrent} color={isDark ? 'white' : 'black'} />
+                <HeaderSettingsButton
+                    onPress={() => router.push('/settings')}
+                    color={isDark ? 'white' : 'black'}
+                />
+            </>
+        ),
         [refetchCurrent, isDark]
     );
 
@@ -59,6 +64,7 @@ export default function CurrentData() {
                     },
                     headerTintColor: isDark ? 'white' : 'black',
                     headerRight,
+                    headerBackTitle: 'Home',
                 }}
             />
             <ScrollView
@@ -73,14 +79,14 @@ export default function CurrentData() {
                 {/* — Title — */}
                 <View>
                     <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
-                        {defaultLocation?.name} Data
+                        Choate Pond Data
                     </Text>
                 </View>
 
-                {error && (
+                {waterError && (
                     <View>
                         <Text className="text-center text-xl font-bold dark:text-white">
-                            {error.message}
+                            {waterError.message}
                         </Text>
                     </View>
                 )}
@@ -93,19 +99,11 @@ export default function CurrentData() {
                     <Widget name="pH" value={lastDataPoint.pH} />
                     <Widget name="Turbidity" value={lastDataPoint.turb} />
                     <Widget name="Oxygen" value={lastDataPoint.do} />
-                    <Widget name="Tide" value={lastDataPoint.tide} />
                 </View>
 
-                {/* — Current‐Data WQI Gauge — */}
-                {config.BLUE_COLAB_WATER_API_CONFIG.validMatches.some(
-                    (loc) => loc.name === defaultLocation?.name
-                ) ? (
-                    <View className="mb-12 mt-6 items-center px-4">
-                        <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
-                    </View>
-                ) : (
-                    <></>
-                )}
+                <View className="mb-12 mt-6 items-center px-4">
+                    <WQICard loading={false} data={[]} wqi={lastDataPoint.wqi} />
+                </View>
             </ScrollView>
         </>
     );

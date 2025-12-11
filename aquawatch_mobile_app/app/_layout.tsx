@@ -53,6 +53,7 @@ function InnerStack() {
                 name="settings"
                 options={{
                     presentation: 'modal',
+                    headerShown: false,
                 }}
             />
         </Stack>

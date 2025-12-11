@@ -1,17 +1,43 @@
-import { Image, View, Text, ScrollView, RefreshControl } from 'react-native';
+import FontAwesome from '@expo/vector-icons/build/FontAwesome';
+import { router } from 'expo-router';
+import {
+    Image,
+    View,
+    Text,
+    ScrollView,
+    RefreshControl,
+    Pressable,
+    StyleProp,
+    ViewStyle,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { HomepageCard } from '@/components/customCards/HomePageCardMini';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 
-const logo = require('@/assets/icons/Pace_White_KO_Centered.png');
+function HeaderSettingsButton({
+    onPress,
+    color,
+    style,
+}: {
+    onPress: () => void;
+    color: string;
+    style?: StyleProp<ViewStyle>;
+}) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Settings" className="pr-4" style={style}>
+            <FontAwesome name="gear" size={24} color={color} />
+        </Pressable>
+    );
+}
 
+const logo = require('@/assets/icons/Pace_White_KO_Centered.png');
 const titleCards = [
     {
         image: require('@/assets/homescreen/waterData.png'),
         title: 'Choate Pond Water Quality',
-        path: '/currentData',
+        path: '/currentPaceWaterData',
         description:
             "Water quality measured every fifteen minutes by solar-powered underwater sensors deployed by Seidenberg School's Blue CoLab.",
     },
@@ -39,7 +65,7 @@ const titleCards = [
     {
         image: require('@/assets/homescreen/hudson.png'),
         title: 'Hudson River Monitoring',
-        path: '/',
+        path: '/currentHudsonWaterData',
         description:
             'Updates on river environmental conditions aggregated by Blue CoLab from data collected USGS and partners.',
     },
@@ -61,7 +87,12 @@ export default function Home() {
                     />
                 }>
                 {/* Header area, simplified to match app style */}
-                <View className="px-4 pt-6">
+                <View className="relative px-4 pt-6">
+                    <HeaderSettingsButton
+                        onPress={() => router.push('/settings')}
+                        color={isDark ? 'white' : 'black'}
+                        style={{ position: 'absolute', top: 15, right: 0, zIndex: 10 }}
+                    />
                     <View className="items-center">
                         <Image
                             source={logo}

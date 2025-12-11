@@ -5,7 +5,6 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 import useGetClosestStation from '@/hooks/useClosestStation';
 import { config } from '@/hooks/useConfig';
-import useGetWaterData from '@/hooks/useGetWaterData';
 import { LocationType } from '@/types/location.type';
 import { CleanedWaterData } from '@/types/water.interface';
 
@@ -69,8 +68,6 @@ const GraphDataContext = createContext({
     setNormalizeComparative: () => {},
 } as GraphDataContextType);
 export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
-    const { fetchData } = useGetWaterData();
-
     // 1. State for server data is removed. No more useState for data, error, loading.
     // const [data, setData] = useState<CleanedWaterData[] | undefined>([]);
     // const [error, setError] = useState<{ message: string } | undefined>(undefined);
@@ -316,3 +313,14 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
 }
 
 export const useGraphData = () => useContext(GraphDataContext);
+function fetchData(
+    arg0: LocationType,
+    arg1: boolean,
+    arg2: number,
+    arg3: number,
+    arg4: number,
+    arg5: number
+): any {
+    console.log('Function fetchData called with:', arg0, arg1, arg2, arg3, arg4, arg5);
+    throw new Error('Function not implemented.');
+}

@@ -1,6 +1,6 @@
 import { config } from '@/hooks/useConfig';
 import { LocationType } from '@/types/location.type';
-import { CleanedWaterData, CurrentData, OdinData } from '@/types/water.interface';
+import { CleanedWaterData, CurrentData } from '@/types/water.interface';
 import dataUtils from '@/utils/data/dataUtils';
 import getMetadata from '@/utils/getMetadata';
 
@@ -38,7 +38,6 @@ const currentDataErrorObject: CurrentData = {
 
 export function extractLastData(
     data: CleanedWaterData[] | undefined,
-    airData: OdinData | undefined,
     defaultLocation: LocationType | undefined,
     defaultTempUnit: string | undefined,
     loading: boolean,
@@ -229,26 +228,6 @@ export function extractLastData(
           )
         : -9999;
 
-    let odinValues: Partial<CurrentData> = {};
-
-    if (airData) {
-        const shouldConvertAirTemp = defaultTempUnit?.trim().toLowerCase() === 'fahrenheit';
-        const airTempC = airData.sensors.AirTemp;
-
-        // Handle air temp and its potential conversion to Fahrenheit
-        const displayedAirTemperature = !airTempC
-            ? 'N/A'
-            : shouldConvertAirTemp
-              ? ((airTempC * 9) / 5 + 32).toFixed(2)
-              : airTempC.toFixed(2);
-
-        odinValues = {
-            airTemp: displayedAirTemperature,
-            humidity: airData.sensors.RelHumid?.toFixed(1) ?? 'N/A',
-            windSpeed: airData.sensors.WindSpeed?.toFixed(1) ?? 'N/A',
-        };
-    }
-
     return {
         timestamp: sorted[sorted.length - 1].timestamp || 'Loading...',
         cond: conductivity,
@@ -265,6 +244,5 @@ export function extractLastData(
         tide: tide,
         tideUnit: tideUnit,
         wqi: waterQualityIndex,
-        ...odinValues,
     };
 }

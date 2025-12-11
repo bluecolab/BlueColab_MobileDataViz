@@ -1,5 +1,6 @@
-import { Stack } from 'expo-router';
-import { useState } from 'react';
+import { FontAwesome } from '@expo/vector-icons';
+import { router, Stack } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { View, Text, ScrollView, Modal, Pressable } from 'react-native';
 import WebView from 'react-native-webview';
 
@@ -8,10 +9,26 @@ import PolarChart from '@/components/visualizations/WQI/PolarChart';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 
-export default function CurrentData() {
+function HeaderRefreshButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Refresh waterData" className="pr-4">
+            <FontAwesome name="refresh" size={24} color={color} />
+        </Pressable>
+    );
+}
+
+function HeaderSettingsButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Settings" className="pr-4">
+            <FontAwesome name="gear" size={24} color={color} />
+        </Pressable>
+    );
+}
+
+export default function AirQuality() {
     const { isDark } = useColorScheme();
     const [modalVisible, setModalVisible] = useState(false);
-    const { aqiData, defaultLocation, error } = useCurrentData();
+    const { aqiData, aqiError, refetchCurrent } = useCurrentData();
 
     // Use US EPA AQI
     const usAQI = aqiData?.usAQI;
@@ -22,6 +39,19 @@ export default function CurrentData() {
     // Calculate percent for PolarChart (0-500 scale, where lower is better)
     const percent = aqi !== undefined ? Math.max(0, Math.min(100, ((500 - aqi) / 500) * 100)) : 0;
 
+    const headerRight = useCallback(
+        () => (
+            <>
+                <HeaderRefreshButton onPress={refetchCurrent} color={isDark ? 'white' : 'black'} />
+                <HeaderSettingsButton
+                    onPress={() => router.push('/settings')}
+                    color={isDark ? 'white' : 'black'}
+                />
+            </>
+        ),
+        [refetchCurrent, isDark]
+    );
+
     return (
         <>
             <Stack.Screen
@@ -31,26 +61,28 @@ export default function CurrentData() {
                         backgroundColor: isDark ? '#2e2e3b' : 'white',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
+                    headerBackTitle: 'Home',
+                    headerRight,
                 }}
             />
             <ScrollView className="h-full bg-defaultbackground dark:bg-defaultdarkbackground">
                 {/* — Title — */}
                 <View>
                     <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
-                        {defaultLocation?.name} AQI Data
+                        Pace Campus AQI Data
                     </Text>
                 </View>
 
-                {error && (
+                {aqiError && (
                     <View>
                         <Text className="text-center text-xl font-bold dark:text-white">
-                            {error.message}
+                            {aqiError.message}
                         </Text>
                     </View>
                 )}
 
                 {/* US EPA AQI Display */}
-                {aqiData && aqi !== undefined && (
+                {aqiData && (
                     <View className="items-center px-4 py-4">
                         <View className="h-[200] w-[200]">
                             <View className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
@@ -77,7 +109,7 @@ export default function CurrentData() {
                 <Pressable
                     className="m-4 rounded-lg bg-blue-500 p-4"
                     onPress={() => setModalVisible(true)}>
-                    <Text className="text-center text-white">View Grafana Dashboards</Text>
+                    <Text className="text-center text-white">View PurpleAir Dashboards</Text>
                 </Pressable>
 
                 <View className="flex flex-row flex-wrap">
@@ -101,7 +133,7 @@ export default function CurrentData() {
                     <View className="flex-col justify-around">
                         <View className="flex-row items-center justify-between bg-[#1c2b4b] px-4 py-3">
                             <Text className="flex-1 text-lg font-bold text-white">
-                                Where your water is coming from
+                                Data Live from Blue CoLab!
                             </Text>
                             <Pressable onPress={() => setModalVisible(false)} className="p-1">
                                 <Text className="text-2xl font-bold text-white">✕</Text>
