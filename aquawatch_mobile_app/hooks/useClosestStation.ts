@@ -34,7 +34,7 @@ export default function useGetClosestStation(): UseClosestStationResult {
                 const R = 6371; // Earth's radius in kilometers
 
                 const allStations: LocationType[] = [
-                    ...config.BLUE_COLAB_API_CONFIG.validMatches,
+                    ...config.BLUE_COLAB_WATER_API_CONFIG.validMatches,
                     ...config.USGS_WATER_SERVICES_API_CONFIG.validMatches,
                 ];
 

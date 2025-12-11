@@ -1,9 +1,8 @@
 import { config } from '@/hooks/useConfig';
 import { LocationType } from '@/types/location.type';
 import { CleanedWaterData, CurrentData, OdinData } from '@/types/water.interface';
-
-import dataUtils from './dataUtils';
-import getMetadata from './getMetadata';
+import dataUtils from '@/utils/data/dataUtils';
+import getMetadata from '@/utils/getMetadata';
 
 // Conversion helpers
 function uscmToPpt(uscm: number): number {
@@ -212,7 +211,7 @@ export function extractLastData(
               ? ((lastTempVal * 9) / 5 + 32).toFixed(2)
               : lastTempVal.toFixed(2);
 
-    const waterQualityIndex: number = config.BLUE_COLAB_API_CONFIG.validMatches.some(
+    const waterQualityIndex: number = config.BLUE_COLAB_WATER_API_CONFIG.validMatches.some(
         (loc) => loc.name === defaultLocation.name
     )
         ? calculateWQI(

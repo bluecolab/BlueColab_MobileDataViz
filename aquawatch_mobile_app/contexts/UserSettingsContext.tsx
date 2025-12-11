@@ -3,8 +3,8 @@ import React, { createContext, useState, useEffect, useContext, useMemo } from '
 
 import { TemperatureUnit } from '@/types/temperature.enum';
 import { UserSettingsKey } from '@/types/userSettings.enum';
-import { setStoredConvertedUnits } from '@/utils/setStoredConvertedUnits';
-import { setStoredTempUnit } from '@/utils/setStoredTempUnit';
+import { setStoredConvertedUnits } from '@/utils/storage/setStoredConvertedUnits';
+import { setStoredTempUnit } from '@/utils/storage/setStoredTempUnit';
 
 interface UserSettingsContextType {
     defaultTemperatureUnit: TemperatureUnit | undefined;

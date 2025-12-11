@@ -4,8 +4,8 @@ import { Dimensions, View, Text } from 'react-native';
 import { useGraphData } from '@/contexts/~GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
-import dataUtils, { DailySummaryType } from '@/utils/dataUtils';
-import normalize from '@/utils/normalize';
+import dataUtils, { DailySummaryType } from '@/utils/data/dataUtils';
+import normalize from '@/utils/data/normalize';
 
 import { MonthlyDataCardFront } from './MonthlyDataCardFront';
 

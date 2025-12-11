@@ -44,7 +44,7 @@ const CurrentDataContext = createContext<CurrentDataContextType>(defaultContext)
 
 export default function CurrentDataProvider({ children }: { children: ReactNode }) {
     const { defaultTemperatureUnit } = useUserSettings();
-    const { fetchData } = useGetWaterData();
+    const { fetchWaterData } = useGetWaterData();
     const { fetchOdinData } = useGetOdinData();
     const { fetchAQIData } = useGetAQIData();
     const { fetchWaterReportsData } = useGetWaterReportsData();
@@ -61,13 +61,13 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
     } = useQuery<CleanedWaterData[], Error>({
         queryKey: [
             'currentData',
-            config.BLUE_COLAB_API_CONFIG.validMatches[0],
+            config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0],
             defaultTemperatureUnit,
         ],
         enabled: true,
         queryFn: async () =>
-            fetchData(
-                config.BLUE_COLAB_API_CONFIG.validMatches[0] as LocationType,
+            fetchWaterData(
+                config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0] as LocationType,
                 true,
                 0,
                 0,
@@ -84,7 +84,11 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
 
     // Air Data Query
     const { data: airData, error: airError } = useQuery({
-        queryKey: ['airData', config.BLUE_COLAB_API_CONFIG.validMatches[0], defaultTemperatureUnit],
+        queryKey: [
+            'airData',
+            config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0],
+            defaultTemperatureUnit,
+        ],
         queryFn: () => fetchOdinData(),
         enabled: true,
         refetchInterval: 15 * 60 * 1000,
@@ -92,18 +96,18 @@ export default function CurrentDataProvider({ children }: { children: ReactNode 
 
     // AQI Data Query
     const { data: aqiData, error: aqiError } = useQuery({
-        queryKey: ['aqiData', config.BLUE_COLAB_API_CONFIG.validMatches[0]],
+        queryKey: ['aqiData', config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0]],
         queryFn: () =>
             fetchAQIData(
-                config.BLUE_COLAB_API_CONFIG.validMatches[0].lat as number,
-                config.BLUE_COLAB_API_CONFIG.validMatches[0].long as number
+                config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0].lat as number,
+                config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0].long as number
             ),
         enabled: true,
     });
 
     // Water Reports Data Query
     const { data: waterReportsData, error: reportsError } = useQuery({
-        queryKey: ['waterReportsData', config.BLUE_COLAB_API_CONFIG.validMatches[0]],
+        queryKey: ['waterReportsData', config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0]],
         queryFn: () => fetchWaterReportsData('2023'),
         enabled: true,
         retry: 1,

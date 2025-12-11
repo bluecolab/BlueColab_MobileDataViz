@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { CleanedWaterData } from '@/types/water.interface';
-import dataUtils from '@/utils/dataUtils';
+import dataUtils from '@/utils/data/dataUtils';
 
 import PolarChart from './PolarChart';
 interface WQICardFrontProps {

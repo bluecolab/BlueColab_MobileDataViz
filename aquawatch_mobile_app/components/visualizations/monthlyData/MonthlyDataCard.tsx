@@ -5,8 +5,8 @@ import FlipCard from '@/components/customCards/FlipCard';
 import { useGraphData } from '@/contexts/~GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
-import dataUtils from '@/utils/dataUtils';
-import normalize from '@/utils/normalize';
+import dataUtils from '@/utils/data/dataUtils';
+import normalize from '@/utils/data/normalize';
 
 import { MonthlyDataCardBack } from './MonthlyDataCardBack';
 import { MonthlyDataCardFront } from './MonthlyDataCardFront';

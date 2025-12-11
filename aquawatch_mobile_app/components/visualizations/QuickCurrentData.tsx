@@ -114,7 +114,7 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
                     }}>
                     <View className="rounded-[20px] px-4 pt-4">
                         <Text className="text-center text-2xl font-bold text-white">
-                            {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                            {config.BLUE_COLAB_WATER_API_CONFIG.validMatches.some(
                                 (loc) => loc.name === defaultLocation.name
                             )
                                 ? 'Live Water Quality Index'
@@ -131,7 +131,7 @@ export default function QuickCurrentData({ showConvertedUnits }: { showConverted
                     )}
 
                     <View className="flex flex-row flex-wrap items-center justify-center gap-4 pt-4">
-                        {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                        {config.BLUE_COLAB_WATER_API_CONFIG.validMatches.some(
                             (loc) => loc.name === defaultLocation.name
                         ) ? (
                             <View className="h-[200] w-[200]">

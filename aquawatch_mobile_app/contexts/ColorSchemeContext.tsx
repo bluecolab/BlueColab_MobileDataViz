@@ -15,7 +15,7 @@ import { Appearance } from 'react-native';
 import roboto from '@/assets/fonts/roboto.ttf';
 import { ColorScheme } from '@/types/colorScheme.enum';
 import { UserSettingsKey } from '@/types/userSettings.enum';
-import { setStoredAppearance } from '@/utils/setStoredAppearance';
+import { setStoredAppearance } from '@/utils/storage/setStoredAppearance';
 
 interface ColorSchemeContextType {
     isDark: boolean;

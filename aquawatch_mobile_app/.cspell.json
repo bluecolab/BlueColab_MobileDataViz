@@ -14,7 +14,8 @@
         "public/*",
         "cspell-ext.json"
     ],
-    "ignoreWords": [
+    "words": [
+        "APIURL",
         "okaykenji",
         "Nunito",
         "wght",

@@ -2,7 +2,7 @@ import type { SkFont } from '@shopify/react-native-skia';
 import React, { useMemo } from 'react';
 import { AreaRange, CartesianChart, Line } from 'victory-native';
 
-import { DailySummaryType } from '@/utils/dataUtils';
+import { DailySummaryType } from '@/utils/data/dataUtils';
 import { getOrdinalSuffix } from '@/utils/getOrdinalSuffix';
 
 interface GraphProps {

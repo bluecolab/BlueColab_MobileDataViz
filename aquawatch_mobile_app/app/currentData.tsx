@@ -97,7 +97,7 @@ export default function CurrentData() {
                 </View>
 
                 {/* — Current‐Data WQI Gauge — */}
-                {config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                {config.BLUE_COLAB_WATER_API_CONFIG.validMatches.some(
                     (loc) => loc.name === defaultLocation?.name
                 ) ? (
                     <View className="mb-12 mt-6 items-center px-4">

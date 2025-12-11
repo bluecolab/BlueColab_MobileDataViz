@@ -72,7 +72,7 @@ export default function QuickCurrentWeatherData() {
         <Pressable
             onPress={() => {
                 {
-                    config.BLUE_COLAB_API_CONFIG.validMatches.some(
+                    config.BLUE_COLAB_WATER_API_CONFIG.validMatches.some(
                         (loc) => loc.name === defaultLocation.name
                     )
                         ? router.push('/odinData')
