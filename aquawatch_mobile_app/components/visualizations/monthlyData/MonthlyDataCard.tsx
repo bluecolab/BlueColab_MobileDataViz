@@ -2,7 +2,6 @@ import { useMemo, useRef } from 'react';
 import { Dimensions, View, Pressable } from 'react-native';
 
 import FlipCard from '@/components/customCards/FlipCard';
-import { useGraphData } from '@/contexts/~GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
 import dataUtils from '@/utils/data/dataUtils';
@@ -54,10 +53,12 @@ interface MonthlyDataCardProps {
     };
     defaultTempUnit: string | undefined;
     unitMap: Record<string, string | null>;
-    alternateName?: string;
+    selectedLocationTemp: string | undefined;
+    selectedLocationTemp2: string | undefined;
     selectedMonth: string;
     showConvertedUnits?: boolean;
     normalizeComparative?: boolean;
+    alternateName: string;
 }
 
 export function MonthlyDataCard({
@@ -71,6 +72,8 @@ export function MonthlyDataCard({
     defaultTempUnit,
     unitMap,
     alternateName,
+    selectedLocationTemp,
+    selectedLocationTemp2,
     selectedMonth,
     showConvertedUnits,
     normalizeComparative,
@@ -78,7 +81,6 @@ export function MonthlyDataCard({
     const finalUnitToUse = unitMap[unit] === null ? alternateName : unit;
     const { generateDataSummary } = dataUtils();
     const { normalizeDailySummary } = normalize();
-    const { normalizeComparative: normalizeComparativeFromContext } = useGraphData();
 
     // Conversion helpers for historical data
     const uscmToPpt = (uscm: number) => uscm * 0.00055;
@@ -149,7 +151,7 @@ export function MonthlyDataCard({
         defaultTempUnit,
         convertedData2
     );
-    const isNormalized = (normalizeComparative ?? normalizeComparativeFromContext) && !loading;
+    const isNormalized = normalizeComparative && !loading;
     const normalizedDaily = useMemo(() => {
         if (!isNormalized) return rawDataSummary.dailySummary;
         const { daily } = normalizeDailySummary(rawDataSummary.dailySummary);
@@ -183,6 +185,8 @@ export function MonthlyDataCard({
                                         defaultTempUnit,
                                         yAxisLabel
                                     )}
+                                    selectedLocationTemp={selectedLocationTemp}
+                                    selectedLocationTemp2={selectedLocationTemp2}
                                 />
                             </Pressable>
                         }

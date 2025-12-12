@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { getMonth, getYear, getDaysInMonth } from 'date-fns';
 import { Stack } from 'expo-router';
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { View, ScrollView, Dimensions, Text, Pressable } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
@@ -13,7 +13,7 @@ import ComparisonCard from '@/components/visualizations/monthlyData/ComparisonCa
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
-import { useGraphData } from '@/contexts/~GraphDataContext';
+import useGetGraphData from '@/hooks/useGetGraphData';
 import getMetadata from '@/utils/getMetadata';
 
 const getDaysInMonthFn = (month: number, year: number) => {
@@ -42,9 +42,52 @@ export default function HistoricData() {
         showConvertedUnits,
         normalizeComparative,
         setNormalizeComparative,
-    } = useGraphData();
-    const { parameterInfo, locationOptions, units } = getMetadata();
+    } = useGetGraphData();
+
+    const { parameterInfo, units } = getMetadata();
     const { isDark } = useColorScheme();
+
+    const locationOptions = useMemo(
+        () => [
+            {
+                label: 'Choate Pond',
+                value: '0',
+            },
+            {
+                label: 'Piermont',
+                value: '1',
+            },
+            {
+                label: 'West Point',
+                value: '2',
+            },
+            {
+                label: 'Poughkeepsie',
+                value: '3',
+            },
+            {
+                label: 'New York City',
+                value: '4',
+            },
+            {
+                label: 'Albany',
+                value: '5',
+            },
+            {
+                label: 'Cohoes',
+                value: '6',
+            },
+            {
+                label: 'Gowanda',
+                value: '7',
+            },
+            {
+                label: 'Bronx River',
+                value: '8',
+            },
+        ],
+        []
+    );
 
     const unitMap =
         units[
@@ -58,7 +101,6 @@ export default function HistoricData() {
     const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
 
-    // Set the default selected month and year
     const [selectedMonth, setSelectedMonth] = useState(lastMonth);
     const [selectedYear, setSelectedYear] = useState(lastMonthYear);
     // Separate selection for Location 2 (defaults mirror primary)
@@ -256,15 +298,16 @@ export default function HistoricData() {
                 options={{
                     headerTitle: 'Historic Data',
                     headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        backgroundColor: isDark ? '#2C2C2E' : 'white',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
                     headerRight: HeaderRightButton,
+                    headerBackTitle: 'Back',
                 }}
             />
             <View className="flex-1">
-                <ScrollView className="dark:bg-defaultdarkbackground h-full bg-lightBackground">
-                    <Text className="mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-darkText">
+                <ScrollView className="h-full bg-lightBackground dark:bg-darkBackground">
+                    <Text className="mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-darkCardBackground dark:text-darkText">
                         {locationOptions.find((option) => option.value === selectedLocation)?.label}{' '}
                         -{' '}
                         {
@@ -301,6 +344,8 @@ export default function HistoricData() {
                                         )?.label || 'oh no'
                                     }
                                     showConvertedUnits={showConvertedUnits}
+                                    selectedLocationTemp={selectedLocationTemp}
+                                    selectedLocationTemp2={selectedLocationTemp2}
                                 />
                             </View>
                         )}
@@ -325,6 +370,7 @@ export default function HistoricData() {
                     )}
 
                     <ComparisonCard
+                        normalizeComparative={normalizeComparative}
                         loading={loading}
                         data={data}
                         error={error}
@@ -335,6 +381,8 @@ export default function HistoricData() {
                                 ?.label || 'oh no'
                         }
                         showConvertedUnits={showConvertedUnits}
+                        selectedLocationTemp={selectedLocationTemp}
+                        selectedLocationTemp2={selectedLocationTemp2}
                     />
 
                     <View className="pb-[45]">
@@ -353,12 +401,12 @@ export default function HistoricData() {
                                 </Pressable>
                             </View>
 
-                            <View className="elevation-[20] z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
+                            <View className="elevation-[20] z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default dark:bg-darkCardBackground">
                                 <Text className="text-center text-lg font-bold dark:text-darkText">
                                     Historic Data Settings
                                 </Text>
                             </View>
-                            <View className="elevation-[20] z-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
+                            <View className="elevation-[20] z-10 w-full rounded-xl bg-gray-200 p-default dark:bg-darkCardBackground">
                                 <Text className="text-center text-lg font-bold dark:text-darkText">
                                     Location 1
                                 </Text>

@@ -154,6 +154,14 @@ export default function CurrentHudsonWaterData() {
                     />
                 </View>
 
+                <Pressable
+                    onPress={() => router.push(`/historicData?location=${location?.name}`)}
+                    className="mx-4 my-2 items-center rounded-xl p-4 dark:bg-darkCardBackground">
+                    <Text className="items-center text-center text-sm dark:text-darkText">
+                        Historic {location?.name} Pond Data
+                    </Text>
+                </Pressable>
+
                 <View className="flex flex-row flex-wrap">
                     <Widget name="Water Temperature" value={lastDataPoint.temp} hideStatus />
                     <Widget name="Conductivity" value={lastDataPoint.cond} hideStatus />

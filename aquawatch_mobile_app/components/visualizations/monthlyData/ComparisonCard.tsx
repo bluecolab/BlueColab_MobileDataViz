@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Dimensions, View, Text } from 'react-native';
 
-import { useGraphData } from '@/contexts/~GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
 import dataUtils, { DailySummaryType } from '@/utils/data/dataUtils';
@@ -16,6 +15,9 @@ interface ComparisonCardProps {
     defaultTempUnit: string | undefined;
     unitMap: Record<string, string | null>;
     selectedMonth: string;
+    selectedLocationTemp: string | undefined;
+    selectedLocationTemp2: string | undefined;
+    normalizeComparative: boolean;
     showConvertedUnits?: boolean;
 }
 
@@ -30,11 +32,13 @@ export default function ComparisonCard({
     defaultTempUnit,
     unitMap,
     selectedMonth,
+    normalizeComparative,
+    selectedLocationTemp,
+    selectedLocationTemp2,
     showConvertedUnits,
 }: ComparisonCardProps) {
     const { generateDataSummary } = dataUtils();
     const { normalizeDailySummary } = normalize();
-    const { normalizeComparative } = useGraphData();
     // If converted units are OFF, auto-normalize to avoid one series appearing flattened
     const useNormalization = normalizeComparative || !showConvertedUnits;
 
@@ -126,6 +130,8 @@ export default function ComparisonCard({
                     month={selectedMonth}
                     title={title}
                     legend={legend}
+                    selectedLocationTemp={selectedLocationTemp}
+                    selectedLocationTemp2={selectedLocationTemp2}
                 />
             </View>
         </View>

@@ -46,11 +46,13 @@ export function MonthlyDataCardBack({
     const { isDark } = useColorScheme();
 
     return (
-        <View className="h-[340] rounded-3xl bg-white px-2 dark:bg-gray-700">
-            <ScrollView nestedScrollEnabled className=" rounded-3xl bg-white dark:bg-gray-700">
+        <View className="h-[340] rounded-3xl bg-white px-2 dark:bg-darkCardBackground ">
+            <ScrollView
+                nestedScrollEnabled
+                className=" rounded-3xl bg-white dark:bg-darkCardBackground ">
                 <Pressable onPress={flipCard}>
                     <View className="w-full self-center">
-                        <Text className="rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-darkText">
+                        <Text className="rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-darkCardBackground dark:text-darkText ">
                             {title}
                         </Text>
                         <FontAwesome

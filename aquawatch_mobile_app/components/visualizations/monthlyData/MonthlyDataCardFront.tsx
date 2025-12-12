@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
-import { useGraphData } from '@/contexts/~GraphDataContext';
+// import { useGraphData } from '@/contexts/~GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { DailySummaryType } from '@/utils/data/dataUtils';
 
@@ -17,6 +17,8 @@ interface MonthlyDataCardFrontProp {
     error: ErrorType | undefined;
     month: string;
     title: string;
+    selectedLocationTemp: string | undefined;
+    selectedLocationTemp2: string | undefined;
     legend?: ReactNode;
 }
 
@@ -26,10 +28,11 @@ export function MonthlyDataCardFront({
     error,
     month,
     title,
+    selectedLocationTemp,
+    selectedLocationTemp2,
     legend,
 }: MonthlyDataCardFrontProp) {
     const { isDark, loading: fontLoading, font } = useColorScheme();
-    const { selectedLocationTemp, selectedLocationTemp2 } = useGraphData();
 
     const showSecondSet = dailySummary.some(
         ({ avg2, min2, max2 }) => avg2 !== undefined || min2 !== undefined || max2 !== undefined
@@ -65,9 +68,9 @@ export function MonthlyDataCardFront({
     }
 
     return (
-        <View className="h-[340] rounded-3xl bg-white px-2 dark:bg-gray-700">
+        <View className="h-[340] rounded-3xl bg-white px-2 dark:bg-darkCardBackground ">
             <View className="w-full self-center">
-                <Text className="rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-darkText">
+                <Text className="rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-darkCardBackground dark:text-darkText">
                     {title}
                 </Text>
                 <FontAwesome

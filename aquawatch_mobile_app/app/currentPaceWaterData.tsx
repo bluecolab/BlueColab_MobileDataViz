@@ -91,6 +91,14 @@ export default function CurrentPaceWaterData() {
                     </View>
                 )}
 
+                <Pressable
+                    onPress={() => router.push('/historicData?location=Choate Pond')}
+                    className="mx-4 my-2 items-center rounded-xl p-4 dark:bg-darkCardBackground">
+                    <Text className="items-center text-center text-sm dark:text-darkText">
+                        Historic Choate Pond Data
+                    </Text>
+                </Pressable>
+
                 {/* — The 6 Widgets — */}
                 <View className="flex flex-row flex-wrap">
                     <Widget name="Water Temperature" value={lastDataPoint.temp} />
