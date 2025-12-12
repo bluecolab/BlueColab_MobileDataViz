@@ -60,19 +60,19 @@ export default function CurrentHudsonWaterData() {
 
     const [waterData, setWaterData] = useState<any>(null);
 
+    const valid = config.USGS_WATER_SERVICES_API_CONFIG.validMatches;
+    const location =
+        selectedLocationLocalLabel === 'Nearest Station'
+            ? closestStation.closestStation
+            : valid.find((loc) => loc.name === selectedLocationLocalLabel);
+
     useEffect(() => {
         async function fetchData() {
-            const valid = config.USGS_WATER_SERVICES_API_CONFIG.validMatches;
-            const location =
-                selectedLocationLocalLabel === 'Nearest Station'
-                    ? closestStation.closestStation
-                    : valid.find((loc) => loc.name === selectedLocationLocalLabel);
-
             const data = await fetchWaterData(location as LocationType, true, 0, 0, 0, 0);
             setWaterData(data);
         }
         void fetchData();
-    }, [selectedLocationLocalLabel, closestStation, fetchWaterData]);
+    }, [selectedLocationLocalLabel, closestStation, fetchWaterData, location]);
 
     const lastDataPoint = extractLastData(
         waterData,
@@ -124,7 +124,7 @@ export default function CurrentHudsonWaterData() {
                 {/* — Title — */}
                 <View>
                     <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
-                        Choate Pond Data
+                        {location?.name ?? 'Loading...'}
                     </Text>
                 </View>
                 {/* {waterError && (
@@ -144,13 +144,13 @@ export default function CurrentHudsonWaterData() {
                 </View>
                 {/* — The 6 Widgets — */}(
                 <View className="flex flex-row flex-wrap">
-                    <Widget name="Water Temperature" value={lastDataPoint.temp} />
-                    <Widget name="Conductivity" value={lastDataPoint.cond} />
-                    <Widget name="Salinity" value={lastDataPoint.sal} />
-                    <Widget name="pH" value={lastDataPoint.pH} />
-                    <Widget name="Turbidity" value={lastDataPoint.turb} />
-                    <Widget name="Oxygen" value={lastDataPoint.do} />
-                    <Widget name="Tide" value={lastDataPoint.tide} />
+                    <Widget name="Water Temperature" value={lastDataPoint.temp} hideStatus />
+                    <Widget name="Conductivity" value={lastDataPoint.cond} hideStatus />
+                    <Widget name="Salinity" value={lastDataPoint.sal} hideStatus />
+                    <Widget name="pH" value={lastDataPoint.pH} hideStatus />
+                    <Widget name="Turbidity" value={lastDataPoint.turb} hideStatus />
+                    <Widget name="Oxygen" value={lastDataPoint.do} hideStatus />
+                    <Widget name="Tide" value={lastDataPoint.tide} hideStatus />
                 </View>
                 )
             </ScrollView>

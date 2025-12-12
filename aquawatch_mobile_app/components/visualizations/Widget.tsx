@@ -178,9 +178,10 @@ export type DescriptionKeys = keyof typeof DESCRIPTIONS;
 interface WidgetProp {
     name: DescriptionKeys;
     value: number | string;
+    hideStatus?: boolean;
 }
 
-export function Widget({ name, value }: WidgetProp) {
+export function Widget({ name, value, hideStatus }: WidgetProp) {
     const numericValue = parseFloat(value.toString());
     const { label, color } = getStatusAndColor(name, numericValue);
 
@@ -212,7 +213,9 @@ export function Widget({ name, value }: WidgetProp) {
                             </Text>
                             <View className="mt-4 items-center">
                                 <Text className="text-base dark:text-white">{value}</Text>
-                                <Text className={`text-sm italic ${color}`}>{label}</Text>
+                                {!hideStatus && (
+                                    <Text className={`text-sm italic ${color}`}>{label}</Text>
+                                )}
                             </View>
                         </View>
                     }
