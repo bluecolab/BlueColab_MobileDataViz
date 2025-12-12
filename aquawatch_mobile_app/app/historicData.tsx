@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { getMonth, getYear, getDaysInMonth } from 'date-fns';
 import { Stack } from 'expo-router';
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { View, ScrollView, Dimensions, Text, Pressable } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
@@ -44,8 +44,50 @@ export default function HistoricData() {
         setNormalizeComparative,
     } = useGetGraphData();
 
-    const { parameterInfo, locationOptions, units } = getMetadata();
+    const { parameterInfo, units } = getMetadata();
     const { isDark } = useColorScheme();
+
+    const locationOptions = useMemo(
+        () => [
+            {
+                label: 'Choate Pond',
+                value: '0',
+            },
+            {
+                label: 'Piermont',
+                value: '1',
+            },
+            {
+                label: 'West Point',
+                value: '2',
+            },
+            {
+                label: 'Poughkeepsie',
+                value: '3',
+            },
+            {
+                label: 'New York City',
+                value: '4',
+            },
+            {
+                label: 'Albany',
+                value: '5',
+            },
+            {
+                label: 'Cohoes',
+                value: '6',
+            },
+            {
+                label: 'Gowanda',
+                value: '7',
+            },
+            {
+                label: 'Bronx River',
+                value: '8',
+            },
+        ],
+        []
+    );
 
     const unitMap =
         units[
@@ -59,7 +101,6 @@ export default function HistoricData() {
     const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
 
-    // Set the default selected month and year
     const [selectedMonth, setSelectedMonth] = useState(lastMonth);
     const [selectedYear, setSelectedYear] = useState(lastMonthYear);
     // Separate selection for Location 2 (defaults mirror primary)
@@ -257,15 +298,16 @@ export default function HistoricData() {
                 options={{
                     headerTitle: 'Historic Data',
                     headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        backgroundColor: isDark ? '#2C2C2E' : 'white',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
                     headerRight: HeaderRightButton,
+                    headerBackTitle: 'Back',
                 }}
             />
             <View className="flex-1">
-                <ScrollView className="bg-lightBackground h-full dark:bg-defaultdarkbackground">
-                    <Text className="dark:text-darkText mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700">
+                <ScrollView className="bg-lightBackground dark:bg-darkBackground h-full">
+                    <Text className="dark:text-darkText dark:bg-darkCardBackground mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold">
                         {locationOptions.find((option) => option.value === selectedLocation)?.label}{' '}
                         -{' '}
                         {
@@ -359,12 +401,12 @@ export default function HistoricData() {
                                 </Pressable>
                             </View>
 
-                            <View className="elevation-[20] z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
+                            <View className="elevation-[20] dark:bg-darkCardBackground z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default">
                                 <Text className="dark:text-darkText text-center text-lg font-bold">
                                     Historic Data Settings
                                 </Text>
                             </View>
-                            <View className="elevation-[20] z-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
+                            <View className="elevation-[20] dark:bg-darkCardBackground z-10 w-full rounded-xl bg-gray-200 p-default">
                                 <Text className="dark:text-darkText text-center text-lg font-bold">
                                     Location 1
                                 </Text>

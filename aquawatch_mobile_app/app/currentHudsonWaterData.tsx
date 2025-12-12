@@ -118,7 +118,7 @@ export default function CurrentHudsonWaterData() {
                 }}
             />
             <ScrollView
-                className="h-full bg-lightBackground dark:bg-darkBackground"
+                className="bg-lightBackground dark:bg-darkBackground h-full"
                 refreshControl={
                     <RefreshControl
                         refreshing={false}
@@ -128,13 +128,13 @@ export default function CurrentHudsonWaterData() {
                 }>
                 {/* — Title — */}
                 <View>
-                    <Text className="mt-7 text-center text-2xl font-bold dark:text-darkText">
+                    <Text className="dark:text-darkText mt-7 text-center text-2xl font-bold">
                         {location?.name ?? 'Loading...'}
                     </Text>
                 </View>
 
                 <View>
-                    <Text className="mt-7 text-center text-xl font-bold dark:text-darkText">
+                    <Text className="dark:text-darkText mt-7 text-center text-xl font-bold">
                         Try other locations!
                     </Text>
                 </View>
@@ -153,6 +153,14 @@ export default function CurrentHudsonWaterData() {
                         onSelect={onLocationSelect}
                     />
                 </View>
+
+                <Pressable
+                    onPress={() => router.push(`/historicData?location=${location?.name}`)}
+                    className="dark:bg-darkCardBackground mx-4 my-2 items-center rounded-xl p-4">
+                    <Text className="dark:text-darkText items-center text-center text-sm">
+                        Historic {location?.name} Pond Data
+                    </Text>
+                </Pressable>
 
                 <View className="flex flex-row flex-wrap">
                     <Widget name="Water Temperature" value={lastDataPoint.temp} hideStatus />

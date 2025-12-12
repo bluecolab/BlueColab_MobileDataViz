@@ -1,12 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query'; // Import useQuery
 import { subMonths, getYear, getMonth, getDaysInMonth } from 'date-fns';
-import { useState, useEffect } from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import { useState, useEffect, useMemo } from 'react';
 
 import useGetClosestStation from '@/hooks/useClosestStation';
 import { config } from '@/hooks/useConfig';
 import { LocationType } from '@/types/location.type';
-// import { CleanedWaterData } from '@/types/water.interface';
 
 import useGetWaterData from './useGetWaterData';
 
@@ -69,14 +69,6 @@ export default function useGetGraphData() {
     });
 
     const changeTemperatureUnit = (newUnit: string) => {
-        const setStoredTempUnit = async (value: string) => {
-            try {
-                await AsyncStorage.setItem('default-temp-unit', value);
-            } catch (e) {
-                console.error(e);
-            }
-        };
-        void setStoredTempUnit(newUnit);
         setDefaultTempUnit(newUnit);
     };
 
@@ -84,62 +76,53 @@ export default function useGetGraphData() {
         if (newLocation.name == config.USGS_WATER_SERVICES_API_CONFIG.validMatches[0].name) {
             setDefaultLocation(closestStation.closestStation);
         } else {
-            const setStoredLocation = async (value: LocationType) => {
-                try {
-                    await AsyncStorage.setItem('default-location', JSON.stringify(value));
-                } catch (e) {
-                    console.error(e);
-                }
-            };
-            void setStoredLocation(newLocation);
             setDefaultLocation(newLocation);
         }
     };
 
     const setNormalizeComparative = (enabled: boolean) => {
-        const setStored = async (value: boolean) => {
-            try {
-                await AsyncStorage.setItem('normalize-comparative', JSON.stringify(value));
-            } catch (e) {
-                console.error(e);
-            }
-        };
-        void setStored(enabled);
         setNormalizeComparativeState(enabled);
     };
 
     // The initial useEffect to load settings and set the default date remains the same.
 
     const changeConvertedUnits = (enabled: boolean) => {
-        const setStoredConvertedUnits = async (value: boolean) => {
-            try {
-                await AsyncStorage.setItem('show-converted-units', JSON.stringify(value));
-            } catch (e) {
-                console.error(e);
-            }
-        };
-        void setStoredConvertedUnits(enabled);
         setShowConvertedUnits(enabled);
     };
+    const { location } = useLocalSearchParams<{ location?: string }>();
+
+    const listOfSLocations = useMemo(
+        () => [
+            ...config.BLUE_COLAB_WATER_API_CONFIG.validMatches,
+            ...config.USGS_WATER_SERVICES_API_CONFIG.validMatches,
+        ],
+        []
+    );
 
     useEffect(() => {
         const getStoredDefaultLocation = async () => {
             try {
-                setDefaultLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
+                if (location !== null) {
+                    const finalLocation = listOfSLocations.find(
+                        (loc) =>
+                            loc.name.trim().toLocaleLowerCase() ===
+                            location?.trim().toLocaleLowerCase()
+                    );
 
-                // const value = await AsyncStorage.getItem('default-location');
-                // if (value !== null) {
-                //     const station: LocationType = JSON.parse(value);
-                //     if (
-                //         station.name == config.USGS_WATER_SERVICES_API_CONFIG.validMatches[0].name
-                //     ) {
-                //         setDefaultLocation(closestStation.closestStation);
-                //     } else {
-                //         setDefaultLocation(station);
-                //     }
-                // } else {
-                //     setDefaultLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
-                // }
+                    if (finalLocation) {
+                        setDefaultLocation(finalLocation);
+                    } else {
+                        setDefaultLocation({
+                            name: 'Choate Pond',
+                            lat: 41.127494,
+                            long: -73.808235,
+                        });
+                    }
+                } else {
+                    setDefaultLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
+                    setDefaultLocationName('Choate Pond');
+                    setSelectedLocation({ name: 'Choate Pond', lat: 41.127494, long: -73.808235 });
+                }
             } catch (e) {
                 console.error(e);
             }
@@ -214,7 +197,7 @@ export default function useGetGraphData() {
         setMonth2(getMonth(lastMonth2) + 1);
         setStartDay2(1);
         setEndDay2(getDaysInMonth(lastMonth2));
-    }, [closestStation.closestStation]);
+    }, [listOfSLocations, location]);
 
     return {
         // Values from useQuery

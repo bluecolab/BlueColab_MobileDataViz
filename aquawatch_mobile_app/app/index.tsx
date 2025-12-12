@@ -119,14 +119,6 @@ export default function Home() {
                             Click Here Learn more about Blue CoLab
                         </Text>
                     </Pressable>
-
-                    <Pressable
-                        onPress={() => router.push('/historicData')}
-                        className="dark:bg-darkCardBackground my-2 items-center rounded-md p-4">
-                        <Text className="dark:text-darkText items-center text-center text-sm">
-                            Click Here Learn more about Blue CoLab
-                        </Text>
-                    </Pressable>
                 </View>
 
                 {/* Footer text preserved */}

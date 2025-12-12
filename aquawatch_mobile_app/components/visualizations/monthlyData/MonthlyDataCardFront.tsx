@@ -68,9 +68,9 @@ export function MonthlyDataCardFront({
     }
 
     return (
-        <View className="h-[340] rounded-3xl bg-white px-2 dark:bg-gray-700">
+        <View className="dark:bg-darkCardBackground h-[340] rounded-3xl bg-white px-2 ">
             <View className="w-full self-center">
-                <Text className="dark:text-darkText rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700">
+                <Text className="dark:text-darkText dark:bg-darkCardBackground rounded-3xl bg-white p-1 text-center text-2xl font-bold">
                     {title}
                 </Text>
                 <FontAwesome
