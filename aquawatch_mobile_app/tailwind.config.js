@@ -13,8 +13,14 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                defaultbackground: 'rgb(220, 220, 220)',
-                defaultdarkbackground: '#1a202c',
+                lightBackground: '#d6d6d6',
+                lightCardBackground: '#f7f7f7',
+                lightCardBackgroundLvl1: '#ffffff',
+                darkBackground: '#121212',
+                darkCardBackground: '#2C2C2E',
+                darkCardBackgroundLvl1: '#48484A',
+                darkText: '#dbdbdb',
+                darkTextLvl1: '#cbcbcb',
             },
             padding: {
                 default: '10',

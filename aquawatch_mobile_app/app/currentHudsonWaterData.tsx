@@ -1,12 +1,11 @@
-// import { FontAwesome } from '@expo/vector-icons';
-import { Stack } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
-import { View, Text, ScrollView, RefreshControl } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { router, Stack } from 'expo-router';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { View, Text, ScrollView, RefreshControl, Pressable } from 'react-native';
 
 import CustomDropdown from '@/components/CustomDropdown';
 import { Widget } from '@/components/visualizations/Widget';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
-// import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
 import useGetClosestStation from '@/hooks/useClosestStation';
 import { config } from '@/hooks/useConfig';
@@ -15,21 +14,21 @@ import { LocationType } from '@/types/location.type';
 import { extractLastData } from '@/utils/data/extractLastData';
 import getMetadata from '@/utils/getMetadata';
 
-// function HeaderRefreshButton({ onPress, color }: { onPress: () => void; color: string }) {
-//     return (
-//         <Pressable onPress={onPress} accessibilityLabel="Refresh waterData" className="pr-4">
-//             <FontAwesome name="refresh" size={24} color={color} />
-//         </Pressable>
-//     );
-// }
+function HeaderRefreshButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Refresh waterData" className="pr-4">
+            <FontAwesome name="refresh" size={24} color={color} />
+        </Pressable>
+    );
+}
 
-// function HeaderSettingsButton({ onPress, color }: { onPress: () => void; color: string }) {
-//     return (
-//         <Pressable onPress={onPress} accessibilityLabel="Settings" className="pr-4">
-//             <FontAwesome name="gear" size={24} color={color} />
-//         </Pressable>
-//     );
-// }
+function HeaderSettingsButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Settings" className="pr-4">
+            <FontAwesome name="gear" size={24} color={color} />
+        </Pressable>
+    );
+}
 
 export default function CurrentHudsonWaterData() {
     const { isDark } = useColorScheme();
@@ -39,40 +38,46 @@ export default function CurrentHudsonWaterData() {
 
     const closestStation = useGetClosestStation();
 
+    const filteredLocationOptions = useMemo(() => {
+        return !closestStation.closestStation ? locationOptions.slice(1) : locationOptions;
+    }, [closestStation.closestStation, locationOptions]);
+
     const [selectedLocationLocalValue, setSelectedLocationLocalValue] = useState<string>(
-        locationOptions[0].value
+        filteredLocationOptions[0].value
     );
     const [selectedLocationLocalLabel, setSelectedLocationLocalLabel] = useState<string>(
-        locationOptions[0].label
+        filteredLocationOptions[0].label
     );
 
     const onLocationSelect = useCallback(
         (value: string) => {
             const defaultLocationValue =
-                locationOptions.find((option) => option.value === value)?.value || '';
+                filteredLocationOptions.find((option) => option.value === value)?.value || '';
             setSelectedLocationLocalValue(defaultLocationValue);
             setSelectedLocationLocalLabel(
-                locationOptions.find((option) => option.value === value)?.label || ''
+                filteredLocationOptions.find((option) => option.value === value)?.label || ''
             );
         },
-        [locationOptions, setSelectedLocationLocalValue]
+        [filteredLocationOptions, setSelectedLocationLocalValue]
     );
 
     const [waterData, setWaterData] = useState<any>(null);
 
     const valid = config.USGS_WATER_SERVICES_API_CONFIG.validMatches;
-    const location =
-        selectedLocationLocalLabel === 'Nearest Station'
+    const location = useMemo(() => {
+        return selectedLocationLocalLabel === 'Nearest Station' && closestStation.closestStation
             ? closestStation.closestStation
             : valid.find((loc) => loc.name === selectedLocationLocalLabel);
+    }, [selectedLocationLocalLabel, closestStation.closestStation, valid]);
 
     useEffect(() => {
+        if (!location) return;
         async function fetchData() {
             const data = await fetchWaterData(location as LocationType, true, 0, 0, 0, 0);
             setWaterData(data);
         }
         void fetchData();
-    }, [selectedLocationLocalLabel, closestStation, fetchWaterData, location]);
+    }, [location, fetchWaterData]);
 
     const lastDataPoint = extractLastData(
         waterData,
@@ -86,18 +91,18 @@ export default function CurrentHudsonWaterData() {
         null,
         showConvertedUnits
     );
-    // const headerRight = useCallback(
-    //     () => (
-    //         <>
-    //             <HeaderRefreshButton onPress={refetchCurrent} color={isDark ? 'white' : 'black'} />
-    //             <HeaderSettingsButton
-    //                 onPress={() => router.push('/settings')}
-    //                 color={isDark ? 'white' : 'black'}
-    //             />
-    //         </>
-    //     ),
-    //     [refetchCurrent, isDark]
-    // );
+    const headerRight = useCallback(
+        () => (
+            <>
+                <HeaderRefreshButton onPress={() => {}} color={isDark ? 'white' : 'black'} />
+                <HeaderSettingsButton
+                    onPress={() => router.push('/settings')}
+                    color={isDark ? 'white' : 'black'}
+                />
+            </>
+        ),
+        [isDark]
+    );
 
     return (
         <>
@@ -105,15 +110,15 @@ export default function CurrentHudsonWaterData() {
                 options={{
                     headerTitle: 'Current Data',
                     headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        backgroundColor: isDark ? '#2C2C2E' : '#f7f7f7',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
-                    // headerRight,
+                    headerRight,
                     headerBackTitle: 'Home',
                 }}
             />
             <ScrollView
-                className="h-full bg-defaultbackground dark:bg-defaultdarkbackground"
+                className="dark:bg-darkBackground bg-lightBackground h-full"
                 refreshControl={
                     <RefreshControl
                         refreshing={false}
@@ -123,13 +128,19 @@ export default function CurrentHudsonWaterData() {
                 }>
                 {/* — Title — */}
                 <View>
-                    <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
+                    <Text className="dark:text-darkText mt-7 text-center text-2xl font-bold">
                         {location?.name ?? 'Loading...'}
+                    </Text>
+                </View>
+
+                <View>
+                    <Text className="dark:text-darkText mt-7 text-center text-xl font-bold">
+                        Try other locations!
                     </Text>
                 </View>
                 {/* {waterError && (
                     <View>
-                        <Text className="text-center text-xl font-bold dark:text-white">
+                        <Text className="text-center text-xl font-bold dark:text-darkText">
                             {waterError.message}
                         </Text>
                     </View>
@@ -137,12 +148,12 @@ export default function CurrentHudsonWaterData() {
                 <View>
                     <CustomDropdown
                         label="Location"
-                        options={locationOptions}
+                        options={filteredLocationOptions}
                         value={selectedLocationLocalValue}
                         onSelect={onLocationSelect}
                     />
                 </View>
-                {/* — The 6 Widgets — */}(
+
                 <View className="flex flex-row flex-wrap">
                     <Widget name="Water Temperature" value={lastDataPoint.temp} hideStatus />
                     <Widget name="Conductivity" value={lastDataPoint.cond} hideStatus />
@@ -152,7 +163,6 @@ export default function CurrentHudsonWaterData() {
                     <Widget name="Oxygen" value={lastDataPoint.do} hideStatus />
                     <Widget name="Tide" value={lastDataPoint.tide} hideStatus />
                 </View>
-                )
             </ScrollView>
         </>
     );

@@ -60,7 +60,7 @@ export default function CurrentPaceWaterData() {
                 options={{
                     headerTitle: 'Current Data',
                     headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        backgroundColor: isDark ? '#2C2C2E' : '#f7f7f7',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
                     headerRight,
@@ -68,7 +68,7 @@ export default function CurrentPaceWaterData() {
                 }}
             />
             <ScrollView
-                className="h-full bg-defaultbackground dark:bg-defaultdarkbackground"
+                className="dark:bg-darkBackground bg-lightBackground h-full"
                 refreshControl={
                     <RefreshControl
                         refreshing={loadingCurrent}
@@ -78,14 +78,14 @@ export default function CurrentPaceWaterData() {
                 }>
                 {/* — Title — */}
                 <View>
-                    <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
+                    <Text className="dark:text-darkText/90 mt-7 text-center text-2xl font-bold">
                         Choate Pond Data
                     </Text>
                 </View>
 
                 {waterError && (
                     <View>
-                        <Text className="text-center text-xl font-bold dark:text-white">
+                        <Text className="dark:text-darkText/90 text-center text-xl font-bold">
                             {waterError.message}
                         </Text>
                     </View>

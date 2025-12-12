@@ -1,7 +1,7 @@
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, Platform } from 'react-native';
 
 import SettingsDropdown from '@/components/SettingsDropdown';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
@@ -13,7 +13,11 @@ import capitalize from '@/utils/capitalize';
 function HeaderGoBackButton({ onPress, color }: { onPress: () => void; color: string }) {
     return (
         <Pressable onPress={onPress} accessibilityLabel="Settings" className="pr-4">
-            <FontAwesome name="arrow-left" size={24} color={color} />
+            <Ionicons
+                name={Platform.OS === 'ios' ? 'chevron-back' : 'arrow-back'}
+                size={24}
+                color={color}
+            />
         </Pressable>
     );
 }
@@ -80,15 +84,17 @@ export default function Index() {
                 options={{
                     headerTitle: 'Settings',
                     headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        backgroundColor: isDark ? '#2C2C2E' : 'white',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
                     headerLeft,
                 }}
             />
-            <ScrollView className="bg-defaultbackground p-5 dark:bg-defaultdarkbackground">
-                <View className="rounded-3xl bg-white px-2 py-4 dark:bg-gray-700">
-                    <Text className="mr-4 text-2xl font-bold dark:text-white">Configurations:</Text>
+            <ScrollView className="dark:bg-darkBackground bg-lightBackground p-5">
+                <View className="dark:bg-darkCardBackground rounded-3xl bg-white px-2 py-4">
+                    <Text className="dark:text-darkText mr-4 text-2xl font-bold">
+                        Configurations:
+                    </Text>
                     <View
                         style={{
                             borderBottomWidth: 0.5,
@@ -96,16 +102,10 @@ export default function Index() {
                             marginVertical: 5,
                         }}
                     />
-
-                    <View
-                        style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
-                            marginVertical: 1,
-                        }}
-                    />
                     <View className=" flex-row items-center justify-between py-2">
-                        <Text className="ml-2 text-lg dark:text-white">Show Converted Units:</Text>
+                        <Text className="dark:text-darkText ml-2 text-lg">
+                            Show Converted Units:
+                        </Text>
                         <Pressable
                             onPress={() => changeConvertedUnits(!showConvertedUnits)}
                             style={{
@@ -121,8 +121,8 @@ export default function Index() {
                     </View>
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
@@ -134,8 +134,8 @@ export default function Index() {
                     />
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
@@ -147,21 +147,21 @@ export default function Index() {
                     />
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
                     <View className="mt-2 flex-row justify-end">
                         <Pressable
                             onPress={() => resetToDefault()}
-                            className="rounded-lg bg-gray-200 px-4 py-2 dark:bg-gray-700">
-                            <Text className="text-md text-right dark:text-white">Reset All</Text>
+                            className="dark:bg-darkCardBackgroundLvl1 rounded-lg bg-gray-200 px-4 py-2">
+                            <Text className="text-md dark:text-darkText text-right">Reset All</Text>
                         </Pressable>
                     </View>
                 </View>
-                <View className="mt-4 rounded-3xl  bg-white px-2 py-4 dark:bg-gray-700">
-                    <Text className="text-2xl font-bold  dark:text-white">Other:</Text>
+                <View className="dark:bg-darkCardBackground mt-4  rounded-3xl bg-white px-2 py-4">
+                    <Text className="dark:text-darkText text-2xl  font-bold">Other:</Text>
                     <View
                         style={{
                             borderBottomWidth: 0.5,
@@ -171,7 +171,7 @@ export default function Index() {
                     />
                     <Pressable onPress={() => router.push('/settings/feedback')}>
                         <View className="flex-row items-center">
-                            <Text className="mr-2 text-lg dark:text-white">Feedback</Text>
+                            <Text className="dark:text-darkText mr-2 text-lg">Feedback</Text>
                             <FontAwesome
                                 name="sign-in"
                                 size={20}
@@ -181,14 +181,16 @@ export default function Index() {
                     </Pressable>
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
                     <Pressable onPress={() => router.push('/settings/versionHistory')}>
                         <View className="flex-row items-center">
-                            <Text className="mr-2 text-lg  dark:text-white">Version History</Text>
+                            <Text className="dark:text-darkText mr-2  text-lg">
+                                Version History
+                            </Text>
                             <FontAwesome
                                 name="sign-in"
                                 size={20}
@@ -198,14 +200,14 @@ export default function Index() {
                     </Pressable>
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
                     <Pressable onPress={() => router.push('/settings/attributions')}>
                         <View className="flex-row items-center">
-                            <Text className="mr-2 text-lg  dark:text-white">Attributions</Text>
+                            <Text className="dark:text-darkText mr-2  text-lg">Attributions</Text>
                             <FontAwesome
                                 name="sign-in"
                                 size={20}
@@ -215,14 +217,14 @@ export default function Index() {
                     </Pressable>
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
                     <Pressable onPress={() => router.push('/settings/socials')}>
                         <View className="flex-row items-center">
-                            <Text className="mr-2 text-lg  dark:text-white">Socials</Text>
+                            <Text className="dark:text-darkText mr-2  text-lg">Socials</Text>
                             <FontAwesome
                                 color={isDark ? 'white' : 'grey'}
                                 name="sign-in"
@@ -232,8 +234,8 @@ export default function Index() {
                     </Pressable>
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />

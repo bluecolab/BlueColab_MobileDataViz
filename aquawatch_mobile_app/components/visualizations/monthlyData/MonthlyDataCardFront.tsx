@@ -67,7 +67,7 @@ export function MonthlyDataCardFront({
     return (
         <View className="h-[340] rounded-3xl bg-white px-2 dark:bg-gray-700">
             <View className="w-full self-center">
-                <Text className="rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-white">
+                <Text className="dark:text-darkText rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700">
                     {title}
                 </Text>
                 <FontAwesome
@@ -84,14 +84,14 @@ export function MonthlyDataCardFront({
                 <View className="mb-1 mt-1 w-full flex-row items-center justify-center gap-6">
                     <View className="flex-row items-center">
                         <View style={{ width: 12, height: 3, backgroundColor: '#2563eb' }} />
-                        <Text className="ml-2 text-xs text-black dark:text-white">
+                        <Text className="dark:text-darkText ml-2 text-xs text-black">
                             {selectedLocationTemp || 'Location 1'}
                         </Text>
                     </View>
                     {showSecondSet && (
                         <View className="flex-row items-center">
                             <View style={{ width: 12, height: 3, backgroundColor: '#f59e0b' }} />
-                            <Text className="ml-2 text-xs text-black dark:text-white">
+                            <Text className="dark:text-darkText ml-2 text-xs text-black">
                                 {selectedLocationTemp2 || 'Location 2'}
                             </Text>
                         </View>
@@ -99,7 +99,7 @@ export function MonthlyDataCardFront({
                 </View>
             )}
             <Text
-                className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black dark:text-white"
+                className="dark:text-darkText absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black"
                 key="month-label">
                 {month}
             </Text>

@@ -58,24 +58,24 @@ export default function AirQuality() {
                 options={{
                     headerTitle: 'Current Data',
                     headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        backgroundColor: isDark ? '#2C2C2E' : '#f7f7f7',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
                     headerBackTitle: 'Home',
                     headerRight,
                 }}
             />
-            <ScrollView className="h-full bg-defaultbackground dark:bg-defaultdarkbackground">
+            <ScrollView className="bg-lightBackground dark:bg-darkBackground h-full">
                 {/* — Title — */}
                 <View>
-                    <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
+                    <Text className="dark:text-darkText mt-7 text-center text-2xl font-bold">
                         Pace Campus AQI Data
                     </Text>
                 </View>
 
                 {aqiError && (
                     <View>
-                        <Text className="text-center text-xl font-bold dark:text-white">
+                        <Text className="dark:text-darkText dark:bg-darkCardBackground bg-lightCardBackground text-center text-xl font-bold">
                             {aqiError.message}
                         </Text>
                     </View>
@@ -83,19 +83,19 @@ export default function AirQuality() {
 
                 {/* US EPA AQI Display */}
                 {aqiData && (
-                    <View className="items-center px-4 py-4">
+                    <View className="dark:bg-darkCardBackground bg-lightCardBackground m-4 items-center rounded-xl px-4 py-4">
                         <View className="h-[200] w-[200]">
                             <View className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
-                                <Text className="text-center text-4xl font-bold dark:text-white">
+                                <Text className="dark:text-darkText text-center text-4xl font-bold">
                                     {aqi}
                                 </Text>
-                                <Text className="text-md text-center font-semibold dark:text-white">
+                                <Text className="text-md dark:text-darkText text-center font-semibold">
                                     {category}
                                 </Text>
                             </View>
                             <PolarChart percent={Math.round(percent)} isDark={isDark} />
                         </View>
-                        <Text className="mt-2 text-center text-sm dark:text-white">
+                        <Text className="dark:text-darkText mt-2 text-center text-sm">
                             US EPA Air Quality Index
                         </Text>
                         {dominantPollutant && (
@@ -107,9 +107,11 @@ export default function AirQuality() {
                 )}
 
                 <Pressable
-                    className="m-4 rounded-lg bg-blue-500 p-4"
+                    className="dark:bg-darkCardBackground bg-lightCardBackground m-4 rounded-lg p-4"
                     onPress={() => setModalVisible(true)}>
-                    <Text className="text-center text-white">View PurpleAir Dashboards</Text>
+                    <Text className="dark:text-darkText text-center text-black">
+                        View PurpleAir Dashboards
+                    </Text>
                 </Pressable>
 
                 <View className="flex flex-row flex-wrap">
@@ -131,17 +133,17 @@ export default function AirQuality() {
 
                 <Modal visible={modalVisible} animationType="slide">
                     <View className="flex-col justify-around">
-                        <View className="flex-row items-center justify-between bg-[#1c2b4b] px-4 py-3">
-                            <Text className="flex-1 text-lg font-bold text-white">
+                        <View className="dark:bg-darkCardBackground flex-row items-center justify-between px-4 py-3">
+                            <Text className="flex-1 text-xl font-bold text-white">
                                 Data Live from Blue CoLab!
                             </Text>
                             <Pressable onPress={() => setModalVisible(false)} className="p-1">
-                                <Text className="text-2xl font-bold text-white">✕</Text>
+                                <Text className="dark:text-darkText text-2xl font-bold">✕</Text>
                             </Pressable>
                         </View>
-                        <ScrollView className="dark:bg-defaultdarkbackground">
+                        <ScrollView className="dark:bg-darkBackground">
                             <View className="h-[500px] w-full">
-                                <Text className="text-center text-lg dark:text-white">
+                                <Text className="dark:bg-darkCardBackground dark:text-darkText text-center text-lg">
                                     Softball Field
                                 </Text>
                                 <WebView
@@ -153,7 +155,7 @@ export default function AirQuality() {
                                 />
                             </View>
                             <View className="h-[500px] w-full">
-                                <Text className="text-center text-lg dark:text-white">
+                                <Text className="dark:bg-darkCardBackground dark:text-darkText text-center text-lg">
                                     Nature Center
                                 </Text>
                                 <WebView

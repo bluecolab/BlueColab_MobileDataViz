@@ -70,24 +70,24 @@ export default function OdinData() {
                 options={{
                     headerTitle: 'Current Data',
                     headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        backgroundColor: isDark ? '#2C2C2E' : '#f7f7f7',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
                     headerBackTitle: 'Home',
                     headerRight,
                 }}
             />
-            <ScrollView className="h-full bg-defaultbackground dark:bg-defaultdarkbackground">
+            <ScrollView className="dark:bg-darkBackground bg-lightBackground h-full">
                 {/* — Title — */}
                 <View>
-                    <Text className="mt-7 text-center text-2xl font-bold dark:text-white">
+                    <Text className="dark:text-darkText mt-7 text-center text-2xl font-bold">
                         Odin Data
                     </Text>
                 </View>
 
                 {airError && (
                     <View>
-                        <Text className="text-center text-xl font-bold dark:text-white">
+                        <Text className="dark:text-darkText text-center text-xl font-bold">
                             {airError.message}
                         </Text>
                     </View>

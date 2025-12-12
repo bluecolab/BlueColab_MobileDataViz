@@ -28,10 +28,10 @@ export default function WQICardFront({ data, loading, wqi }: WQICardFrontProps) 
         : calculateWQI(filteredData, loading);
 
     return (
-        <View className="flex-1 items-center justify-center  rounded-3xl bg-white p-default dark:bg-gray-700 ">
+        <View className="dark:bg-darkCardBackground flex-1 items-center  justify-center rounded-3xl bg-white p-default ">
             <View className="h-[250] w-[300]">
                 <View className="w-[95%] self-center">
-                    <Text className="rounded-3xl bg-white p-1 text-center text-3xl font-bold dark:bg-gray-700 dark:text-white">
+                    <Text className="dark:text-darkText rounded-3xl bg-transparent p-1 text-center text-3xl font-bold">
                         WQI
                     </Text>
                     <FontAwesome
@@ -43,7 +43,7 @@ export default function WQICardFront({ data, loading, wqi }: WQICardFrontProps) 
                 </View>
                 <View style={{ height: 200 }}>
                     <View className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
-                        <Text className="text-3xl font-bold text-black dark:text-white">
+                        <Text className="dark:text-darkText text-3xl font-bold text-black">
                             {percentage}%
                         </Text>
                     </View>

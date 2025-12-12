@@ -3,7 +3,7 @@ import '../global.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 
-import ColorSchemeProvider, { useColorScheme } from '@/contexts/ColorSchemeContext';
+import ColorSchemeProvider from '@/contexts/ColorSchemeContext';
 import CurrentDataProvider from '@/contexts/CurrentDataContext';
 import UserSettingsProvider from '@/contexts/UserSettingsContext';
 
@@ -31,31 +31,19 @@ export default function RootLayout() {
             <UserSettingsProvider>
                 <CurrentDataProvider>
                     <ColorSchemeProvider>
-                        <InnerStack />
+                        <Stack>
+                            <Stack.Screen name="index" options={{ headerShown: false }} />
+                            <Stack.Screen
+                                name="settings"
+                                options={{
+                                    presentation: 'modal',
+                                    headerShown: false,
+                                }}
+                            />
+                        </Stack>
                     </ColorSchemeProvider>
                 </CurrentDataProvider>
             </UserSettingsProvider>
         </QueryClientProvider>
-    );
-}
-
-function InnerStack() {
-    const { isDark } = useColorScheme();
-
-    return (
-        <Stack
-            screenOptions={{
-                // set the stack's scene background so tab transitions don't flash white
-                contentStyle: { backgroundColor: isDark ? '#1a202c' : '#f1f1f1' },
-            }}>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen
-                name="settings"
-                options={{
-                    presentation: 'modal',
-                    headerShown: false,
-                }}
-            />
-        </Stack>
     );
 }

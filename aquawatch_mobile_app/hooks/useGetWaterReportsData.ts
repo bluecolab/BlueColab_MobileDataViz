@@ -21,8 +21,6 @@ export default function useGetWaterReportsData() {
 
             const url = `${base_url.data.api_address}/waterReports/latest/report/year/${year}`;
 
-            console.log('Fetching with React Query:', url);
-
             try {
                 const response = await axios.get(url, { timeout: TIMEOUT_MS });
                 const apiData = response.data;

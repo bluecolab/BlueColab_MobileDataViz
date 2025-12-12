@@ -75,7 +75,7 @@ export default function WaterReportAPI({ year, uri }: { year: string; uri: strin
 
     return (
         items.length > 0 && (
-            <ScrollView className="h-full bg-defaultbackground dark:bg-defaultdarkbackground">
+            <ScrollView className="bg-lightBackground h-full dark:bg-defaultdarkbackground">
                 <Text className="text-center text-4xl font-bold">{year}</Text>
                 <View className="flex flex-row flex-wrap">
                     {items

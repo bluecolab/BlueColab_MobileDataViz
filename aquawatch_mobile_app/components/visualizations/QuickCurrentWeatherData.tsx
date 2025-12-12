@@ -113,10 +113,10 @@
 //                         <View className="h-[200] w-[200]">
 //                             <View className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
 //                                 <>
-//                                     <Text className="text-center text-3xl font-bold dark:text-white">
+//                                     <Text className="text-center text-3xl font-bold dark:text-darkText">
 //                                         {aqi}
 //                                     </Text>
-//                                     <Text className="text-md text-center font-semibold dark:text-white">
+//                                     <Text className="text-md text-center font-semibold dark:text-darkText">
 //                                         {category}
 //                                     </Text>
 //                                 </>
@@ -124,11 +124,11 @@
 //                             <PolarChart percent={Math.round(percent)} isDark={false} />
 //                         </View>
 
-//                         <Text className="text-md  w-full text-center font-semibold dark:text-white">
+//                         <Text className="text-md  w-full text-center font-semibold dark:text-darkText">
 //                             Click to learn more about..
 //                         </Text>
 
-//                         <Text className="px-4  text-center text-xl font-semibold dark:text-white">
+//                         <Text className="px-4  text-center text-xl font-semibold dark:text-darkText">
 //                             Air Quality Index and Weather Data
 //                         </Text>
 //                     </View>

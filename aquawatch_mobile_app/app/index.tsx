@@ -32,7 +32,9 @@ function HeaderSettingsButton({
     );
 }
 
+const darkLogo = require('@/assets/icons/Pace_Black_Centered.png');
 const logo = require('@/assets/icons/Pace_White_KO_Centered.png');
+
 const titleCards = [
     {
         image: require('@/assets/homescreen/waterData.png'),
@@ -76,7 +78,7 @@ export default function Home() {
     const { refetchCurrent, loadingCurrent } = useCurrentData();
 
     return (
-        <SafeAreaView className="flex-1 bg-black dark:bg-black">
+        <SafeAreaView className="bg-lightBackground dark:bg-darkBackground flex-1">
             <ScrollView
                 contentContainerStyle={{ paddingBottom: 24 }}
                 refreshControl={
@@ -86,7 +88,6 @@ export default function Home() {
                         tintColor={isDark ? 'white' : 'black'}
                     />
                 }>
-                {/* Header area, simplified to match app style */}
                 <View className="relative px-4 pt-6">
                     <HeaderSettingsButton
                         onPress={() => router.push('/settings')}
@@ -95,28 +96,37 @@ export default function Home() {
                     />
                     <View className="items-center">
                         <Image
-                            source={logo}
+                            source={isDark ? logo : darkLogo}
                             className="w-full"
                             style={{ height: 56 }}
                             resizeMode="contain"
                         />
-                        <Text className="mt-2 text-center text-xl font-semibold text-white">
+                        <Text className="dark:text-darkText mt-2 text-center text-xl font-semibold">
                             Environmental Observatory
                         </Text>
                     </View>
                 </View>
 
-                {/* New list content preserved */}
-                <View className="mt-4 px-3">
+                <View className="mx-4 px-3">
                     {titleCards.map((card, index) => (
                         <HomepageCard key={index} {...card} />
                     ))}
+
+                    <Pressable
+                        onPress={() => router.push('/story')}
+                        className="dark:bg-darkCardBackground my-2 items-center rounded-md p-4">
+                        <Text className="dark:text-darkText items-center text-center text-sm">
+                            Click Here Learn more about Blue CoLab
+                        </Text>
+                    </Pressable>
                 </View>
 
                 {/* Footer text preserved */}
-                <View className="pb-6 pt-2">
-                    <Text className="text-center text-xs text-white/90">Gale Epstein Center</Text>
-                    <Text className="text-center text-xs text-white/90">
+                <View className="py-2">
+                    <Text className="dark:text-darkText text-center text-sm">
+                        Gale Epstein Center
+                    </Text>
+                    <Text className="dark:text-darkText text-center text-sm">
                         For Technology, Policy, and the Environment
                     </Text>
                 </View>
