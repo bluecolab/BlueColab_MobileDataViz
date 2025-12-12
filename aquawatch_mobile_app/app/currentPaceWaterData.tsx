@@ -68,7 +68,7 @@ export default function CurrentPaceWaterData() {
                 }}
             />
             <ScrollView
-                className="dark:bg-darkBackground bg-lightBackground h-full"
+                className="h-full bg-lightBackground dark:bg-darkBackground"
                 refreshControl={
                     <RefreshControl
                         refreshing={loadingCurrent}
@@ -78,14 +78,14 @@ export default function CurrentPaceWaterData() {
                 }>
                 {/* — Title — */}
                 <View>
-                    <Text className="dark:text-darkText/90 mt-7 text-center text-2xl font-bold">
+                    <Text className="mt-7 text-center text-2xl font-bold dark:text-darkText/90">
                         Choate Pond Data
                     </Text>
                 </View>
 
                 {waterError && (
                     <View>
-                        <Text className="dark:text-darkText/90 text-center text-xl font-bold">
+                        <Text className="text-center text-xl font-bold dark:text-darkText/90">
                             {waterError.message}
                         </Text>
                     </View>

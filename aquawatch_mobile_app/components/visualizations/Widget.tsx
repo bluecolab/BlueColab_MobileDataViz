@@ -199,20 +199,20 @@ export function Widget({ name, value, hideStatus }: WidgetProp) {
                 <FlipCard
                     flipCardRef={flipCardRef}
                     Front={
-                        <View className="dark:bg-darkCardBackground  bg-lightCardBackground relative h-[150] rounded-3xl p-6">
+                        <View className="relative  h-[150] rounded-3xl bg-lightCardBackground p-6 dark:bg-darkCardBackground">
                             <Pressable onPress={flipCard} className="absolute right-3 top-3">
                                 <FontAwesome name="info-circle" size={20} color="gray" />
                             </Pressable>
 
                             {/* -13px aligns water temperature with others */}
                             <Text
-                                className={`text-md dark:text-darkText text-center font-bold ${
+                                className={`text-md text-center font-bold dark:text-darkText ${
                                     name === 'Water Temperature' ? 'mt-[-13px]' : ''
                                 }`}>
                                 {name}
                             </Text>
                             <View className="mt-4 items-center">
-                                <Text className="dark:text-darkText text-base">{value}</Text>
+                                <Text className="text-base dark:text-darkText">{value}</Text>
                                 {!hideStatus && (
                                     <Text className={`text-sm italic ${color}`}>{label}</Text>
                                 )}
@@ -222,15 +222,15 @@ export function Widget({ name, value, hideStatus }: WidgetProp) {
                     Back={
                         <View className="h-[150]">
                             <ScrollView
-                                className="dark:bg-darkCardBackground h-full rounded-3xl bg-white p-4"
+                                className="h-full rounded-3xl bg-white p-4 dark:bg-darkCardBackground"
                                 contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
                                 keyboardShouldPersistTaps="handled" // Ensures ScrollView handles taps
                             >
                                 <Pressable onPress={flipCard}>
-                                    <Text className="dark:text-darkText mb-1 text-center font-bold">
+                                    <Text className="mb-1 text-center font-bold dark:text-darkText">
                                         {name}
                                     </Text>
-                                    <Text className="dark:text-darkText text-center text-sm">
+                                    <Text className="text-center text-sm dark:text-darkText">
                                         {DESCRIPTIONS[name]}
                                     </Text>
                                 </Pressable>

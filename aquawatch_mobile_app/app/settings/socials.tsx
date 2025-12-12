@@ -32,28 +32,28 @@ export default function Socials() {
                     headerTintColor: isDark ? 'white' : 'black',
                 }}
             />
-            <ScrollView className="dark:bg-darkBackground bg-lightBackground">
-                <View className="dark:bg-darkCardBackground m-default  rounded-3xl bg-white p-default tracking-tight">
-                    <Text className="dark:text-darkText text-xl font-bold text-black">
+            <ScrollView className="bg-lightBackground dark:bg-darkBackground">
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-darkCardBackground">
+                    <Text className="text-xl font-bold text-black dark:text-darkText">
                         Follow Us!
                     </Text>
 
-                    <Text className="dark:text-darkText pl-3 text-lg text-black">
+                    <Text className="pl-3 text-lg text-black dark:text-darkText">
                         <LinkComp
                             url={'https://www.instagram.com/bluecolab/'}
                             label={'Instagram'}
                         />
                     </Text>
-                    <Text className="dark:text-darkText pl-3 text-lg text-black">
+                    <Text className="pl-3 text-lg text-black dark:text-darkText">
                         <LinkComp url={'https://www.tiktok.com/@bluecolab'} label={'TikTok'} />
                     </Text>
-                    <Text className="dark:text-darkText pl-3 text-lg text-black">
+                    <Text className="pl-3 text-lg text-black dark:text-darkText">
                         <LinkComp url={'https://bluecolab.pace.edu/'} label={'Blue CoLab Blogs'} />
                     </Text>
-                    <Text className="dark:text-darkText pl-3 text-lg text-black">
+                    <Text className="pl-3 text-lg text-black dark:text-darkText">
                         <LinkComp url={'https://github.com/bluecolab'} label={'GitHub'} />
                     </Text>
-                    <Text className="dark:text-darkText pl-3 text-lg text-black">
+                    <Text className="pl-3 text-lg text-black dark:text-darkText">
                         <LinkComp
                             url={'https://www.instagram.com/righttoknowh2o/'}
                             label={'Right to Know H2O Instagram!'}

@@ -77,17 +77,17 @@ export default function OdinData() {
                     headerRight,
                 }}
             />
-            <ScrollView className="dark:bg-darkBackground bg-lightBackground h-full">
+            <ScrollView className="h-full bg-lightBackground dark:bg-darkBackground">
                 {/* — Title — */}
                 <View>
-                    <Text className="dark:text-darkText mt-7 text-center text-2xl font-bold">
+                    <Text className="mt-7 text-center text-2xl font-bold dark:text-darkText">
                         Odin Data
                     </Text>
                 </View>
 
                 {airError && (
                     <View>
-                        <Text className="dark:text-darkText text-center text-xl font-bold">
+                        <Text className="text-center text-xl font-bold dark:text-darkText">
                             {airError.message}
                         </Text>
                     </View>

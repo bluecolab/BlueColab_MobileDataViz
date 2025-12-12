@@ -118,7 +118,7 @@ export default function CurrentHudsonWaterData() {
                 }}
             />
             <ScrollView
-                className="dark:bg-darkBackground bg-lightBackground h-full"
+                className="h-full bg-lightBackground dark:bg-darkBackground"
                 refreshControl={
                     <RefreshControl
                         refreshing={false}
@@ -128,13 +128,13 @@ export default function CurrentHudsonWaterData() {
                 }>
                 {/* — Title — */}
                 <View>
-                    <Text className="dark:text-darkText mt-7 text-center text-2xl font-bold">
+                    <Text className="mt-7 text-center text-2xl font-bold dark:text-darkText">
                         {location?.name ?? 'Loading...'}
                     </Text>
                 </View>
 
                 <View>
-                    <Text className="dark:text-darkText mt-7 text-center text-xl font-bold">
+                    <Text className="mt-7 text-center text-xl font-bold dark:text-darkText">
                         Try other locations!
                     </Text>
                 </View>

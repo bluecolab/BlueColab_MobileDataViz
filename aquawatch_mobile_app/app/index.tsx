@@ -78,7 +78,7 @@ export default function Home() {
     const { refetchCurrent, loadingCurrent } = useCurrentData();
 
     return (
-        <SafeAreaView className="bg-lightBackground dark:bg-darkBackground flex-1">
+        <SafeAreaView className="flex-1 bg-lightBackground dark:bg-darkBackground">
             <ScrollView
                 contentContainerStyle={{ paddingBottom: 24 }}
                 refreshControl={
@@ -101,7 +101,7 @@ export default function Home() {
                             style={{ height: 56 }}
                             resizeMode="contain"
                         />
-                        <Text className="dark:text-darkText mt-2 text-center text-xl font-semibold">
+                        <Text className="mt-2 text-center text-xl font-semibold dark:text-darkText">
                             Environmental Observatory
                         </Text>
                     </View>
@@ -114,8 +114,8 @@ export default function Home() {
 
                     <Pressable
                         onPress={() => router.push('/story')}
-                        className="dark:bg-darkCardBackground my-2 items-center rounded-md p-4">
-                        <Text className="dark:text-darkText items-center text-center text-sm">
+                        className="my-2 items-center rounded-md p-4 dark:bg-darkCardBackground">
+                        <Text className="items-center text-center text-sm dark:text-darkText">
                             Click Here Learn more about Blue CoLab
                         </Text>
                     </Pressable>
@@ -123,10 +123,10 @@ export default function Home() {
 
                 {/* Footer text preserved */}
                 <View className="py-2">
-                    <Text className="dark:text-darkText text-center text-sm">
+                    <Text className="text-center text-sm dark:text-darkText">
                         Gale Epstein Center
                     </Text>
-                    <Text className="dark:text-darkText text-center text-sm">
+                    <Text className="text-center text-sm dark:text-darkText">
                         For Technology, Policy, and the Environment
                     </Text>
                 </View>

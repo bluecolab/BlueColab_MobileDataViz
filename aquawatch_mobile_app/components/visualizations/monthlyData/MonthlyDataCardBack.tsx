@@ -50,7 +50,7 @@ export function MonthlyDataCardBack({
             <ScrollView nestedScrollEnabled className=" rounded-3xl bg-white dark:bg-gray-700">
                 <Pressable onPress={flipCard}>
                     <View className="w-full self-center">
-                        <Text className="dark:text-darkText rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700">
+                        <Text className="rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-darkText">
                             {title}
                         </Text>
                         <FontAwesome
@@ -68,31 +68,31 @@ export function MonthlyDataCardBack({
                         }}
                     />
 
-                    <Text className="dark:text-darkText text-center text-lg font-semibold">
+                    <Text className="text-center text-lg font-semibold dark:text-darkText">
                         Quick Summary
                     </Text>
                     <View className="w-full flex-row items-center justify-center ">
                         <View className="flex-1">
-                            <Text className="dark:text-darkText text-center text-3xl font-bold">
+                            <Text className="text-center text-3xl font-bold dark:text-darkText">
                                 {overallMin === 'N/A' ? overallMin : overallMin.toFixed(1)}
                             </Text>
-                            <Text className="dark:text-darkText text-center">Low</Text>
+                            <Text className="text-center dark:text-darkText">Low</Text>
                         </View>
                         <View className="flex-1">
-                            <Text className="dark:text-darkText text-center text-3xl font-bold">
+                            <Text className="text-center text-3xl font-bold dark:text-darkText">
                                 {overallAvg === 'N/A' ? overallAvg : overallAvg.toFixed(1)}
                             </Text>
-                            <Text className="dark:text-darkText text-center">Average</Text>
+                            <Text className="text-center dark:text-darkText">Average</Text>
                         </View>
                         <View className="flex-1">
-                            <Text className="dark:text-darkText text-center text-3xl font-bold">
+                            <Text className="text-center text-3xl font-bold dark:text-darkText">
                                 {overallMax === 'N/A' ? overallMax : overallMax.toFixed(1)}
                             </Text>
-                            <Text className="dark:text-darkText text-center">High</Text>
+                            <Text className="text-center dark:text-darkText">High</Text>
                         </View>
                     </View>
 
-                    <Text className="dark:text-darkText text-center text-lg font-semibold">
+                    <Text className="text-center text-lg font-semibold dark:text-darkText">
                         Skew of Average
                     </Text>
 
@@ -112,15 +112,15 @@ export function MonthlyDataCardBack({
                         }}
                     />
 
-                    <Text className="dark:text-darkText text-lg font-semibold">
+                    <Text className="text-lg font-semibold dark:text-darkText">
                         What is {yAxisLabel}?
                     </Text>
                     <Text className="text-md dark:text-gray-300">{meta.description}</Text>
-                    <Text className="dark:text-darkText mt-4 text-lg font-semibold">
+                    <Text className="mt-4 text-lg font-semibold dark:text-darkText">
                         Why does it matter?
                     </Text>
                     <Text className="text-md dark:text-gray-300">{meta?.reason}</Text>
-                    <Text className="dark:text-darkText pt-4 text-lg font-semibold">
+                    <Text className="pt-4 text-lg font-semibold dark:text-darkText">
                         References
                     </Text>
                     {meta.ref &&

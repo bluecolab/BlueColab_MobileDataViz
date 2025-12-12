@@ -90,9 +90,9 @@ export default function Index() {
                     headerLeft,
                 }}
             />
-            <ScrollView className="dark:bg-darkBackground bg-lightBackground p-5">
-                <View className="dark:bg-darkCardBackground rounded-3xl bg-white px-2 py-4">
-                    <Text className="dark:text-darkText mr-4 text-2xl font-bold">
+            <ScrollView className="bg-lightBackground p-5 dark:bg-darkBackground">
+                <View className="rounded-3xl bg-white px-2 py-4 dark:bg-darkCardBackground">
+                    <Text className="mr-4 text-2xl font-bold dark:text-darkText">
                         Configurations:
                     </Text>
                     <View
@@ -103,7 +103,7 @@ export default function Index() {
                         }}
                     />
                     <View className=" flex-row items-center justify-between py-2">
-                        <Text className="dark:text-darkText ml-2 text-lg">
+                        <Text className="ml-2 text-lg dark:text-darkText">
                             Show Converted Units:
                         </Text>
                         <Pressable
@@ -155,13 +155,13 @@ export default function Index() {
                     <View className="mt-2 flex-row justify-end">
                         <Pressable
                             onPress={() => resetToDefault()}
-                            className="dark:bg-darkCardBackgroundLvl1 rounded-lg bg-gray-200 px-4 py-2">
-                            <Text className="text-md dark:text-darkText text-right">Reset All</Text>
+                            className="rounded-lg bg-gray-200 px-4 py-2 dark:bg-darkCardBackgroundLvl1">
+                            <Text className="text-md text-right dark:text-darkText">Reset All</Text>
                         </Pressable>
                     </View>
                 </View>
-                <View className="dark:bg-darkCardBackground mt-4  rounded-3xl bg-white px-2 py-4">
-                    <Text className="dark:text-darkText text-2xl  font-bold">Other:</Text>
+                <View className="mt-4 rounded-3xl  bg-white px-2 py-4 dark:bg-darkCardBackground">
+                    <Text className="text-2xl font-bold  dark:text-darkText">Other:</Text>
                     <View
                         style={{
                             borderBottomWidth: 0.5,
@@ -171,7 +171,7 @@ export default function Index() {
                     />
                     <Pressable onPress={() => router.push('/settings/feedback')}>
                         <View className="flex-row items-center">
-                            <Text className="dark:text-darkText mr-2 text-lg">Feedback</Text>
+                            <Text className="mr-2 text-lg dark:text-darkText">Feedback</Text>
                             <FontAwesome
                                 name="sign-in"
                                 size={20}
@@ -188,7 +188,7 @@ export default function Index() {
                     />
                     <Pressable onPress={() => router.push('/settings/versionHistory')}>
                         <View className="flex-row items-center">
-                            <Text className="dark:text-darkText mr-2  text-lg">
+                            <Text className="mr-2 text-lg  dark:text-darkText">
                                 Version History
                             </Text>
                             <FontAwesome
@@ -207,7 +207,7 @@ export default function Index() {
                     />
                     <Pressable onPress={() => router.push('/settings/attributions')}>
                         <View className="flex-row items-center">
-                            <Text className="dark:text-darkText mr-2  text-lg">Attributions</Text>
+                            <Text className="mr-2 text-lg  dark:text-darkText">Attributions</Text>
                             <FontAwesome
                                 name="sign-in"
                                 size={20}
@@ -224,7 +224,7 @@ export default function Index() {
                     />
                     <Pressable onPress={() => router.push('/settings/socials')}>
                         <View className="flex-row items-center">
-                            <Text className="dark:text-darkText mr-2  text-lg">Socials</Text>
+                            <Text className="mr-2 text-lg  dark:text-darkText">Socials</Text>
                             <FontAwesome
                                 color={isDark ? 'white' : 'grey'}
                                 name="sign-in"

@@ -65,17 +65,17 @@ export default function AirQuality() {
                     headerRight,
                 }}
             />
-            <ScrollView className="bg-lightBackground dark:bg-darkBackground h-full">
+            <ScrollView className="h-full bg-lightBackground dark:bg-darkBackground">
                 {/* — Title — */}
                 <View>
-                    <Text className="dark:text-darkText mt-7 text-center text-2xl font-bold">
+                    <Text className="mt-7 text-center text-2xl font-bold dark:text-darkText">
                         Pace Campus AQI Data
                     </Text>
                 </View>
 
                 {aqiError && (
                     <View>
-                        <Text className="dark:text-darkText dark:bg-darkCardBackground bg-lightCardBackground text-center text-xl font-bold">
+                        <Text className="bg-lightCardBackground text-center text-xl font-bold dark:bg-darkCardBackground dark:text-darkText">
                             {aqiError.message}
                         </Text>
                     </View>
@@ -83,19 +83,19 @@ export default function AirQuality() {
 
                 {/* US EPA AQI Display */}
                 {aqiData && (
-                    <View className="dark:bg-darkCardBackground bg-lightCardBackground m-4 items-center rounded-xl px-4 py-4">
+                    <View className="m-4 items-center rounded-xl bg-lightCardBackground px-4 py-4 dark:bg-darkCardBackground">
                         <View className="h-[200] w-[200]">
                             <View className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
-                                <Text className="dark:text-darkText text-center text-4xl font-bold">
+                                <Text className="text-center text-4xl font-bold dark:text-darkText">
                                     {aqi}
                                 </Text>
-                                <Text className="text-md dark:text-darkText text-center font-semibold">
+                                <Text className="text-md text-center font-semibold dark:text-darkText">
                                     {category}
                                 </Text>
                             </View>
                             <PolarChart percent={Math.round(percent)} isDark={isDark} />
                         </View>
-                        <Text className="dark:text-darkText mt-2 text-center text-sm">
+                        <Text className="mt-2 text-center text-sm dark:text-darkText">
                             US EPA Air Quality Index
                         </Text>
                         {dominantPollutant && (
@@ -107,9 +107,9 @@ export default function AirQuality() {
                 )}
 
                 <Pressable
-                    className="dark:bg-darkCardBackground bg-lightCardBackground m-4 rounded-lg p-4"
+                    className="m-4 rounded-lg bg-lightCardBackground p-4 dark:bg-darkCardBackground"
                     onPress={() => setModalVisible(true)}>
-                    <Text className="dark:text-darkText text-center text-black">
+                    <Text className="text-center text-black dark:text-darkText">
                         View PurpleAir Dashboards
                     </Text>
                 </Pressable>
@@ -133,17 +133,17 @@ export default function AirQuality() {
 
                 <Modal visible={modalVisible} animationType="slide">
                     <View className="flex-col justify-around">
-                        <View className="dark:bg-darkCardBackground flex-row items-center justify-between px-4 py-3">
+                        <View className="flex-row items-center justify-between px-4 py-3 dark:bg-darkCardBackground">
                             <Text className="flex-1 text-xl font-bold text-white">
                                 Data Live from Blue CoLab!
                             </Text>
                             <Pressable onPress={() => setModalVisible(false)} className="p-1">
-                                <Text className="dark:text-darkText text-2xl font-bold">✕</Text>
+                                <Text className="text-2xl font-bold dark:text-darkText">✕</Text>
                             </Pressable>
                         </View>
                         <ScrollView className="dark:bg-darkBackground">
                             <View className="h-[500px] w-full">
-                                <Text className="dark:bg-darkCardBackground dark:text-darkText text-center text-lg">
+                                <Text className="text-center text-lg dark:bg-darkCardBackground dark:text-darkText">
                                     Softball Field
                                 </Text>
                                 <WebView
@@ -155,7 +155,7 @@ export default function AirQuality() {
                                 />
                             </View>
                             <View className="h-[500px] w-full">
-                                <Text className="dark:bg-darkCardBackground dark:text-darkText text-center text-lg">
+                                <Text className="text-center text-lg dark:bg-darkCardBackground dark:text-darkText">
                                     Nature Center
                                 </Text>
                                 <WebView

@@ -29,12 +29,12 @@ interface ItemProps {
 
 const Item = ({ name, label, link, team, isLinkedin }: ItemProps) => (
     <View className="py-1">
-        <Text className="dark:text-darkText pl-3 text-lg text-black">{name}</Text>
-        <Text className="dark:text-darkText pl-6 text-lg text-black">
+        <Text className="pl-3 text-lg text-black dark:text-darkText">{name}</Text>
+        <Text className="pl-6 text-lg text-black dark:text-darkText">
             <LinkComp url={link} label={label} isLinkedin={isLinkedin} />
         </Text>
         {team.length > 0 ? (
-            <Text className="dark:text-darkText pl-6 text-lg text-black">
+            <Text className="pl-6 text-lg text-black dark:text-darkText">
                 Team: {team.join(', ')}
             </Text>
         ) : (
@@ -151,9 +151,9 @@ export default function Attributions() {
                 }}
             />
 
-            <ScrollView className="dark:bg-darkBackground bg-lightBackground`">
-                <View className="dark:bg-darkCardBackground m-default  rounded-3xl bg-white p-default tracking-tight">
-                    <Text className="dark:text-darkText text-xl font-bold text-black">
+            <ScrollView className="bg-lightBackground` dark:bg-darkBackground">
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-darkCardBackground">
+                    <Text className="text-xl font-bold text-black dark:text-darkText">
                         Main Sponsors:
                     </Text>
 
@@ -167,7 +167,7 @@ export default function Attributions() {
                                     className="mb-2 mt-2 h-32 w-32 rounded-lg"
                                     resizeMode="cover"
                                 />
-                                <Text className="dark:text-darkText text-lg text-black">
+                                <Text className="text-lg text-black dark:text-darkText">
                                     John Cronin
                                 </Text>
                                 <Text
@@ -193,7 +193,7 @@ export default function Attributions() {
                                 className="mb-2 mt-2 h-32 w-32 rounded-lg"
                                 resizeMode="cover"
                             />
-                            <Text className="dark:text-darkText text-lg text-black">
+                            <Text className="text-lg text-black dark:text-darkText">
                                 Leanne Keeley
                             </Text>
                             <Text
@@ -212,13 +212,13 @@ export default function Attributions() {
                         </View>
                     </View>
 
-                    <Text className="dark:text-darkText text-lg text-black">
+                    <Text className="text-lg text-black dark:text-darkText">
                         Our main sponsors who made this project possible.
                     </Text>
                 </View>
 
-                <View className="dark:bg-darkCardBackground m-default  rounded-3xl bg-white p-default tracking-tight">
-                    <Text className="dark:text-darkText text-xl font-bold text-black">
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-darkCardBackground">
+                    <Text className="text-xl font-bold text-black dark:text-darkText">
                         Core Team:
                     </Text>
                     {TEAM.map((item, index) => {
@@ -233,15 +233,15 @@ export default function Attributions() {
                             />
                         );
                     })}
-                    <Text className="dark:text-darkText pl-3 text-lg text-black">
+                    <Text className="pl-3 text-lg text-black dark:text-darkText">
                         They are the team members who officially worked on this app.
                     </Text>
                 </View>
-                <View className="dark:bg-darkCardBackground m-default  rounded-3xl bg-white p-default tracking-tight">
-                    <Text className="dark:text-darkText mt-2 text-xl font-bold text-black">
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-darkCardBackground">
+                    <Text className="mt-2 text-xl font-bold text-black dark:text-darkText">
                         Additional Mentions:
                     </Text>
-                    <Text className="dark:text-darkText text-lg text-black">
+                    <Text className="text-lg text-black dark:text-darkText">
                         We would like to give the following attributions:
                     </Text>
 
@@ -293,18 +293,18 @@ export default function Attributions() {
                         isLinkedin={true}
                     />
 
-                    <Text className="dark:text-darkText pl-3 text-lg text-black">
+                    <Text className="pl-3 text-lg text-black dark:text-darkText">
                         They provided mentorship and guidance regarding water health.
                     </Text>
 
-                    <Text className="dark:text-darkText text-lg text-black">
+                    <Text className="text-lg text-black dark:text-darkText">
                         Finally we would take a moment to thank all of supportive teams and testers
                         that worked along side us.
                     </Text>
                 </View>
 
-                <View className="dark:bg-darkCardBackground m-default  rounded-3xl bg-white p-default tracking-tight">
-                    <Text className="dark:text-darkText text-xl font-bold text-black">
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-darkCardBackground">
+                    <Text className="text-xl font-bold text-black dark:text-darkText">
                         Data Providers:
                     </Text>
 
@@ -332,8 +332,8 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                 </View>
-                <View className="dark:bg-darkCardBackground m-default  rounded-3xl bg-white p-default tracking-tight">
-                    <Text className="dark:text-darkText text-xl font-bold text-black">
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-darkCardBackground">
+                    <Text className="text-xl font-bold text-black dark:text-darkText">
                         Software packages:
                     </Text>
 
@@ -569,8 +569,8 @@ export default function Attributions() {
                         isLinkedin={false}
                     />
                 </View>
-                <View className="dark:bg-darkCardBackground m-default  rounded-3xl bg-white p-default tracking-tight">
-                    <Text className="dark:text-darkText text-xl font-bold text-black">Assets:</Text>
+                <View className="m-default rounded-3xl  bg-white p-default tracking-tight dark:bg-darkCardBackground">
+                    <Text className="text-xl font-bold text-black dark:text-darkText">Assets:</Text>
                     <Item
                         name="Max Okhrimenko"
                         label="Water Animation (Loading Animation)"
