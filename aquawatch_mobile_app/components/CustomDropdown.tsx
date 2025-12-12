@@ -69,7 +69,7 @@ export default function CustomDropdown({
                 selectedValue={value}
                 onValueChange={(itemValue) => onSelect(String(itemValue))}
                 style={{
-                    backgroundColor: isDark ? '#333333' : 'white',
+                    backgroundColor: isDark ? '#48484A' : 'white',
                     color: isDark ? 'white' : 'black',
                     height: 50,
                 }}>
@@ -78,7 +78,7 @@ export default function CustomDropdown({
                         key={option.value}
                         label={option.label}
                         value={option.value}
-                        color={isDark ? 'white' : 'black'}
+                        color={isDark ? 'black' : 'black'}
                     />
                 ))}
             </Picker>

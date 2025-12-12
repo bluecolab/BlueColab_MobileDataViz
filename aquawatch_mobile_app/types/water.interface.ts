@@ -98,7 +98,16 @@ export interface BlueCoLabData {
     };
 }
 
-export type ParameterName = 'Cond' | 'DO' | 'DOpct' | 'pH' | 'Temp' | 'Turb' | 'Sal';
+export type ParameterName =
+    | 'Cond'
+    | 'DO'
+    | 'DOpct'
+    | 'pH'
+    | 'Temp'
+    | 'Turb'
+    | 'Sal'
+    | 'Tide1'
+    | 'Tide2';
 
 export interface CleanedWaterData {
     timestamp: string;
@@ -109,6 +118,8 @@ export interface CleanedWaterData {
     Temp?: number;
     Turb?: number;
     Sal?: number;
+    Tide1?: number;
+    Tide2?: number;
 }
 
 export type SensorData = {
@@ -133,6 +144,8 @@ export interface CurrentData {
     turbUnit: string;
     sal: number | string;
     salUnit: string;
+    tide: number | string;
+    tideUnit: string;
     wqi: number | string;
     airTemp?: number | string;
     humidity?: number | string;
@@ -162,6 +175,20 @@ export type OdinData = {
     };
 };
 
+export type USAQIData = {
+    aqi: number;
+    category: string;
+    dominantPollutant: string;
+    pollutantAQIs: {
+        pm25: number;
+        pm10: number;
+        o3: number;
+        co: number;
+        so2: number;
+        no2: number;
+    };
+};
+
 export type OpenWeatherAQI = {
     coord: {
         lon: number;
@@ -185,4 +212,5 @@ export type OpenWeatherAQI = {
             dt: number;
         },
     ];
+    usAQI?: USAQIData;
 };

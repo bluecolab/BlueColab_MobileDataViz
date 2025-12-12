@@ -1,82 +1,24 @@
 import axios, { isAxiosError } from 'axios';
 import { useNetworkState } from 'expo-network';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
-import { config, useAPIConfig } from '@/hooks/useConfig';
-import { LocationType } from '@/types/config.interface';
-import {
-    CleanedWaterData,
-    WaterServicesData,
-    ParameterName,
-    TimeSeries,
-    BlueCoLabData,
-} from '@/types/water.interface';
+import { config } from '@/hooks/useConfig';
+import { LocationType } from '@/types/location.type';
+import { CleanedWaterData } from '@/types/water.interface';
+import { cleanChoatePondData } from '@/utils/data/cleanChoatePondData';
+import { cleanHudsonRiverData } from '@/utils/data/cleanHudsonRiverData';
 import getMetadata from '@/utils/getMetadata';
 
+import { getWaterAPIURL } from './getWaterAPIURL';
+
 export default function useGetWaterData() {
-    const { usgsParameterMappings, stationIds } = getMetadata();
-    const { BLUE_COLAB_API_CONFIG } = config;
-    const { getAPIUrl } = useAPIConfig();
+    const { stationIds } = getMetadata();
+    const { BLUE_COLAB_WATER_API_CONFIG } = config;
+    const { getAPIUrl } = getWaterAPIURL();
 
     const networkState = useNetworkState();
 
-    const USGSParameterMappingsEnum = useMemo(
-        () =>
-            Object.fromEntries(
-                Object.entries(usgsParameterMappings).map(([key, value]) => [key, value])
-            ) as { [key: string]: string },
-        [usgsParameterMappings]
-    );
-
-    const cleanHudsonRiverData = useCallback(
-        (rawData: WaterServicesData) => {
-            if (!rawData?.value?.timeSeries) {
-                console.error('Here Invalid data format');
-                return [];
-            }
-
-            const parsedData: CleanedWaterData[] = [];
-
-            rawData.value.timeSeries.forEach((series: TimeSeries) => {
-                const paramCode = series.variable.variableCode[0].value;
-                const paramName = USGSParameterMappingsEnum[paramCode];
-
-                if (!paramName) return; // Skip unneeded parameters
-
-                const valuesList =
-                    series.values[0].value.length > 0
-                        ? series.values[0].value
-                        : (series.values[1]?.value ?? []);
-
-                valuesList.forEach((entry) => {
-                    const timestamp = entry.dateTime;
-                    const value = parseFloat(entry.value);
-
-                    let existingEntry = parsedData.find((data) => data.timestamp === timestamp);
-
-                    if (!existingEntry) {
-                        existingEntry = {
-                            timestamp,
-                        } as CleanedWaterData;
-                        parsedData.push(existingEntry);
-                    }
-                    (existingEntry as any)[paramName as ParameterName] = value;
-                });
-            });
-            return parsedData;
-        },
-        [USGSParameterMappingsEnum]
-    );
-
-    const cleanChoatePondData = useCallback((rawData: BlueCoLabData[]) => {
-        return rawData.map((item: BlueCoLabData) => {
-            const { sensors, timestamp } = item;
-            return { timestamp, ...sensors } as CleanedWaterData;
-        });
-    }, []);
-
-    // Legacy setter-based fetch function (used by GraphDataContext, etc.)
-    const fetchData = useCallback(
+    const fetchWaterData = useCallback(
         async (
             defaultLocation: LocationType,
             isCurrentData: boolean,
@@ -89,30 +31,33 @@ export default function useGetWaterData() {
                 throw new Error('No internet connection');
             }
 
-            const url = getAPIUrl(
-                defaultLocation,
-                isCurrentData,
-                year,
-                month,
-                start_day,
-                end_day,
-                stationIds
-            );
-
-            console.log('Fetching with React Query:', url);
-
             try {
+                const url = getAPIUrl(
+                    defaultLocation,
+                    isCurrentData,
+                    year,
+                    month,
+                    start_day,
+                    end_day,
+                    stationIds
+                );
+
                 const response = await axios.get(url);
                 const apiData = response.data;
 
-                if (
-                    BLUE_COLAB_API_CONFIG.validMatches.some(
-                        (loc) => loc.name === defaultLocation.name
-                    )
-                ) {
+                const isBlueColab = BLUE_COLAB_WATER_API_CONFIG.validMatches.some(
+                    (loc) => loc.name === defaultLocation.name
+                );
+                const isUSGS = config.USGS_WATER_SERVICES_API_CONFIG.validMatches.some(
+                    (loc) => loc.name === defaultLocation.name
+                );
+
+                if (isBlueColab) {
                     return cleanChoatePondData(apiData);
-                } else {
+                } else if (isUSGS) {
                     return cleanHudsonRiverData(apiData);
+                } else {
+                    throw new Error('Invalid location provided');
                 }
             } catch (error) {
                 // Log the original error for debugging
@@ -137,13 +82,11 @@ export default function useGetWaterData() {
             getAPIUrl,
             stationIds,
             networkState.isInternetReachable,
-            BLUE_COLAB_API_CONFIG.validMatches,
-            cleanChoatePondData,
-            cleanHudsonRiverData,
+            BLUE_COLAB_WATER_API_CONFIG.validMatches,
         ]
     );
 
     return {
-        fetchData, // Export the new promise-based function
+        fetchWaterData,
     };
 }

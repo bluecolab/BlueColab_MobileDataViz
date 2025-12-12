@@ -2,7 +2,7 @@
   "expo": {
     "name": "AquaWatch Mobile",
     "slug": "AquaWatch_Mobile",
-    "version": "1.9.4",
+    "version": "1.9.5",
     "scheme": "expo-nav-template",
     "web": {
       "bundler": "metro",
@@ -50,7 +50,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.bluecolab.aquawatchmobile",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "We use your location to show you nearby stations of interest near you."
+        "NSLocationWhenInUseUsageDescription": "We use your location to show you nearby stations of interest near you.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {

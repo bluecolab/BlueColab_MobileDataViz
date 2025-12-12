@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react';
 import { Dimensions, View, Text } from 'react-native';
 
-import { useGraphData } from '@/contexts/GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
-import dataUtils, { DailySummaryType } from '@/utils/dataUtils';
-import normalize from '@/utils/normalize';
+import dataUtils, { DailySummaryType } from '@/utils/data/dataUtils';
+import normalize from '@/utils/data/normalize';
 
 import { MonthlyDataCardFront } from './MonthlyDataCardFront';
 
@@ -16,6 +15,9 @@ interface ComparisonCardProps {
     defaultTempUnit: string | undefined;
     unitMap: Record<string, string | null>;
     selectedMonth: string;
+    selectedLocationTemp: string | undefined;
+    selectedLocationTemp2: string | undefined;
+    normalizeComparative: boolean;
     showConvertedUnits?: boolean;
 }
 
@@ -30,11 +32,13 @@ export default function ComparisonCard({
     defaultTempUnit,
     unitMap,
     selectedMonth,
+    normalizeComparative,
+    selectedLocationTemp,
+    selectedLocationTemp2,
     showConvertedUnits,
 }: ComparisonCardProps) {
     const { generateDataSummary } = dataUtils();
     const { normalizeDailySummary } = normalize();
-    const { normalizeComparative } = useGraphData();
     // If converted units are OFF, auto-normalize to avoid one series appearing flattened
     const useNormalization = normalizeComparative || !showConvertedUnits;
 
@@ -104,31 +108,31 @@ export default function ComparisonCard({
         <View className="mt-1 flex-row items-center justify-center gap-4">
             <View className="flex-row items-center">
                 <View style={{ width: 12, height: 12, backgroundColor: 'blue', marginRight: 6 }} />
-                <Text className="dark:text-white">Conductivity</Text>
+                <Text className="dark:text-darkText">Conductivity</Text>
             </View>
             <View className="flex-row items-center">
                 <View
                     style={{ width: 12, height: 12, backgroundColor: '#10b981', marginRight: 6 }}
                 />
-                <Text className="dark:text-white">Salinity</Text>
+                <Text className="dark:text-darkText">Salinity</Text>
             </View>
         </View>
     );
 
     // Render using the existing Front card UI for consistency
     return (
-        <View style={{ width, marginTop: 10 }}>
-            <View className="z-10 h-[340] w-[95%] self-center">
-                <View style={{ marginTop: 5, width: containerWidth, height: '100%' }}>
-                    <MonthlyDataCardFront
-                        loading={loading}
-                        dailySummary={combinedDaily}
-                        error={error}
-                        month={selectedMonth}
-                        title={title}
-                        legend={legend}
-                    />
-                </View>
+        <View className="z-10 mt-10 h-[340] w-[95%] self-center">
+            <View style={{ marginTop: 5, width: containerWidth, height: '100%' }}>
+                <MonthlyDataCardFront
+                    loading={loading}
+                    dailySummary={combinedDaily}
+                    error={error}
+                    month={selectedMonth}
+                    title={title}
+                    legend={legend}
+                    selectedLocationTemp={selectedLocationTemp}
+                    selectedLocationTemp2={selectedLocationTemp2}
+                />
             </View>
         </View>
     );
