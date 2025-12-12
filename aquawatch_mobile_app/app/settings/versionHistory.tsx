@@ -695,6 +695,179 @@ export default function VersionHistory() {
                         />{' '}
                         by @iTsThermo)
                     </Text>
+
+                    <Text className="mt-2 text-gray-700 dark:text-gray-300">- v1.9.5:</Text>
+
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Update privacy policy (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/286"
+                            label="#286"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Update copyright holder in LICENSE file (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/289"
+                            label="#289"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Created a hardcoded safe and not safe label for water report (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/295"
+                            label="#295"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-0030 - Add support to historic data to compare different
+                        locations/months (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/297"
+                            label="#297"
+                        />{' '}
+                        by @tylercyeung)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Security Updates (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/300"
+                            label="#300"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Fixed bug causing NYC data to be unreachable (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/304"
+                            label="#304"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Bump glob from 10.4.5 to 10.5.0 in /aquawatch_mobile_app (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/305"
+                            label="#305"
+                        />{' '}
+                        by @dependabot[bot])
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Add back conductivity (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/306"
+                            label="#306"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-0097: Add tide data support to Hudson River locations with timestamp
+                        normalization (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/299"
+                            label="#299"
+                        />{' '}
+                        by @Copilot)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Added functionality for closest station water quality (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/307"
+                            label="#307"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - npm audit fix (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/309"
+                            label="#309"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Water report cleanup (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/308"
+                            label="#308"
+                        />{' '}
+                        by @liziimedo)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Removed console logs and small ui change (for @iTsThermo ) (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/310"
+                            label="#310"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-102-103 - Water reports via the API (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/311"
+                            label="#311"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Awm 0104 add story of where pace water comes from to app (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/316"
+                            label="#316"
+                        />{' '}
+                        by @iTsThermo)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-0107 - Cronin UI Attempt 2 [Do not merge yet] (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/313"
+                            label="#313"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-0110 - Fix open weather API to get US AQI (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/321"
+                            label="#321"
+                        />{' '}
+                        by @Copilot)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-0115 - Add PurpleAir widgets to app (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/324"
+                            label="#324"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - Update packages to latest (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/322"
+                            label="#322"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-0116-0080 - Re-architecture to support Cronin UI (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/327"
+                            label="#327"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
+                    <Text className="ml-3 text-gray-700 dark:text-gray-300">
+                        - AWM-0117 - Add back Historic Data (
+                        <LinkComp
+                            url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/329"
+                            label="#329"
+                        />{' '}
+                        by @OkuraKenG)
+                    </Text>
                 </View>
 
                 <View className="pb-[90]"></View>
