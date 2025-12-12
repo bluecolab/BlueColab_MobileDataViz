@@ -68,9 +68,9 @@ export function MonthlyDataCardFront({
     }
 
     return (
-        <View className="dark:bg-darkCardBackground h-[340] rounded-3xl bg-white px-2 ">
+        <View className="h-[340] rounded-3xl bg-white px-2 dark:bg-darkCardBackground ">
             <View className="w-full self-center">
-                <Text className="dark:text-darkText dark:bg-darkCardBackground rounded-3xl bg-white p-1 text-center text-2xl font-bold">
+                <Text className="rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-darkCardBackground dark:text-darkText">
                     {title}
                 </Text>
                 <FontAwesome
@@ -87,14 +87,14 @@ export function MonthlyDataCardFront({
                 <View className="mb-1 mt-1 w-full flex-row items-center justify-center gap-6">
                     <View className="flex-row items-center">
                         <View style={{ width: 12, height: 3, backgroundColor: '#2563eb' }} />
-                        <Text className="dark:text-darkText ml-2 text-xs text-black">
+                        <Text className="ml-2 text-xs text-black dark:text-darkText">
                             {selectedLocationTemp || 'Location 1'}
                         </Text>
                     </View>
                     {showSecondSet && (
                         <View className="flex-row items-center">
                             <View style={{ width: 12, height: 3, backgroundColor: '#f59e0b' }} />
-                            <Text className="dark:text-darkText ml-2 text-xs text-black">
+                            <Text className="ml-2 text-xs text-black dark:text-darkText">
                                 {selectedLocationTemp2 || 'Location 2'}
                             </Text>
                         </View>
@@ -102,7 +102,7 @@ export function MonthlyDataCardFront({
                 </View>
             )}
             <Text
-                className="dark:text-darkText absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black"
+                className="absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-black dark:text-darkText"
                 key="month-label">
                 {month}
             </Text>

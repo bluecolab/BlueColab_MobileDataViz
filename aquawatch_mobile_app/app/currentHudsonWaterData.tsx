@@ -118,7 +118,7 @@ export default function CurrentHudsonWaterData() {
                 }}
             />
             <ScrollView
-                className="bg-lightBackground dark:bg-darkBackground h-full"
+                className="h-full bg-lightBackground dark:bg-darkBackground"
                 refreshControl={
                     <RefreshControl
                         refreshing={false}
@@ -128,13 +128,13 @@ export default function CurrentHudsonWaterData() {
                 }>
                 {/* — Title — */}
                 <View>
-                    <Text className="dark:text-darkText mt-7 text-center text-2xl font-bold">
+                    <Text className="mt-7 text-center text-2xl font-bold dark:text-darkText">
                         {location?.name ?? 'Loading...'}
                     </Text>
                 </View>
 
                 <View>
-                    <Text className="dark:text-darkText mt-7 text-center text-xl font-bold">
+                    <Text className="mt-7 text-center text-xl font-bold dark:text-darkText">
                         Try other locations!
                     </Text>
                 </View>
@@ -156,8 +156,8 @@ export default function CurrentHudsonWaterData() {
 
                 <Pressable
                     onPress={() => router.push(`/historicData?location=${location?.name}`)}
-                    className="dark:bg-darkCardBackground mx-4 my-2 items-center rounded-xl p-4">
-                    <Text className="dark:text-darkText items-center text-center text-sm">
+                    className="mx-4 my-2 items-center rounded-xl p-4 dark:bg-darkCardBackground">
+                    <Text className="items-center text-center text-sm dark:text-darkText">
                         Historic {location?.name} Pond Data
                     </Text>
                 </Pressable>

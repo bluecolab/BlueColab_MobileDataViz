@@ -306,8 +306,8 @@ export default function HistoricData() {
                 }}
             />
             <View className="flex-1">
-                <ScrollView className="bg-lightBackground dark:bg-darkBackground h-full">
-                    <Text className="dark:text-darkText dark:bg-darkCardBackground mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold">
+                <ScrollView className="h-full bg-lightBackground dark:bg-darkBackground">
+                    <Text className="mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-darkCardBackground dark:text-darkText">
                         {locationOptions.find((option) => option.value === selectedLocation)?.label}{' '}
                         -{' '}
                         {
@@ -397,17 +397,17 @@ export default function HistoricData() {
                         <>
                             <View className="absolute right-8 top-3">
                                 <Pressable onPress={() => modalRef.current?.closeModal()}>
-                                    <Text className="dark:text-darkText text-2xl">✕</Text>
+                                    <Text className="text-2xl dark:text-darkText">✕</Text>
                                 </Pressable>
                             </View>
 
-                            <View className="elevation-[20] dark:bg-darkCardBackground z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default">
-                                <Text className="dark:text-darkText text-center text-lg font-bold">
+                            <View className="elevation-[20] z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default dark:bg-darkCardBackground">
+                                <Text className="text-center text-lg font-bold dark:text-darkText">
                                     Historic Data Settings
                                 </Text>
                             </View>
-                            <View className="elevation-[20] dark:bg-darkCardBackground z-10 w-full rounded-xl bg-gray-200 p-default">
-                                <Text className="dark:text-darkText text-center text-lg font-bold">
+                            <View className="elevation-[20] z-10 w-full rounded-xl bg-gray-200 p-default dark:bg-darkCardBackground">
+                                <Text className="text-center text-lg font-bold dark:text-darkText">
                                     Location 1
                                 </Text>
 
@@ -440,7 +440,7 @@ export default function HistoricData() {
 
                                 <View className="border-b border-gray-300 dark:border-gray-600" />
 
-                                <Text className="dark:text-darkText mt-2 text-center text-lg font-bold">
+                                <Text className="mt-2 text-center text-lg font-bold dark:text-darkText">
                                     Location 2
                                 </Text>
                                 <Text className="-mt-1 text-center text-xs text-gray-600 dark:text-gray-300">
@@ -474,7 +474,7 @@ export default function HistoricData() {
                                 </View>
 
                                 <View className="flex-row items-center justify-end pb-4">
-                                    <Text className="dark:text-darkText mr-2 text-lg">
+                                    <Text className="mr-2 text-lg dark:text-darkText">
                                         Normalize month (0–1)
                                     </Text>
                                     <Pressable

@@ -68,7 +68,7 @@ export default function CurrentPaceWaterData() {
                 }}
             />
             <ScrollView
-                className="bg-lightBackground dark:bg-darkBackground h-full"
+                className="h-full bg-lightBackground dark:bg-darkBackground"
                 refreshControl={
                     <RefreshControl
                         refreshing={loadingCurrent}
@@ -78,14 +78,14 @@ export default function CurrentPaceWaterData() {
                 }>
                 {/* — Title — */}
                 <View>
-                    <Text className="dark:text-darkText/90 mt-7 text-center text-2xl font-bold">
+                    <Text className="mt-7 text-center text-2xl font-bold dark:text-darkText/90">
                         Choate Pond Data
                     </Text>
                 </View>
 
                 {waterError && (
                     <View>
-                        <Text className="dark:text-darkText/90 text-center text-xl font-bold">
+                        <Text className="text-center text-xl font-bold dark:text-darkText/90">
                             {waterError.message}
                         </Text>
                     </View>
@@ -93,8 +93,8 @@ export default function CurrentPaceWaterData() {
 
                 <Pressable
                     onPress={() => router.push('/historicData?location=Choate Pond')}
-                    className="dark:bg-darkCardBackground mx-4 my-2 items-center rounded-xl p-4">
-                    <Text className="dark:text-darkText items-center text-center text-sm">
+                    className="mx-4 my-2 items-center rounded-xl p-4 dark:bg-darkCardBackground">
+                    <Text className="items-center text-center text-sm dark:text-darkText">
                         Historic Choate Pond Data
                     </Text>
                 </Pressable>
