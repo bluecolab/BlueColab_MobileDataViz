@@ -14,7 +14,8 @@
         "public/*",
         "cspell-ext.json"
     ],
-    "ignoreWords": [
+    "words": [
+        "APIURL",
         "okaykenji",
         "Nunito",
         "wght",
@@ -99,9 +100,7 @@
         "bluecolab",
         "Pleasantville",
         "Ashokan",
-        "USAQI"
-    ],
-    "words": [
+        "USAQI",
         "Acipenser",
         "Alosa",
         "Ardea",

@@ -178,9 +178,10 @@ export type DescriptionKeys = keyof typeof DESCRIPTIONS;
 interface WidgetProp {
     name: DescriptionKeys;
     value: number | string;
+    hideStatus?: boolean;
 }
 
-export function Widget({ name, value }: WidgetProp) {
+export function Widget({ name, value, hideStatus }: WidgetProp) {
     const numericValue = parseFloat(value.toString());
     const { label, color } = getStatusAndColor(name, numericValue);
 
@@ -198,36 +199,38 @@ export function Widget({ name, value }: WidgetProp) {
                 <FlipCard
                     flipCardRef={flipCardRef}
                     Front={
-                        <View className="relative h-[150] rounded-3xl bg-white p-6 dark:bg-gray-700">
+                        <View className="relative  h-[150] rounded-3xl bg-lightCardBackground p-6 dark:bg-darkCardBackground">
                             <Pressable onPress={flipCard} className="absolute right-3 top-3">
                                 <FontAwesome name="info-circle" size={20} color="gray" />
                             </Pressable>
 
                             {/* -13px aligns water temperature with others */}
                             <Text
-                                className={`text-md text-center font-bold dark:text-white ${
+                                className={`text-md text-center font-bold dark:text-darkText ${
                                     name === 'Water Temperature' ? 'mt-[-13px]' : ''
                                 }`}>
                                 {name}
                             </Text>
                             <View className="mt-4 items-center">
-                                <Text className="text-base dark:text-white">{value}</Text>
-                                <Text className={`text-sm italic ${color}`}>{label}</Text>
+                                <Text className="text-base dark:text-darkText">{value}</Text>
+                                {!hideStatus && (
+                                    <Text className={`text-sm italic ${color}`}>{label}</Text>
+                                )}
                             </View>
                         </View>
                     }
                     Back={
                         <View className="h-[150]">
                             <ScrollView
-                                className="h-full rounded-3xl bg-white p-4 dark:bg-gray-700"
+                                className="h-full rounded-3xl bg-white p-4 dark:bg-darkCardBackground"
                                 contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
                                 keyboardShouldPersistTaps="handled" // Ensures ScrollView handles taps
                             >
                                 <Pressable onPress={flipCard}>
-                                    <Text className="mb-1 text-center font-bold dark:text-white">
+                                    <Text className="mb-1 text-center font-bold dark:text-darkText">
                                         {name}
                                     </Text>
-                                    <Text className="text-center text-sm dark:text-white">
+                                    <Text className="text-center text-sm dark:text-darkText">
                                         {DESCRIPTIONS[name]}
                                     </Text>
                                 </Pressable>

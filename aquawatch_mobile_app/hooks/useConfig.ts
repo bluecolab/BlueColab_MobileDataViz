@@ -1,12 +1,7 @@
-import { useMemo } from 'react';
-
-import { Config, LocationType } from '@/types/config.interface';
-
 export const config = {
-    // Not sure why only lets me query a minimum of 5 hours
     BLUE_COLAB_API_ODIN_URL: 'https://colabprod01.pace.edu/api/influx/sensordata/Odin',
     BLUE_COLAB_API_URL: 'https://colabprod01.pace.edu/api/influx/sensordata',
-    BLUE_COLAB_API_CONFIG: {
+    BLUE_COLAB_WATER_API_CONFIG: {
         defaultMeasurement: 'Alan',
         currentDataQuery: 'delta?days=1',
         rangeDataQuery: (year: number, month: number, start_day: number, end_day: number) =>
@@ -35,16 +30,6 @@ export const config = {
                     2,
                     '0'
                 )}&format=${config.USGS_WATER_SERVICES_API_CONFIG.format}&parameterCd=${config.USGS_WATER_SERVICES_API_CONFIG.parameterCd}`,
-        // validMatches: [
-        //     'New York City',
-        //     'Piermont',
-        //     'West Point',
-        //     'Poughkeepsie',
-        //     'Albany',
-        //     'Cohoes',
-        //     'Gowanda',
-        //     'Bronx River',
-        // ],
         validMatches: [
             { name: 'Nearest Station' },
             { name: 'Bronx River', lat: 40.86230556, long: -73.87438889 },
@@ -58,92 +43,4 @@ export const config = {
         ],
     },
     OPEN_WEATHER_API_URL: 'https://api.openweathermap.org',
-} as Config;
-
-export const useAPIConfig = () => {
-    const getBlueColabQuery = useMemo(
-        () =>
-            (
-                isCurrentData: boolean,
-                year: number,
-                month: number,
-                start_day: number,
-                end_day: number
-            ) => {
-                return isCurrentData
-                    ? `${config.BLUE_COLAB_API_CONFIG.defaultMeasurement}/${config.BLUE_COLAB_API_CONFIG.currentDataQuery}`
-                    : `${config.BLUE_COLAB_API_CONFIG.defaultMeasurement}/${config.BLUE_COLAB_API_CONFIG.rangeDataQuery(year, month, start_day, end_day)}`;
-            },
-        []
-    );
-
-    const getUSGSQuery = useMemo(
-        () =>
-            (
-                isCurrentData: boolean,
-                stationId: string,
-                year: number,
-                month: number,
-                start_day: number,
-                end_day: number
-            ) => {
-                return isCurrentData
-                    ? config.USGS_WATER_SERVICES_API_CONFIG.currentDataQuery(stationId)
-                    : config.USGS_WATER_SERVICES_API_CONFIG.rangeDataQuery(
-                          stationId,
-                          year,
-                          month,
-                          start_day,
-                          end_day
-                      );
-            },
-        []
-    );
-
-    const getAPIUrl = useMemo(
-        () =>
-            (
-                // Updated type from string to name, lat, long
-                defaultLocation: LocationType,
-                isCurrentData: boolean,
-                year: number,
-                month: number,
-                start_day: number,
-                end_day: number,
-                stationIds: { [key: string]: string }
-            ) => {
-                let baseURL = '';
-                let query = '';
-
-                if (
-                    config.BLUE_COLAB_API_CONFIG.validMatches.some(
-                        (loc) => loc.name === defaultLocation.name
-                    )
-                ) {
-                    baseURL = config.BLUE_COLAB_API_URL;
-                    query = getBlueColabQuery(isCurrentData, year, month, start_day, end_day);
-                } else if (
-                    config.USGS_WATER_SERVICES_API_CONFIG.validMatches.some(
-                        (loc) => loc.name === defaultLocation.name
-                    )
-                ) {
-                    const stationId =
-                        // Updated defaultLocation to defaultLocation.name
-                        stationIds[defaultLocation.name as keyof typeof stationIds] ??
-                        config.USGS_WATER_SERVICES_API_CONFIG.defaultStation;
-                    baseURL = config.USGS_WATER_SERVICES_API_URL;
-                    query = getUSGSQuery(isCurrentData, stationId, year, month, start_day, end_day);
-                } else {
-                    baseURL = `${config.BLUE_COLAB_API_URL}/${config.BLUE_COLAB_API_CONFIG.defaultMeasurement}`;
-                    query = getBlueColabQuery(isCurrentData, year, month, start_day, end_day);
-                }
-
-                return `${baseURL}/${query}`;
-            },
-        [getBlueColabQuery, getUSGSQuery]
-    );
-
-    return {
-        getAPIUrl,
-    };
 };

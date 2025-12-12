@@ -1,18 +1,45 @@
-import { Image, View, Text, ScrollView, RefreshControl } from 'react-native';
+import FontAwesome from '@expo/vector-icons/build/FontAwesome';
+import { router } from 'expo-router';
+import {
+    Image,
+    View,
+    Text,
+    ScrollView,
+    RefreshControl,
+    Pressable,
+    StyleProp,
+    ViewStyle,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { HomepageCard } from '@/components/customCards/HomePageCardMini';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { useCurrentData } from '@/contexts/CurrentDataContext';
 
+function HeaderSettingsButton({
+    onPress,
+    color,
+    style,
+}: {
+    onPress: () => void;
+    color: string;
+    style?: StyleProp<ViewStyle>;
+}) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Settings" className="pr-4" style={style}>
+            <FontAwesome name="gear" size={24} color={color} />
+        </Pressable>
+    );
+}
+
+const darkLogo = require('@/assets/icons/Pace_Black_Centered.png');
 const logo = require('@/assets/icons/Pace_White_KO_Centered.png');
 
-// Keep new card list and text content
 const titleCards = [
     {
         image: require('@/assets/homescreen/waterData.png'),
         title: 'Choate Pond Water Quality',
-        path: '/currentData',
+        path: '/currentPaceWaterData',
         description:
             "Water quality measured every fifteen minutes by solar-powered underwater sensors deployed by Seidenberg School's Blue CoLab.",
     },
@@ -40,7 +67,7 @@ const titleCards = [
     {
         image: require('@/assets/homescreen/hudson.png'),
         title: 'Hudson River Monitoring',
-        path: '/',
+        path: '/currentHudsonWaterData',
         description:
             'Updates on river environmental conditions aggregated by Blue CoLab from data collected USGS and partners.',
     },
@@ -51,7 +78,7 @@ export default function Home() {
     const { refetchCurrent, loadingCurrent } = useCurrentData();
 
     return (
-        <SafeAreaView className="flex-1 bg-black dark:bg-black">
+        <SafeAreaView className="flex-1 bg-lightBackground dark:bg-darkBackground">
             <ScrollView
                 contentContainerStyle={{ paddingBottom: 24 }}
                 refreshControl={
@@ -61,32 +88,45 @@ export default function Home() {
                         tintColor={isDark ? 'white' : 'black'}
                     />
                 }>
-                {/* Header area, simplified to match app style */}
-                <View className="px-4 pt-6">
+                <View className="relative px-4 pt-6">
+                    <HeaderSettingsButton
+                        onPress={() => router.push('/settings')}
+                        color={isDark ? 'white' : 'black'}
+                        style={{ position: 'absolute', top: 15, right: 0, zIndex: 10 }}
+                    />
                     <View className="items-center">
                         <Image
-                            source={logo}
+                            source={isDark ? logo : darkLogo}
                             className="w-full"
                             style={{ height: 56 }}
                             resizeMode="contain"
                         />
-                        <Text className="mt-2 text-center text-xl font-semibold text-white">
+                        <Text className="mt-2 text-center text-xl font-semibold dark:text-darkText">
                             Environmental Observatory
                         </Text>
                     </View>
                 </View>
 
-                {/* New list content preserved */}
-                <View className="mt-4 px-3">
+                <View className="mx-4 px-3">
                     {titleCards.map((card, index) => (
                         <HomepageCard key={index} {...card} />
                     ))}
+
+                    <Pressable
+                        onPress={() => router.push('/story')}
+                        className="my-2 items-center rounded-md p-4 dark:bg-darkCardBackground">
+                        <Text className="items-center text-center text-sm dark:text-darkText">
+                            Click Here Learn more about Blue CoLab
+                        </Text>
+                    </Pressable>
                 </View>
 
                 {/* Footer text preserved */}
-                <View className="pb-6 pt-2">
-                    <Text className="text-center text-xs text-white/90">Gale Epstein Center</Text>
-                    <Text className="text-center text-xs text-white/90">
+                <View className="py-2">
+                    <Text className="text-center text-sm dark:text-darkText">
+                        Gale Epstein Center
+                    </Text>
+                    <Text className="text-center text-sm dark:text-darkText">
                         For Technology, Policy, and the Environment
                     </Text>
                 </View>

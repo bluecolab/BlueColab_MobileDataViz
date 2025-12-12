@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import { Dimensions, View, Text } from 'react-native';
 
-import { useGraphData } from '@/contexts/GraphDataContext';
+import { useGraphData } from '@/contexts/~GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
-import dataUtils, { DailySummaryType } from '@/utils/dataUtils';
-import normalize from '@/utils/normalize';
+import dataUtils, { DailySummaryType } from '@/utils/data/dataUtils';
+import normalize from '@/utils/data/normalize';
 
 import { MonthlyDataCardFront } from './MonthlyDataCardFront';
 
@@ -104,13 +104,13 @@ export default function ComparisonCard({
         <View className="mt-1 flex-row items-center justify-center gap-4">
             <View className="flex-row items-center">
                 <View style={{ width: 12, height: 12, backgroundColor: 'blue', marginRight: 6 }} />
-                <Text className="dark:text-white">Conductivity</Text>
+                <Text className="dark:text-darkText">Conductivity</Text>
             </View>
             <View className="flex-row items-center">
                 <View
                     style={{ width: 12, height: 12, backgroundColor: '#10b981', marginRight: 6 }}
                 />
-                <Text className="dark:text-white">Salinity</Text>
+                <Text className="dark:text-darkText">Salinity</Text>
             </View>
         </View>
     );

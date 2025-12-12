@@ -1,65 +1,54 @@
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, ScrollView, Pressable, Platform } from 'react-native';
 
 import SettingsDropdown from '@/components/SettingsDropdown';
-import { ColorScheme, useColorScheme } from '@/contexts/ColorSchemeContext';
-import { useGraphData } from '@/contexts/GraphDataContext';
-import useGetClosestStation from '@/hooks/useClosestStation';
-import getMetadata from '@/utils/getMetadata';
+import { useColorScheme } from '@/contexts/ColorSchemeContext';
+import { useUserSettings } from '@/contexts/UserSettingsContext';
+import { ColorScheme } from '@/types/colorScheme.enum';
+import { TemperatureUnit } from '@/types/temperature.enum';
+import capitalize from '@/utils/capitalize';
+
+function HeaderGoBackButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Settings" className="pr-4">
+            <Ionicons
+                name={Platform.OS === 'ios' ? 'chevron-back' : 'arrow-back'}
+                size={24}
+                color={color}
+            />
+        </Pressable>
+    );
+}
 
 export default function Index() {
     const {
-        changeLocation,
-        changeTemperatureUnit,
-        defaultTempUnit,
+        defaultTemperatureUnit,
         showConvertedUnits,
-        defaultLocationName,
+        changeTemperatureUnit,
         changeConvertedUnits,
-        setSelectedLocationTemp,
-    } = useGraphData();
+    } = useUserSettings();
     const { isDark, colorSchemeSys, changeColor } = useColorScheme();
-    const { locationOptions } = getMetadata();
-
-    const closestStation = useGetClosestStation();
-
-    const [selectedLocation, setSelectedLocation] = useState(
-        `${locationOptions.findIndex((e) => e.label.toLowerCase() === defaultLocationName?.toLowerCase())}`
-    );
-
-    const onLocationSelect = (value: string) => {
-        if (value === '0') {
-            const newLocation = closestStation?.closestStation?.name || '';
-            changeLocation({ name: 'Nearest Station' });
-            setSelectedLocationTemp({ name: newLocation });
-            setSelectedLocation('0');
-        } else {
-            const newLocation =
-                locationOptions.find((option) => option.value === value)?.label || '';
-            changeLocation({ name: newLocation });
-            setSelectedLocation(value);
-        }
-    };
 
     const tempUnitOptions = [
-        { label: 'Fahrenheit ', value: '1' },
-        { label: 'Celsius', value: '2' },
+        { label: TemperatureUnit.Fahrenheit, value: '1' },
+        { label: TemperatureUnit.Celsius, value: '2' },
     ];
-    const [selectedTempUnit, setSelectedTempUnit] = useState(
-        `${tempUnitOptions.findIndex((e) => e.label.toLowerCase().trim() === defaultTempUnit?.toLowerCase().trim()) + 1}`
+    const [selectedTempUnitValue, setSelectedTempUnitValue] = useState(
+        `${tempUnitOptions.findIndex((e) => e.label.toLowerCase().trim() === defaultTemperatureUnit?.toLowerCase().trim()) + 1}`
     );
 
-    const onTempUnitSelect = (value: string) => {
+    const onTemperatureUnitSelect = (value: string) => {
         const newTempUnit = tempUnitOptions.find((option) => option.value === value)?.label || '';
-        changeTemperatureUnit(newTempUnit);
-        setSelectedTempUnit(value);
+        changeTemperatureUnit(newTempUnit as TemperatureUnit);
+        setSelectedTempUnitValue(value);
     };
 
     const appearanceOptions = [
-        { label: 'System', value: '1' },
-        { label: 'Light', value: '2' },
-        { label: 'Dark', value: '3' },
+        { label: capitalize(ColorScheme.system), value: '1' },
+        { label: capitalize(ColorScheme.light), value: '2' },
+        { label: capitalize(ColorScheme.dark), value: '3' },
     ];
     const [selectedAppearance, setSelectedAppearance] = useState(
         `${appearanceOptions.findIndex((e) => e.label.toLowerCase() === colorSchemeSys.toLowerCase()) + 1}`
@@ -75,10 +64,19 @@ export default function Index() {
 
     const resetToDefault = () => {
         onAppearanceSelect('1');
-        onTempUnitSelect('1');
-        onLocationSelect('0');
+        onTemperatureUnitSelect('1');
         changeConvertedUnits(false);
     };
+
+    const headerLeft = useCallback(
+        () => (
+            <HeaderGoBackButton
+                onPress={() => router.push('../')}
+                color={isDark ? 'white' : 'black'}
+            />
+        ),
+        [isDark]
+    );
 
     return (
         <>
@@ -86,14 +84,17 @@ export default function Index() {
                 options={{
                     headerTitle: 'Settings',
                     headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        backgroundColor: isDark ? '#2C2C2E' : 'white',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
+                    headerLeft,
                 }}
             />
-            <ScrollView className="bg-defaultbackground p-5 dark:bg-defaultdarkbackground">
-                <View className="rounded-3xl bg-white px-2 py-4 dark:bg-gray-700">
-                    <Text className="mr-4 text-2xl font-bold dark:text-white">Configurations:</Text>
+            <ScrollView className="bg-lightBackground p-5 dark:bg-darkBackground">
+                <View className="rounded-3xl bg-white px-2 py-4 dark:bg-darkCardBackground">
+                    <Text className="mr-4 text-2xl font-bold dark:text-darkText">
+                        Configurations:
+                    </Text>
                     <View
                         style={{
                             borderBottomWidth: 0.5,
@@ -101,21 +102,10 @@ export default function Index() {
                             marginVertical: 5,
                         }}
                     />
-                    <SettingsDropdown
-                        label="Default Location"
-                        options={locationOptions}
-                        value={selectedLocation}
-                        onSelect={onLocationSelect}
-                    />
-                    <View
-                        style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
-                            marginVertical: 1,
-                        }}
-                    />
                     <View className=" flex-row items-center justify-between py-2">
-                        <Text className="ml-2 text-lg dark:text-white">Show Converted Units:</Text>
+                        <Text className="ml-2 text-lg dark:text-darkText">
+                            Show Converted Units:
+                        </Text>
                         <Pressable
                             onPress={() => changeConvertedUnits(!showConvertedUnits)}
                             style={{
@@ -131,21 +121,21 @@ export default function Index() {
                     </View>
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
                     <SettingsDropdown
                         label="Temperature:"
                         options={tempUnitOptions}
-                        value={selectedTempUnit}
-                        onSelect={onTempUnitSelect}
+                        value={selectedTempUnitValue}
+                        onSelect={onTemperatureUnitSelect}
                     />
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
@@ -157,21 +147,21 @@ export default function Index() {
                     />
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
                     <View className="mt-2 flex-row justify-end">
                         <Pressable
                             onPress={() => resetToDefault()}
-                            className="rounded-lg bg-gray-200 px-4 py-2 dark:bg-gray-700">
-                            <Text className="text-md text-right dark:text-white">Reset All</Text>
+                            className="rounded-lg bg-gray-200 px-4 py-2 dark:bg-darkCardBackgroundLvl1">
+                            <Text className="text-md text-right dark:text-darkText">Reset All</Text>
                         </Pressable>
                     </View>
                 </View>
-                <View className="mt-4 rounded-3xl  bg-white px-2 py-4 dark:bg-gray-700">
-                    <Text className="text-2xl font-bold  dark:text-white">Other:</Text>
+                <View className="mt-4 rounded-3xl  bg-white px-2 py-4 dark:bg-darkCardBackground">
+                    <Text className="text-2xl font-bold  dark:text-darkText">Other:</Text>
                     <View
                         style={{
                             borderBottomWidth: 0.5,
@@ -181,7 +171,7 @@ export default function Index() {
                     />
                     <Pressable onPress={() => router.push('/settings/feedback')}>
                         <View className="flex-row items-center">
-                            <Text className="mr-2 text-lg dark:text-white">Feedback</Text>
+                            <Text className="mr-2 text-lg dark:text-darkText">Feedback</Text>
                             <FontAwesome
                                 name="sign-in"
                                 size={20}
@@ -191,14 +181,16 @@ export default function Index() {
                     </Pressable>
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
                     <Pressable onPress={() => router.push('/settings/versionHistory')}>
                         <View className="flex-row items-center">
-                            <Text className="mr-2 text-lg  dark:text-white">Version History</Text>
+                            <Text className="mr-2 text-lg  dark:text-darkText">
+                                Version History
+                            </Text>
                             <FontAwesome
                                 name="sign-in"
                                 size={20}
@@ -208,14 +200,14 @@ export default function Index() {
                     </Pressable>
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
                     <Pressable onPress={() => router.push('/settings/attributions')}>
                         <View className="flex-row items-center">
-                            <Text className="mr-2 text-lg  dark:text-white">Attributions</Text>
+                            <Text className="mr-2 text-lg  dark:text-darkText">Attributions</Text>
                             <FontAwesome
                                 name="sign-in"
                                 size={20}
@@ -225,14 +217,14 @@ export default function Index() {
                     </Pressable>
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />
                     <Pressable onPress={() => router.push('/settings/socials')}>
                         <View className="flex-row items-center">
-                            <Text className="mr-2 text-lg  dark:text-white">Socials</Text>
+                            <Text className="mr-2 text-lg  dark:text-darkText">Socials</Text>
                             <FontAwesome
                                 color={isDark ? 'white' : 'grey'}
                                 name="sign-in"
@@ -242,8 +234,8 @@ export default function Index() {
                     </Pressable>
                     <View
                         style={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: isDark ? 'white' : 'lightgray',
+                            borderBottomWidth: isDark ? 0 : 0.5,
+                            borderBottomColor: isDark ? 'white' : '',
                             marginVertical: 1,
                         }}
                     />

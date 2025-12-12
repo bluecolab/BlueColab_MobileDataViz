@@ -25,16 +25,16 @@ export default function VersionHistory() {
         <>
             <Stack.Screen
                 options={{
-                    headerTitle: 'Attributions',
+                    headerTitle: 'Version History',
                     headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        backgroundColor: isDark ? '#2C2C2E' : 'white',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
                 }}
             />
-            <ScrollView className="bg-defaultbackground p-default dark:bg-defaultdarkbackground">
+            <ScrollView className="bg-lightBackground p-default dark:bg-darkBackground">
                 {/* Version 0.9 */}
-                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                <View className="m-default rounded-3xl bg-white p-default dark:bg-darkCardBackground">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v0.9 - The Beginning
                     </Text>
@@ -76,7 +76,7 @@ export default function VersionHistory() {
                 </View>
 
                 {/* Version 1.0 - 1.1.1 */}
-                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-darkCardBackground">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.0-1.1.1 - A New UI
                     </Text>
@@ -108,7 +108,7 @@ export default function VersionHistory() {
                 </View>
 
                 {/* Version 1.2 */}
-                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-darkCardBackground">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.2 - Air Quality Index Added
                     </Text>
@@ -128,7 +128,7 @@ export default function VersionHistory() {
                 </View>
 
                 {/* Version 1.3-1.3.1 */}
-                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-darkCardBackground">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.3-v1.3.1 - A Move to Sustainability
                     </Text>
@@ -153,7 +153,7 @@ export default function VersionHistory() {
                 </View>
 
                 {/* Version 1.4 */}
-                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-darkCardBackground">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.4 - Hudson River Data
                     </Text>
@@ -170,7 +170,7 @@ export default function VersionHistory() {
                 </View>
 
                 {/* Version 1.5 */}
-                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-darkCardBackground">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.5 - New Home Page
                     </Text>
@@ -190,7 +190,7 @@ export default function VersionHistory() {
                     </Text>
                 </View>
 
-                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-darkCardBackground">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.6 - What's in your water?
                     </Text>
@@ -205,7 +205,7 @@ export default function VersionHistory() {
                     </Text>
                 </View>
 
-                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-darkCardBackground">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.7 - Typescript Time
                     </Text>
@@ -221,7 +221,7 @@ export default function VersionHistory() {
                     </Text>
                 </View>
 
-                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-darkCardBackground">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.8 - Summer 2025 Updates
                     </Text>
@@ -368,7 +368,7 @@ export default function VersionHistory() {
                     </Text>
                 </View>
 
-                <View className="m-default rounded-3xl  bg-white p-default dark:bg-gray-700">
+                <View className="m-default rounded-3xl  bg-white p-default dark:bg-darkCardBackground">
                     <Text className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                         v1.9 - Fall 2025 Updates
                     </Text>

@@ -1,12 +1,29 @@
 // app/(tabs)/home/waterReport.tsx
 
-import { Stack } from 'expo-router';
-import { useState } from 'react';
+import { FontAwesome } from '@expo/vector-icons';
+import { router, Stack } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { View, Text, FlatList, Pressable, Modal } from 'react-native';
 
+import WaterSourceModal from '@/components/modals/WaterSourceModal';
 import WaterReportAPI from '@/components/WaterReportAPI';
-import WaterSourceModal from '@/components/WaterSourceModal';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
+
+function HeaderRefreshButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Refresh waterData" className="pr-4">
+            <FontAwesome name="refresh" size={24} color={color} />
+        </Pressable>
+    );
+}
+
+function HeaderSettingsButton({ onPress, color }: { onPress: () => void; color: string }) {
+    return (
+        <Pressable onPress={onPress} accessibilityLabel="Settings" className="pr-4">
+            <FontAwesome name="gear" size={24} color={color} />
+        </Pressable>
+    );
+}
 
 interface WaterReport {
     id: string;
@@ -89,28 +106,16 @@ const WaterReport = () => {
         return (
             <Pressable
                 onPress={() => handleReportPress(item)}
-                className={`
-                    mb-4 flex-row items-center rounded-xl p-4 shadow
-                    ${isDark ? 'bg-gray-700' : 'bg-white'}
-                    ${latestCard ? (isDark ? 'border-2 border-[#7CB9E8] bg-[#4A6D7C]' : 'border-2 border-[#7CB9E8] bg-[#E3F2FD]') : ''}
-                `}>
+                className={`mb-4 flex-row items-center rounded-xl p-4 shadow ${latestCard ? 'border-2 border-[#7CB9E8] bg-[#E3F2FD] dark:bg-[#4A6D7C]' : 'bg-lightCardBackground dark:bg-darkCardBackground '}`}>
                 <View className="mr-4 h-24 w-20 items-center justify-center">
-                    <View
-                        className={`
-                            h-full w-full items-center justify-center rounded-lg 
-                            ${isDark ? 'bg-[#3A5D6C]' : 'bg-[#B3D9E8]'}
-                        `}>
+                    <View className="h-full w-full items-center justify-center rounded-lg bg-[#B3D9E8] dark:bg-darkCardBackgroundLvl1">
                         <Text className="text-4xl">📄</Text>
                     </View>
                 </View>
 
                 <View className="flex-1">
                     <View className="mb-1 flex-row items-center">
-                        <Text
-                            className={`
-                                mr-2 text-xl font-bold
-                                ${isDark ? 'text-[#7CB9E8]' : 'text-[#1976D2]'}
-                            `}>
+                        <Text className="mr-2 text-xl font-bold text-[#1976D2] dark:text-darkText">
                             {item.year}
                         </Text>
                         {latestCard && (
@@ -120,11 +125,7 @@ const WaterReport = () => {
                         )}
                     </View>
 
-                    <Text
-                        className={`
-                            text-base leading-6
-                            ${isDark ? 'text-white' : 'text-gray-700'}
-                        `}>
+                    <Text className="text-base leading-6 text-gray-700 dark:text-darkText">
                         {item.title}
                     </Text>
                 </View>
@@ -132,38 +133,39 @@ const WaterReport = () => {
         );
     };
 
+    const headerRight = useCallback(
+        () => (
+            <>
+                <HeaderRefreshButton onPress={() => {}} color={isDark ? 'white' : 'black'} />
+                <HeaderSettingsButton
+                    onPress={() => router.push('/settings')}
+                    color={isDark ? 'white' : 'black'}
+                />
+            </>
+        ),
+        [isDark]
+    );
+
     return (
         <>
             <Stack.Screen
                 options={{
                     headerTitle: 'Water Report',
                     headerStyle: {
-                        backgroundColor: isDark ? '#2e2e3b' : 'white',
+                        backgroundColor: isDark ? '#2C2C2E' : '#f7f7f7',
                     },
                     headerTintColor: isDark ? 'white' : 'black',
+                    headerRight,
+                    headerBackTitle: 'Home',
                 }}
             />
 
-            <View
-                className={`
-                    w-full flex-1 
-                    ${isDark ? 'bg-[#1a202c]' : 'bg-neutral-300'}
-                `}>
-                <Text
-                    className={`
-                        my-5 text-center text-2xl font-bold
-                        ${isDark ? 'text-white' : 'text-gray-800'}
-                    `}>
+            <View className="w-full flex-1 bg-lightBackground dark:bg-darkBackground">
+                <Text className=" my-5 text-center text-2xl font-bold text-gray-800 dark:text-darkText">
                     Annual Water Quality Reports
                 </Text>
                 <Text
-                    className={`
-                        mx-4 mb-5 rounded-xl
-                        bg-[#1976D2] px-6 text-center
-                        text-2xl font-bold
-                        shadow-lg
-                        dark:bg-[#4A6D7C] dark:text-white
-                    `}
+                    className="mx-4 mb-5 rounded-xl bg-lightCardBackground p-4 px-6 text-center text-2xl font-bold shadow-lg dark:bg-darkCardBackground dark:text-darkText"
                     onPress={() => setModelOpen(true)}>
                     Where does our water come from?
                 </Text>
@@ -185,33 +187,18 @@ const WaterReport = () => {
                 animationType="slide"
                 onRequestClose={closeModal}
                 presentationStyle="fullScreen">
-                <View
-                    className={`
-                        flex-1
-                        ${isDark ? 'bg-[#1a202c]' : 'bg-neutral-300'}
-                    `}>
-                    <View
-                        className={`
-                            flex-row items-center justify-between 
-                            px-4 py-4 pt-12
-                            ${isDark ? 'bg-[#2e2e3b]' : 'bg-white'}
-                        `}>
+                <View className="flex-1 bg-neutral-300 dark:bg-darkBackground">
+                    <View className="flex-row items-center justify-between bg-white px-4 py-4 dark:bg-darkCardBackground ">
                         <Text
                             numberOfLines={1}
-                            className={`
-                                mr-4 flex-1 text-lg font-bold
-                                ${isDark ? 'text-white' : 'text-gray-800'}
-                            `}>
+                            className="flex-1g mr-4 text-xl font-bold text-gray-800 dark:text-darkText">
                             {selectedReport?.title}
                         </Text>
 
                         <Pressable
                             onPress={closeModal}
-                            className={`
-                                h-10 w-10 items-center justify-center rounded-full
-                                ${isDark ? 'bg-[#4A6D7C]' : 'bg-[#1976D2]'}
-                            `}>
-                            <Text className="text-2xl font-bold text-white">✕</Text>
+                            className=" h-10 w-10 items-center justify-center rounded-full ">
+                            <Text className="text-2xl font-bold dark:text-darkText">✕</Text>
                         </Pressable>
                     </View>
 

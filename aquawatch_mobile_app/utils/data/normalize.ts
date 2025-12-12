@@ -1,4 +1,4 @@
-import { DailySummaryType } from '@/utils/dataUtils';
+import { DailySummaryType } from '@/utils/data/dataUtils';
 
 // Min-max normalize an array of numbers to [0, 1]. Ignores undefined s by returning undefined at same index.
 export function normalizeArrayMinMax(values: Array<number | undefined>): {

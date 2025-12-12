@@ -115,7 +115,7 @@ export default function SettingsDropdown({
                     selectedValue={value}
                     onValueChange={(itemValue) => onSelect(String(itemValue))}
                     style={{
-                        backgroundColor: isDark ? '#333333' : 'white',
+                        backgroundColor: isDark ? '#48484A' : 'white',
                         color: isDark ? 'white' : 'black',
                         height: 60,
                         width: '100%',
@@ -125,7 +125,8 @@ export default function SettingsDropdown({
                             key={option.value}
                             label={option.label}
                             value={option.value}
-                            color={isDark ? 'white' : 'black'}
+                            color={isDark ? 'black' : 'black'}
+                            style={{ color: isDark ? 'white' : 'black' }}
                         />
                     ))}
                 </Picker>

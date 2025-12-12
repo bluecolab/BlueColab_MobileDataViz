@@ -1,100 +1,24 @@
 import axios, { isAxiosError } from 'axios';
 import { useNetworkState } from 'expo-network';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
-import { config, useAPIConfig } from '@/hooks/useConfig';
-import { LocationType } from '@/types/config.interface';
-import {
-    CleanedWaterData,
-    WaterServicesData,
-    ParameterName,
-    TimeSeries,
-    BlueCoLabData,
-} from '@/types/water.interface';
+import { config } from '@/hooks/useConfig';
+import { LocationType } from '@/types/location.type';
+import { CleanedWaterData } from '@/types/water.interface';
+import { cleanChoatePondData } from '@/utils/data/cleanChoatePondData';
+import { cleanHudsonRiverData } from '@/utils/data/cleanHudsonRiverData';
 import getMetadata from '@/utils/getMetadata';
 
+import { getWaterAPIURL } from './getWaterAPIURL';
+
 export default function useGetWaterData() {
-    const { usgsParameterMappings, stationIds } = getMetadata();
-    const { BLUE_COLAB_API_CONFIG } = config;
-    const { getAPIUrl } = useAPIConfig();
+    const { stationIds } = getMetadata();
+    const { BLUE_COLAB_WATER_API_CONFIG } = config;
+    const { getAPIUrl } = getWaterAPIURL();
 
     const networkState = useNetworkState();
 
-    const USGSParameterMappingsEnum = useMemo(
-        () =>
-            Object.fromEntries(
-                Object.entries(usgsParameterMappings).map(([key, value]) => [key, value])
-            ) as { [key: string]: string },
-        [usgsParameterMappings]
-    );
-
-    /**
-     * Rounds a timestamp to the nearest 15-minute interval
-     * @param timestamp - ISO 8601 timestamp string
-     * @returns Rounded timestamp string
-     */
-    const roundToNearest15Minutes = useCallback((timestamp: string): string => {
-        const date = new Date(timestamp);
-        const minutes = date.getMinutes();
-        const roundedMinutes = Math.round(minutes / 15) * 15;
-
-        date.setMinutes(roundedMinutes);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
-        return date.toISOString();
-    }, []);
-
-    const cleanHudsonRiverData = useCallback(
-        (rawData: WaterServicesData) => {
-            if (!rawData?.value?.timeSeries) {
-                console.error('Here Invalid data format');
-                return [];
-            }
-
-            const parsedData: CleanedWaterData[] = [];
-
-            rawData.value.timeSeries.forEach((series: TimeSeries) => {
-                const paramCode = series.variable.variableCode[0].value;
-                const paramName = USGSParameterMappingsEnum[paramCode];
-
-                if (!paramName) return; // Skip unneeded parameters
-
-                const valuesList =
-                    series.values[0].value.length > 0
-                        ? series.values[0].value
-                        : (series.values[1]?.value ?? []);
-
-                valuesList.forEach((entry) => {
-                    const rawTimestamp = entry.dateTime;
-                    const timestamp = roundToNearest15Minutes(rawTimestamp);
-                    const value = parseFloat(entry.value);
-
-                    let existingEntry = parsedData.find((data) => data.timestamp === timestamp);
-
-                    if (!existingEntry) {
-                        existingEntry = {
-                            timestamp,
-                        } as CleanedWaterData;
-                        parsedData.push(existingEntry);
-                    }
-                    (existingEntry as any)[paramName as ParameterName] = value;
-                });
-            });
-
-            return parsedData;
-        },
-        [USGSParameterMappingsEnum, roundToNearest15Minutes]
-    );
-
-    const cleanChoatePondData = useCallback((rawData: BlueCoLabData[]) => {
-        return rawData.map((item: BlueCoLabData) => {
-            const { sensors, timestamp } = item;
-            return { timestamp, ...sensors } as CleanedWaterData;
-        });
-    }, []);
-
-    // Legacy setter-based fetch function (used by GraphDataContext, etc.)
-    const fetchData = useCallback(
+    const fetchWaterData = useCallback(
         async (
             defaultLocation: LocationType,
             isCurrentData: boolean,
@@ -107,20 +31,21 @@ export default function useGetWaterData() {
                 throw new Error('No internet connection');
             }
 
-            const url = getAPIUrl(
-                defaultLocation,
-                isCurrentData,
-                year,
-                month,
-                start_day,
-                end_day,
-                stationIds
-            );
-
             try {
+                const url = getAPIUrl(
+                    defaultLocation,
+                    isCurrentData,
+                    year,
+                    month,
+                    start_day,
+                    end_day,
+                    stationIds
+                );
+
                 const response = await axios.get(url);
                 const apiData = response.data;
-                const isBlueColab = BLUE_COLAB_API_CONFIG.validMatches.some(
+
+                const isBlueColab = BLUE_COLAB_WATER_API_CONFIG.validMatches.some(
                     (loc) => loc.name === defaultLocation.name
                 );
                 const isUSGS = config.USGS_WATER_SERVICES_API_CONFIG.validMatches.some(
@@ -129,13 +54,11 @@ export default function useGetWaterData() {
 
                 if (isBlueColab) {
                     return cleanChoatePondData(apiData);
-                }
-                if (isUSGS) {
+                } else if (isUSGS) {
                     return cleanHudsonRiverData(apiData);
+                } else {
+                    throw new Error('Invalid location provided');
                 }
-
-                // Fallback mirrors getAPIUrl() else branch which uses BlueCoLab default measurement
-                return cleanChoatePondData(apiData);
             } catch (error) {
                 // Log the original error for debugging
                 console.error('Data fetching error:', error);
@@ -159,13 +82,11 @@ export default function useGetWaterData() {
             getAPIUrl,
             stationIds,
             networkState.isInternetReachable,
-            BLUE_COLAB_API_CONFIG.validMatches,
-            cleanChoatePondData,
-            cleanHudsonRiverData,
+            BLUE_COLAB_WATER_API_CONFIG.validMatches,
         ]
     );
 
     return {
-        fetchData, // Export the new promise-based function
+        fetchWaterData,
     };
 }

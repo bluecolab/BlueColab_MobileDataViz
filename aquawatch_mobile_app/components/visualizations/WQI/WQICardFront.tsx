@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 import { CleanedWaterData } from '@/types/water.interface';
-import dataUtils from '@/utils/dataUtils';
+import dataUtils from '@/utils/data/dataUtils';
 
 import PolarChart from './PolarChart';
 interface WQICardFrontProps {
@@ -28,10 +28,10 @@ export default function WQICardFront({ data, loading, wqi }: WQICardFrontProps) 
         : calculateWQI(filteredData, loading);
 
     return (
-        <View className="flex-1 items-center justify-center  rounded-3xl bg-white p-default dark:bg-gray-700 ">
+        <View className="flex-1 items-center justify-center  rounded-3xl bg-white p-default dark:bg-darkCardBackground ">
             <View className="h-[250] w-[300]">
                 <View className="w-[95%] self-center">
-                    <Text className="rounded-3xl bg-white p-1 text-center text-3xl font-bold dark:bg-gray-700 dark:text-white">
+                    <Text className="rounded-3xl bg-transparent p-1 text-center text-3xl font-bold dark:text-darkText">
                         WQI
                     </Text>
                     <FontAwesome
@@ -43,7 +43,7 @@ export default function WQICardFront({ data, loading, wqi }: WQICardFrontProps) 
                 </View>
                 <View style={{ height: 200 }}>
                     <View className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
-                        <Text className="text-3xl font-bold text-black dark:text-white">
+                        <Text className="text-3xl font-bold text-black dark:text-darkText">
                             {percentage}%
                         </Text>
                     </View>

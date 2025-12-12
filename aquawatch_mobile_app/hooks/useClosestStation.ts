@@ -1,7 +1,7 @@
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
 
-import type { LocationType } from '@/types/config.interface';
+import type { LocationType } from '@/types/location.type';
 
 import { config } from './useConfig';
 
@@ -34,7 +34,6 @@ export default function useGetClosestStation(): UseClosestStationResult {
                 const R = 6371; // Earth's radius in kilometers
 
                 const allStations: LocationType[] = [
-                    ...config.BLUE_COLAB_API_CONFIG.validMatches,
                     ...config.USGS_WATER_SERVICES_API_CONFIG.validMatches,
                 ];
 

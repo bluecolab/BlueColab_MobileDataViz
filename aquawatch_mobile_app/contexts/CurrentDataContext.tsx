@@ -1,119 +1,164 @@
 import { useQuery } from '@tanstack/react-query';
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useMemo, useCallback } from 'react';
 import type { ReactNode } from 'react';
 
-import { useGraphData } from '@/contexts/GraphDataContext';
+import { useUserSettings } from '@/contexts/UserSettingsContext';
+import useGetClosestStation from '@/hooks/useClosestStation';
 import { config } from '@/hooks/useConfig';
 import useGetAQIData from '@/hooks/useGetAQIData';
 import useGetOdinData from '@/hooks/useGetOdinData';
 import useGetWaterData from '@/hooks/useGetWaterData';
 import useGetWaterReportsData from '@/hooks/useGetWaterReportsData';
-import { LocationType } from '@/types/config.interface';
+import { LocationType } from '@/types/location.type';
 import { CleanedWaterData, OdinData, OpenWeatherAQI } from '@/types/water.interface';
 
 interface CurrentDataContextType {
-    data: CleanedWaterData[] | undefined; // This stays the same
+    waterData: CleanedWaterData[] | undefined;
     airData?: OdinData | undefined;
     aqiData?: OpenWeatherAQI | undefined;
     waterReportsData?: any | undefined;
-    error: Error | null;
-    defaultLocation: LocationType | undefined;
-    defaultTempUnit: string | undefined;
+    closestStation: LocationType | undefined;
+    waterError: Error | null;
+    airError: Error | null;
+    aqiError: Error | null;
+    reportsError: Error | null;
     loadingCurrent: boolean;
     refetchCurrent: () => void;
 }
 
-const CurrentDataContext = createContext({
-    data: undefined,
-    error: null,
-    defaultLocation: undefined as LocationType | undefined,
-    defaultTempUnit: undefined as string | undefined,
+const defaultContext: CurrentDataContextType = {
+    waterData: undefined,
+    airData: undefined,
+    aqiData: undefined,
+    waterReportsData: undefined,
+    closestStation: undefined,
+    waterError: null,
+    airError: null,
+    aqiError: null,
+    reportsError: null,
     loadingCurrent: false,
     refetchCurrent: () => {},
-} as CurrentDataContextType);
+};
+
+const CurrentDataContext = createContext<CurrentDataContextType>(defaultContext);
 
 export default function CurrentDataProvider({ children }: { children: ReactNode }) {
-    const { defaultLocation, defaultTempUnit } = useGraphData();
-    const { fetchData } = useGetWaterData();
+    const { defaultTemperatureUnit } = useUserSettings();
+    const { fetchWaterData } = useGetWaterData();
     const { fetchOdinData } = useGetOdinData();
     const { fetchAQIData } = useGetAQIData();
     const { fetchWaterReportsData } = useGetWaterReportsData();
 
-    // Build a stable query key for current data
-    const queryKey = useMemo(
-        () => ['currentData', defaultLocation?.name, defaultTempUnit],
-        [defaultLocation?.name, defaultTempUnit]
-    );
+    const closestStation = useGetClosestStation();
 
-    const { data, error, isFetching, isPending, refetch } = useQuery<CleanedWaterData[], Error>({
-        queryKey,
-        enabled: !!defaultLocation,
-        queryFn: async () => {
-            // DefaultLocation is guaranteed by enabled
-            return await fetchData(defaultLocation as LocationType, true, 0, 0, 0, 0);
-        },
-        // Keep showing previous data while fetching new
+    // Choate Pond
+    const {
+        data: waterData,
+        error: waterError,
+        isFetching: waterFetching,
+        isPending: waterPending,
+        refetch: refetchWater,
+    } = useQuery<CleanedWaterData[], Error>({
+        queryKey: [
+            'currentData',
+            config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0],
+            defaultTemperatureUnit,
+        ],
+        enabled: true,
+        queryFn: async () =>
+            fetchWaterData(
+                config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0] as LocationType,
+                true,
+                0,
+                0,
+                0,
+                0
+            ),
         placeholderData: [],
-        gcTime: 1000 * 60 * 5, // 5 minutes
-        staleTime: 1000 * 30, // consider fresh for 30s; UI can override
+        gcTime: 1000 * 60 * 5,
+        staleTime: 1000 * 30,
         refetchOnReconnect: true,
         refetchOnWindowFocus: true,
         retry: 1,
     });
 
-    // Manual refetch exposed to consumers
-    const refetchCurrent = () => {
-        if (!defaultLocation) return;
-        void refetch();
-    };
-
-    const { data: airData } = useQuery({
-        queryKey: ['airData', defaultLocation],
+    // Air Data Query
+    const {
+        data: airData,
+        error: airError,
+        refetch: refetchAir,
+    } = useQuery({
+        queryKey: [
+            'airData',
+            config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0],
+            defaultTemperatureUnit,
+        ],
         queryFn: () => fetchOdinData(),
-        enabled: !!defaultLocation && defaultLocation.name === 'Choate Pond',
+        enabled: true,
         refetchInterval: 15 * 60 * 1000,
     });
 
-    const allLatLongs = [
-        ...config.BLUE_COLAB_API_CONFIG.validMatches,
-        ...config.USGS_WATER_SERVICES_API_CONFIG.validMatches,
-    ];
-    const locationWithCoords =
-        allLatLongs.find(
-            (loc) =>
-                loc.name === defaultLocation?.name &&
-                loc.lat !== undefined &&
-                loc.long !== undefined
-        ) ?? config.BLUE_COLAB_API_CONFIG.validMatches[0];
-
-    const { data: aqiData } = useQuery({
-        queryKey: ['aqiData', defaultLocation],
+    // AQI Data Query
+    const {
+        data: aqiData,
+        error: aqiError,
+        refetch: refetchAQI,
+    } = useQuery({
+        queryKey: ['aqiData', config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0]],
         queryFn: () =>
-            fetchAQIData(locationWithCoords.lat as number, locationWithCoords.long as number),
-        enabled: !!defaultLocation,
+            fetchAQIData(
+                config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0].lat as number,
+                config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0].long as number
+            ),
+        enabled: true,
     });
 
-    const { data: waterReportsData } = useQuery({
-        queryKey: ['waterReportsData', defaultLocation],
+    // Water Reports Data Query
+    const { data: waterReportsData, error: reportsError } = useQuery({
+        queryKey: ['waterReportsData', config.BLUE_COLAB_WATER_API_CONFIG.validMatches[0]],
         queryFn: () => fetchWaterReportsData('2023'),
-        enabled: !!defaultLocation,
+        enabled: true,
+        retry: 1,
     });
+
+    const refetchCurrent = useCallback(() => {
+        void refetchWater();
+        void refetchAir();
+        void refetchAQI();
+    }, [refetchWater, refetchAir, refetchAQI]);
+
+    const contextValue = useMemo(
+        () => ({
+            waterData: waterData ?? [],
+            airData,
+            aqiData,
+            waterReportsData,
+            closestStation: closestStation.closestStation,
+            waterError,
+            airError,
+            aqiError,
+            reportsError,
+            loadingCurrent: waterFetching || waterPending,
+            refetchCurrent,
+        }),
+        [
+            waterData,
+            airData,
+            aqiData,
+            waterReportsData,
+            closestStation.closestStation,
+            waterError,
+            airError,
+            aqiError,
+            reportsError,
+            waterFetching,
+            waterPending,
+            refetchCurrent,
+        ]
+    );
 
     return (
-        <CurrentDataContext.Provider
-            value={{
-                data: data ?? [],
-                airData: airData,
-                aqiData: aqiData,
-                waterReportsData: waterReportsData,
-                error: error ?? null,
-                defaultLocation,
-                defaultTempUnit,
-                loadingCurrent: isFetching || isPending,
-                refetchCurrent,
-            }}>
-            {children}
-        </CurrentDataContext.Provider>
+        <CurrentDataContext.Provider value={contextValue}>{children}</CurrentDataContext.Provider>
     );
 }
 
