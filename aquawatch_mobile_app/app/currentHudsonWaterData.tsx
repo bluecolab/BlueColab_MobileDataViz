@@ -5,7 +5,6 @@ import { View, Text, ScrollView, RefreshControl } from 'react-native';
 
 import CustomDropdown from '@/components/CustomDropdown';
 import { Widget } from '@/components/visualizations/Widget';
-import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
 // import { useCurrentData } from '@/contexts/CurrentDataContext';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
@@ -72,24 +71,21 @@ export default function CurrentHudsonWaterData() {
             const data = await fetchWaterData(location as LocationType, true, 0, 0, 0, 0);
             setWaterData(data);
         }
-        fetchData();
+        void fetchData();
     }, [selectedLocationLocalLabel, closestStation, fetchWaterData]);
 
-    const lastDataPoint = waterData
-        ? extractLastData(
-              waterData,
-              selectedLocationLocalLabel === 'Nearest Station'
-                  ? closestStation.closestStation
-                  : config.USGS_WATER_SERVICES_API_CONFIG.validMatches.find(
-                        (loc) => loc.name === selectedLocationLocalLabel
-                    ),
-              defaultTemperatureUnit,
-              false,
-              null,
-              showConvertedUnits
-          )
-        : null;
-
+    const lastDataPoint = extractLastData(
+        waterData,
+        selectedLocationLocalLabel === 'Nearest Station'
+            ? closestStation.closestStation
+            : config.USGS_WATER_SERVICES_API_CONFIG.validMatches.find(
+                  (loc) => loc.name === selectedLocationLocalLabel
+              ),
+        defaultTemperatureUnit,
+        false,
+        null,
+        showConvertedUnits
+    );
     // const headerRight = useCallback(
     //     () => (
     //         <>
@@ -131,7 +127,6 @@ export default function CurrentHudsonWaterData() {
                         Choate Pond Data
                     </Text>
                 </View>
-
                 {/* {waterError && (
                     <View>
                         <Text className="text-center text-xl font-bold dark:text-white">
@@ -139,7 +134,6 @@ export default function CurrentHudsonWaterData() {
                         </Text>
                     </View>
                 )} */}
-
                 <View>
                     <CustomDropdown
                         label="Location"
@@ -148,19 +142,17 @@ export default function CurrentHudsonWaterData() {
                         onSelect={onLocationSelect}
                     />
                 </View>
-
-                {/* — The 6 Widgets — */}
-                {lastDataPoint && (
-                    <View className="flex flex-row flex-wrap">
-                        <Widget name="Water Temperature" value={lastDataPoint.temp} />
-                        <Widget name="Conductivity" value={lastDataPoint.cond} />
-                        <Widget name="Salinity" value={lastDataPoint.sal} />
-                        <Widget name="pH" value={lastDataPoint.pH} />
-                        <Widget name="Turbidity" value={lastDataPoint.turb} />
-                        <Widget name="Oxygen" value={lastDataPoint.do} />
-                        <Widget name="Tide" value={lastDataPoint.tide} />
-                    </View>
-                )}
+                {/* — The 6 Widgets — */}(
+                <View className="flex flex-row flex-wrap">
+                    <Widget name="Water Temperature" value={lastDataPoint.temp} />
+                    <Widget name="Conductivity" value={lastDataPoint.cond} />
+                    <Widget name="Salinity" value={lastDataPoint.sal} />
+                    <Widget name="pH" value={lastDataPoint.pH} />
+                    <Widget name="Turbidity" value={lastDataPoint.turb} />
+                    <Widget name="Oxygen" value={lastDataPoint.do} />
+                    <Widget name="Tide" value={lastDataPoint.tide} />
+                </View>
+                )
             </ScrollView>
         </>
     );
