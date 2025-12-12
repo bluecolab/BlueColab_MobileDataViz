@@ -1,77 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query'; // Import useQuery
 import { subMonths, getYear, getMonth, getDaysInMonth } from 'date-fns';
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 
 import useGetClosestStation from '@/hooks/useClosestStation';
 import { config } from '@/hooks/useConfig';
 import { LocationType } from '@/types/location.type';
-import { CleanedWaterData } from '@/types/water.interface';
+// import { CleanedWaterData } from '@/types/water.interface';
 
-interface GraphDataContextType {
-    data: CleanedWaterData[] | undefined;
-    data2?: CleanedWaterData[] | undefined;
-    error: { message: string } | undefined;
-    error2?: { message: string } | undefined;
-    loading: boolean;
-    loading2?: boolean;
-    defaultLocation: LocationType | undefined;
-    defaultLocationName: string | undefined;
-    defaultTempUnit: string | undefined;
-    selectedLocationTemp: string | undefined;
-    selectedLocationTemp2?: string | undefined;
-    showConvertedUnits: boolean;
-    normalizeComparative: boolean;
-    changeLocation: (newLocation: LocationType) => void;
-    setLoading: (newValue: boolean) => void;
-    setYear: (newValue: number | undefined) => void;
-    setMonth: (newValue: number | undefined) => void;
-    setEndDay: (newValue: number | undefined) => void;
-    setYear2: (newValue: number | undefined) => void;
-    setMonth2: (newValue: number | undefined) => void;
-    setEndDay2: (newValue: number | undefined) => void;
-    setDefaultLocation: (newValue: LocationType | undefined) => void;
-    changeTemperatureUnit: (newUnit: string) => void;
-    changeConvertedUnits: (enabled: boolean) => void;
-    setNormalizeComparative: (enabled: boolean) => void;
-    setSelectedLocationTemp: (newValue: LocationType | undefined) => void;
-    setSelectedLocationTemp2: (newValue: LocationType | undefined) => void;
-}
+import useGetWaterData from './useGetWaterData';
 
-const GraphDataContext = createContext({
-    data: undefined,
-    data2: undefined,
-    error: undefined,
-    error2: undefined,
-    loading: false,
-    loading2: false,
-    defaultLocation: undefined as LocationType | undefined,
-    defaultTempUnit: undefined as string | undefined,
-    defaultLocationName: undefined as string | undefined,
-    selectedLocationTemp: undefined as string | undefined,
-    selectedLocationTemp2: undefined as string | undefined,
-    showConvertedUnits: false,
-    normalizeComparative: false,
-    changeLocation: () => {},
-    setLoading: () => {},
-    setYear: () => {},
-    setMonth: () => {},
-    setEndDay: () => {},
-    setYear2: () => {},
-    setMonth2: () => {},
-    setEndDay2: () => {},
-    setDefaultLocation: () => {},
-    changeTemperatureUnit: () => {},
-    setSelectedLocationTemp: () => {},
-    setSelectedLocationTemp2: () => {},
-    changeConvertedUnits: () => {},
-    setNormalizeComparative: () => {},
-} as GraphDataContextType);
-export default function GraphDataProvider({ children }: { children: React.ReactNode }) {
-    // 1. State for server data is removed. No more useState for data, error, loading.
-    // const [data, setData] = useState<CleanedWaterData[] | undefined>([]);
-    // const [error, setError] = useState<{ message: string } | undefined>(undefined);
-    // const [loading, setLoading] = useState<boolean>(true);
+// This hook provides the same API as before, but is now a proper hook, not a context provider.
+export default function useGetGraphData() {
+    const { fetchWaterData } = useGetWaterData();
 
     const closestStation = useGetClosestStation();
 
@@ -109,7 +50,7 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         queryKey: ['graphWaterData', activeLocation, year, month, startDay, endDay],
 
         // The query function calls your fetcher with the current state values.
-        queryFn: () => fetchData(activeLocation!, false, year!, month!, startDay!, endDay!),
+        queryFn: () => fetchWaterData(activeLocation!, false, year!, month!, startDay!, endDay!),
 
         // This query will only run when all its dependencies have values.
         enabled: !!(activeLocation && year && month && startDay && endDay),
@@ -122,7 +63,8 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         isLoading: loading2,
     } = useQuery({
         queryKey: ['graphWaterData2', activeLocation2, year2, month2, startDay2, endDay2],
-        queryFn: () => fetchData(activeLocation2!, false, year2!, month2!, startDay2!, endDay2!),
+        queryFn: () =>
+            fetchWaterData(activeLocation2!, false, year2!, month2!, startDay2!, endDay2!),
         enabled: !!(activeLocation2 && year2 && month2 && startDay2 && endDay2),
     });
 
@@ -274,53 +216,35 @@ export default function GraphDataProvider({ children }: { children: React.ReactN
         setEndDay2(getDaysInMonth(lastMonth2));
     }, [closestStation.closestStation]);
 
-    return (
-        <GraphDataContext.Provider
-            value={{
-                // Values from useQuery
-                data,
-                data2,
-                error: error ? { message: error.message } : undefined,
-                error2: error2 ? { message: error2.message } : undefined,
-                loading,
-                loading2,
-                // State and setters that remain
-                defaultLocation,
-                defaultLocationName,
-                defaultTempUnit,
-                showConvertedUnits,
-                selectedLocationTemp: selectedLocation?.name,
-                selectedLocationTemp2: selectedLocation2?.name,
-                changeLocation,
-                setYear,
-                setMonth,
-                setYear2,
-                setMonth2,
-                normalizeComparative,
-                setLoading: () => {},
-                setEndDay,
-                setEndDay2,
-                setDefaultLocation,
-                changeTemperatureUnit,
-                setSelectedLocationTemp: setSelectedLocation,
-                setSelectedLocationTemp2: setSelectedLocation2,
-                changeConvertedUnits,
-                setNormalizeComparative,
-            }}>
-            {children}
-        </GraphDataContext.Provider>
-    );
-}
-
-export const useGraphData = () => useContext(GraphDataContext);
-function fetchData(
-    arg0: LocationType,
-    arg1: boolean,
-    arg2: number,
-    arg3: number,
-    arg4: number,
-    arg5: number
-): any {
-    console.log('Function fetchData called with:', arg0, arg1, arg2, arg3, arg4, arg5);
-    throw new Error('Function not implemented.');
+    return {
+        // Values from useQuery
+        data,
+        data2,
+        error: error ? { message: error.message } : undefined,
+        error2: error2 ? { message: error2.message } : undefined,
+        loading,
+        loading2,
+        // State and setters that remain
+        defaultLocation,
+        defaultLocationName,
+        defaultTempUnit,
+        showConvertedUnits,
+        selectedLocationTemp: selectedLocation?.name,
+        selectedLocationTemp2: selectedLocation2?.name,
+        changeLocation,
+        setYear,
+        setMonth,
+        setYear2,
+        setMonth2,
+        normalizeComparative,
+        setLoading: () => {},
+        setEndDay,
+        setEndDay2,
+        setDefaultLocation,
+        changeTemperatureUnit,
+        setSelectedLocationTemp: setSelectedLocation,
+        setSelectedLocationTemp2: setSelectedLocation2,
+        changeConvertedUnits,
+        setNormalizeComparative,
+    };
 }

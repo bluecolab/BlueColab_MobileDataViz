@@ -78,7 +78,7 @@ export default function Home() {
     const { refetchCurrent, loadingCurrent } = useCurrentData();
 
     return (
-        <SafeAreaView className="flex-1 bg-lightBackground dark:bg-darkBackground">
+        <SafeAreaView className="bg-lightBackground dark:bg-darkBackground flex-1">
             <ScrollView
                 contentContainerStyle={{ paddingBottom: 24 }}
                 refreshControl={
@@ -101,7 +101,7 @@ export default function Home() {
                             style={{ height: 56 }}
                             resizeMode="contain"
                         />
-                        <Text className="mt-2 text-center text-xl font-semibold dark:text-darkText">
+                        <Text className="dark:text-darkText mt-2 text-center text-xl font-semibold">
                             Environmental Observatory
                         </Text>
                     </View>
@@ -114,8 +114,16 @@ export default function Home() {
 
                     <Pressable
                         onPress={() => router.push('/story')}
-                        className="my-2 items-center rounded-md p-4 dark:bg-darkCardBackground">
-                        <Text className="items-center text-center text-sm dark:text-darkText">
+                        className="dark:bg-darkCardBackground my-2 items-center rounded-md p-4">
+                        <Text className="dark:text-darkText items-center text-center text-sm">
+                            Click Here Learn more about Blue CoLab
+                        </Text>
+                    </Pressable>
+
+                    <Pressable
+                        onPress={() => router.push('/historicData')}
+                        className="dark:bg-darkCardBackground my-2 items-center rounded-md p-4">
+                        <Text className="dark:text-darkText items-center text-center text-sm">
                             Click Here Learn more about Blue CoLab
                         </Text>
                     </Pressable>
@@ -123,10 +131,10 @@ export default function Home() {
 
                 {/* Footer text preserved */}
                 <View className="py-2">
-                    <Text className="text-center text-sm dark:text-darkText">
+                    <Text className="dark:text-darkText text-center text-sm">
                         Gale Epstein Center
                     </Text>
-                    <Text className="text-center text-sm dark:text-darkText">
+                    <Text className="dark:text-darkText text-center text-sm">
                         For Technology, Policy, and the Environment
                     </Text>
                 </View>

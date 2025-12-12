@@ -13,7 +13,7 @@ import ComparisonCard from '@/components/visualizations/monthlyData/ComparisonCa
 import { MonthlyDataCard } from '@/components/visualizations/monthlyData/MonthlyDataCard';
 import { WQICard } from '@/components/visualizations/WQI/WQICard';
 import { useColorScheme } from '@/contexts/ColorSchemeContext';
-import { useGraphData } from '@/contexts/~GraphDataContext';
+import useGetGraphData from '@/hooks/useGetGraphData';
 import getMetadata from '@/utils/getMetadata';
 
 const getDaysInMonthFn = (month: number, year: number) => {
@@ -42,7 +42,8 @@ export default function HistoricData() {
         showConvertedUnits,
         normalizeComparative,
         setNormalizeComparative,
-    } = useGraphData();
+    } = useGetGraphData();
+
     const { parameterInfo, locationOptions, units } = getMetadata();
     const { isDark } = useColorScheme();
 
@@ -263,8 +264,8 @@ export default function HistoricData() {
                 }}
             />
             <View className="flex-1">
-                <ScrollView className="dark:bg-defaultdarkbackground h-full bg-lightBackground">
-                    <Text className="mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700 dark:text-darkText">
+                <ScrollView className="bg-lightBackground h-full dark:bg-defaultdarkbackground">
+                    <Text className="dark:text-darkText mt-5 w-[95%] self-center rounded-3xl bg-white p-1 text-center text-2xl font-bold dark:bg-gray-700">
                         {locationOptions.find((option) => option.value === selectedLocation)?.label}{' '}
                         -{' '}
                         {
@@ -301,6 +302,8 @@ export default function HistoricData() {
                                         )?.label || 'oh no'
                                     }
                                     showConvertedUnits={showConvertedUnits}
+                                    selectedLocationTemp={selectedLocationTemp}
+                                    selectedLocationTemp2={selectedLocationTemp2}
                                 />
                             </View>
                         )}
@@ -325,6 +328,7 @@ export default function HistoricData() {
                     )}
 
                     <ComparisonCard
+                        normalizeComparative={normalizeComparative}
                         loading={loading}
                         data={data}
                         error={error}
@@ -335,6 +339,8 @@ export default function HistoricData() {
                                 ?.label || 'oh no'
                         }
                         showConvertedUnits={showConvertedUnits}
+                        selectedLocationTemp={selectedLocationTemp}
+                        selectedLocationTemp2={selectedLocationTemp2}
                     />
 
                     <View className="pb-[45]">
@@ -349,17 +355,17 @@ export default function HistoricData() {
                         <>
                             <View className="absolute right-8 top-3">
                                 <Pressable onPress={() => modalRef.current?.closeModal()}>
-                                    <Text className="text-2xl dark:text-darkText">✕</Text>
+                                    <Text className="dark:text-darkText text-2xl">✕</Text>
                                 </Pressable>
                             </View>
 
                             <View className="elevation-[20] z-10 mb-2 mt-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
-                                <Text className="text-center text-lg font-bold dark:text-darkText">
+                                <Text className="dark:text-darkText text-center text-lg font-bold">
                                     Historic Data Settings
                                 </Text>
                             </View>
                             <View className="elevation-[20] z-10 w-full rounded-xl bg-gray-200 p-default dark:bg-gray-700">
-                                <Text className="text-center text-lg font-bold dark:text-darkText">
+                                <Text className="dark:text-darkText text-center text-lg font-bold">
                                     Location 1
                                 </Text>
 
@@ -392,7 +398,7 @@ export default function HistoricData() {
 
                                 <View className="border-b border-gray-300 dark:border-gray-600" />
 
-                                <Text className="mt-2 text-center text-lg font-bold dark:text-darkText">
+                                <Text className="dark:text-darkText mt-2 text-center text-lg font-bold">
                                     Location 2
                                 </Text>
                                 <Text className="-mt-1 text-center text-xs text-gray-600 dark:text-gray-300">
@@ -426,7 +432,7 @@ export default function HistoricData() {
                                 </View>
 
                                 <View className="flex-row items-center justify-end pb-4">
-                                    <Text className="mr-2 text-lg dark:text-darkText">
+                                    <Text className="dark:text-darkText mr-2 text-lg">
                                         Normalize month (0–1)
                                     </Text>
                                     <Pressable
