@@ -770,7 +770,7 @@ export default function VersionHistory() {
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/299"
                             label="#299"
                         />{' '}
-                        by @Copilot)
+                        by @Copilot/KoJesko)
                     </Text>
                     <Text className="ml-3 text-gray-700 dark:text-gray-300">
                         - Added functionality for closest station water quality (
@@ -826,7 +826,7 @@ export default function VersionHistory() {
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/313"
                             label="#313"
                         />{' '}
-                        by @OkuraKenG)
+                        by @tylercyeung)
                     </Text>
                     <Text className="ml-3 text-gray-700 dark:text-gray-300">
                         - AWM-0110 - Fix open weather API to get US AQI (
@@ -834,7 +834,7 @@ export default function VersionHistory() {
                             url="https://github.com/bluecolab/BlueColab_MobileDataViz/pull/321"
                             label="#321"
                         />{' '}
-                        by @Copilot)
+                        by @Copilot/KoJesko)
                     </Text>
                     <Text className="ml-3 text-gray-700 dark:text-gray-300">
                         - AWM-0115 - Add PurpleAir widgets to app (
