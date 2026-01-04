@@ -72,7 +72,7 @@ export function ModalWrapper({ body, modalHeight, ref }: ModalWrapperProps) {
                         bottom: 0,
                         height: modalHeight,
                         width: '100%',
-                        backgroundColor: isDark ? '#1a202c' : '#f1f1f1',
+                        backgroundColor: isDark ? '#121212' : '#f1f1f1',
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
                         padding: 20,

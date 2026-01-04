@@ -14,7 +14,8 @@
         "public/*",
         "cspell-ext.json"
     ],
-    "ignoreWords": [
+    "words": [
+        "APIURL",
         "okaykenji",
         "Nunito",
         "wght",
@@ -98,9 +99,10 @@
         "worklets",
         "bluecolab",
         "agesignals",
-        "prebuild"
-    ],
-    "words": [
+        "prebuild",
+        "Pleasantville",
+        "Ashokan",
+        "USAQI",
         "Acipenser",
         "Alosa",
         "Ardea",
@@ -135,10 +137,12 @@
         "Megaptera",
         "Neovison",
         "Nerodia",
+        "NOAA",
         "novaeangliae",
         "Okhrimenko",
         "Orconectes",
         "oxyrinchus",
+        "Pleasantville",
         "Plethodon",
         "Pressable",
         "Rana",

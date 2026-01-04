@@ -14,8 +14,6 @@ export default function useGetOdinData() {
         }
         const url = config.BLUE_COLAB_API_ODIN_URL;
 
-        console.log('Fetching with React Query:', url);
-
         try {
             const response = await axios.get(url);
             const apiData = response.data;

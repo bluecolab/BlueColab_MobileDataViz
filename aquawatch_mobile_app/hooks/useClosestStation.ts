@@ -1,18 +1,18 @@
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
 
-import type { LocationType } from '@/types/config.interface';
+import type { LocationType } from '@/types/location.type';
 
 import { config } from './useConfig';
 
 interface UseClosestStationResult {
-    closestStation: LocationType | null;
+    closestStation: LocationType | undefined;
     isLoading: boolean;
     errorMsg: string | null;
 }
 
 export default function useGetClosestStation(): UseClosestStationResult {
-    const [closestStation, setClosestStation] = useState<LocationType | null>(null);
+    const [closestStation, setClosestStation] = useState<LocationType | undefined>(undefined);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -34,15 +34,14 @@ export default function useGetClosestStation(): UseClosestStationResult {
                 const R = 6371; // Earth's radius in kilometers
 
                 const allStations: LocationType[] = [
-                    ...config.BLUE_COLAB_API_CONFIG.validMatches,
                     ...config.USGS_WATER_SERVICES_API_CONFIG.validMatches,
                 ];
 
                 let leastDistance = Infinity;
-                let stationWithLeastDistance: LocationType | null = null;
+                let stationWithLeastDistance: LocationType | undefined = undefined;
 
                 for (const station of allStations) {
-                    if (station.lat == null || station.long == null) continue;
+                    if (station.lat == undefined || station.long == undefined) continue;
 
                     const dLat = toRad(station.lat - currentLocation.coords.latitude);
                     const dLon = toRad(station.long - currentLocation.coords.longitude);

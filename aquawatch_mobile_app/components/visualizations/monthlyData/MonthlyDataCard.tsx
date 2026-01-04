@@ -2,11 +2,10 @@ import { useMemo, useRef } from 'react';
 import { Dimensions, View, Pressable } from 'react-native';
 
 import FlipCard from '@/components/customCards/FlipCard';
-import { useGraphData } from '@/contexts/GraphDataContext';
 import { ErrorType } from '@/types/error.interface';
 import { CleanedWaterData } from '@/types/water.interface';
-import dataUtils from '@/utils/dataUtils';
-import normalize from '@/utils/normalize';
+import dataUtils from '@/utils/data/dataUtils';
+import normalize from '@/utils/data/normalize';
 
 import { MonthlyDataCardBack } from './MonthlyDataCardBack';
 import { MonthlyDataCardFront } from './MonthlyDataCardFront';
@@ -41,6 +40,7 @@ interface MonthlyDataCardProps {
     loading: boolean;
     yAxisLabel: string;
     data: CleanedWaterData[] | undefined;
+    data2?: CleanedWaterData[] | undefined;
     error: ErrorType | undefined;
     unit: string;
     meta: {
@@ -53,22 +53,27 @@ interface MonthlyDataCardProps {
     };
     defaultTempUnit: string | undefined;
     unitMap: Record<string, string | null>;
-    alternateName?: string;
+    selectedLocationTemp: string | undefined;
+    selectedLocationTemp2: string | undefined;
     selectedMonth: string;
     showConvertedUnits?: boolean;
     normalizeComparative?: boolean;
+    alternateName: string;
 }
 
 export function MonthlyDataCard({
     loading,
     yAxisLabel,
     data,
+    data2,
     error,
     unit,
     meta,
     defaultTempUnit,
     unitMap,
     alternateName,
+    selectedLocationTemp,
+    selectedLocationTemp2,
     selectedMonth,
     showConvertedUnits,
     normalizeComparative,
@@ -76,7 +81,6 @@ export function MonthlyDataCard({
     const finalUnitToUse = unitMap[unit] === null ? alternateName : unit;
     const { generateDataSummary } = dataUtils();
     const { normalizeDailySummary } = normalize();
-    const { normalizeComparative: normalizeComparativeFromContext } = useGraphData();
 
     // Conversion helpers for historical data
     const uscmToPpt = (uscm: number) => uscm * 0.00055;
@@ -112,8 +116,42 @@ export function MonthlyDataCard({
         });
     }, [showConvertedUnits, data, unit, unitMap]);
 
-    const rawDataSummary = generateDataSummary(convertedData, loading, unit, defaultTempUnit);
-    const isNormalized = (normalizeComparative ?? normalizeComparativeFromContext) && !loading;
+    const convertedData2 = useMemo(() => {
+        if (!showConvertedUnits || !data2) return data2;
+
+        return data2.map((item) => {
+            const next = { ...item };
+            switch (unit) {
+                case 'Cond':
+                    if (typeof item.Cond === 'number' && unitMap.Cond === 'µS/cm') {
+                        next.Cond = uscmToPpt(item.Cond);
+                    }
+                    break;
+                case 'Turb':
+                    if (typeof item.Turb === 'number' && unitMap.Turb === 'FNU') {
+                        next.Turb = fnuToNtu(item.Turb);
+                    }
+                    break;
+                case 'Sal':
+                    if (typeof item.Sal === 'number' && unitMap.Sal === 'PSU') {
+                        next.Sal = psuToPpt(item.Sal);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return next;
+        });
+    }, [showConvertedUnits, data2, unit, unitMap]);
+
+    const rawDataSummary = generateDataSummary(
+        convertedData,
+        loading,
+        unit,
+        defaultTempUnit,
+        convertedData2
+    );
+    const isNormalized = normalizeComparative && !loading;
     const normalizedDaily = useMemo(() => {
         if (!isNormalized) return rawDataSummary.dailySummary;
         const { daily } = normalizeDailySummary(rawDataSummary.dailySummary);
@@ -147,6 +185,8 @@ export function MonthlyDataCard({
                                         defaultTempUnit,
                                         yAxisLabel
                                     )}
+                                    selectedLocationTemp={selectedLocationTemp}
+                                    selectedLocationTemp2={selectedLocationTemp2}
                                 />
                             </Pressable>
                         }
