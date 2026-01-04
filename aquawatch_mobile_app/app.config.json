@@ -30,7 +30,8 @@
         }
       ],
       "expo-web-browser",
-      "expo-font"
+      "expo-font",
+      "./modules/age-verification/withAgeVerification"
     ],
     "experiments": {
       "typedRoutes": true,
