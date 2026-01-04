@@ -27,7 +27,7 @@ const WaterSourceModal: React.FC<WaterSourceModalProps> = ({ visible, onClose })
                 {/* Animated GIF */}
                 <View className="mb-2 h-[475px] rounded-lg">
                     <Image
-                        source={require('@/assets/homescreen/Pace-PLV-water-animated-1.png')}
+                        source={require('@/assets/homescreen/Pace-PLV-water-animated-1.gif')}
                         className="h-full w-full rounded-3xl"
                         resizeMode="contain"
                     />
