@@ -2,6 +2,8 @@
 
 ## Health-check-hudson
 
+**January 19, 2026** - The USGS WaterServices API has been updated which will result in significant changes in our use of the API.
+
 A simple Python Script that will test all the Hudson River locations we use. The script should generate a PDF for each location with information on health of each station and their data.
 
 Error conditions:
