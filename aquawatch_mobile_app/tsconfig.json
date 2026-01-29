@@ -5,16 +5,24 @@
         "jsx": "react-jsx",
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./*"]
-        }
+            "@/*": [
+                "./src/*"
+            ],
+            "@/assets/*": [
+                "./assets/*"
+            ],     
+            "@/modules/*": [
+                "./modules/*"
+            ]     
+       }
     },
     "include": [
-        "app/**/*",
-        "components/**/*",
-        "contexts/**/*",
-        "hooks/**/*",
-        "types/**/*",
-        "utils/**/*",
+        "src/app/**/*",
+        "src/components/**/*",
+        "src/contexts/**/*",
+        "src/hooks/**/*",
+        "src/types/**/*",
+        "src/utils/**/*",
         "**/*.ts",
         "**/*.tsx",
         ".expo/types/**/*.ts",
