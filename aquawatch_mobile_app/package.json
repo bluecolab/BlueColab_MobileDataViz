@@ -26,12 +26,6 @@
       }
     }
   },
-  "overrides": {
-    "@shopify/react-native-skia": {
-      "react-native-reanimated": ">3.0"
-    },
-    "js-yaml": "4.1.1"
-  },
   "dependencies": {
     "@babel/core": "^7.26.0",
     "@expo/metro-runtime": "~55.0.2",
