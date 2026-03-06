@@ -1,4 +1,5 @@
 // app/_layout.tsx
+import '../../global.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
@@ -11,7 +12,6 @@ import { Platform } from 'react-native';
 import ColorSchemeProvider from '@/contexts/ColorSchemeContext';
 import CurrentDataProvider from '@/contexts/CurrentDataContext';
 import UserSettingsProvider from '@/contexts/UserSettingsContext';
-
 
 //import { Text, View, Button, Platform } from 'react-native';
 
