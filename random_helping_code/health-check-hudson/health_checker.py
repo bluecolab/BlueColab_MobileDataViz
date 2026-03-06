@@ -23,7 +23,7 @@ def fetch_and_process_data(site_code, pdf_path='usgs_report.pdf'):
         elements.append(Paragraph(text, normal))
         elements.append(Spacer(1, 4))
 
-    url = f'https://waterservices.usgs.gov/nwis/iv/?site={site_code}&format=json&period=P30D'
+    url = f'https://waterservices.usgs.gov/nwis/iv?sites={site_code}&startDT=2025-03-01&endDT=2025-03-31&parameterCd=00010,00301,00300,90860,00095,63680,00400,62620&format=json'
     response = requests.get(url)
     p(f"<b><font color='orange'>Fetching data from</font></b>: {url}")
 

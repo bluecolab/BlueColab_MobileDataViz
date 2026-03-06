@@ -82,14 +82,14 @@ export default function WaterReportAPI({ year, uri }: { year: string; uri: strin
                         .filter(
                             (param: any) =>
                                 param &&
-                                param.level_detected !== undefined &&
-                                param.level_detected !== null
+                                param.Level_Detected !== undefined &&
+                                param.Level_Detected !== null
                         )
                         .map((param: any, index: number) => (
                             <Widget
                                 key={index}
-                                name={param.contaminant}
-                                value={param.level_detected ?? ''}
+                                name={param.Contaminant}
+                                value={param.Level_Detected ?? ''}
                             />
                         ))}
                 </View>
