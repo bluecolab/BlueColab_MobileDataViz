@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import '../global.css';
 import { Stack } from 'expo-router';
 import { useState, useEffect } from 'react';
 import { Platform } from 'react-native';
