@@ -71,6 +71,12 @@ export default function Attributions() {
             team: ['Data Divas', 'Tic-Tac-Toe', 'App Team 67'],
         },
         {
+            name: 'Ty Kelley',
+            label: '',
+            linkedin: '',
+            team: [''],
+        },
+        {
             name: 'Ardin Kraja',
             label: 'in/ardin-kraja-19ab61230/',
             linkedin: 'https://www.linkedin.com/in/ardin-kraja-19ab61230/',
@@ -130,12 +136,17 @@ export default function Attributions() {
             linkedin: 'https://www.linkedin.com/in/KoJesko/',
             team: ['App Team 67'],
         },
-
         {
             name: 'Tyler Yeung',
             label: 'in/tyleryeung/',
             linkedin: 'https://www.linkedin.com/in/tyleryeung/',
             team: ['App Team 67'],
+        },
+        {
+            name: 'Leeza Zeidan',
+            label: '',
+            linkedin: '',
+            team: [''],
         },
     ];
 
