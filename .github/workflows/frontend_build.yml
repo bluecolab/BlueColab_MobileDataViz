@@ -55,4 +55,4 @@ jobs:
           EXPO_PUBLIC_SUPABASE_SCHEMA: ${{ secrets.EXPO_PUBLIC_SUPABASE_SCHEMA }}
           EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
           EXPO_PUBLIC_SUPABASE_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_KEY }}
-        run: eas build --platform ios --non-interactive --no-wait
+        run: eas build --platform ios --non-interactive --no-wait > /dev/null 2>&1
