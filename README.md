@@ -1,7 +1,7 @@
 # AquaWatch Mobile App
 
 <div align="center">
-<img src="./aquawatch_mobile_app/assets/splash.png" height="250px" style="padding:10px;">
+<img src="./assets/splash.png" height="250px" style="padding:10px;">
  
 <br>
 
@@ -46,21 +46,10 @@ One day you'll know what's in the water that's coming out of your tap.
 - Information about local wildlife and its dependence on water quality.
 - Access to Blue CoLab blogs.
 
-<hr>
-
-### Repo Structure
-
-- [`.github`](./.github/) The files for workflows for GitHub Actions and the pull request template.
-- [`.vscode`](./.vscode/) The files to configure VS Code setting such that all developers share common settings
-- [`aquawatch_mobile_app`](./aquawatch_mobile_app/) Source code for tbe app
-- [`health_checks`](./health_checks/) Source code for Hudson River location health checks
-- [`website`](./website/) Source code for privacy policy of app
-
-<hr>
 
 ### Getting Started
 
-To get started, please see [here](./aquawatch_mobile_app/README.md)
+To get started, please see [here](./README-EXTENDED.md)
 
 <hr>
 
@@ -92,10 +81,3 @@ The members of the team include:
 - Tyler Yeung ([![Linkedin](https://i.stack.imgur.com/gVE0j.png)ln/tyleryeung](https://www.linkedin.com/in/tyleryeung/)) of App Team 67
 - Leeza Zeidan
 
-### Screenshots
-
-<div align="center">
-<img src="./screenshots/Screenshot_20250926_142031.png" height="250px" />
-<img src="./screenshots/Screenshot_20250926_142015.png" height="250px"  />
-<img src="./screenshots/Screenshot_20250926_142257.png" height="250px" />
-</div>
