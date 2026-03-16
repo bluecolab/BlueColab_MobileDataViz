@@ -1,11 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { supabase } from './supabase';
+import { isSupabaseConfigured, supabase } from './supabase';
 
 const supabaseTable = process.env.EXPO_PUBLIC_SUPABASE_TABLE || '';
 const LAST_SYNCED_EXPO_PUSH_TOKEN_KEY = 'last-synced-expo-push-token';
 
 async function ensureAnonAuthSession() {
+    if (!supabase) return;
+
     const { data } = await supabase.auth.getSession();
     if (data.session) return;
 
@@ -15,6 +17,8 @@ async function ensureAnonAuthSession() {
 
 export async function sendExpoPushToken(token: string) {
     if (!token) return;
+    if (!isSupabaseConfigured || !supabaseTable) return;
+    if (!supabase) return;
 
     const normalizedToken = token.trim();
     if (!normalizedToken) return;

@@ -32,6 +32,32 @@ def atomic_write(path, data):
                 pass
 
 
+def inject_expo_public_env(eas_data):
+    expo_public_env_keys = [
+        "EXPO_PUBLIC_SUPABASE_TABLE",
+        "EXPO_PUBLIC_SUPABASE_SCHEMA",
+        "EXPO_PUBLIC_SUPABASE_URL",
+        "EXPO_PUBLIC_SUPABASE_KEY",
+    ]
+
+    env_values = {
+        key: value
+        for key in expo_public_env_keys
+        if (value := os.getenv(key))
+    }
+
+    if not env_values:
+        return eas_data
+
+    build = eas_data.setdefault("build", {})
+    for profile_name in ("development", "preview", "production"):
+        profile = build.setdefault(profile_name, {})
+        profile_env = profile.setdefault("env", {})
+        profile_env.update(env_values)
+
+    return eas_data
+
+
 def main():
     eas_json_str = os.getenv("EAS_JSON")
     google_services_str = os.getenv("GOOGLE_SERVICES_JSON")
@@ -53,6 +79,7 @@ def main():
     except json.JSONDecodeError as e:
         print(f"ERROR: EAS_JSON is not valid JSON: {e}", file=sys.stderr)
         return 1
+    eas_data = inject_expo_public_env(eas_data)
     atomic_write("eas.json", eas_data)
     print("Wrote eas.json")
 
