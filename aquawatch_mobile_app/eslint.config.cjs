@@ -57,7 +57,16 @@ module.exports = [
             'react-hooks/exhaustive-deps': 'error',
 
             // TypeScript rules
-            '@typescript-eslint/no-unused-vars': 'error',
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    varsIgnorePattern: '^_',
+                    argsIgnorePattern: '^_',
+                    caughtErrorsIgnorePattern: '^_',
+                    destructuredArrayIgnorePattern: '^_',
+                    ignoreRestSiblings: true,
+                },
+            ],
             // '@typescript-eslint/no-unnecessary-condition': 'warn',
             '@typescript-eslint/no-floating-promises': 'error',
             '@typescript-eslint/no-misused-promises': 'error',

@@ -34,7 +34,10 @@ export default function useGetWaterReportsData() {
                 // Handle axios timeout specifically
                 if (isAxiosError(error)) {
                     // Axios uses code 'ECONNABORTED' for timeouts
-                    if ((error as any).code === 'ECONNABORTED') {
+                    if (
+                        (error as any).code === 'ECONNABORTED' ||
+                        (error as any).code === 'ERR_NETWORK'
+                    ) {
                         console.log(
                             'Request timed out after',
                             TIMEOUT_MS,

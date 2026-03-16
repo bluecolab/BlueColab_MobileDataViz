@@ -5,48 +5,29 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Stack } from 'expo-router';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 
 import ColorSchemeProvider from '@/contexts/ColorSchemeContext';
 import CurrentDataProvider from '@/contexts/CurrentDataContext';
 import UserSettingsProvider from '@/contexts/UserSettingsContext';
-
-//import { Text, View, Button, Platform } from 'react-native';
+import { sendExpoPushToken } from '@/utils/supabase/sendExpoPushToken';
 
 export const unstable_settings = {
     initialRouteName: 'index',
 };
 
-Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldPlaySound: true,
-        shouldSetBadge: true,
-        shouldShowBanner: true,
-        shouldShowList: true,
-    }),
-});
-
-/*async function sendPushNotification(expoPushToken: string) {
-    const message = {
-        to: expoPushToken,
-        sound: 'default',
-        title: 'Original Title',
-        body: 'And here is the body!',
-        data: { someData: 'goes here' },
-    };
-
-    await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Accept-encoding': 'gzip, deflate',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
+if (Device.isDevice) {
+    Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+            shouldShowBanner: true,
+            shouldShowList: true,
+        }),
     });
 }
-*/
+
 function handleRegistrationError(errorMessage: string) {
     alert(errorMessage);
     throw new Error(errorMessage);
@@ -110,13 +91,14 @@ const queryClient = new QueryClient({
     },
 });
 
-export default function RootLayout() {
+function RootLayout() {
     const [expoPushToken, setExpoPushToken] = useState('');
-    const [notification, setNotification] = useState<Notifications.Notification | undefined>(
+    const [_notification, setNotification] = useState<Notifications.Notification | undefined>(
         undefined
     );
-    console.log('expoPushToken:', expoPushToken);
-    console.log('notification:', notification);
+
+    void sendExpoPushToken(expoPushToken);
+
     useEffect(() => {
         registerForPushNotificationsAsync()
             .then((token) => setExpoPushToken(token ?? ''))
@@ -139,6 +121,7 @@ export default function RootLayout() {
             responseListener.remove();
         };
     }, []);
+
     return (
         <QueryClientProvider client={queryClient}>
             <UserSettingsProvider>
@@ -160,3 +143,5 @@ export default function RootLayout() {
         </QueryClientProvider>
     );
 }
+
+export default RootLayout;
