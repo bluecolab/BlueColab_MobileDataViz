@@ -33,9 +33,9 @@ This folder contains the various files related to the application.
     ```bash
     git clone https://github.com/bluecolab/BlueColab_MobileDataViz.git
     ```
-3. Navigate in your terminal to the `aquawatch_mobile_app directory`:
+3. Navigate in your terminal to the `BlueColab_MobileDataViz` directory:
     ```bash
-    cd /BlueColab_MobileDataViz/aquawatch_mobile_app/
+    cd /BlueColab_MobileDataViz
     ```
 4. Install the dependencies by running:
     ```bash
@@ -50,12 +50,11 @@ This folder contains the various files related to the application.
 
 1. If you haven't. start a device emulator on your computer. The instructions to start one can be found [here](https://developer.android.com/codelabs/basic-android-kotlin-compose-emulator#2).
 2. Open a terminal window.
-3. Make sure you are in the `aquawatch_mobile_app directory`.
-4. In the terminal start the app by running:
+3. In the terminal start the app by running:
     ```bash
     npx expo start
     ```
-5. On the terminal, there will be instructions to start the app in emulator. (For example, pressing A key should start the app in an Android emulator)
+4. On the terminal, there will be instructions to start the app in emulator. (For example, pressing A key should start the app in an Android emulator)
     1. If it's your first time running the app, it may prompt you to install Expo. Hit yes if it does.
 
 ## Running on mobile device via Expo Go
@@ -63,8 +62,7 @@ This folder contains the various files related to the application.
 1. Make sure your computer and phone are on the _same_ WiFi network.
 2. Make sure you have 'Expo Go' App downloaded on your phone.
 3. Open a terminal window.
-4. Make sure you are in the `aquawatch_mobile_app directory`.
-5. In the terminal start the app by running:
+4. In the terminal start the app by running:
     ```bash
     npx expo start
     ```
@@ -72,10 +70,10 @@ This folder contains the various files related to the application.
     ```bash
     npx expo start --tunnel
     ```
-6. After running the above, a QR code should pop up.
+5. After running the above, a QR code should pop up.
     1. iPhone: Open the Camera App on iPhone, then scan the QR Code.
     2. Android: Open the Expo Go app, hit "Scan QR Code", then scan the QR Code.
-7. The Expo Go app should open - with our app loaded!
+6. The Expo Go app should open - with our app loaded!
 
 ## Running a Development Build
 
@@ -101,7 +99,7 @@ We use [file-based navigation](https://docs.expo.dev/router/basics/core-concepts
 Please follow this structure when creating new files:
 
 ```
-aquawatch_mobile_app - Parent folder, for all sob-directories and config files
+./ - Parent folder, for all sub-directories and config files
 ├───app - For all app pages and navigation related files
 │   └───(tabs) - Our main navigation pattern, all pages should be under this directory
 ├───assets - For all images, icons, and fonts

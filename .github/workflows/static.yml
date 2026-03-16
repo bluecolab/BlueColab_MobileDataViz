@@ -5,7 +5,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "website/**"  # Only trigger on changes within the 'website' folder
+      - ".non_app_files/website/**"  # Only trigger on changes within the 'website' folder
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -37,7 +37,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'website'
+          path: '.non_app_files/website' 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

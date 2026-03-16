@@ -97,8 +97,6 @@ function RootLayout() {
         undefined
     );
 
-    void sendExpoPushToken(expoPushToken);
-
     useEffect(() => {
         registerForPushNotificationsAsync()
             .then((token) => setExpoPushToken(token ?? ''))
@@ -121,6 +119,19 @@ function RootLayout() {
             responseListener.remove();
         };
     }, []);
+
+    useEffect(() => {
+        if (!expoPushToken) return;
+
+        void (async () => {
+            try {
+                await sendExpoPushToken(expoPushToken);
+                console.log('Expo push token synced successfully.');
+            } catch (error: unknown) {
+                console.error('Failed to sync Expo push token:', error);
+            }
+        })();
+    }, [expoPushToken]);
 
     return (
         <QueryClientProvider client={queryClient}>
