@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - app-build-branch
-    paths:
-      - "aquawatch_mobile_app/**"
   workflow_dispatch: # Manual trigger
 
 jobs:
@@ -31,14 +29,12 @@ jobs:
       - name: 🏗 Setup EAS
         run: npm install -g eas-cli
       - name: Validate package-lock.json
-        working-directory: ./aquawatch_mobile_app
         run: node scripts/check-package-lock.js
+
       - name: Install dependencies
-        working-directory: ./aquawatch_mobile_app
         run: npm ci
 
       - name: 🚀 Build Android app
-        working-directory: ./aquawatch_mobile_app
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_ORG_SECRET }}
           EXPO_PUBLIC_SUPABASE_TABLE: ${{ secrets.EXPO_PUBLIC_SUPABASE_TABLE }}
@@ -48,7 +44,6 @@ jobs:
         run: eas build --platform android --non-interactive --no-wait
 
       - name: 🚀 Build Apple app
-        working-directory: ./aquawatch_mobile_app
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_ORG_SECRET }}
           EXPO_PUBLIC_SUPABASE_TABLE: ${{ secrets.EXPO_PUBLIC_SUPABASE_TABLE }}

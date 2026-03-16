@@ -72,7 +72,7 @@ const fetchMainBranchPackageLock = () => {
     return new Promise((resolve, reject) => {
         const { exec } = require('child_process');
         exec(
-            `git show ${defaultBranch}:aquawatch_mobile_app/package-lock.json`,
+            `git show ${defaultBranch}:package-lock.json`,
             (err, stdout, stderr) => {
                 if (err) {
                     reject(`Failed to fetch package-lock.json from ${defaultBranch}: ${stderr}`);
