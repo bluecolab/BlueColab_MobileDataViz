@@ -101,6 +101,47 @@ const DESCRIPTIONS = {
 
     Tide: 'The rise and fall of sea levels caused by the gravitational forces of the moon and sun. (feet)',
 
+    //Water Report
+    Alkalinity:
+        'Alkalinity tells you how much acid it would take to change the pH. Alkalinity acts as a buffer, neutralizing acids to prevent ph swings.',
+    Barium: 'A measure of the toxicity risk of the water on a scale of 0.0- <2.0, with any number between 0.0 and 2.0 being considered the safe range.',
+    Calcium:
+        'Measure of calcium contained in water, measured on a scale from 0-250 with the higher the number, the *** . Calcium enters water supply when water flows over rocks such as limestone or marble.',
+    Chloride: 'Chloride levels determine how salty your water tastes.',
+    'Corrosivity by Calculation':
+        'Corrosivity by calculation helps to show just how much saturation the water holds.',
+    Fluoride:
+        'Fluoride is measured in water to find a balance between its dental health benefits and the risks of overexposure.',
+    Hardness:
+        'Hardness reflects how much mineral content water has picked up as it passes through rock and soil.',
+    Nickel: 'Nickel measurement is an important indicator of the chemical quality of source water.',
+    Sodium: 'Measurement of the sodium concentration in water, high sodium levels can lead to various health problems including hypertension and kidney damage.',
+    Sulfate:
+        'Sulfate levels help determine not only the color of the water, but high sulfate levels can lead to dehydration amongst particular groups, as well as have a laxative adjacent effect.',
+    'Total Dissolved Solids':
+        'The combination  of all inorganic and organic substances dissolved in water. Measured on a scale from 50 mg/L to 1200mg/L.',
+    Zinc: 'Zinc in water is essential, but elevated amounts of Zinc can be toxic to the human body.',
+    'Beta particles and photon activity from man-made radionuclides':
+        'High levels of beta particles and photon activity from man made radionuclides can point to nuclear or radiological contamination of water. The measurement of them helps to reveal contamination.',
+    'Gross Alpha (including radium-226 but excluding radon and uranium)':
+        'This is a screening that shows the naturally occurring and man made alpha emitting radionuclides present in water at significant concentrations. If levels are high precautions must be put into place to ensure the safety of drinkers.',
+    'Combined radium-226 and 228':
+        'Combined radium-226 and 228 is measured because it when too concentrated, the combination can lead to an increase in the risk of various bone related diseases',
+    Uranium:
+        'Uranium is a naturally occurring metal that is toxic to the kidneys and radiologically harmful when levels are high.',
+    'Total Haloacetic Acids':
+        'Halo-Acetic acids are created as a byproduct of water treatment, high traces of them can be harmful to the body.',
+    'Total Trihalomethanes':
+        'Chemical byproducts that are formed when disenfectants react with organic matter. Elevated levels show that the water treatment needs to be optimized.',
+    'Chlorine Residual':
+        'The level of active chlorine remaining in the water after treatment. Measured on a scale from 0mg/L to 5.0mg/L',
+    'Distribution Turbidity':
+        'Shows the cloudiness of the water as it travels through the distribution network. High levels show a poor treatment system.',
+    'Perfluorooctanoic Acid (PFOA)':
+        'One of the most persistent synthetic chemicals from the PFAS. Elevated levels are very dangerous as PFOA is next ot indestructible in the environment and can be harmful to consume.',
+    'Perfluorooctane sulfonic Acid (PFOS)':
+        'The presence of PFOS can indicate a water source having been contaminated by manufacturing,military ballistics exercises, etc.',
+
     // Atmospheric Conditions
     'Air Temperature': 'The ambient air temperature, measured in degrees Celsius (°C).',
     'Relative Humidity':
