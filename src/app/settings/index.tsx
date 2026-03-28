@@ -186,25 +186,6 @@ export default function Index() {
                             marginVertical: 1,
                         }}
                     />
-                    <Pressable onPress={() => router.push('/settings/versionHistory')}>
-                        <View className="flex-row items-center">
-                            <Text className="mr-2 text-lg  dark:text-darkText">
-                                Version History
-                            </Text>
-                            <FontAwesome
-                                name="sign-in"
-                                size={20}
-                                color={isDark ? 'white' : 'grey'}
-                            />
-                        </View>
-                    </Pressable>
-                    <View
-                        style={{
-                            borderBottomWidth: isDark ? 0 : 0.5,
-                            borderBottomColor: isDark ? 'white' : '',
-                            marginVertical: 1,
-                        }}
-                    />
                     <Pressable onPress={() => router.push('/settings/attributions')}>
                         <View className="flex-row items-center">
                             <Text className="mr-2 text-lg  dark:text-darkText">Attributions</Text>
