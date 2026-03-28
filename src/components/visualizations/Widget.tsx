@@ -132,7 +132,7 @@ const DESCRIPTIONS = {
     'Total Haloacetic Acids':
         'Halo-Acetic acids are created as a byproduct of water treatment, high traces of them can be harmful to the body.',
     'Total Trihalomethanes':
-        'Chemical byproducts that are formed when disenfectants react with organic matter. Elevated levels show that the water treatment needs to be optimized.',
+        'Chemical byproducts that are formed when disinfectants react with organic matter. Elevated levels show that the water treatment needs to be optimized.',
     'Chlorine Residual':
         'The level of active chlorine remaining in the water after treatment. Measured on a scale from 0mg/L to 5.0mg/L',
     'Distribution Turbidity':
