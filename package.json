@@ -1,6 +1,6 @@
 {
   "name": "aquawatchmobile",
-  "version": "1.10.0-rc2",
+  "version": "1.10.0",
   "main": "expo-router/entry",
   "scripts": {
     "android": "expo start --android",
