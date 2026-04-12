@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AquaWatch Mobile",
-    "slug": "AquaWatch_Mobile",
+    "name": "Pace Environmental Observatory",
+    "slug": "pace-environmental-observatory",
     "version": "1.10.0",
     "scheme": "expo-nav-template",
     "web": {
@@ -14,7 +14,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow AquaWatch Mobile to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Allow Pace Environmental Observatory to use your location."
         }
       ],
       [
